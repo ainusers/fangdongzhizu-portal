@@ -1,0 +1,159 @@
+{
+	"easycom": {
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue",
+		"^q-(.*)": "@/components/q-$1/q-$1.vue"
+	},
+	"pages": [
+		// 启动页（参考：https://uniapp.dcloud.io/collocation/pages）
+		{
+			"path": "pages/tabbar/home/home",
+			"style": {
+				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商赚差价",
+				"backgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //关闭滚动条效果
+				}
+			}
+		},
+		{
+			"path": "pages/tabbar/community/community",
+			"style": {
+				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商赚差价",
+				"backgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": true,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //关闭滚动条效果
+				}
+			}
+		},
+		{
+			"path": "pages/tabbar/publish/publish",
+			"style": {
+				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商赚差价",
+				"backgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //关闭滚动条效果
+				}
+			}
+		},
+		{
+			"path": "pages/tabbar/news/news",
+			"style": {
+				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商赚差价",
+				"backgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //关闭滚动条效果
+				}
+			}
+		},
+		{
+			"path": "pages/tabbar/me/me",
+			"style": {
+				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商赚差价",
+				"backgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //关闭滚动条效果
+				}
+			}
+		},
+		{
+			"path": "pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release",
+			"style": {
+				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商赚差价",
+				"backgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //关闭滚动条效果
+				}
+			}
+		},
+		{
+			"path": "pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video",
+			"style": {
+				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商赚差价",
+				"backgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //关闭滚动条效果
+				}
+			}
+		},
+		{
+			"path": "pages/tabbar-3-detial/tabbar-3-qa/tabbar-3-qa",
+			"style": {
+				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商赚差价",
+				"backgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //关闭滚动条效果
+				}
+			}
+		}
+	],
+	"tabBar": {
+		"color": "#7A7E83",
+		"backgroundColor": "#eee",
+		"borderStyle": "#ffffff",
+		"selectedColor": "#000000",
+		"list": [{
+				"pagePath": "pages/tabbar/home/home",
+				"iconPath": "static/img/tabbar/home.png",
+				"selectedIconPath": "static/img/tabbar/homeactive.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/tabbar/community/community",
+				"iconPath": "static/img/tabbar/community.png",
+				"selectedIconPath": "static/img/tabbar/communityactive.png",
+				"text": "社区"
+			},
+			//#ifdef MP-WEIXIN
+			{
+				"pagePath": "pages/tabbar/publish/publish",
+				"iconPath": "static/img/tabbar/publish.png",
+				"selectedIconPath": "static/img/tabbar/publishactive.png",
+				"text": "发布"
+			},
+			//#endif
+			//#ifndef MP-WEIXIN
+			{
+				"pagePath": "pages/tabbar/publish/publish",
+				"iconPath": "static/img/tabbar/publish.png",
+				"selectedIconPath": "static/img/tabbar/publishactive.png"
+			},
+			//#endif
+			{
+				"pagePath": "pages/tabbar/news/news",
+				"iconPath": "static/img/tabbar/news.png",
+				"selectedIconPath": "static/img/tabbar/newsactive.png",
+				"text": "消息"
+			},
+			{
+				"pagePath": "pages/tabbar/me/me",
+				"iconPath": "static/img/tabbar/me.png",
+				"selectedIconPath": "static/img/tabbar/meactive.png",
+				"text": "我的"
+			}
+		]
+	}
+}
