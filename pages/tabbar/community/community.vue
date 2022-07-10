@@ -54,8 +54,6 @@
 		onLoad() {
 			// 进入页面就加载推荐数据
 			this.getMomentPost();
-			// 进入页面就创建万人群链接
-			this.initSocket();
 		},
 		onShow() {
 			if (this.$store.state.userInfo.uid) {

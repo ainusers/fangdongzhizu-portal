@@ -19,89 +19,64 @@
 					</view>
 				</view>
 				<!-- 判断展示的内容类型 -->
-				<view class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.msg.id">
+				<view class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
 					<!-- 系统消息 -->
-					<block v-if="row.type=='system'" >
+					<block v-if="row.type=='system'">
 						<view class="system">
 							<!-- 文字消息 -->
-							<view v-if="row.msg.type=='text'" class="text">
-								{{row.msg.content.text}}
-							</view>
-							<!-- 领取红包消息 -->
-							<view v-if="row.msg.type=='redEnvelope'" class="red-envelope">
-								<image src="/static/chat/red-envelope-chat.png"></image>
-								{{row.msg.content.text}}
+							<view v-if="row.type=='text'" class="text">
+								{{row.msg}}
 							</view>
 						</view>
 					</block>
 					<!-- 用户消息 -->
-					<block v-if="row.type=='user'">
+					<block v-if="row.type == 'text' || row.type == 'img'">
 						<!-- 1. 自己发出的消息 -->
-						<view class="my" v-if="row.msg.userinfo.uid==myuid">
+						<view class="my" v-if="row.from=='zhangjun8' || row.from=='zhangjun4' || row.from=='zhangjun7' || row.from=='zhangjun3' || row.from=='zhangjun5' || row.from=='zhangjun6'">
 							<!-- 左-消息 -->
 							<view class="left">
 								<!-- 文字消息 -->
-								<view v-if="row.msg.type=='text'" class="bubble">
-									<rich-text :nodes="row.msg.content.text"></rich-text>
+								<view v-if="row.type=='text'" class="bubble">
+									<rich-text :nodes="row.msg"></rich-text>
 								</view>
 								<!-- 语言消息 -->
-								<view v-if="row.msg.type=='voice'" class="bubble voice" @tap="playVoice(row.msg)" :class="playMsgid == row.msg.id?'play':''">
+								<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg)" :class="playMsgid == row.id?'play':''">
 									<view class="length">{{row.msg.content.length}}</view>
 									<view class="icon my-voice"></view>
 								</view>
 								<!-- 图片消息 -->
-								<view v-if="row.msg.type=='img'" class="bubble img" @tap="showPic(row.msg)">
-									<image :src="row.msg.content.url" :style="{'width': row.msg.content.w+'px','height': row.msg.content.h+'px'}"></image>
-								</view>
-								<!-- 红包 -->
-								<view v-if="row.msg.type=='redEnvelope'" class="bubble red-envelope" @tap="openRedEnvelope(row.msg,index)">
-									<image src="/static/chat/money/red-envelope.png"></image>
-									<view class="tis">
-										<!-- 点击开红包 -->
-									</view>
-									<view class="blessing">
-										{{row.msg.content.blessing}}
-									</view>
+								<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
+									<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}"></image>
 								</view>
 							</view>
 							<!-- 右-头像 -->
 							<view class="right">
-								<image :src="row.msg.userinfo.face"></image>
+								<image :src="row.face"></image>
 							</view>
 						</view>
 						<!-- 2. 别人发出的消息 -->
-						<view class="other" v-if="row.msg.userinfo.uid!=myuid">
+						<view class="other" v-if="row.from == 'zhangjun1' || row.from=='zhangjun2' || row.from=='zhangjun9' || row.from=='zhangjun10'">
 							<!-- 左-头像 -->
 							<view class="left">
-								<image :src="row.msg.userinfo.face"></image>
+								<image :src="row.face"></image>
 							</view>
 							<!-- 右-用户名称-时间-消息 -->
 							<view class="right">
 								<view class="username">
-									<view class="name">{{row.msg.userinfo.username}}</view> <view class="time">{{row.msg.time}}</view>
+									<view class="name">{{row.from}}</view> <view class="time">{{dateFormat(row.datetime)}}</view>
 								</view>
 								<!-- 文字消息 -->
-								<view v-if="row.msg.type=='text'" class="bubble">
-									<rich-text :nodes="row.msg.content.text"></rich-text>
+								<view v-if="row.type=='text'" class="bubble">
+									<rich-text :nodes="row.msg"></rich-text>
 								</view>
 								<!-- 语音消息 -->
-								<view v-if="row.msg.type=='voice'" class="bubble voice" @tap="playVoice(row.msg)" :class="playMsgid == row.msg.id?'play':''">
+								<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg)" :class="playMsgid == row.id?'play':''">
 									<view class="icon other-voice"></view>
 									<view class="length">{{row.msg.content.length}}</view>
 								</view>
 								<!-- 图片消息 -->
-								<view v-if="row.msg.type=='img'" class="bubble img" @tap="showPic(row.msg)">
-									<image :src="row.msg.content.url" :style="{'width': row.msg.content.w+'px','height': row.msg.content.h+'px'}"></image>
-								</view>
-								<!-- 红包 -->
-								<view v-if="row.msg.type=='redEnvelope'" class="bubble red-envelope" @tap="openRedEnvelope(row.msg,index)">
-									<image src="/static/chat/money/red-envelope.png"></image>
-									<view class="tis">
-										<!-- 点击开红包 -->
-									</view>
-									<view class="blessing">
-										{{row.msg.content.blessing}}
-									</view>
+								<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
+									<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}"></image>
 								</view>
 							</view>
 						</view>
@@ -111,7 +86,7 @@
 		</view>
 		<!-- 抽屉栏 -->
 		<view class="popup-layer" :class="popupLayerClass" @touchmove.stop.prevent="discard">
-			<!-- 表情模块 --> 
+			<!-- 表情模块 -->
 			<swiper class="emoji-swiper" :class="{hidden:hideEmoji}" indicator-dots="true" duration="150">
 				<swiper-item v-for="(page,pid) in emojiList" :key="pid">
 					<view v-for="(em,eid) in page" :key="eid" @tap="addEmoji(em)">
@@ -124,7 +99,6 @@
 				<view class="list">
 					<view class="box" @tap="chooseImage"><view class="icon photos"></view></view>
 					<view class="box" @tap="camera"><view class="icon paizhao"></view></view>
-					<view class="box" @tap="handRedEnvelopes"><view class="icon hongbao"></view></view>
 				</view>
 			</view>
 		</view>
@@ -167,27 +141,6 @@
 			<view class="cancel" :class="willStop?'':'hidden'"><view class="icon chehui" ></view></view>
 			<view class="tis" :class="willStop?'change':''">{{recordTis}}</view>
 		</view>
-		<!-- 红包弹窗 -->
-		<view class="windows" :class="windowsState">
-			<!-- 遮罩层 -->
-			<view class="mask" @touchmove.stop.prevent="discard" @tap="closeRedEnvelope"></view>
-			<view class="layer" @touchmove.stop.prevent="discard">
-				<view class="open-redenvelope">
-					<view class="top">
-						<view class="close-btn">
-							<view class="icon close" @tap="closeRedEnvelope"></view>
-						</view>
-						<image src="/static/img/im/face/face_1.jpg"></image>
-					</view>
-					<view class="from">来自{{redenvelopeData.from}}</view>
-					<view class="blessing">{{redenvelopeData.blessing}}</view>
-					<view class="money">{{redenvelopeData.money}}</view>
-					<view class="showDetails" @tap="toDetails(redenvelopeData.rid)">
-						查看领取详情 <view class="icon to"></view>
-					</view>
-				</view>
-			</view>
-		</view>
 	</view>
 </template>
 
@@ -204,7 +157,7 @@
 				scrollToView:'',
 				msgList:[],
 				msgImgList:[],
-				myuid:0,
+				myuid:'zhangjun5',
 				//录音相关参数
 				// #ifndef H5
 				//H5不能录音
@@ -264,6 +217,8 @@
 				this.recordEnd(e);
 			})
 			// #endif
+			// 进入页面就创建万人群链接
+			this.initSocket();
 		},
 		onShow(){
 			this.scrollTop = 9999999;
@@ -282,46 +237,95 @@
 			});
 		},
 		methods:{
-			// 接受消息(筛选处理)
-			screenMsg(msg){
-				//从长连接处转发给这个方法，进行筛选处理
-				if(msg.type=='system'){
-					// 系统消息 (文字、红包)
-					switch (msg.msg.type){
-						case 'text':
-							this.addSystemTextMsg(msg);
-							break;
-						case 'redEnvelope':
-							this.addSystemRedEnvelopeMsg(msg);
-							break;
+			// 创建websocket连接方法
+			initSocket() {
+				// 创建socketInstance对象实例，进行所有操作
+				this.socketInstance = uni.connectSocket({
+					// 确保你的服务器是运行态
+					url: "ws://192.168.124.11:17180/websocket",
+					success(data) {
+						console.log("websocket连接状态：" + JSON.stringify(data));
 					}
-				}else if(msg.type=='user'){
-					// 用户消息
-					switch (msg.msg.type){
+				});
+				// 打开socket链接
+				this.socketInstance.onOpen((res) => {
+					console.log("WebSocket连接正常打开中..." + JSON.stringify(res));
+					this.socket_status = true;
+					// 发送认证消息
+					this.authSocket();
+				});
+				// 接受服务端消息
+				this.socketInstance.onMessage((res) => {
+					console.log("收到服务器内容：" + res.data);
+					let data = eval("(" + res.data + ")");
+					switch (data.type) {
+						case 'auth':
+							break;
+						case 'online':
+							break;
+						case 'ping':
+							break;
+						case 'system':
+							this.addSystemTextMsg(data);
+							break;
 						case 'text':
-							this.addTextMsg(msg);
+							this.addTextMsg(data);
 							break;
 						case 'voice':
-							this.addVoiceMsg(msg);
+							this.addVoiceMsg(data);
 							break;
 						case 'img':
-							this.addImgMsg(msg);
-							break;
-						case 'redEnvelope':
-							this.addRedEnvelopeMsg(msg);
+							this.addImgMsg(data);
 							break;
 					}
-					console.log('用户消息');
 					//非自己的消息震动
-					if(msg.msg.userinfo.uid!=this.myuid){
-						console.log('振动');
-						uni.vibrateLong();
-					}
-				}
-				this.$nextTick(function() {
+					// if(data.from != 'zhangjun8' || data.from != 'zhangjun4' || data.from != 'zhangjun7' || data.from != 'zhangjun3' || data.from != 'zhangjun5' || data.from != 'zhangjun6'){
+					// 	console.log('振动');
+					// 	uni.vibrateLong();
+					// }
 					// 滚动到底
-					this.scrollToView = 'msg'+msg.msg.id
+					// this.$nextTick(function() {
+					// 	this.scrollToView = 'msg' + data.id
+					// });
 				});
+				// 监听socket关闭链接
+				this.socketInstance.onClose(() => {
+					console.log("已经被关闭了")
+				})
+			},
+			// 关闭socket
+			closeSocket() {
+				this.socketInstance.close({
+					success(res) {
+						this.socket_status = false;
+						console.log("关闭通信服务成功", res)
+					},
+					fail(err) {
+						console.log("关闭通信服务失败", err)
+					}
+				})
+			},
+			// 点击发送数据按钮
+			sendGenernalMsg() {
+				if (this.socket_status) {
+					this.socketInstance.send({
+						data: "{'type':'text','msg':'" + this.textMsg + "','target':'all'}",
+						async success() {
+							console.log("普通消息发送成功");
+						},
+					});
+				}
+			},
+			// 发送认证消息
+			authSocket() {
+				if (this.socket_status) {
+					this.socketInstance.send({
+						data: "{'type':'auth','from':'zhangjun" + Math.floor(Math.random() * 10 + 1) + "'}",
+						async success() {
+							console.log("认证消息发送成功");
+						},
+					});
+				}
 			},
 			// 触发滑动到顶部 (加载历史信息记录)
 			loadHistory(e){
@@ -335,18 +339,22 @@
 				setTimeout(()=>{
 					// 消息列表
 					let list = [
-						{type:"user",msg:{id:1,type:"text",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/chat/head/face.jpg"},content:{text:"为什么温度会相差那么大？"}}},
-						{type:"user",msg:{id:2,type:"text",time:"12:57",userinfo:{uid:1,username:"售后客服008",face:"/static/chat/head/face_2.jpg"},content:{text:"这个是有偏差的，两个温度相差十几二十度是很正常的，如果相差五十度，那即是质量问题了。"}}},
-						{type:"user",msg:{id:3,type:"voice",time:"12:59",userinfo:{uid:1,username:"售后客服008",face:"/static/chat/head/face_2.jpg"},content:{url:"/static/chat/voice/1.mp3",length:"00:06"}}},
-						{type:"user",msg:{id:4,type:"voice",time:"13:05",userinfo:{uid:0,username:"大黑哥",face:"/static/chat/head/face.jpg"},content:{url:"/static/chat/voice/2.mp3",length:"00:06"}}},
+						{"auth":true,"datetime":"1657357976767","from":"zhangjun8","id":826627537346224360,"msg":"大家聊的挺好呀","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
+						{"auth":true,"datetime":"1654355976768","from":"zhangjun9","id":826623537546224361,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+						{"auth":true,"datetime":"1657358976769","from":"zhangjun10","id":826227537546224362,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_9.jpg"},
+						{"auth":true,"datetime":"1657355976770","from":"zhangjun7","id":826627557546224363,"msg":"天津","status":"true","target":"all","type":"text",face:"/static/chat/head/face_10.jpg"},
+						{"auth":true,"datetime":"1657355976770","from":"zhangjun7","id":826627557546256363,"msg":"河北","status":"true","target":"all","type":"text",face:"/static/chat/head/face_11.jpg"},
+						{"auth":true,"datetime":"1657355976770","from":"zhangjun7","id":826627557346224363,"msg":"西安","status":"true","target":"all","type":"text",face:"/static/chat/head/face_12.jpg"},
+						{"auth":true,"datetime":"1657355976770","from":"zhangjun7","id":826627557546434363,"msg":"河南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_13.jpg"},
+						{"auth":true,"datetime":"1657355976770","from":"zhangjun7","id":826627532546224363,"msg":"海南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_14.jpg"}
 					]
 					// 获取消息中的图片,并处理显示尺寸
 					for(let i=0;i<list.length;i++){
-						if(list[i].type=='user'&&list[i].msg.type=="img"){
+						if(list[i].type=='user'&&list[i].type=="img"){
 							list[i].msg.content = this.setPicSize(list[i].msg.content);
 							this.msgImgList.unshift(list[i].msg.content.url);
 						}
-						list[i].msg.id = Math.floor(Math.random()*1000+1);
+						list[i].id = Math.floor(Math.random()*1000+1);
 						this.msgList.unshift(list[i]);
 					}
 					//这段代码很重要，不然每次加载历史数据都会跳到顶部
@@ -363,21 +371,21 @@
 			getMsgList(){
 				// 消息列表
 				let list = [
-					{type:"system",msg:{id:0,type:"text",content:{text:"欢迎进入HM-chat聊天室"}}},
-					{type:"user",msg:{id:1,type:"text",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/chat/head/face.jpg"},content:{text:"为什么温度会相差那么大？"}}},
-					{type:"user",msg:{id:2,type:"text",time:"12:57",userinfo:{uid:1,username:"售后客服008",face:"/static/chat/head/face_2.jpg"},content:{text:"这个是有偏差的，两个温度相差十几二十度是很正常的，如果相差五十度，那即是质量问题了。"}}},
-					{type:"user",msg:{id:3,type:"voice",time:"12:59",userinfo:{uid:1,username:"售后客服008",face:"/static/chat/head/face_2.jpg"},content:{url:"/static/chat/voice/1.mp3",length:"00:06"}}},
-					{type:"user",msg:{id:4,type:"voice",time:"13:05",userinfo:{uid:0,username:"大黑哥",face:"/static/chat/head/face.jpg"},content:{url:"/static/chat/voice/2.mp3",length:"00:06"}}},
-					{type:"user",msg:{id:5,type:"img",time:"13:05",userinfo:{uid:0,username:"大黑哥",face:"/static/chat/head/face.jpg"},content:{url:"/static/chat/content/p10.jpg",w:200,h:200}}},
-					{type:"user",msg:{id:6,type:"img",time:"12:59",userinfo:{uid:1,username:"售后客服008",face:"/static/chat/head/face_2.jpg"},content:{url:"/static/chat/content/q.jpg",w:1920,h:1080}}},
-					{type:"system",msg:{id:7,type:"text",content:{text:"欢迎进入HM-chat聊天室"}}},
-					{type:"system",msg:{id:9,type:"redEnvelope",content:{text:"售后客服008领取了你的红包"}}},
-					{type:"user",msg:{id:10,type:"redEnvelope",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/chat/head/face.jpg"},content:{blessing:"恭喜发财，大吉大利，万事如意",rid:0,isReceived:false}}},
-					{type:"user",msg:{id:11,type:"redEnvelope",time:"12:56",userinfo:{uid:1,username:"售后客服008",face:"/static/chat/head/face_2.jpg"},content:{blessing:"恭喜发财",rid:1,isReceived:false}}},
+					{"auth":true,"datetime":"1657355976760","from":"zhangjun1","id":826627537546224360,"msg":"你好？","status":"true","target":"all","type":"text",face:"/static/chat/head/face.jpg"},
+					{"auth":true,"datetime":"1657355976761","from":"zhangjun2","id":826627537546224361,"msg":"嗯嗯","status":"true","target":"all","type":"text",face:"/static/chat/head/face_1.jpg"},
+					{"auth":true,"datetime":"1657355976762","from":"zhangjun3","id":826627537546224362,"msg":"你是谁呀","status":"true","target":"all","type":"text",face:"/static/chat/head/face_2.jpg"},
+					{"auth":true,"datetime":"1657355976763","from":"zhangjun4","id":826627537546224363,"msg":"我在万人群","status":"true","target":"all","type":"text",face:"/static/chat/head/face_3.jpg"},
+					{"auth":true,"datetime":"1657355976764","from":"zhangjun5","id":826627537546224364,"msg":"你俩不认识？","status":"true","target":"all","type":"text",face:"/static/chat/head/face_4.jpg"},
+					{"auth":true,"datetime":"1657355976765","from":"zhangjun6","id":826627537546224365,"msg":"吃饭了没有","status":"true","target":"all","type":"text",face:"/static/chat/head/face_5.jpg"},
+					{"auth":true,"datetime":"1657355976766","from":"zhangjun7","id":826627537546224366,"msg":"你猜","status":"true","target":"all","type":"text",face:"/static/chat/head/face_6.jpg"},
+					{"auth":true,"datetime":"1657355976767","from":"zhangjun8","id":826627537546224366,"msg":"猜个屁","status":"true","target":"all","type":"text",face:"/static/chat/head/face_6.jpg"},
+					{"auth":true,"datetime":"1657325976766","from":"zhangjun9","id":826627537546224366,"msg":"说不说","status":"true","target":"all","type":"text",face:"/static/chat/head/face_6.jpg"},
+					{"auth":true,"datetime":"1657355976766","from":"zhangjun10","id":826627537546224366,"msg":"不说","status":"true","target":"all","type":"text",face:"/static/chat/head/face_6.jpg"},
+					{"auth":true,"datetime":"1657355976766","from":"zhangjun1","id":826627537546224366,"msg":"那再见","status":"true","target":"all","type":"text",face:"/static/chat/head/face_6.jpg"}
 				]
 				// 获取消息中的图片,并处理显示尺寸
 				for(let i=0;i<list.length;i++){
-					if(list[i].type=='user' && list[i].msg.type=="img"){
+					if(list[i].type=='user' && list[i].type=="img"){
 						list[i].msg.content = this.setPicSize(list[i].msg.content);
 						this.msgImgList.push(list[i].msg.content.url);
 					}
@@ -436,19 +444,12 @@
 			camera(){
 				this.getImage('camera');
 			},
-			// 发红包
-			handRedEnvelopes(){
-				uni.navigateTo({
-					url:'HM-hand/HM-hand'
-				});
-				this.hideDrawer();
-			},
 			// 选照片 or 拍照
 			getImage(type){
 				this.hideDrawer();
 				uni.chooseImage({
 					sourceType:[type],
-					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sizeType: ['original', 'compressed'],
 					success: (res)=>{
 						for(let i=0;i<res.tempFilePaths.length;i++){
 							uni.getImageInfo({
@@ -486,14 +487,14 @@
 			},
 			// 发送文字消息
 			sendText(){
-				this.hideDrawer();//隐藏抽屉
+				this.hideDrawer(); // 隐藏抽屉
 				if(!this.textMsg){
 					return;
 				}
 				let content = this.replaceEmoji(this.textMsg);
 				let msg = {text:content}
 				this.sendMsg(msg,'text');
-				this.textMsg = '';//清空输入框
+				this.textMsg = ''; // 清空输入框
 			},
 			// 替换表情符号为图片
 			replaceEmoji(str){
@@ -518,21 +519,38 @@
 			},
 			// 发送消息
 			sendMsg(content,type){
-				// 实际应用中，此处应该提交长连接，模板仅做本地处理。
-				var nowDate = new Date();
-				let lastid = this.msgList[this.msgList.length-1].msg.id;
-				lastid++;
-				let msg = {type:'user',msg:{id:lastid,time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:content}}
-				// 发送消息
-				this.screenMsg(msg);
-				// 定时器模拟对方回复,三秒
-				setTimeout(()=>{
-					lastid = this.msgList[this.msgList.length-1].msg.id;
-					lastid++;
-					msg = {type:'user',msg:{id:lastid,time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:content}}
-					// 本地模拟发送消息
-					this.screenMsg(msg);
-				},3000)
+				// 如果socket状态正常连接，则可以发送消息
+				if (this.socket_status) {
+					switch (type) {
+						case 'auth':
+							break;
+						case 'online':
+							break;
+						case 'ping':
+							break;
+						case 'system':
+							break;
+						case 'text':
+							this.socketInstance.send({
+								data: "{'type':'" + type + "','msg':'" + this.textMsg + "','target':'all'}",
+								async success() {
+									console.log("普通消息发送成功");
+								},
+							});
+							break;
+						case 'voice':
+							break;
+						case 'img':
+							let data = JSON.stringify(content);
+							this.socketInstance.send({
+								data: "{'type':'" + type + "','msg':'" + data + "','target':'all'}",
+								async success() {
+									console.log("图片发送成功");
+								},
+							});
+							break;
+					}
+				}
 			},
 			// 添加文字消息到列表
 			addTextMsg(msg){
@@ -544,64 +562,17 @@
 			},
 			// 添加图片消息到列表
 			addImgMsg(msg){
-				msg.msg.content = this.setPicSize(msg.msg.content);
-				this.msgImgList.push(msg.msg.content.url);
+				msg.msg = this.setPicSize(msg.msg);
+				this.msgImgList.push(JSON.parse(msg.msg).url);
 				this.msgList.push(msg);
-			},
-			addRedEnvelopeMsg(msg){
-				this.msgList.push(msg);
+				
+				// msg.msg.content = this.setPicSize(msg.msg.content);
+				// this.msgImgList.push(msg.msg.content.url);
+				// this.msgList.push(msg);
 			},
 			// 添加系统文字消息到列表
 			addSystemTextMsg(msg){
 				this.msgList.push(msg);
-			},
-			// 添加系统红包消息到列表
-			addSystemRedEnvelopeMsg(msg){
-				this.msgList.push(msg);
-			},
-			// 打开红包
-			openRedEnvelope(msg,index){
-				let rid = msg.content.rid;
-				uni.showLoading({
-					title:'加载中...'
-				});
-				console.log("index: " + index);
-				//模拟请求服务器效果
-				setTimeout(()=>{
-					//加载数据
-					if(rid==0){
-						this.redenvelopeData={
-							rid:0,	//红包ID
-							from:"大黑哥",
-							face:"/static/img/im/face/face.jpg",
-							blessing:"恭喜发财，大吉大利",
-							money:"已领完"
-						}
-					}else{
-						this.redenvelopeData={
-							rid:1,
-							from:"售后客服008",
-							face:"/static/img/im/face/face_2.jpg",
-							blessing:"恭喜发财",
-							money:"0.01"
-						}
-						if(!msg.content.isReceived){
-							this.sendSystemMsg({text:"你领取了"+(msg.userinfo.uid==this.myuid?"自己":msg.userinfo.username)+"的红包"},'redEnvelope');
-							console.log("this.msgList[index]: " + JSON.stringify(this.msgList[index]));
-							this.msgList[index].msg.content.isReceived = true;
-						}
-					}
-					uni.hideLoading();
-					this.windowsState = 'show';
-					
-				},200)
-			},
-			// 关闭红包弹窗
-			closeRedEnvelope(){
-				this.windowsState = 'hide';
-				setTimeout(()=>{
-					this.windowsState = '';
-				},200)
 			},
 			sendSystemMsg(content,type){
 				let lastid = this.msgList[this.msgList.length-1].msg.id;
@@ -609,17 +580,11 @@
 				let row = {type:"system",msg:{id:lastid,type:type,content:content}};
 				this.screenMsg(row)
 			},
-			// 领取详情
-			toDetails(rid){
-				uni.navigateTo({
-					url:'HM-details/HM-details?rid='+rid
-				})
-			},
 			// 预览图片
 			showPic(msg){
 				uni.previewImage({
 					indicator:"none",
-					current:msg.content.url,
+					current:JSON.parse(msg).url,
 					urls: this.msgImgList
 				});
 			},
@@ -709,6 +674,17 @@
 			},
 			discard(){
 				return;
+			},
+			// 格式化时间戳
+			dateFormat(timestamp) {
+				let date = new Date(Number(timestamp));
+				let Y = date.getFullYear() + '-';
+				let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+				let D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+				let h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+				let m = date.getMinutes() + ':';
+				let s = date.getSeconds();
+				return Y+M+D+h+m+s;
 			}
 		}
 	}
