@@ -30,7 +30,7 @@
 						</view>
 					</block>
 					<!-- 用户消息 -->
-					<block v-if="row.type == 'text' || row.type == 'img'">
+					<block v-if="row.type == 'text' || row.type == 'img' || row.type == 'voice'">
 						<!-- 1. 自己发出的消息 -->
 						<view class="my" v-if="row.from=='zhangjun8' || row.from=='zhangjun4' || row.from=='zhangjun7' || row.from=='zhangjun3' || row.from=='zhangjun5' || row.from=='zhangjun6'">
 							<!-- 左-消息 -->
@@ -41,7 +41,7 @@
 								</view>
 								<!-- 语言消息 -->
 								<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg)" :class="playMsgid == row.id?'play':''">
-									<view class="length">{{row.msg.content.length}}</view>
+									<view class="length">{{JSON.parse(row.msg).length}}</view>
 									<view class="icon my-voice"></view>
 								</view>
 								<!-- 图片消息 -->
@@ -72,7 +72,7 @@
 								<!-- 语音消息 -->
 								<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg)" :class="playMsgid == row.id?'play':''">
 									<view class="icon other-voice"></view>
-									<view class="length">{{row.msg.content.length}}</view>
+									<view class="length">{{JSON.parse(row.msg).length}}</view>
 								</view>
 								<!-- 图片消息 -->
 								<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
@@ -452,15 +452,27 @@
 					sizeType: ['original', 'compressed'],
 					success: (res)=>{
 						for(let i=0;i<res.tempFilePaths.length;i++){
-							uni.getImageInfo({
-								src: res.tempFilePaths[i],
-								success: (image)=>{
-									console.log(image.width);
-									console.log(image.height);
-									let msg = {url:res.tempFilePaths[i],w:image.width,h:image.height};
+							uni.uploadFile({
+								name: 'multipartFile',
+								url: 'http://81.70.163.240:15329/uploadFile?buketName=zufang-chat',
+								buketName: 'zufang-chat',
+								filePath: res.tempFilePaths[i],
+								success: uploadFileRes => {
+									let image = JSON.parse(uploadFileRes.data).data.originUrl;
+									let msg = {url:image,w:200,h:200};
 									this.sendMsg(msg,'img');
+								},
+								fail(err) {
+									console.log(err);
 								}
 							});
+							// uni.getImageInfo({
+							// 	src: res.tempFilePaths[i],
+							// 	success: (image)=>{
+							// 		let msg = {url:res.tempFilePaths[i],w:image.width,h:image.height};
+							// 		this.sendMsg(msg,'img');
+							// 	}
+							// });
 						}
 					}
 				});
@@ -539,11 +551,18 @@
 							});
 							break;
 						case 'voice':
+							let voice = JSON.stringify(content);
+							this.socketInstance.send({
+								data: "{'type':'" + type + "','msg':'" + voice + "','target':'all'}",
+								async success() {
+									console.log("语音发送成功");
+								},
+							});
 							break;
 						case 'img':
-							let data = JSON.stringify(content);
+							let img = JSON.stringify(content);
 							this.socketInstance.send({
-								data: "{'type':'" + type + "','msg':'" + data + "','target':'all'}",
+								data: "{'type':'" + type + "','msg':'" + img + "','target':'all'}",
 								async success() {
 									console.log("图片发送成功");
 								},
@@ -565,10 +584,6 @@
 				msg.msg = this.setPicSize(msg.msg);
 				this.msgImgList.push(JSON.parse(msg.msg).url);
 				this.msgList.push(msg);
-				
-				// msg.msg.content = this.setPicSize(msg.msg.content);
-				// this.msgImgList.push(msg.msg.content.url);
-				// this.msgList.push(msg);
 			},
 			// 添加系统文字消息到列表
 			addSystemTextMsg(msg){
@@ -590,8 +605,8 @@
 			},
 			// 播放语音
 			playVoice(msg){
-				this.playMsgid=msg.id;
-				this.AUDIO.src = msg.content.url;
+				this.playMsgid=JSON.parse(msg).id;
+				this.AUDIO.src=JSON.parse(msg).url;
 				this.$nextTick(function() {
 					this.AUDIO.play();
 				});
@@ -648,20 +663,34 @@
 				this.RECORDER.stop();//录音结束
 			},
 			// 录音结束(回调文件)
-			recordEnd(e){
+			recordEnd(res){
 				clearInterval(this.recordTimer);
 				if(!this.willStop){
-					console.log("e: " + JSON.stringify(e));
-					let msg = {
-						length:0,
-						url:e.tempFilePath
-					}
-					let min = parseInt(this.recordLength/60);
-					let sec = this.recordLength%60;
-					min = min<10?'0'+min:min;
-					sec = sec<10?'0'+sec:sec;
-					msg.length = min+':'+sec;
-					this.sendMsg(msg,'voice');
+					uni.uploadFile({
+						name: 'multipartFile',
+						url: 'http://81.70.163.240:15329/uploadFile?buketName=zufang-chat',
+						buketName: 'zufang-chat',
+						filePath: res.tempFilePath,
+						success: uploadFileRes => {
+							let voice = JSON.parse(uploadFileRes.data).data.originUrl;
+							let msg = {url:voice, length:8};
+							this.sendMsg(msg,'voice');
+						},
+						fail(err) {
+							console.log(err);
+						}
+					});
+					// console.log("e: " + JSON.stringify(e));
+					// let msg = {
+					// 	length:0,
+					// 	url:e.tempFilePath
+					// }
+					// let min = parseInt(this.recordLength/60);
+					// let sec = this.recordLength%60;
+					// min = min<10?'0'+min:min;
+					// sec = sec<10?'0'+sec:sec;
+					// msg.length = min+':'+sec;
+					// this.sendMsg(msg,'voice');
 				}else{
 					console.log('取消发送录音');
 				}
