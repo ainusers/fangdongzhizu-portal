@@ -4,7 +4,45 @@
 		"^q-(.*)": "@/components/q-$1/q-$1.vue"
 	},
 	"pages": [
-		// 启动页（参考：https://uniapp.dcloud.io/collocation/pages）
+		{
+			"path": "pages/auth/login",
+			"style": {
+				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商赚差价",
+				"backgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //关闭滚动条效果
+				}
+			}
+		},
+		{
+			"path": "pages/auth/forget",
+			"style": {
+				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商赚差价",
+				"backgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //关闭滚动条效果
+				}
+			}
+		},
+		{
+			"path": "pages/auth/register",
+			"style": {
+				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商赚差价",
+				"backgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //关闭滚动条效果
+				}
+			}
+		},
 		{
 			"path": "pages/tabbar/home/home",
 			"style": {

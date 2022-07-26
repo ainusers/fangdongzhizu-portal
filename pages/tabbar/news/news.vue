@@ -1,5 +1,5 @@
 <style lang="scss">
-	@import "@/style/css/style.scss"; 
+	@import "@/style/chat/style.scss"; 
 </style>
 <template>
 	<view class="news">

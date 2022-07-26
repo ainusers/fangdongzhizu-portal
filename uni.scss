@@ -66,11 +66,20 @@ $uni-spacing-col-lg: 24upx;
 
 @import 'uview-ui/theme.scss';
 
-
 /* 主题颜色 */
-$themes-color: #5543ef;
-$sub-color: #8874f7;
+$themes-color: #25cecb;
+$second-theme-color: #25cecb;
 
+/* 登录页面色值 */
+$border-color: #eee;
+$muted-color: #b9c1c9;
+$sub-color: #8874f7;
+$gray-color: #999999;
+$default-text-color: #333;
+$red-color: #f73131;
+$green-color: #00cc62;
+$blue-color: #569ff1;
+$yellow-color: #f99b21;
 
 /* 透明度 */
 $uni-opacity-disabled: 0.3; // 组件禁用态的透明度
