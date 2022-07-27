@@ -79,6 +79,13 @@
 			</view>
 		</view>
 		
+		<view class="other">
+			<view class="other-title">—————— 其他登录方式 ——————</view>
+			<view class="other-img">
+				<image class="other-qq" src="/static/login/qq.png" mode=""></image>
+				<image class="other-wx" src="/static/login/wx.png" mode=""></image>
+			</view>
+		</view>
 	</view>
 </template>
 

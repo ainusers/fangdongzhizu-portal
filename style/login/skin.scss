@@ -17,10 +17,11 @@
 	.tabs{
 		width: $boxWidth;
 		height: 100rpx;
+		padding-top: 150rpx;
 	}
 	.btns{
 		width: $boxWidth;
-		margin-top: 80rpx;
+		margin-top: 60rpx;
 	}
 	.qbtn{
 		height: 90rpx;
@@ -76,12 +77,32 @@
   .active::after{
 	  content: "";
 	  position: absolute;
-	  bottom:0;
-	  width: 60rpx;
+	  bottom:-40rpx;
+	  width: 120rpx;
 	  height: 8rpx;
 	  border-radius: 4rpx;
 	  background-color: $mainColor;
   }
   .curtext{
 	  color: $mainColor;
+  }
+  .other{
+	  padding-top: 350rpx;
+	  .other-title{
+		  color: #999999;
+	  }
+	  .other-img {
+		  padding-top: 30rpx;
+	  }
+	  .other-qq {
+		  display: inline-block;
+		  width: 80rpx;
+		  height: 80rpx;
+	  }
+	  .other-wx {
+		  padding-left: 30rpx;
+		  display: inline-block;
+		  width: 80rpx;
+		  height: 80rpx;
+	  }
   }

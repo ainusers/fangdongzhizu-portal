@@ -47,15 +47,15 @@
 					<input :password="password" placeholder-class="placeholder" class="qui-input" type="text" value="" placeholder="请输入6-14位密码" />
 				</view>
 			</view>
-			<view class="ptb30 flex">
-				<label class="radio">
-					<radio @click="changeCheck" :checked="checked" color="#F73131" class="qradio" value="" /><text class="fs24 text-gray">我已阅读并遵守</text> <text class="fs24 main-color underline">《用户协议》</text> <text class="fs24 text-gray">与</text> <text class="fs24 main-color underline">《隐私协议》</text>
-				</label>
-			</view>
 		</view>
 		<view class="btns">
 			<view class="qbtn">
 				<text class="btn-text-color fs30">立即注册</text>
+			</view>
+			<view class="flex ptb30 mlr20 aj-center">
+				<view @click="goLogin()" class="">
+					<text class="fs26 nav-text-color underline">返回登录</text>
+				</view>
 			</view>
 		</view>
 		<view class="bottom"></view>
@@ -66,14 +66,10 @@
 	export default {
 		data() {
 			return {
-				checked: false,
-				password: true,
+				password: true
 			}
 		},
 		methods: {
-			changeCheck() {
-				this.checked = !this.checked;
-			},
 			goLogin() {
 				uni.navigateTo({
 					url: '/pages/auth/login'
