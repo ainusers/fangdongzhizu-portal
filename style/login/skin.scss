@@ -65,6 +65,7 @@
 	  background-size: 100%;
   }
   .form{
+	  padding-top: 50rpx;
 	  width: $boxWidth;
   }
   .form-item{
@@ -87,7 +88,7 @@
 	  color: $mainColor;
   }
   .other{
-	  padding-top: 350rpx;
+	  padding-top: 300rpx;
 	  .other-title{
 		  color: #999999;
 	  }
@@ -100,6 +101,12 @@
 		  height: 80rpx;
 	  }
 	  .other-wx {
+		  padding-left: 30rpx;
+		  display: inline-block;
+		  width: 80rpx;
+		  height: 80rpx;
+	  }
+	  .other-wb {
 		  padding-left: 30rpx;
 		  display: inline-block;
 		  width: 80rpx;

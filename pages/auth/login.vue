@@ -8,12 +8,13 @@
 		<view class="topbox flex-column aj-center">
 			<image class="logoimg" src="/static/logo.png" mode=""></image>
 		</view>
+		
 		<view class="flex tabs mb30">
 			<view @click="tab(0)" class="flex-1 flex aj-center" :class="tabIndex==0&&'active'">
-				<text class="fs30 fw600 text-gray" :class="tabIndex==0&&'curtext'">账号登录</text>
+				<text class="fs34 fw600 text-gray" :class="tabIndex==0&&'curtext'">账号登录</text>
 			</view>
 			<view @click="tab(1)" class="flex-1 flex aj-center" :class="tabIndex==1&&'active'">
-				<text class="fs30 fw600 text-gray" :class="tabIndex==1&&'curtext'">手机登录</text>
+				<text class="fs34 fw600 text-gray" :class="tabIndex==1&&'curtext'">手机登录</text>
 			</view>
 		</view>
 		<view class="form" v-if="tabIndex ==0">
@@ -24,7 +25,7 @@
 				<image class="label_icon" src="/static/login/user.png" mode=""></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input placeholder-class="placeholder" class="qui-input" type="text" value="" placeholder="请输入账号" />
+					<input placeholder-class="placeholder" class="qui-input" type="text" value="" v-model="username" placeholder="请输入账号" />
 				</view>
 			</view>
 			<view class="flex a-center form-item">
@@ -34,7 +35,7 @@
 				<image class="label_icon" src="/static/login/pw.png" mode=""></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input placeholder-class="placeholder" :password="password" class="qui-input" type="text" value="" placeholder="请输入密码" />
+					<input placeholder-class="placeholder" :password="password" class="qui-input" type="text" value="" v-model="password" placeholder="请输入密码" />
 				</view>
 			</view>
 		</view>
@@ -47,7 +48,7 @@
 				<image class="label_icon" src="/static/login/phone.png" mode=""></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input placeholder-class="placeholder" class="qui-input" type="text" value="" placeholder="请输入手机号" />
+					<input placeholder-class="placeholder" class="qui-input" type="number" value="" maxlength="11" v-model="phone" placeholder="请输入手机号" />
 				</view>
 			</view>
 			<view class="flex a-center form-item">
@@ -57,24 +58,24 @@
 				<image class="label_icon" src="/static/login/code.png" mode=""></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input placeholder-class="placeholder" :password="password" class="qui-input" type="text" value="" placeholder="请输入验证码" />
+					<input placeholder-class="placeholder" :password="password" class="qui-input" type="number" value="" v-model="code" placeholder="请输入验证码" />
 				</view>
 				<view>
-					<text style="opacity: 0.8;" class="yzm fs28 ptb20 main-color">获取验证码</text>
+					<view style="opacity: 0.8;" class="yzm fs28 ptb20 main-color" @tap="sendCode">{{codeDuration ? codeDuration + 's' : '获取验证码' }}</view>
 				</view>
 			</view>
 		</view>
 		
 		<view class="btns">
-			<view class="qbtn">
-				<text class="btn-text-color fs30">登录</text>
-			</view>
+			<button @click="bindLogin" class="qbtn" >
+				<view class="btn-text-color fs30">登录</view>
+			</button>
 			<view class="flex ptb30 mlr20 space-between">
 				<view @click="goRegister" class="">
-					<text class="fs26 nav-text-color underline">注册</text>
+					<text class="fs28 nav-text-color underline">注册用户</text>
 				</view>
-				<view class="" @click="goForget">
-					<text class="fs26 nav-text-color underline">忘记密码</text>
+				<view @click="goForget" class="" >
+					<text class="fs28 nav-text-color underline">忘记密码</text>
 				</view>
 			</view>
 		</view>
@@ -82,22 +83,186 @@
 		<view class="other">
 			<view class="other-title">—————— 其他登录方式 ——————</view>
 			<view class="other-img">
-				<image class="other-qq" src="/static/login/qq.png" mode=""></image>
-				<image class="other-wx" src="/static/login/wx.png" mode=""></image>
+				<image class="other-qq" src="/static/login/qq.png" mode="" @tap="useQQ"></image>
+				<image class="other-wx" src="/static/login/wx.png" mode="" @tap="useWX"></image>
+				<image class="other-wb" src="/static/login/weibo.png" mode="" @tap="useWB"></image>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	var that;
 	export default {
 		data() {
 			return {
 				password: true,
-				tabIndex: 0
+				tabIndex: 0,
+				username: '',
+				password: '',
+				phone: '',
+				code: '',
+				codeDuration: 0
 			}
 		},
+		onLoad() {
+		  that = this;
+		},
+		onUnload() {
+		  clearInterval(timer);
+		},
 		methods: {
+			sendCode() {
+				if (this.phone.length < 1) {
+				  uni.showToast({
+				    icon: 'none',
+				    title: '请填写正确的手机号'
+				  });
+				  return;
+				}
+				if (this.codeDuration > 0) {
+				  return;
+				}
+				this.codeDuration = 60;
+				// 倒计时
+				let timer = setInterval(function() {
+				  that.codeDuration--;
+				  if (that.codeDuration == 0) {
+				    clearInterval(timer);
+				  }
+				}, 1000)
+				// 获取验证码
+				this.$H.get('http://sc.tujingzg.com/api/user/phoneReg',{
+					phone:this.phone
+				}).then(res => {
+					if (res.code === 200) {
+						this.$u.toast(res.msg);
+					}
+				});
+			},
+			bindLogin() {
+				switch (this.tabIndex) {
+					case 0:
+						this.loginByUser()
+						break;
+					case 1:
+						this.loginByMsg()
+						break;
+					default:
+						break;
+				}
+			},
+			loginByMsg() {
+				if (!/^1\d{10}$/.test(this.phone)) {
+					uni.showToast({
+						icon: 'none',
+						title: '请填写正确的手机号'
+					});
+					return;
+				}
+				if (this.code.length < 1) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入验证码'
+					});
+					return;
+				}
+				uni.request({
+					method: 'post',
+					header: {
+						'content-type': 'application/json'
+					},
+				    data: {
+				    	phone: this.phone,
+				    	code: this.code
+				    },
+					url: 'http://81.70.163.240:11001/user/login',
+				    success: (res) => {
+				        uni.switchTab({
+				        	url: '/pages/tabbar/home/home'
+				        })
+				    }
+				});
+			},
+			loginByUser() {
+				if (!/^1\d{10}$/.test(this.username)) {
+					uni.showToast({
+						icon: 'none',
+						title: '请填写正确的手机号'
+					});
+					return;
+				}
+				if (this.password.length < 1) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入密码'
+					});
+					return;
+				}
+				uni.request({
+					method: 'post',
+					header: {
+						'content-type': 'application/json'
+					},
+				    data: {
+				    	username: this.username,
+				    	password: this.password
+				    },
+					url: 'http://81.70.163.240:11001/users/login',
+				    success: (res) => {
+						if(res.data.success) {
+							uni.switchTab({
+								url: '/pages/tabbar/home/home'
+							})
+						}
+				    }
+				})
+			},
+			useWX() {
+				uni.login({
+				  provider: 'weixin',
+				  success: function (loginRes) {
+				    console.log(loginRes.authResult);
+				    // 获取用户信息
+				    uni.getUserInfo({
+				      provider: 'weixin',
+				      success: function (infoRes) {
+				        console.log('用户昵称为：' + infoRes.userInfo.nickName);
+				      }
+				    });
+				  }
+				})
+			},
+			useQQ() {
+				uni.login({
+				  provider: 'qq',
+				  success: function (loginRes) {
+				    console.log(loginRes.authResult);
+				    // 获取用户信息
+				    uni.getUserInfo({
+				      provider: 'qq',
+				      success: function (infoRes) {
+				        console.log('用户昵称为：' + infoRes.userInfo.nickName);
+				      }
+				    });
+				  }
+				})
+			},
+			useWB() {
+				uni.login({
+				  provider: 'weibo',
+				  success: function (loginRes) {
+				    console.log(loginRes.authResult);
+				    // 获取用户信息
+				    uni.getUserInfo({
+				      provider: 'weibo',
+				      success: function (infoRes) {
+				        console.log('用户昵称为：' + infoRes.userInfo.nickName);
+				      }
+				    });
+				  }
+				})
+			},
 			tab(index) {
 				this.tabIndex = index;
 			},

@@ -21,7 +21,7 @@
 				<image class="label_icon" src="/static/login/phone.png" mode=""></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input placeholder-class="placeholder" class="qui-input" type="text" value="" placeholder="请输入手机号" />
+					<input placeholder-class="placeholder" class="qui-input" type="number" value="" v-model="phone" placeholder="请输入手机号" />
 				</view>
 			</view>
 			<view class="flex a-center form-item">
@@ -31,10 +31,10 @@
 				<image class="label_icon" src="/static/login/code.png" mode=""></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input placeholder-class="placeholder" :password="password" class="qui-input" type="text" value="" placeholder="请输入验证码" />
+					<input placeholder-class="placeholder" :password="password" class="qui-input" type="number" value="" maxlength="11" v-model="code" placeholder="请输入验证码" />
 				</view>
 				<view>
-					<text style="opacity: 0.8;" class="fs28 ptb20 main-color yzm">获取验证码</text>
+					<text style="opacity: 0.8;" class="fs28 ptb20 main-color yzm"@tap="sendCode">{{codeDuration ? codeDuration + 's' : '获取验证码' }}</text>
 				</view>
 			</view>
 			<view class="flex a-center form-item">
@@ -44,17 +44,17 @@
 				<image class="label_icon" src="/static/login/pw.png" mode=""></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input :password="password" placeholder-class="placeholder" class="qui-input" type="text" value="" placeholder="请输入6-14位密码" />
+					<input :password="password" placeholder-class="placeholder" class="qui-input" type="text" value="" v-model="password" placeholder="请输入密码" />
 				</view>
 			</view>
 		</view>
 		<view class="btns">
-			<view class="qbtn">
+			<view class="qbtn" @tap="bindRegister">
 				<text class="btn-text-color fs30">立即注册</text>
 			</view>
 			<view class="flex ptb30 mlr20 aj-center">
 				<view @click="goLogin()" class="">
-					<text class="fs26 nav-text-color underline">返回登录</text>
+					<text class="fs28 nav-text-color underline">返回登录</text>
 				</view>
 			</view>
 		</view>
@@ -66,10 +66,80 @@
 	export default {
 		data() {
 			return {
-				password: true
+				phone: '',
+				code: '',
+				password: '',
+				codeDuration: 0
 			}
 		},
 		methods: {
+			sendCode() {
+				if (this.phone.length < 1) {
+				  uni.showToast({
+				  	icon: 'none',
+				  	title: '请填写正确的手机号'
+				  });
+				  return;
+				}
+				if (this.codeDuration > 0) {
+				  return;
+				}
+				this.codeDuration = 60;
+				// 倒计时
+				let timer = setInterval(function() {
+				  that.codeDuration--;
+				  if (that.codeDuration == 0) {
+				    clearInterval(timer);
+				  }
+				}, 1000)
+				// 获取验证码
+				this.$H.get('http://sc.tujingzg.com/api/user/phoneReg',{
+					phone:this.phone
+				}).then(res => {
+					if (res.code === 200) {
+						this.$u.toast(res.msg);
+					}
+				});
+			},
+			bindRegister() {
+				if (!/^1\d{10}$/.test(this.phone)) {
+					uni.showToast({
+						icon: 'none',
+						title: '请填写正确的手机号'
+					});
+					return;
+				}
+				if (this.code.length < 1) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入验证码'
+					});
+					return;
+				}
+				if (this.password.length < 1) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入密码'
+					});
+					return;
+				}
+				uni.request({
+					method: 'post',
+					header: {
+						'content-type': 'application/json'
+					},
+					data: {
+						username: this.phone,
+						code: this.code,
+						password: this.password,
+						rememberMe: 'true'
+					},
+					url: 'http://81.70.163.240:11001/users/register',
+				    success: (res) => {
+				        console.log(res.data);
+				    }
+				});
+			},
 			goLogin() {
 				uni.navigateTo({
 					url: '/pages/auth/login'
