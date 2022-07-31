@@ -12,10 +12,11 @@
 						</view>
 						<!-- 用户名称 -->
 						<view class="center">
-							<view style="display: flex;align-items: center;">
+							<view style="align-items: center;">
 								<text v-if="item.userInfo.vip_expire_time > timestamp" style="color: red;"
 									class="username">{{ item.userInfo.username.substring(0, 12) }}</text>
 								<text v-else class="username">{{ item.userInfo.username.substring(0, 12) }}</text>
+								<view style="float: right;padding-right: 10px;"> ꔷꔷꔷ </view>
 							</view>
 							<view>
 								<text class="time">{{ item.create_time | timeFrom }}</text>
@@ -215,8 +216,9 @@
 	// 总体样式
 	.post-item {
 		background: #fff;
-		padding: 20rpx;
-		margin-bottom: 20rpx;
+		border: solid 1px #eee;
+		margin: 10px 10px 15px 10px;
+		border-radius: 20px;
 
 		.post-content {
 			margin-top: 20rpx;

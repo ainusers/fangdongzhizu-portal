@@ -61,7 +61,7 @@
 					<input placeholder-class="placeholder" :password="password" class="qui-input" type="number" value="" v-model="code" placeholder="请输入验证码" />
 				</view>
 				<view>
-					<view style="opacity: 0.8;" class="yzm fs28 ptb20 main-color" @tap="sendCode">{{codeDuration ? codeDuration + 's' : '获取验证码' }}</view>
+					<view style="opacity: 0.8;" class="yzm fs28 ptb20 main-color" @click="sendCode">{{codeDuration ? codeDuration + 's' : '获取验证码' }}</view>
 				</view>
 			</view>
 		</view>
@@ -85,14 +85,13 @@
 			<view class="other-img">
 				<image class="other-qq" src="/static/login/qq.png" mode="" @tap="useQQ"></image>
 				<image class="other-wx" src="/static/login/wx.png" mode="" @tap="useWX"></image>
-				<image class="other-wb" src="/static/login/weibo.png" mode="" @tap="useWB"></image>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	var that;
+	var that,timer;
 	export default {
 		data() {
 			return {
@@ -125,7 +124,7 @@
 				}
 				this.codeDuration = 60;
 				// 倒计时
-				let timer = setInterval(function() {
+				timer = setInterval(function() {
 				  that.codeDuration--;
 				  if (that.codeDuration == 0) {
 				    clearInterval(timer);
@@ -173,14 +172,16 @@
 						'content-type': 'application/json'
 					},
 				    data: {
-				    	phone: this.phone,
-				    	code: this.code
+				    	username: this.phone,
+				    	password: this.code
 				    },
-					url: 'http://81.70.163.240:11001/user/login',
+					url: 'http://81.70.163.240:11001/users/login',
 				    success: (res) => {
-				        uni.switchTab({
-				        	url: '/pages/tabbar/home/home'
-				        })
+						if(res.data.success) {
+							uni.switchTab({
+								url: '/pages/tabbar/home/home'
+							})
+				        }
 				    }
 				});
 			},
@@ -227,7 +228,7 @@
 				    uni.getUserInfo({
 				      provider: 'weixin',
 				      success: function (infoRes) {
-				        console.log('用户昵称为：' + infoRes.userInfo.nickName);
+				        console.log('用户信息为：' + JSON.stringify(infoRes));
 				      }
 				    });
 				  }
@@ -242,22 +243,7 @@
 				    uni.getUserInfo({
 				      provider: 'qq',
 				      success: function (infoRes) {
-				        console.log('用户昵称为：' + infoRes.userInfo.nickName);
-				      }
-				    });
-				  }
-				})
-			},
-			useWB() {
-				uni.login({
-				  provider: 'weibo',
-				  success: function (loginRes) {
-				    console.log(loginRes.authResult);
-				    // 获取用户信息
-				    uni.getUserInfo({
-				      provider: 'weibo',
-				      success: function (infoRes) {
-				        console.log('用户昵称为：' + infoRes.userInfo.nickName);
+				        console.log('用户信息为：' + JSON.stringify(infoRes));
 				      }
 				    });
 				  }

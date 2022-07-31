@@ -110,7 +110,7 @@
 			// list的高度，单位rpx
 			height: {
 				type: [Number, String],
-				default: 250
+				default: 320
 			},
 			// 指示器的位置，topLeft|topCenter|topRight|bottomLeft|bottomCenter|bottomRight
 			indicatorPos: {
