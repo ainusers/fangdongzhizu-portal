@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<block v-for="(item, index) in list" :key="index">
-			<view @click="jump(item)">
+			<view @click="toDetail(item)">
 				<view class="post-item">
 					<!-- 用户数据 -->
 					<view class="post-item-top-user">
@@ -56,11 +56,11 @@
 						<view class="p-item">
 							<button @click.stop="showShares(index)" class="u-reset-button" open-type="share">
 								<u-icon name="zhuanfa"></u-icon>
-								<text class="count">分享</text>
+								<text class="count">{{ item.share_count }}</text>
 							</button>
 						</view>
 						<!-- 评论 -->
-						<view class="p-item margin50">
+						<view class="p-item margin50" @click="toComment('/pages/tabbar/community/comment')">
 							<u-icon name="chat"></u-icon>
 							<text class="count">{{ item.comment_count }}</text>
 						</view>
@@ -81,24 +81,27 @@
 		<block v-if="list.length === 0 && loadStatus == 'nomore'">
 			<u-empty margin-top="100" text="暂无内容" mode="favor"></u-empty>
 		</block>
-		<block v-else>
+		<block v-if="loadStatus == 'loadmore'">
 			<view style="margin: 30rpx 0;">
 				<u-loadmore :status="loadStatus" />
 			</view>
 		</block>
+		<block v-else>
+			<!-- 此处空白，用于朋友圈详情页 -->
+		</block>
 		<!-- 分享操作 -->
 		<u-popup v-model="showShare" height="240rpx" mode="bottom">
 			<view class="share-wrap" @click="showShare = false">
-				<button open-type="share" @click="appShare('WXSceneSession')" class="share-item u-reset-button">
-					<image src="/static/share/wechat.png"></image>
-					<text>微信好友</text>
+				<button open-type="share" @click="shareWX('WXSceneSession')" class="share-item u-reset-button">
+					<image src="/static/login/wx.png"></image>
+					<text>微信</text>
 				</button>
-				<view @click="appShare('WXSenceTimeline')" class="share-item">
-					<image src="/static/share/pyq.png"></image>
+				<view @click="shareWX('WXSenceTimeline')" class="share-item">
+					<image src="/static/login/pyq.png"></image>
 					<text>朋友圈</text>
 				</view>
-				<view @click="appShares('qq')" class="share-item">
-					<image src="/static/share/qq.png"></image>
+				<view @click="shareQQ('qq')" class="share-item">
+					<image src="/static/login/qq.png"></image>
 					<text>QQ</text>
 				</view>
 			</view>
@@ -128,22 +131,75 @@
 			
 		},
 		methods: {
-			// 展示分享弹框
+			// 跳转详情页
+			toDetail(data) {
+				uni.navigateTo({
+					url: "/pages/tabbar/community/comment?id=" + data.id + "&cid=" + data.cid
+				})
+			},
+			// 跳转评论区
+			toComment(url) {
+				uni.navigateTo({
+					url: url
+				});
+			},
+			// 点赞
+			addCollection(id, index) {
+				this.list[index].is_collection = true;
+				this.list[index].collection_count++;
+				
+				// this.$H
+				// 	.post('post/addCollection', {
+				// 		id: id,
+				// 		uid: this.list[index].uid
+				// 	})
+				// 	.then(res => {
+				// 		if (res.code === 200) {
+				// 			this.list[index].is_collection = true;
+				// 			this.list[index].collection_count++;
+				// 		}
+				// 	});
+			},
+			// 取消点赞
+			cancelCollection(id, index) {
+				this.list[index].is_collection = false;
+				this.list[index].collection_count--;
+				// this.$H
+				// 	.post('post/cancelCollection', {
+				// 		id: id
+				// 	})
+				// 	.then(res => {
+				// 		if (res.code === 200) {
+				// 			this.list[index].is_collection = false;
+				// 			this.list[index].collection_count--;
+				// 		}
+				// 	});
+			},
+			// 预览图片
+			previewImage(url, urls, integral, post_id) {
+				uni.previewImage({
+					current: url,
+					urls: urls
+				});
+			},
+			// 显示分享弹框
 			showShares(index) {
 				this.showShare = true;
 				this.postDetail = this.list[index];
 			},
-			appShares() {
+			// 分享至微信
+			shareWX(scene) {
 				let imgURL = (imgURL = this.postDetail.media[0]);
 				let that = this
 				let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
 				let curRoute = routes[routes.length - 1].$page.fullPath // 获取当前页面路由，也就是最后一个打开的页面路由
 				uni.share({
-					provider: "qq", //分享服务提供商（即weixin|qq|sinaweibo）
-					type: 0, //分享形式
+					provider: "weixin", // 服务提供商（即weixin|qq|sinaweibo）
+					scene: scene, // 分享到哪儿
+					type: 0, // 图文
 					href: 'http://xy.tujingzg.com/api/post/detail?id=' + that.postId, //跳转链接
-					summary: that.postDetail.content, //分享内容的摘要
-					title: that.postDetail.content, //分享内容的标题
+					summary: that.postDetail.content, // 分享内容的摘要
+					title: that.postDetail.content,  // 分享内容的标题
 					imageUrl: imgURL, //图片地址
 					success: function(res) {
 						uni.showToast({
@@ -151,7 +207,7 @@
 							icon: 'none',
 							duration: 2000
 						})
-						that.posters = false; //成功后关闭底部弹框
+						that.posters = false; // 成功后关闭底部弹框
 					},
 					fail: function(err) {
 						uni.showToast({
@@ -161,20 +217,20 @@
 						})
 						that.posters = false;
 					}
-				});
+				})
 			},
-			appShare(scene) {
+			// 分享至qq
+			shareQQ() {
 				let imgURL = (imgURL = this.postDetail.media[0]);
 				let that = this
 				let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
 				let curRoute = routes[routes.length - 1].$page.fullPath // 获取当前页面路由，也就是最后一个打开的页面路由
 				uni.share({
-					provider: "weixin", //分享服务提供商（即weixin|qq|sinaweibo）
-					scene: scene, //场景，可取值参考下面说明。
-					type: 0, //分享形式
-					href: 'http://xy.tujingzg.com/api/post/detail?id=' + that.postId, //跳转链接
-					summary: that.postDetail.content, //分享内容的摘要
-					title: that.postDetail.content, //分享内容的标题
+					provider: "qq", // 分享到哪儿（即weixin|qq|sinaweibo）
+					type: 0, // 图文
+					href: 'http://xy.tujingzg.com/api/post/detail?id=' + that.postId, // 跳转链接
+					summary: that.postDetail.content, // 分享内容的摘要
+					title: that.postDetail.content,  // 分享内容的标题
 					imageUrl: imgURL, //图片地址
 					success: function(res) {
 						uni.showToast({
@@ -182,7 +238,7 @@
 							icon: 'none',
 							duration: 2000
 						})
-						that.posters = false; //成功后关闭底部弹框
+						that.posters = false; // 成功后关闭底部弹框
 					},
 					fail: function(err) {
 						uni.showToast({
@@ -192,21 +248,7 @@
 						})
 						that.posters = false;
 					}
-				});
-			},
-			jump(e) {
-				let url;
-				// 图文
-				if (e.type == 1 || e.type == 4) {
-					url = '/pages/post/detail?id=' + e.id;
-				}
-				//视频
-				if (e.type == 2) {
-					url = '/pages/post/video-detail?id=' + e.id;
-				}
-				uni.navigateTo({
-					url: url
-				});
+				})
 			}
 		}
 	};
@@ -293,6 +335,7 @@
 		-webkit-line-clamp: 5;
 		white-space: pre-wrap;
 		overflow: hidden;
+		padding: 0 10rpx 0 10rpx;
 	}
 	// 列表操作（分享，评论，点赞）
 	.p-footer {

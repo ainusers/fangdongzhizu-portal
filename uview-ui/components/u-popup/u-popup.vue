@@ -216,7 +216,9 @@ export default {
 				};
 			} else if (this.mode == 'top' || this.mode == 'bottom') {
 				style = {
-					width: '100%',
+					width: '95%',
+					margin: '0 10px 0 10px',
+					borderRadius: '10px',
 					height: this.height ? this.getUnitValue(this.height) : this.getUnitValue(this.length),
 					transform: `translate3D(0px,${this.mode == 'top' ? '-100%' : '100%'},0px)`
 				};
