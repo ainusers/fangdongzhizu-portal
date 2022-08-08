@@ -7,7 +7,6 @@
 			width: 64rpx;
 			height: 64rpx;
 			border-radius: 50%;
-			background-color: #f2f2f2;
 		}
 	}
 	.right {
@@ -46,11 +45,20 @@
 			background-color: rgb(242, 242, 242);
 			border-radius: 12rpx;
 			.item {
+				display: flex;
 				padding: 20rpx;
 				border-bottom: solid 2rpx $u-border-color;
-				.username {
-					font-size: 24rpx;
-					color: #999999;
+				.desc {
+					display: flex;
+					.username {
+						font-size: 28rpx;
+						color: #999999;
+					}
+					.date {
+						padding-left: 20rpx;
+						font-size: 28rpx;
+						color: #999999;
+					}
 				}
 			}
 			.all-reply {
@@ -116,8 +124,14 @@
 					<view class="content">{{ res.contentText }}</view>
 					<view class="reply-box">
 						<view class="item" v-for="(item, index) in res.replyList" :key="item.index">
-							<view class="username">{{ item.name }}</view>
-							<view class="text">{{ item.contentStr }}</view>
+							<view class="left"><image :src="res.url" mode="aspectFill"></image></view>
+							<view class="right">
+								<view class="desc">
+									<view class="username">{{ item.name }}</view>
+									<view class="date">{{ item.date }}</view>
+								</view>
+								<view class="text">{{ item.contentStr }}</view>
+							</view>
 						</view>
 						<view class="all-reply" @tap="toAllReply" v-if="res.replyList != undefined">
 							共{{ res.allReply }}条回复
@@ -165,10 +179,14 @@ export default {
 					replyList: [
 						{
 							name: 'uview',
+							date: '03-25 13:58',
+							url: 'https://cdn.uviewui.com/uview/template/SmilingDog.jpg',
 							contentStr: 'uview是基于uniapp的一个UI框架，代码优美简洁，宇宙超级无敌彩虹旋转好用，用它！'
 						},
 						{
 							name: '粘粘',
+							date: '03-25 13:58',
+							url: 'https://cdn.uviewui.com/uview/template/SmilingDog.jpg',
 							contentStr: '今天吃什么，明天吃什么，晚上吃什么，我只是一只小猫咪为什么要烦恼这么多'
 						}
 					]
@@ -198,10 +216,14 @@ export default {
 					replyList: [
 						{
 							name: 'uview',
+							date: '03-25 13:58',
+							url: 'https://cdn.uviewui.com/uview/template/SmilingDog.jpg',
 							contentStr: 'uview是基于uniapp的一个UI框架，代码优美简洁，宇宙超级无敌彩虹旋转好用，用它！'
 						},
 						{
 							name: '豆包',
+							date: '03-25 13:58',
+							url: 'https://cdn.uviewui.com/uview/template/SmilingDog.jpg',
 							contentStr: '想吃冰糖葫芦粘豆包，但没钱5555.........'
 						}
 					]
@@ -228,12 +250,16 @@ export default {
 	methods: {
 		// 跳转到全部回复
 		toAllReply() {
-			console.log("--------------> 点击了更多回复消息")
-
+			let moreComment = {
+				name: 'uview',
+				date: '03-25 13:58',
+				contentStr: '我是新添加的评论！'
+			};
+			this.commentList.filter(item => item.cid == 1)[0].replyList.push(moreComment);
 		},
 		// 回复评论
 		onReply(e) {
-			this.placeholder = '回复：' + e.name;
+			this.placeholder = '回复' + e.name + '：';
 			this.focus = true;
 			console.log("--------------> 点击了回复评论")
 		},
