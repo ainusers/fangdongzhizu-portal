@@ -18,8 +18,15 @@
 			justify-content: space-between;
 			align-items: center;
 			margin-bottom: 10rpx;
+			.desc {
+				display: flex;
+			}
 			.name {
 				color: #5677fc;
+			}
+			.date {
+				padding-left: 20rpx;
+				color: #999999;
 			}
 			.like {
 				display: flex;
@@ -42,7 +49,6 @@
 			margin-bottom: 10rpx;
 		}
 		.reply-box {
-			background-color: rgb(242, 242, 242);
 			border-radius: 12rpx;
 			.item {
 				display: flex;
@@ -51,12 +57,12 @@
 				.desc {
 					display: flex;
 					.username {
-						font-size: 28rpx;
-						color: #999999;
+						font-size: 30rpx;
+						color: #5677fc;
 					}
 					.date {
 						padding-left: 20rpx;
-						font-size: 28rpx;
+						font-size: 30rpx;
 						color: #999999;
 					}
 				}
@@ -110,11 +116,14 @@
 		
 		<!-- 评论区 -->
 		<block v-if="commentList.length > 0">
-			<view @longpress="delComment(res, index)" @click="onReply(res, index)" class="comment" v-for="(res, index) in commentList" :key="res.id">
+			<view @longpress="delComment(res, index)" @tap.stop="onReply(res, index)" class="comment" v-for="(res, index) in commentList" :key="res.id">
 				<view class="left"><image :src="res.url" mode="aspectFill"></image></view>
 				<view class="right">
 					<view class="top">
-						<view class="name">{{ res.name }}</view>
+						<view class="desc">
+							<view class="name">{{ res.name }}</view>
+							<view class="date">{{ res.date }}</view>
+						</view>
 						<view class="like" :class="{ highlight: res.isLike }">
 							<view class="num">{{ res.likeNum }}</view>
 							<u-icon v-if="!res.isLike" name="thumb-up" :size="30" color="#9a9a9a" @click="getLike(index)"></u-icon>
@@ -123,7 +132,7 @@
 					</view>
 					<view class="content">{{ res.contentText }}</view>
 					<view class="reply-box">
-						<view class="item" v-for="(item, index) in res.replyList" :key="item.index">
+						<view class="item" @tap.stop="onReply(item, index)" v-for="(item, index) in res.replyList" :key="item.index">
 							<view class="left"><image :src="res.url" mode="aspectFill"></image></view>
 							<view class="right">
 								<view class="desc">
@@ -137,10 +146,6 @@
 							共{{ res.allReply }}条回复
 							<u-icon class="more" name="arrow-right" :size="26"></u-icon>
 						</view>
-					</view>
-					<view class="bottom">
-						{{ res.date }}
-						<view class="reply">回复</view>
 					</view>
 				</view>
 			</view>
@@ -180,11 +185,36 @@ export default {
 						{
 							name: 'uview',
 							date: '03-25 13:58',
-							url: 'https://cdn.uviewui.com/uview/template/SmilingDog.jpg',
+							url: 'https://cdn.uviewui.com/uview/template/niannian.jpg',
 							contentStr: 'uview是基于uniapp的一个UI框架，代码优美简洁，宇宙超级无敌彩虹旋转好用，用它！'
 						},
 						{
 							name: '粘粘',
+							date: '03-25 13:58',
+							url: 'https://cdn.uviewui.com/uview/template/niannian.jpg',
+							contentStr: '今天吃什么，明天吃什么，晚上吃什么，我只是一只小猫咪为什么要烦恼这么多'
+						}
+					]
+				},
+				{
+					id: 11,
+					cid: 1,
+					name: '叶轻眉2号',
+					date: '12-25 18:58',
+					contentText: '我不信伊朗会没有后续反应，美国肯定会为今天的事情付出代价的',
+					url: 'https://cdn.uviewui.com/uview/template/SmilingDog.jpg',
+					allReply: 12,
+					likeNum: 33,
+					isLike: false,
+					replyList: [
+						{
+							name: 'uview2号',
+							date: '03-25 13:58',
+							url: 'https://cdn.uviewui.com/uview/template/niannian.jpg',
+							contentStr: 'uview是基于uniapp的一个UI框架，代码优美简洁，宇宙超级无敌彩虹旋转好用，用它！'
+						},
+						{
+							name: '粘粘2号',
 							date: '03-25 13:58',
 							url: 'https://cdn.uviewui.com/uview/template/SmilingDog.jpg',
 							contentStr: '今天吃什么，明天吃什么，晚上吃什么，我只是一只小猫咪为什么要烦恼这么多'
@@ -277,18 +307,22 @@ export default {
 					name: '叶轻眉',
 					date: '12-25 18:58',
 					contentText: '我不信伊朗会没有后续反应，美国肯定会为今天的事情付出代价的',
-					url: 'https://cdn.uviewui.com/uview/template/SmilingDog.jpg',
+					url: 'https://cdn.uviewui.com/uview/template/niannian.jpg',
 					allReply: 12,
 					likeNum: 33,
 					isLike: false,
 					replyList: [
 						{
-							name: 'uview',
+							name: '我是1号',
+							date: '03-25 13:58',
+							url: 'https://cdn.uviewui.com/uview/template/niannian.jpg',
 							contentStr: 'uview是基于uniapp的一个UI框架，代码优美简洁，宇宙超级无敌彩虹旋转好用，用它！'
 						},
 						{
-							name: '粘粘',
-							contentStr: '今天吃什么，明天吃什么，晚上吃什么，我只是一只小猫咪为什么要烦恼这么多'
+							name: '我是2号',
+							date: '03-25 13:58',
+							url: 'https://cdn.uviewui.com/uview/template/niannian.jpg',
+							contentStr: 'uview是基于uniapp的一个UI框架，代码优美简洁，宇宙超级无敌彩虹旋转好用，用它！'
 						}
 					]
 				};
