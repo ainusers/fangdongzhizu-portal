@@ -12,7 +12,6 @@
         box-sizing: border-box;
     }
     .choose_city_cont{
-        padding-right: 60upx;
         box-sizing: border-box;
     }
     /* #ifdef  MP-ALIPAY*/
@@ -20,18 +19,15 @@
         padding-right: 0;
     }
     /* #endif */
-
     .choose_title{
         height:60upx;
         line-height:60upx;
-        font-size:24upx;
-        color:#8a8a8a;
-        padding-left: 30upx;
-        background:#f2f2f2;
+        font-size:27upx;
+        margin-left: 32upx;
         box-sizing: border-box;
     }
     .gps_city{
-        padding-left: 30upx;
+        margin-left: 30upx;
         position:relative;
         height:80upx;
         line-height:84upx;
@@ -44,17 +40,14 @@
         margin: auto 10upx auto 0;
     }
     .city_item{
-        padding-left: 30upx;
-        border-bottom:1rpx solid #e5e5e5;
+        margin-left: 30upx;
         height:90upx;
         line-height:90upx;
-        color:#636363;
         font-size:28upx;
     }
 
     /* 城市首字母 */
     .letter_list{
-        width: 40upx;
         height: 100%;
         position:fixed;
         right:0;
@@ -62,37 +55,31 @@
         background:#ffffff;
         z-index:2;
         box-sizing:border-box;
-        padding-top: 140upx;
+        padding-top: 180upx;
     }
     .letter_item{
-        color:#8c8c8c;
         line-height:38upx;
         text-align:center;
         font-size:18upx;
+		background-color: #FFFFFF
     }
 
     /* 热门城市 */
     .hot_city_list{
         flex-wrap: wrap;
-        background-color: #FFFFFF;
-        padding-left: 30upx;
-        padding-top: 30upx;
-        padding-bottom: 10upx;
         box-sizing: border-box;
+		display: flex;
     }
     .hot_city_item{
         width:186upx;
         height:60upx;
         line-height:60upx;
         font-size:27upx;
-        color:#0f0f0f;
         letter-spacing:1upx;
         text-align:center;
         border-radius:6upx;
-        border:1upx solid #e1e1e1;
         margin-right:30upx;
         margin-bottom:20upx;
-        box-shadow:#ededed 0 3upx 5upx 1upx;
     }
 </style>
 <template>
@@ -132,8 +119,8 @@
 
 			<view class="letter_list f_c_c">
 				<block v-for="(item, letterIndex) in letterList" :index="letterIndex" :key="letterIndex">
-					<button form-type="submit" hover-class="none" @click="letterBtn(item)"
-						class="f_r_c letter_item" :id="item.id">{{ item.text }}</button>
+					<view form-type="submit" hover-class="none" @click="letterBtn(item)"
+						class="f_r_c letter_item" :id="item.id">{{ item.text }}</view>
 				</block>
 			</view>
 		</view>
