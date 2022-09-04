@@ -128,12 +128,6 @@
 </template>
 
 <script>
-    // import { GetAllCityList } from "../../net/GetAllCityList.js";
-    // import { CityListModel } from "../../model/CityListModel.js";
-    // import { Notification } from "../../utils/Notification.js";
-    // import { Notify } from "../../utils/Notify.js";
-    // import { GpsInfoModel } from "../../model/GpsInfoModel.js";
-
 	export default {
 		data() {
 			return {

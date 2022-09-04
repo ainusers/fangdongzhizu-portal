@@ -1,5 +1,4 @@
-
-<style scope>
+<style scope lang="scss">
 .main {
 	background-color: #fafafa;
 }
@@ -341,6 +340,27 @@
 	height: calc(100vh - var(--status-bar-height) - 88rpx);
 	background-color: #ffffff;
 }
+
+/* 列表区域 */
+// .content {
+// 	display: flex;
+// }
+// .house {
+// 	width: 100%;
+// 	box-shadow: 0 0 15px 1px rgba(224, 224, 224, 50%);
+// }
+// .thumbnail {
+// 	height: 210rpx;
+// 	width: 100%;
+// 	display: flex;
+// 	.u-image {
+// 		height: 190rpx !important;
+// 		width: 280rpx !important;
+// 	}
+// }
+// .introduce {
+	
+// }
 </style>
 <template>
 	<view class="main">
@@ -489,6 +509,22 @@
 								</view>
 							</view>
 						</form>
+						
+						<!-- 内容区域 -->
+						<view class="content">
+							<!-- <view class="house">
+								<view class="thumbnail">
+									<u-image shape="20px" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271" mode="aspectFit"></u-image>
+									<view class="introduce">
+										<view>松兰铺 圣龙家园 朝南 主卧</view>
+									</view>
+								</view>
+							</view> -->
+							<!-- 租房列表 -->
+						    <block v-for="(item, index) in houseList" :key="index">
+								<house-list-item :item="item"></house-list-item>
+						    </block>
+						</view>
 					</view>
 				</scroll-view>
 			</swiper-item>
@@ -507,7 +543,8 @@
 </template>
 
 <script>
-// ????????????????
+	
+import houseListItem from '@/components/house-list/house-list-item.vue';
 import { Const } from "@/utils/const/Const.js";
 let privateData = {
 	room: {
@@ -524,8 +561,54 @@ let privateData = {
 	}
 };
 export default {
+	components: {
+		houseListItem
+	},
 	data() {
 		return {
+			houseList: [{
+							"houseImg":"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271",
+							"community":"松兰铺",
+							"whoCommunity":"圣龙家园",
+							"orientation":"朝南",
+							"bedroom":"主卧",
+							"mode":"单间",
+							"matche":"一室一厅",
+							"size":"23m²",
+							"floor":"2/3层",
+							"position":"距离昌平线沙河地铁站1020米",
+							"price":"2300",
+							"region":"昌平",
+							"subway":"沙河"},
+						{
+							"houseImg":"https://img1.baidu.com/it/u=3942334258,820952260&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=344",
+							"community":"兰亭新苑",
+							"whoCommunity":"三区",
+							"orientation":"朝南",
+							"bedroom":"主卧",
+							"mode":"合租",
+							"matche":"三室一厅",
+							"size":"16m²",
+							"floor":"16/27层",
+							"position":"距离10号线劲松地铁站950米",
+							"price":"1800",
+							"region":"朝阳",
+							"subway":"酒仙桥"},
+						{
+							"houseImg":"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271",
+							"community":"松兰铺",
+							"whoCommunity":"圣龙家园",
+							"orientation":"朝南",
+							"bedroom":"主卧",
+							"mode":"单间",
+							"matche":"一室一厅",
+							"size":"23m²",
+							"floor":"2/3层",
+							"position":"距离昌平线沙河地铁站1020米",
+							"price":"2300",
+							"region":"昌平",
+							"subway":"沙河"}
+						],
 			cityName: "北京",
 			current: 0,
 			tabList: [
@@ -718,7 +801,6 @@ export default {
 		},
 		// 选择城市
 		chooseCity() {
-		  console.log("选择城市ing")
 		  uni.navigateTo({
 		    url: "/pages/tabbar/home/chooseCity"
 		  });
