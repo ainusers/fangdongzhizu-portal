@@ -8,7 +8,6 @@
 		<view class="topbox flex-column aj-center">
 			<image class="logoimg" src="/static/logo.png" mode=""></image>
 		</view>
-
 		<view class="flex tabs mb30">
 			<view @click="tab(0)" class="flex-1 flex aj-center" :class="tabIndex==0&&'active'">
 				<text class="fs34 fw600 text-gray" :class="tabIndex==0&&'curtext'">账号登录</text>

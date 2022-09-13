@@ -340,27 +340,6 @@
 	height: calc(100vh - var(--status-bar-height) - 88rpx);
 	background-color: #ffffff;
 }
-
-/* 列表区域 */
-// .content {
-// 	display: flex;
-// }
-// .house {
-// 	width: 100%;
-// 	box-shadow: 0 0 15px 1px rgba(224, 224, 224, 50%);
-// }
-// .thumbnail {
-// 	height: 210rpx;
-// 	width: 100%;
-// 	display: flex;
-// 	.u-image {
-// 		height: 190rpx !important;
-// 		width: 280rpx !important;
-// 	}
-// }
-// .introduce {
-	
-// }
 </style>
 <template>
 	<view class="main">
@@ -512,14 +491,6 @@
 						
 						<!-- 内容区域 -->
 						<view class="content">
-							<!-- <view class="house">
-								<view class="thumbnail">
-									<u-image shape="20px" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271" mode="aspectFit"></u-image>
-									<view class="introduce">
-										<view>松兰铺 圣龙家园 朝南 主卧</view>
-									</view>
-								</view>
-							</view> -->
 							<!-- 租房列表 -->
 						    <block v-for="(item, index) in houseList" :key="index">
 								<house-list-item :item="item"></house-list-item>

@@ -91,7 +91,6 @@
         line-height: 30upx;
         color:#101d37;
 		font-size: 26upx;
-        /* margin-bottom:7upx; */
         text-align: left;
         max-width: 100%;
         text-overflow: ellipsis;
@@ -187,7 +186,7 @@
 	}
 </style>
 <template>
-	<view @click="houseDetail(item)" class="er_house_item f_r_s">
+	<view @click="homeDetail(item)" class="er_house_item f_r_s">
 		<view class="er_house_img_view">
 			<image mode="aspectFill" class="er_house_img" :src="item.houseImg" lazy-load></image>
 		</view>
@@ -230,24 +229,26 @@
 </template>
 
 <script>
-    // import { GpsInfoModel } from "../model/GpsInfoModel.js";
 	export default {
 		name: 'house-list-item',
         computed:{},
         props: ["item"],
         methods: {
-        	houseDetail(item) {
-                let cityId = item.cityId || "";
+        	homeDetail(item) {
+				console.log("----> " + JSON.stringify(item))
+                let cityId = "北京" || "";
                 let caseId = item.houseId || "";
                 let caseType = item.caseType || "";
                 let resource = item.reSource || "1";
                 let houseName = item.houseName || "";
+				
+				let url = "./homeDetail?cityId="+cityId
+					+"&caseId="+caseId
+				    +"&caseType="+caseType+"&resource="+resource+"&houseName="+houseName
+					+ "&pageFrom=" + item.pageFrom + "&archiveId=" + (item.archiveId || "")
+					+ "&compId=" + (item.compId || "") + "&buildId=" + (item.buildId || "")
                 uni.navigateTo({
-                    url: "/pagesHouse/erHouseDetail/erHouseDetail?cityId="+cityId
-						+"&caseId="+caseId
-                        +"&caseType="+caseType+"&resource="+resource+"&houseName="+houseName
-						+ "&pageFrom=" + item.pageFrom + "&archiveId=" + (item.archiveId || "")
-						+ "&compId=" + (item.compId || "") + "&buildId=" + (item.buildId || "")
+                    url: url
                 });
         	}
         },

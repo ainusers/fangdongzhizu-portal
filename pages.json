@@ -18,6 +18,19 @@
 			}
 		},
 		{
+			"path": "pages/tabbar/home/homeDetail",
+			"style": {
+				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
+				"backgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //关闭滚动条效果
+				}
+			}
+		},
+		{
 			"path": "pages/tabbar/home/chooseCity",
 			"style": {
 				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
