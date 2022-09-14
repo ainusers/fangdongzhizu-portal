@@ -57,9 +57,9 @@
 				swiperIndex: 0,
                 hasImg: false,
                 currenClickType: "",
-                imgNum: 10,
+                imgNum: 1,
                 otherNum: 1
-			};
+			}
 		},
         props: {
             list: {

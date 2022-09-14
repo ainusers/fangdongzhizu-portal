@@ -18,10 +18,10 @@
       </block> -->
       
       <!-- 配套设施 -->
-     <!-- <block v-if="peiTaoSheShiList.length > 0">
+     <block v-if="peiTaoSheShiList.length > 0">
         <title-view :title="'配套设施'"></title-view>
         <pei-tao-she-shi :list="peiTaoSheShiList"></pei-tao-she-shi>
-      </block> -->
+      </block>
       
       <!-- 物业类型+建筑类型+产权年限等 -->
      <!-- <title-view :title="(topNameItem && topNameItem.buildName) ? topNameItem.buildName : ''"></title-view>
@@ -139,7 +139,7 @@
   // import buildExpert from "@/pagesHouse/components/erHouseDetail/buildExpert.vue";
   // import guaPaiAgentList from "@/pagesHouse/components/erHouseDetail/guaPaiAgentList.vue";
   // import bottomBtn from "@/pagesHouse/components/erHouseDetail/bottomBtn.vue";
-  // import peiTaoSheShi from "@/pagesHouse/components/erHouseDetail/peiTaoSheShi.vue";
+  import peiTaoSheShi from "@/components/house-sheshi/peiTaoSheShi.vue";
   // import {Notification} from "../../utils/Notification.js";
   // import {Notify} from "../../utils/Notify.js";
   // import {hex_md5} from "../../utils/md5.js";
@@ -210,7 +210,16 @@
         nearNewHouseList: [],
         guaPaiAgentList: [],
         bottomAgentInfo: {},
-        peiTaoSheShiList: [],  // 配套设施列表
+        peiTaoSheShiList: [{'iconUrl':'https://img2.baidu.com/it/u=3987481711,1964085568&fm=253&fmt=auto&app=138&f=JPEG?w=552&h=460','text':'洗衣机'},
+							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimgservice.suning.cn%2Fuimg1%2Fb2c%2Fimage%2Fy3FUXiUL0DgJI6Rk8e_S9A.jpg_800w_800h_4e&refer=http%3A%2F%2Fimgservice.suning.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665756178&t=50837482977b82e43ed01c5236bb2d8a','text':'冰箱'},
+							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fm.imeitou.com%2Fuploads%2Fallimg%2F200919%2F3-2009191HH1.jpg&refer=http%3A%2F%2Fm.imeitou.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755525&t=c2d69527fdbb39809fc3d2a5e891d188','text':'电视'},
+							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpica.zhimg.com%2F80%2Fv2-83d2a618f8b8306983f5c44e09721940_720w.jpg%3Fsource%3D1940ef5c&refer=http%3A%2F%2Fpica.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755553&t=24a09e9cfbb5029937f64f43e8d73485','text':'空调'},
+							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.baike.soso.com%2Fugc%2Fbaikepic2%2F3010%2F20170728172313-1601746359_png_736_401_195501.jpg%2F0&refer=http%3A%2F%2Fpic.baike.soso.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755584&t=3905aac65e736d7dfd5abd34ca9aa6b5','text':'热水器'},
+							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fhousephotolib%2F1602%2F17%2Fc1%2F18340884_1455639785495_690x460.jpg&refer=http%3A%2F%2Fimg.pconline.com.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755655&t=4c263333b7997c063cce7eb47bd51176','text':'天然气'},
+							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Ftupian.yingbinke.vip%2Ffile%2Fupload%2F34%2F6860%2F20211103%2F20306fb927c64d85b1de0c5d3a57d35c.jpg&refer=http%3A%2F%2Ftupian.yingbinke.vip&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755673&t=c897e1896822d1a8b00b19be83bee67e','text':'暖气'},
+							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fp4.itc.cn%2Fimages01%2F20200720%2Fded820458c494756ba583cbb402c7b3b.jpeg&refer=http%3A%2F%2Fp4.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755701&t=0518731d836b8bdab01afb5215205d3e','text':'网络'},
+							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01ef3e5c7cc145a801203d22aed6ba.jpg%403000w_1l_0o_100sh.jpg&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755726&t=e430730afda5b2f3726c9bc747d64e89','text':'微波炉'},
+							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.shuomingshu.cn%2Fwp-content%2Fuploads%2F2020%2F07%2F1421720287122156A27481.jpg&refer=http%3A%2F%2Fwww.shuomingshu.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755741&t=0cac45ac4b273791f859d21cf498a6da','text':'电磁炉'}],  // 配套设施列表
 
         housePhone: "", // 按月付的电话
         openHuabei: "",  // 是否开通花呗 0:未开通，1:已开通
@@ -246,7 +255,7 @@
       // buildExpert,
       // guaPaiAgentList,
       // bottomBtn,
-      // peiTaoSheShi
+      peiTaoSheShi
     },
 }
   //   onShareAppMessage() {
