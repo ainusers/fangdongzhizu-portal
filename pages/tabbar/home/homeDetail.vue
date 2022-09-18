@@ -1,170 +1,74 @@
+<style>
+  page {
+    background: #FFFFFF;
+  }
+  .er_house_detail {
+    overflow-x: hidden;
+	box-shadow: 0 1px 0 2px rgba(0,0,0,0.05);
+  }
+  .model {
+	  border: 1px solid #F5F5F5
+  }
+  .modelName{
+	  padding-left: 8px;
+  }
+  .near_map_item {
+    height: 25upx;
+  }
+  .position_near {
+    box-shadow: 0upx 9upx 32upx -10upx rgba(20, 20, 20, 0.07);
+    margin-bottom: 10upx;
+  }
+  .near_house {
+    margin-bottom: 20upx;
+  }
+  .look_more {
+    color: #7A8190;
+    font-size: 24upx;
+    flex-shrink: 0;
+    position: relative;
+    line-height: 54upx;
+    margin: 57upx 0 6upx;
+    margin-right: 40upx;
+    padding-right: 30upx;
+  }
+</style>
 <template>
-  <view>
-    <!-- <houseDetailLoading v-if="loadingReqeust || loadingReqeust == undefined"></houseDetailLoading> -->
-
     <view class="er_house_detail">
-      <house-swiper :list="swiperList"></house-swiper>
+		<!-- 详情页 - 轮播图 -->
+		<house-swiper :list="swiperList"></house-swiper>
 
-      <!-- <top-name @OnCollectChanged="OnCollectChanged" :pageFrom="pageFrom" :item="topNameItem"></top-name> -->
-      
-      <!-- 开通花呗和有电话时显示 -->
-      <!-- <hou-money-pay-every-month v-if="openHuabei == 1 && housePhone && topNameItem.houseUseage == 1"
-                                 :housePhone="housePhone"></hou-money-pay-every-month> -->
-      
-      <!-- 房源描述 -->
-     <!-- <block v-if="houseDes != null && houseDes">
-        <title-view :title="'房源描述'"></title-view>
-        <house-des :houseDes="houseDes"></house-des>
-      </block> -->
-      
-      <!-- 配套设施 -->
-     <block v-if="peiTaoSheShiList.length > 0">
-        <title-view :title="'配套设施'"></title-view>
-        <pei-tao-she-shi :list="peiTaoSheShiList"></pei-tao-she-shi>
-      </block>
-      
-      <!-- 物业类型+建筑类型+产权年限等 -->
-     <!-- <title-view :title="(topNameItem && topNameItem.buildName) ? topNameItem.buildName : ''"></title-view>
-      <build-des :item="buildDesItem"></build-des> -->
-      
-      <!-- 小区房价走势 -->
-      <!-- <block
-        v-if="priceTrendItem.benYueJunJia && (topNameItem.houseUseageCn=='住宅' || topNameItem.houseUseageCn=='别墅') && caseType == 1">
-        <title-view :title="'小区房价'" :fontSize="'32'"></title-view>
-        <price-trend :item="priceTrendItem"></price-trend>
-      </block> -->
-      
-      <!-- 小区专家 im进入不显示-->
-      <!-- <block v-if="!shareInfoFlag && pageFrom != 'jk'">
-        <title-view :title="'小区专家'" v-if="haveVillageExpert"></title-view>
-        <build-expert :item="buildExpertItem"
-                      @villageExpertListChange="villageExpertListChange"></build-expert>
-      </block> -->
-      
-      <!-- 交通状况 -->
-      <!-- <block v-if="trafficInfoItem.busLine">
-        <title-view :title="'交通状况'"></title-view>
-        <!-- <house-des :houseDes="trafficInfoItem.busLine"></house-des> -->
-        <!-- <traffic-info :item="trafficInfoItem"></traffic-info>
-      </block> -->
-      
-      <!-- 周边配套 -->
-      <!-- <block v-if="nearInfoItem.text">
-        <title-view :title="'周边配套'"></title-view>
-        <near-info :item="nearInfoItem"></near-info>
-      </block> -->
-      
-      <!-- 位置及周边 -->
-      <!-- <view class="position_near" v-if="nearMapItem && nearMapItem.lat && nearMapItem.lng">
-        <title-view :title="'位置及周边'"></title-view>
-        <view class="near_map_item"></view>
-        <near-map-view :item="nearMapItem"></near-map-view>
-      </view> -->
-      
-      <!-- 周边二手房 -->
-      <!-- <block v-if="nearErHouseList.length > 0 && !(showBackIndex && !archiveId)">
-        <view class="f_r_b near_house">
-          <title-view :title="'周边二手房'"></title-view>
-      
-          <view @click="lookMoreHouseList('erHouseList')" class="look_more">查看全部</view>
-        </view>
-      
-        <near-er-house :list="nearErHouseList"></near-er-house>
-      </block> -->
-      
-      <!-- 周边新房 -->
-      <!-- <block v-if="nearNewHouseList.length > 0 && pageFrom != 'jk' && !(showBackIndex && !archiveId && shareInfoFlag)">
-        <view class="f_r_b near_house">
-          <title-view :title="'周边新房'"></title-view>
-      
-          <view @click="lookMoreHouseList('newHouseList')" class="look_more">查看全部</view>
-        </view>
-      
-        <near-new-house :list="nearNewHouseList"></near-new-house>
-      </block> -->
-      
-      <!-- 挂牌经纪人 im进入不显示 -->
-      <!-- <block v-if="!shareInfoFlag && guaPaiAgentList.length > 0 && pageFrom != 'jk'">
-        <title-view :title="'挂牌经纪人'"></title-view>
-      
-        <gua-pai-agent-list :list="guaPaiAgentList"></gua-pai-agent-list>
-      </block>
-      <view class="cont_empty_view"></view> -->
+		<!-- 详情页 - 租赁信息 -->
+		<view class="model">
+		  <block v-if="zulinData.length > 0">
+			 <view class="modelName">租赁信息</view>
+			 <zu-lin-xin-xi :list="zulinData"></zu-lin-xin-xi>
+		   </block>
+		</view>
+
+		<!-- 详情页 - 费用详情 -->
+		<view class="model">
+		  <block v-if="feiyongData.length > 0">
+			 <view class="modelName">费用详情</view>
+			 <fei-yong-xiang-qing :list="feiyongData"></fei-yong-xiang-qing>
+		   </block>
+		</view>
+		
+		<!-- 详情页 - 配套设施 -->
+		<view class="model">
+		  <block v-if="sheshiData.length > 0">
+			 <view class="modelName">配套设施</view>
+			 <pei-tao-she-shi :list="sheshiData"></pei-tao-she-shi>
+		   </block>
+		</view>
     </view>
-
-    <!-- <view v-if="pageFrom != 'im' && pageFrom != 'entrust' && pageFrom != 'entrustDetail'"
-          :class="{ x_bottom_empty : isInponeX }" class="bottom_btn_empty"></view> -->
-    <!-- im进入不显示 -->
-    <!-- <bottom-btn v-if="pageFrom != 'im' && pageFrom != 'entrustDetail' && pageFrom != 'entrust'"
-                :item="bottomAgentInfo" :pageFrom="pageFrom" :archiveId="archiveId"></bottom-btn> -->
-
-    <!-- 消息体 -->
-    <!-- <newMsgView v-if="pageFrom != 'entrust' && pageFrom != 'entrustDetail'"></newMsgView> -->
-
-    <!--撩客tips-->
-    <!-- view @click="goToImDetail" class="liaoke_tips_view" v-if="liaoKeTips.show">
-      <view class="liaoke_tips_cont">
-        <view class="liaoke_tips_text">{{ liaoKeTips.tips }}</view>
-        <image @click.stop="closeLiaoKeTip" class="liaoke_tips_del"
-               src="http://cdn.haofang.net/static/kdbweb/zdzfminiapp/zdzfPlatform/liaoke/tips_del.png"></image>
-      </view>
-      <view class="liaoke_tips_jiao"></view>
-    </view>
-
-    <get-user-info></get-user-info> -->
-
-    <!-- 抢单优化- 未绑定号码的情况 弹窗优惠券弹窗，引导绑定号码，赠送优惠券 -->
-    <!-- <giftCouponView :caseType="caseType == 1?3:4"></giftCouponView> -->
-  </view>
 </template>
 
 <script>
   import houseSwiper from "@/components/house-swiper/house-swiper.vue";
-  // import {GetErHouseDetail} from "../../net/GetErHouseDetail.js";
-  // import {GetBuildPriceTrend} from "../../net/GetBuildPriceTrend.js";
-  // import {NewHouseListItem, ErHouseListItem, Const} from "../../utils/Const.js";
-  // import {CheckHousePrice} from "../../utils/CheckHousePrice";
-  // import topName from "@/pagesHouse/components/erHouseDetail/topName.vue";
-  // import giftCouponView from "@/components/giftCouponView.vue";
-  // import houseDes from "@/pagesHouse/components/erHouseDetail/houseDes.vue";
-  // import houMoneyPayEveryMonth from "@/pagesHouse/components/erHouseDetail/houMoneyPayEveryMonth.vue";
-  // import titleView from "@/pagesHouse/components/erHouseDetail/titleView.vue";
-  // import buildDes from "@/pagesHouse/components/erHouseDetail/buildDes.vue";
-  // import priceTrend from "@/pagesHouse/components/erHouseDetail/priceTrend.vue";
-  // import trafficInfo from "@/pagesHouse/components/erHouseDetail/trafficInfo.vue";
-  // import nearInfo from "@/pagesHouse/components/erHouseDetail/nearInfo.vue";
-  // import nearMapView from "@/pagesHouse/components/erHouseDetail/nearMapView.vue";
-  // import nearErHouse from "@/pagesHouse/components/erHouseDetail/nearErHouse.vue"
-  // import nearNewHouse from "@/pagesHouse/components/erHouseDetail/nearNewHouse.vue";
-  // import buildExpert from "@/pagesHouse/components/erHouseDetail/buildExpert.vue";
-  // import guaPaiAgentList from "@/pagesHouse/components/erHouseDetail/guaPaiAgentList.vue";
-  // import bottomBtn from "@/pagesHouse/components/erHouseDetail/bottomBtn.vue";
-  import peiTaoSheShi from "@/components/house-sheshi/peiTaoSheShi.vue";
-  // import {Notification} from "../../utils/Notification.js";
-  // import {Notify} from "../../utils/Notify.js";
-  // import {hex_md5} from "../../utils/md5.js";
-  // import {UserInfoModel} from "../../model/UserInfoModel.js";
-  // import {HouseDetailModel} from "../../model/HouseDetailModel.js";
-  // import {GpsInfoModel} from "../../model/GpsInfoModel.js";
-  // import {GetAgentInfo} from "@/net/houseApi/GetAgentInfo.js";
-  // import {StimulerBroker} from "@/net/houseApi/GetHouseOtherInfo.js";
-  // import {GetCityMap, ShareVisiting, SaveCclientUserType} from "@/utils/common.js";
-  // import {UpAgentHouseTips, DealLiaoKeDetail} from "@/utils/DealLiaoKeDetail.js";
-  // import {
-  //   InitShareMenu,
-  //   ShareWebToQQSession, ShareWebToWeiBoTimeline,
-  //   ShareWxAppToSession,
-  //   ShareWxWebToTimeline
-  // } from "../../static/app-plus/share";
-  // import {GetBiddBuilderInfo, GetUuErHouseDetail} from "../../net/GetErHouseDetail";
-  // import {GetAdminDeptIdByErpDeptId} from "../../net/houseApi/GetHouseOtherInfo";
-  // import {
-  //   CompStoreAdminDeptIdModel,
-  //   CompStoreArchiveIdModel, CompStoreCityIdModel, CompStoreCompIdModel,
-  //   CompStoreDeptIdModel
-  // } from "../../pagesStore/model/CompStoreModel";
-  // import {GetVRFirstPhoto} from "../../net/houseApi/GetSaleUserListUrl";
-  // import {Config} from "../../utils/config";
+  import peiTaoSheShi from "@/components/house-detail/house-sheshi.vue";
+  import feiYongXiangQing from "@/components/house-detail/house-feiyong.vue";
+  import zuLinXinXi from "@/components/house-detail/house-zulin.vue";
 
   // // 页面带过来的参数
   let paramsConfig = {};
@@ -181,6 +85,12 @@
     shareObj: null,  // 分享初始化后的value
   };
   export default {
+	  components: {
+	    houseSwiper,
+		peiTaoSheShi,
+		feiYongXiangQing,
+		zuLinXinXi
+	  },
     data() {
       return {
         sourceTypeId: 2201, // 数据采集 - lh
@@ -188,7 +98,6 @@
         haveVillageExpert: false,// 是否有小区专家
         loadingReqeust: true,
         swiperList: [{'url':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271','type':'img'},{'url':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271','type':'img'}],
-
         archiveId: "",  // 经纪人id
         cityId: "",
         caseId: "",
@@ -196,8 +105,6 @@
         resource: "",
         houseName: "",
         pageFrom: "list",  //  进入的来源 list代表列表和搜索, im代表聊天进入 entrust 代表委托
-        //  entrustDetail: 委托详情 jk: 物业版本旗舰店
-
         topNameItem: {},
         houseDes: null,
         buildDesItem: {},
@@ -210,7 +117,7 @@
         nearNewHouseList: [],
         guaPaiAgentList: [],
         bottomAgentInfo: {},
-        peiTaoSheShiList: [{'iconUrl':'https://img2.baidu.com/it/u=3987481711,1964085568&fm=253&fmt=auto&app=138&f=JPEG?w=552&h=460','text':'洗衣机'},
+        sheshiData: [{'iconUrl':'https://img2.baidu.com/it/u=3987481711,1964085568&fm=253&fmt=auto&app=138&f=JPEG?w=552&h=460','text':'洗衣机'},
 							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimgservice.suning.cn%2Fuimg1%2Fb2c%2Fimage%2Fy3FUXiUL0DgJI6Rk8e_S9A.jpg_800w_800h_4e&refer=http%3A%2F%2Fimgservice.suning.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665756178&t=50837482977b82e43ed01c5236bb2d8a','text':'冰箱'},
 							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fm.imeitou.com%2Fuploads%2Fallimg%2F200919%2F3-2009191HH1.jpg&refer=http%3A%2F%2Fm.imeitou.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755525&t=c2d69527fdbb39809fc3d2a5e891d188','text':'电视'},
 							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpica.zhimg.com%2F80%2Fv2-83d2a618f8b8306983f5c44e09721940_720w.jpg%3Fsource%3D1940ef5c&refer=http%3A%2F%2Fpica.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755553&t=24a09e9cfbb5029937f64f43e8d73485','text':'空调'},
@@ -219,13 +126,18 @@
 							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Ftupian.yingbinke.vip%2Ffile%2Fupload%2F34%2F6860%2F20211103%2F20306fb927c64d85b1de0c5d3a57d35c.jpg&refer=http%3A%2F%2Ftupian.yingbinke.vip&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755673&t=c897e1896822d1a8b00b19be83bee67e','text':'暖气'},
 							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fp4.itc.cn%2Fimages01%2F20200720%2Fded820458c494756ba583cbb402c7b3b.jpeg&refer=http%3A%2F%2Fp4.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755701&t=0518731d836b8bdab01afb5215205d3e','text':'网络'},
 							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01ef3e5c7cc145a801203d22aed6ba.jpg%403000w_1l_0o_100sh.jpg&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755726&t=e430730afda5b2f3726c9bc747d64e89','text':'微波炉'},
-							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.shuomingshu.cn%2Fwp-content%2Fuploads%2F2020%2F07%2F1421720287122156A27481.jpg&refer=http%3A%2F%2Fwww.shuomingshu.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755741&t=0cac45ac4b273791f859d21cf498a6da','text':'电磁炉'}],  // 配套设施列表
+							{'iconUrl':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.shuomingshu.cn%2Fwp-content%2Fuploads%2F2020%2F07%2F1421720287122156A27481.jpg&refer=http%3A%2F%2Fwww.shuomingshu.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665755741&t=0cac45ac4b273791f859d21cf498a6da','text':'电磁炉'}],
+		feiyongData: [{'title':'付款方式','value':'季付'},{'title':'租金','value':'3590元/月'},{'title':'押金','value':'3590元/月'},{'title':'服务费','value':'0元'},
+					  {'title':'中介费','value':'0元'},{'title':'','value':''},{'title':'取暖费','value':'0元'},{'title':'无线费','value':'0元'},
+					  {'title':'物业费','value':'0元'},{'title':'水电费','value':'0元'}],
+		zulinData: [{'house':'A室','sex':'男','size':'15m²','money':'3590元','status':'已出租'},
+					{'house':'B室','sex':'女','size':'12m²','money':'2310元','status':'已出租'},
+					{'house':'C室','sex':'-','size':'10m²','money':'-','status':'未出租'}],
 
         housePhone: "", // 按月付的电话
         openHuabei: "",  // 是否开通花呗 0:未开通，1:已开通
 
         showBackIndex: false,
-        // isInponeX: this.CheckIsIphoneX.init(),
         shareInfoFlag: false,  // 是否显示 例如: pageFrom = personal
         activity: 0,  // 具体干什么的暂时还不清楚(感觉像是判断是否是真房源的) B端分享会带这个参数 等于1时会调用B段分享接口
 
@@ -236,27 +148,7 @@
           show: false
         },
       };
-    },
-
-    components: {
-      // giftCouponView,
-      houseSwiper,
-      // topName,
-      // houseDes,
-      // houMoneyPayEveryMonth,
-      // titleView,
-      // buildDes,
-      // priceTrend,
-      // trafficInfo,
-      // nearInfo,
-      // nearMapView,
-      // nearErHouse,
-      // nearNewHouse,
-      // buildExpert,
-      // guaPaiAgentList,
-      // bottomBtn,
-      peiTaoSheShi
-    },
+    }
 }
   //   onShareAppMessage() {
   //     let that = this;
@@ -1357,112 +1249,3 @@
   //   },
   // }
 </script>
-
-<style>
-  page {
-    background: #FFFFFF;
-  }
-
-  .er_house_detail {
-    overflow-x: hidden;
-  }
-
-  .near_map_item {
-    height: 25upx;
-  }
-
-  .position_near {
-    box-shadow: 0upx 9upx 32upx -10upx rgba(20, 20, 20, 0.07);
-    margin-bottom: 10upx;
-  }
-
-  .near_house {
-    margin-bottom: 20upx;
-  }
-
-  .look_more {
-    color: #7A8190;
-    font-size: 24upx;
-    flex-shrink: 0;
-    position: relative;
-    line-height: 54upx;
-    margin: 57upx 0 6upx;
-    margin-right: 40upx;
-    padding-right: 30upx;
-  }
-
-  .look_more::after {
-    position: absolute;
-    content: '';
-    width: 15upx;
-    height: 24upx;
-    top: 50%;
-    transform: translateY(-50%);
-    margin: auto;
-    flex-shrink: 0;
-    right: 0;
-    background: url(http://cdn.haofang.net/static/uuminiapp/index/l-jtt.png) center center no-repeat;
-    background-size: 100% 100%;
-  }
-
-  /* #ifdef MP-ALIPAY */
-  .look_more::after {
-    top: 45%
-  }
-
-  /* #endif */
-  .bottom_btn_empty {
-    height: 140upx;
-  }
-
-  .x_bottom_empty {
-    height: 180upx !important;
-  }
-
-  .cont_empty_view {
-    height: 40upx;
-  }
-
-  /*撩客弹窗*/
-  .liaoke_tips_view {
-    position: fixed;
-    bottom: 140upx;
-    left: 20upx;
-    z-index: 99999;
-    background: rgba(0, 0, 0, 0.5);
-    width: 460upx;
-    padding: 20upx 30upx;
-    box-sizing: border-box;
-    border-radius: 10upx;
-  }
-
-  .liaoke_tips_cont {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .liaoke_tips_text {
-    font-size: 29upx;
-    color: #ffffff;
-    text-align: left;
-  }
-
-  .liaoke_tips_del {
-    width: 28upx;
-    height: 28upx;
-    flex-shrink: 0;
-    margin: 7upx 0 auto 10upx;
-  }
-
-  .liaoke_tips_jiao {
-    width: 0;
-    height: 0;
-    border-left: 12upx solid transparent;
-    border-right: 12upx solid transparent;
-    border-top: 20upx solid rgba(0, 0, 0, 0.5);
-    position: absolute;
-    bottom: -20upx;
-    left: 56upx;
-  }
-</style>
