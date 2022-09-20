@@ -37,6 +37,26 @@
     <view class="er_house_detail">
 		<!-- 详情页 - 轮播图 -->
 		<house-swiper :list="swiperList"></house-swiper>
+		
+		<!-- 详情页 - 主板 -->
+		<view class="model">
+		  <block v-if="detailData != null">
+			 <view class="description">
+				<view class="position">
+					<view class="community">{{detailData.community}}</view>
+					<view class="whoCommunity">{{detailData.whoCommunity}}</view>
+					<view class="bedroom">{{detailData.bedroom}}</view>
+					<view class=""></view>
+				</view>
+				<view class="price">
+					<view class="modelName">月租金</view>
+					<view class="price"></view>
+					<view class=""></view>
+				</view>
+			 </view>
+			 
+		   </block>
+		</view>
 
 		<!-- 详情页 - 租赁信息 -->
 		<view class="model">
@@ -70,27 +90,33 @@
   import feiYongXiangQing from "@/components/house-detail/house-feiyong.vue";
   import zuLinXinXi from "@/components/house-detail/house-zulin.vue";
 
-  // // 页面带过来的参数
-  let paramsConfig = {};
-  let shareAppMessageMap = {
-    title: "",
-    des: ""
-  };
-  let privateData = {
-    DealLiaoKeDetail: null,
-    viewStopTime: 60,
-    bubbleTime: 300,
-    isAboutTake: false,
-    scanEnter: false,  // 是否是扫码进入
-    shareObj: null,  // 分享初始化后的value
-  };
+  // 页面带过来的参数
+  let detailData = {
+    houseImg: '',
+    community: '',
+    whoCommunity: '',
+    orientation: '',
+    bedroom: '',  
+    mode: '',  
+    matche: '',  
+    size: '',  
+    floor: '',  
+    position: '',  
+    price: '',  
+    region: '',  
+    subway: ''
+  }
   export default {
-	  components: {
+	components: {
 	    houseSwiper,
 		peiTaoSheShi,
 		feiYongXiangQing,
 		zuLinXinXi
-	  },
+	},
+	// 页面传值
+	onLoad(options) {
+		this.detailData = JSON.stringify(options);
+	},
     data() {
       return {
         sourceTypeId: 2201, // 数据采集 - lh

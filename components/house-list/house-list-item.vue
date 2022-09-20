@@ -236,19 +236,8 @@
         methods: {
         	homeDetail(item) {
 				console.log("----> " + JSON.stringify(item))
-                let cityId = "北京" || "";
-                let caseId = item.houseId || "";
-                let caseType = item.caseType || "";
-                let resource = item.reSource || "1";
-                let houseName = item.houseName || "";
-				
-				let url = "./homeDetail?cityId="+cityId
-					+"&caseId="+caseId
-				    +"&caseType="+caseType+"&resource="+resource+"&houseName="+houseName
-					+ "&pageFrom=" + item.pageFrom + "&archiveId=" + (item.archiveId || "")
-					+ "&compId=" + (item.compId || "") + "&buildId=" + (item.buildId || "")
                 uni.navigateTo({
-                    url: url
+                    url: `./homeDetail?detail=${encodeURIComponent(JSON.stringify(item))}`
                 });
         	}
         },

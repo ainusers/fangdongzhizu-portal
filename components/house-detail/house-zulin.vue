@@ -41,7 +41,7 @@
 		data() {
 			return {
 				iconUrl: "",   // 标签图片路径
-				tex: "",  	// 标签的中文名
+				tex: "",  	   // 标签的中文名
 			}
 		},
 		props: {
