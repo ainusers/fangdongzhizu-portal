@@ -1,4 +1,4 @@
-<style>
+<style scope lang="scss">
   page {
     background: #FFFFFF;
   }
@@ -32,6 +32,46 @@
     margin-right: 40upx;
     padding-right: 30upx;
   }
+  .position {
+	  display: flex;
+	  padding: 8px 0px 8px 0px;
+	  font-weight: bolder;
+	  font-size: 16px;
+	  .community{
+		  padding-left: 8px
+	  }
+	  .whoCommunity{
+	  		  padding-left: 8px
+	  }
+	  .matche{
+	  		  padding-left: 8px
+	  }
+	  .bedroom{
+	  		  padding-left: 8px
+	  }
+  }
+  .money{
+	  display: flex;
+	  font-weight: bolder;
+	  font-size: 16px;
+	  padding: 0px 0px 8px 0px;
+	  justify-content: space-between;
+	  .pay{
+	  	  padding-left: 8px;
+		  display: flex;
+	  }
+	  .price{
+		  color: red;
+		  padding-left: 8px;
+	  }
+	  .way{
+	  	  padding-left: 8px;
+	  }
+	  .datetime{
+		  margin-right: 8px
+	  }
+  }
+  
 </style>
 <template>
     <view class="er_house_detail">
@@ -40,21 +80,23 @@
 		
 		<!-- 详情页 - 主板 -->
 		<view class="model">
-		  <block v-if="detailData != null">
+		    <block v-if="detailData != null">
 			 <view class="description">
 				<view class="position">
 					<view class="community">{{detailData.community}}</view>
 					<view class="whoCommunity">{{detailData.whoCommunity}}</view>
-					<view class="bedroom">{{detailData.bedroom}}</view>
-					<view class=""></view>
+					<view class="matche">{{detailData.matche}}</view>
+					<view class="bedroom"> - {{detailData.bedroom}}</view>
 				</view>
-				<view class="price">
-					<view class="modelName">月租金</view>
-					<view class="price"></view>
-					<view class=""></view>
+				<view class="money">
+					<view class="pay">
+						<view class="fix">月租金</view>
+						<view class="price">{{detailData.price}}元/月</view>
+						<view class="way">({{detailData.way}})</view>
+					</view>
+					<view class="datetime">{{detailData.datetime}}</view>
 				</view>
 			 </view>
-			 
 		   </block>
 		</view>
 
@@ -104,7 +146,9 @@
     position: '',  
     price: '',  
     region: '',  
-    subway: ''
+    subway: '',
+	way: '',
+	datetime: ''
   }
   export default {
 	components: {
@@ -115,7 +159,7 @@
 	},
 	// 页面传值
 	onLoad(options) {
-		this.detailData = JSON.stringify(options);
+		this.detailData = JSON.parse(options.detail);
 	},
     data() {
       return {
