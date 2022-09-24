@@ -3,7 +3,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		box-sizing: border-box;
-		margin-top: 30upx;
+		margin-top: 15upx;
 	}
 	.pei_item{
 		width: 20%;

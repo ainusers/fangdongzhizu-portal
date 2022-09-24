@@ -10,7 +10,8 @@
 	  border: 1px solid #F5F5F5
   }
   .modelName{
-	  padding-left: 8px;
+	  padding: 5px 5px 0px 5px;
+	  font-weight: bolder;
   }
   .near_map_item {
     height: 25upx;
@@ -68,10 +69,30 @@
 	  	  padding-left: 8px;
 	  }
 	  .datetime{
-		  margin-right: 8px
+		  margin-right: 8px;
 	  }
   }
-  
+  .detail{
+	  display: flex;
+	  justify-content: space-around;
+	  margin: 10px 8px 10px 8px;
+	  .size{
+		  text-align: center;
+		  padding-top: 5px;
+
+	  }
+	  .heating{
+		  text-align: center;
+		  padding-top: 5px;
+	  }
+	  .elevator{
+		  text-align: center;
+		  padding-top: 5px;
+	  }
+	  .floor{
+		  text-align: center;
+	  }
+  }
 </style>
 <template>
     <view class="er_house_detail">
@@ -91,14 +112,32 @@
 				<view class="money">
 					<view class="pay">
 						<view class="fix">月租金</view>
-						<view class="price">{{detailData.price}}元/月</view>
+						<view class="price">{{detailData.price}}</view>元/月
 						<view class="way">({{detailData.way}})</view>
 					</view>
 					<view class="datetime">{{detailData.datetime}}</view>
 				</view>
 			 </view>
+			 <view class="detail">
+				<view class="chaoxiang">
+					<view  class="orientation">朝向 - {{detailData.orientation}}</view>
+					<view  class="size">{{detailData.size}}</view>
+				</view>
+				<image style="width:5px;height: 40px;" src="/static/home/detail/vertical.png"></image>
+				<view class="pattern">
+					<view  class="layout">{{detailData.layout}}</view>
+					<view  class="heating">{{detailData.heating}}</view>
+				</view>
+				<image style="width:5px;height: 40px;" src="/static/home/detail/vertical.png"></image>
+				<view class="height">
+					<view  class="floor">{{detailData.floor}}</view>
+					<view  class="elevator">{{detailData.elevator}}</view>
+				</view>
+			 </view>
 		   </block>
 		</view>
+		
+		
 
 		<!-- 详情页 - 租赁信息 -->
 		<view class="model">
