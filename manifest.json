@@ -38,7 +38,9 @@
             },
             "ios" : {},
             /* ios打包配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "geolocation" : {}
+            }
         }
     },
     /* SDK配置 */
@@ -52,5 +54,14 @@
         },
         "usingComponents" : true
     },
-    "vueVersion" : "2"
+    "vueVersion" : "2",
+    "h5" : {
+        "sdkConfigs" : {
+            "maps" : {
+                "qqmap" : {
+                    "key" : "4L2BZ-KAGCU-MUOVV-BGFKX-B6SKT-RCFLE"
+                }
+            }
+        }
+    }
 }

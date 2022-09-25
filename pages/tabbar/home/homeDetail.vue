@@ -93,6 +93,27 @@
 		  text-align: center;
 	  }
   }
+  .final{
+	  display: flex;
+	  justify-content: space-between;
+	  .report{
+		  padding: 8px
+	  }
+	  .collect{
+		  padding: 8px
+	  }
+	  .left{
+		  display: flex;
+	  }
+	  .contact{
+		  width: 60%;
+		  padding: 0px 4px 4px 0px;
+	  }
+	  .target{
+		  padding-top: 8px;
+		  font-size: 14px;
+	  }
+  }
 </style>
 <template>
     <view class="er_house_detail">
@@ -137,8 +158,6 @@
 		   </block>
 		</view>
 		
-		
-
 		<!-- 详情页 - 租赁信息 -->
 		<view class="model">
 		  <block v-if="zulinData.length > 0">
@@ -155,12 +174,37 @@
 		   </block>
 		</view>
 		
+		<!-- 详情页 - 地理位置 -->
+		<view class="model">
+		  <block v-if="diliData.length > 0">
+			 <view class="modelName">地理位置</view>
+			 <di-li-wei-zhi :list="diliData"></di-li-wei-zhi>
+		   </block>
+		</view>
+		
 		<!-- 详情页 - 配套设施 -->
 		<view class="model">
 		  <block v-if="sheshiData.length > 0">
 			 <view class="modelName">配套设施</view>
 			 <pei-tao-she-shi :list="sheshiData"></pei-tao-she-shi>
 		   </block>
+		</view>
+		
+		<!-- 详情页 - 立即沟通 -->
+		<view class="final">
+			<view class="left">
+				<view class="collect">
+					<u-icon name="bell-fill" size="50"></u-icon>
+				</view>
+				<view class="target">举报</view>
+				<view class="report">
+					<u-icon name="heart-fill" size="50"></u-icon>
+				</view>
+				<view class="target">收藏</view>
+			</view>
+			<view class="contact">
+				<u-button shape="square">立即沟通</u-button>
+			</view>
 		</view>
     </view>
 </template>
@@ -170,6 +214,7 @@
   import peiTaoSheShi from "@/components/house-detail/house-sheshi.vue";
   import feiYongXiangQing from "@/components/house-detail/house-feiyong.vue";
   import zuLinXinXi from "@/components/house-detail/house-zulin.vue";
+  import diLiWeiZhi from "@/components/house-detail/house-dili.vue";
 
   // 页面带过来的参数
   let detailData = {
@@ -194,7 +239,8 @@
 	    houseSwiper,
 		peiTaoSheShi,
 		feiYongXiangQing,
-		zuLinXinXi
+		zuLinXinXi,
+		diLiWeiZhi
 	},
 	// 页面传值
 	onLoad(options) {
@@ -242,6 +288,7 @@
 		zulinData: [{'house':'A室','sex':'男','size':'15m²','money':'3590元','status':'已出租'},
 					{'house':'B室','sex':'女','size':'12m²','money':'2310元','status':'已出租'},
 					{'house':'C室','sex':'-','size':'10m²','money':'-','status':'未出租'}],
+		diliData: [{}],
 
         housePhone: "", // 按月付的电话
         openHuabei: "",  // 是否开通花呗 0:未开通，1:已开通
