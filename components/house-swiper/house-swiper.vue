@@ -35,7 +35,8 @@
 		<swiper @change="swiperChange" class="swiper_box" :current="swiperIndex">
 			<block v-for="(item, index) of list" :key="index">
 				<swiper-item class="swiper_item">
-					<image mode="aspectFill" class="swiper_img" :src="item.url"></image>
+					<image @tap.stop="previewImage(item.url, item.urls)"
+					mode="aspectFill" class="swiper_img" :src="item.url"></image>
 				</swiper-item>
 			</block>
 		</swiper>
@@ -94,7 +95,16 @@
                 });
                 this.imgNum = imgNum;
                 this.otherNum = otherNum;
-            }
+            },
+			// 预览图片
+			previewImage(url, urls) {
+				console.log("-----url-----> " + url)
+				console.log("-----urls-----> " + urls)
+				uni.previewImage({
+					current: url,
+					urls: urls
+				})
+			},
         }
 	}
 </script>

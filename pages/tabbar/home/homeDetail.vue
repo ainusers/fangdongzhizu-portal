@@ -97,10 +97,10 @@
 	  display: flex;
 	  justify-content: space-between;
 	  .report{
-		  padding: 8px
+		  padding: 8px 0px 8px 10px;
 	  }
 	  .collect{
-		  padding: 8px
+		  padding: 8px 0px 8px 10px;
 	  }
 	  .left{
 		  display: flex;
@@ -252,7 +252,24 @@
         shareOption: {},
         haveVillageExpert: false,// 是否有小区专家
         loadingReqeust: true,
-        swiperList: [{'url':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271','type':'img'},{'url':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271','type':'img'}],
+        swiperList: [
+			{
+				'url':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271',
+				'type':'img',
+				'urls':[
+					'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271',
+					'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.2ge.cn%2Fgroup1%2FM00%2F02%2FCD%2FwKgBPFts7U2AL2nJAANbVDfzFAE955.jpg&refer=http%3A%2F%2Fimage.2ge.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1667388805&t=52cc1fc3e6d2a0642d25a3de480f716f'
+				]
+			},
+			{
+				'url':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.2ge.cn%2Fgroup1%2FM00%2F02%2FCD%2FwKgBPFts7U2AL2nJAANbVDfzFAE955.jpg&refer=http%3A%2F%2Fimage.2ge.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1667388805&t=52cc1fc3e6d2a0642d25a3de480f716f',
+				'type':'img',
+				'urls':[
+					'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271',
+					'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.2ge.cn%2Fgroup1%2FM00%2F02%2FCD%2FwKgBPFts7U2AL2nJAANbVDfzFAE955.jpg&refer=http%3A%2F%2Fimage.2ge.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1667388805&t=52cc1fc3e6d2a0642d25a3de480f716f'
+				]
+			}
+		],
         archiveId: "",  // 经纪人id
         cityId: "",
         caseId: "",
@@ -528,7 +545,7 @@
   //     privateData.shareObj.show();
   //   },
 
-  //   methods: {
+  // methods: {
   //     // 小区专家数量change
   //     villageExpertListChange(list) {
   //       if (!list || list.length === 0) {
