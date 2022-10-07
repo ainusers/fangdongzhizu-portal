@@ -3,15 +3,15 @@
 		<image class="logo" :class="{'active':active}" src="../../../static/logo.png"  mode="aspectFit"></image>
 		<view class="tabbar-box-wrap">
 			<view class="tabbar-box">
-				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release')">
+				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/tuwen')">
 					<image class="box-image" src="../../../static/publish/release.png" mode="aspectFit"></image>
 					<text class="explain">发布图文</text>
 				</view>
-				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video')">
+				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/tuwen')">
 					<image class="box-image" src="../../../static/publish/video.png" mode="aspectFit"></image>
 					<text class="explain">发布视频</text>
 				</view>
-				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar-3-detial/tabbar-3-qa/tabbar-3-qa')">
+				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/tuwen')">
 					<image class="box-image" src="../../../static/publish/qa.png" mode="aspectFit"></image>
 					<text class="explain">发布房源</text>
 				</view>
@@ -30,7 +30,7 @@ export default {
 	onLoad() {},
 	onShow() {
 		// setTimeout(() => {
-		this.active = true;
+			this.active = true;
 		// }, 500);
 	},
 	onHide() {
@@ -38,6 +38,7 @@ export default {
 	},
 	methods: {
 		goToPage(url) {
+			console.log(url)
 			if (!url) return;
 			uni.navigateTo({
 				url
@@ -81,7 +82,7 @@ export default {
 .tabbar-box-wrap {
 	position: absolute;
 	width: 100%;
-	padding: 50upx;
+	padding: 26upx;
 	box-sizing: border-box;
 	bottom: 0;
 	left: 0;

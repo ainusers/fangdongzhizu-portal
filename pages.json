@@ -7,208 +7,188 @@
 		{
 			"path": "pages/auth/login",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
+				"navigationBarTitleText": "登录页",
 				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,
-				"navigationStyle": "custom",
+				"backgroundTextStyle":"light",
 				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
+					"scrollIndicator": "none"
 				}
 			}
 		},
 		{
 			"path": "pages/tabbar/home/homeDetail",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom",
-				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
-				}
+				"transparentTitle":  "always"
+				// "navigationBarTitleText": "房屋详情页",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa",
+				// "enablePullDownRefresh": false,
+				// "backgroundTextStyle":"light",
+				// "app-plus": {
+				// 	"scrollIndicator": "none"
+				// }
 			}
 		},
 		{
 			"path": "pages/tabbar/home/chooseCity",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
+				"navigationBarTitleText": "选择城市",
 				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,
-				"navigationStyle": "custom",
+				"backgroundTextStyle":"light",
 				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
+					"scrollIndicator": "none"
 				}
 			}
 		},
 		{
 			"path": "pages/auth/forget",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
+				"navigationBarTitleText": "忘记",
 				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,
-				"navigationStyle": "custom",
+				"backgroundTextStyle":"light",
 				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
+					"scrollIndicator": "none"
 				}
 			}
 		},
 		{
 			"path": "pages/auth/register",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
+				"navigationBarTitleText": "注册",
 				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,
-				"navigationStyle": "custom",
+				"backgroundTextStyle":"light",
 				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
+					"scrollIndicator": "none"
 				}
 			}
 		},
 		{
 			"path": "pages/tabbar/home/home",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom",
-				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
-				}
+				"transparentTitle":  "always"
+				// "navigationBarTitleText": "主页",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa",
+				// "enablePullDownRefresh": false,
+				// "backgroundTextStyle":"light",
+				// "app-plus": {
+				// 	"scrollIndicator": "none"
+				// }
 			}
 		},
 		{
 			"path": "pages/tabbar/community/community",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": true,
-				"navigationStyle": "custom",
-				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
-				}
+				"transparentTitle":  "always"
+				// "navigationBarTitleText": "社区",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa",
+				// "enablePullDownRefresh": false,
+				// "backgroundTextStyle":"light",
+				// "app-plus": {
+				// 	"scrollIndicator": "none"
+				// }
 			}
 		},
 		{
 			"path": "pages/tabbar/community/comment",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": true,
-				"navigationStyle": "custom",
-				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
-				}
+				"transparentTitle":  "always"
+				// "navigationBarTitleText": "聊天",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa",
+				// "enablePullDownRefresh": false,
+				// "backgroundTextStyle":"light",
+				// "app-plus": {
+				// 	"scrollIndicator": "none"
+				// }
 			}
 		},
 		{
 			"path": "pages/tabbar/community/commentDetail",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": true,
-				"navigationStyle": "custom",
-				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
-				}
+				"transparentTitle":  "always"
+				// "navigationBarTitleText": "评论详情页",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa",
+				// "enablePullDownRefresh": false,
+				// "backgroundTextStyle":"light",
+				// "app-plus": {
+				// 	"scrollIndicator": "none"
+				// }
 			}
 		},
 		{
 			"path": "pages/tabbar/publish/publish",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
+				"navigationBarTitleText": "发布",
 				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,
-				"navigationStyle": "custom",
+				"backgroundTextStyle":"light",
 				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
+					"scrollIndicator": "none"
 				}
 			}
 		},
 		{
 			"path": "pages/tabbar/news/news",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
+				"navigationBarTitleText": "消息",
 				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,
-				"navigationStyle": "custom",
+				"backgroundTextStyle":"light",
 				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
+					"scrollIndicator": "none"
 				}
 			}
 		},
 		{
 			"path": "pages/tabbar/me/me",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom",
-				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
-				}
+				"transparentTitle":  "always"
+				// "navigationBarTitleText": "我的",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa",
+				// "enablePullDownRefresh": false,
+				// "backgroundTextStyle":"light",
+				// "app-plus": {
+				// 	"scrollIndicator": "none"
+				// }
 			}
 		},
 		{
 			"path": "pages/tabbar/me/user",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
+				"navigationBarTitleText": "个人信息",
 				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,
-				"navigationStyle": "custom",
+				"backgroundTextStyle":"light",
 				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
+					"scrollIndicator": "none"
 				}
 			}
 		},
 		{
-			"path": "pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release",
+			"path": "pages/tabbar/publish/choice/tuwen",
 			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
+				"navigationBarTitleText": "发布图文",
 				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,
-				"navigationStyle": "custom",
+				"backgroundTextStyle":"light",
 				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
-				}
-			}
-		},
-		{
-			"path": "pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video",
-			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom",
-				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
-				}
-			}
-		},
-		{
-			"path": "pages/tabbar-3-detial/tabbar-3-qa/tabbar-3-qa",
-			"style": {
-				"navigationBarTitleText": "房东直租 ~ 面对面交易，拒绝中间商",
-				"backgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom",
-				"app-plus": {
-					"scrollIndicator": "none" //关闭滚动条效果
+					"scrollIndicator": "none"
 				}
 			}
 		}
@@ -218,7 +198,8 @@
 		"backgroundColor": "#eee",
 		"borderStyle": "#ffffff",
 		"selectedColor": "#000000",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/tabbar/home/home",
 				"iconPath": "static/tabbar/home.png",
 				"selectedIconPath": "static/tabbar/homeactive.png",
@@ -230,21 +211,12 @@
 				"selectedIconPath": "static/tabbar/communityactive.png",
 				"text": "社区"
 			},
-			//#ifdef MP-WEIXIN
 			{
 				"pagePath": "pages/tabbar/publish/publish",
 				"iconPath": "static/tabbar/publish.png",
 				"selectedIconPath": "static/tabbar/publishactive.png",
 				"text": "发布"
 			},
-			//#endif
-			//#ifndef MP-WEIXIN
-			{
-				"pagePath": "pages/tabbar/publish/publish",
-				"iconPath": "static/tabbar/publish.png",
-				"selectedIconPath": "static/tabbar/publishactive.png"
-			},
-			//#endif
 			{
 				"pagePath": "pages/tabbar/news/news",
 				"iconPath": "static/tabbar/news.png",
