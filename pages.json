@@ -7,14 +7,15 @@
 		{
 			"path": "pages/auth/login",
 			"style": {
-				"navigationBarTitleText": "登录页",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#fafafa",
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle":"light",
-				"app-plus": {
-					"scrollIndicator": "none"
-				}
+				"transparentTitle":  "always"
+				// "navigationBarTitleText": "登录页",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa",
+				// "enablePullDownRefresh": false,
+				// "backgroundTextStyle":"light",
+				// "app-plus": {
+				// 	"scrollIndicator": "none"
+				// }
 			}
 		},
 		{
@@ -47,27 +48,29 @@
 		{
 			"path": "pages/auth/forget",
 			"style": {
-				"navigationBarTitleText": "忘记",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#fafafa",
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle":"light",
-				"app-plus": {
-					"scrollIndicator": "none"
-				}
+				"transparentTitle":  "always"
+				// "navigationBarTitleText": "忘记",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa",
+				// "enablePullDownRefresh": false,
+				// "backgroundTextStyle":"light",
+				// "app-plus": {
+				// 	"scrollIndicator": "none"
+				// }
 			}
 		},
 		{
 			"path": "pages/auth/register",
 			"style": {
-				"navigationBarTitleText": "注册",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#fafafa",
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle":"light",
-				"app-plus": {
-					"scrollIndicator": "none"
-				}
+				"transparentTitle":  "always"
+				// "navigationBarTitleText": "注册",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa",
+				// "enablePullDownRefresh": false,
+				// "backgroundTextStyle":"light",
+				// "app-plus": {
+				// 	"scrollIndicator": "none"
+				// }
 			}
 		},
 		{

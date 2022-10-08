@@ -1,3 +1,116 @@
+<style scoped>
+	.uni-uploader-head {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.uni-uploader__files {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+	.uni-uploader__input-box{
+		position: relative;
+		margin: 4px;
+		width: 99px;
+		height: 99px;
+		border: 1px solid #D9D9D9;
+	}
+	.uni-uploader__input-box {
+		position: relative;
+		margin:10upx;
+		width: 208upx;
+		height: 208upx;
+		border: 2upx solid #D9D9D9;
+	}
+	.uni-uploader__input-box:before,
+	.uni-uploader__input-box:after {
+		content: " ";
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		-webkit-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		background-color: #D9D9D9;
+	}
+	.uni-uploader__input-box:before {
+		width: 4upx;
+		height: 79upx;
+	}
+	.uni-uploader__input-box:after {
+		width: 79upx;
+		height: 4upx;
+	}
+	.uni-uploader__input-box:active {
+		border-color: #999999;
+	}
+	.uni-uploader__input-box:active:before,
+	.uni-uploader__input-box:active:after {
+		background-color: #999999;
+	}
+	.uni-uploader__input {
+		position: absolute;
+		z-index: 1;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+	}
+	.uni-uploader__file {
+	    margin: 4px;
+	    width: 100px;
+	    height: 100px;
+	}
+	uni-image{
+		width: 100px;
+		height: 100px;
+	}
+	.footer {
+		margin-top: 20upx;
+	}
+	
+	.cell-pd {
+		padding: 20upx 30upx;
+	}
+	textarea {
+		border-bottom: 2px solid #fafafa;
+		height: 130px;
+		width: 100%;
+	}
+	.uni-textarea {
+		width: 100%;
+		padding: 10upx 15upx;
+		line-height: 1.6;
+		height: 130px;
+	}
+	.uni-list::before {
+		height: 0;
+	}
+	.uni-list:after {
+		height: 0;
+	}
+	.list-pd {
+		margin-top: 0;
+	}
+	.close-view{
+	    text-align: center;
+		line-height:30upx;
+		height: 35upx;
+		width: 35upx;
+		background: #ef5350;
+		color: #FFFFFF;
+		position: absolute;
+		top: 1upx;
+		right: 1upx;
+		font-size: 35upx;
+		border-radius: 8upx;
+	}
+	.page {
+		width: 100%;
+		height: 100%;
+	}
+</style>
 <template>
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
 		<form>
@@ -138,7 +251,6 @@
 					});
 				} )
 			},
-			
 			close(e){
 			    this.imageList.splice(e,1);
 			},
@@ -155,7 +267,6 @@
 					sizeType: sizeType[this.sizeTypeIndex],
 					count: this.imageList.length + this.count[this.countIndex] > 9 ? 9 - this.imageList.length : this.count[this.countIndex],
 					success: (res) => {
-
 						// #ifdef APP-PLUS
 						//提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
 						var compressd = cp_images=> {
@@ -209,51 +320,3 @@
 		}
 	}
 </script>
-
-<style scoped>
-	
-	.footer {
-		margin-top: 80upx;
-	}
-	
-	.cell-pd {
-		padding: 20upx 30upx;
-	}
-	textarea {
-		border-bottom: 2px solid #fafafa;
-		height: 100px;
-		width: 100%;
-	}
-	.uni-textarea {
-		width: 100%;
-		padding: 10upx 15upx;
-		line-height: 1.6;
-		height: 150upx;
-	}
-	.uni-list::before {
-		height: 0;
-	}
-	.uni-list:after {
-		height: 0;
-	}
-	.list-pd {
-		margin-top: 0;
-	}
-	.close-view{
-	    text-align: center;
-		line-height:30upx;
-		height: 35upx;
-		width: 35upx;
-		background: #ef5350;
-		color: #FFFFFF;
-		position: absolute;
-		top: 1upx;
-		right: 1upx;
-		font-size: 35upx;
-		border-radius: 8upx;
-	}
-	.page {
-		width: 100%;
-		height: 100%;
-	}
-</style>

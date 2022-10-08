@@ -4,9 +4,6 @@
 <template>
 	<view class="news">
 		<view class="content" @touchstart="hideDrawer">
-			<view class="title">
-				<view class="group-name">万人讨论组 (635)</view> 
-			</view>
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory" upper-threshold="50">
 				<!-- 加载历史数据的滚动动画 -->
 				<view class="loading">

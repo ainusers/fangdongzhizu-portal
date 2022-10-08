@@ -53,6 +53,9 @@ page{
 		  content: "\e675";
 		}
 	}
+.uni-page-head{
+	border-bottom: #9c1712;
+}
 .hidden{
 	display: none !important;
 }
@@ -259,22 +262,10 @@ page{
 }
 .content{
 	width: 100%;
-	.title{
-		height: 60px;
-		width: 100%;
-		border-bottom:1px solid #ddd;
-		.group-name{
-			text-align: center;
-			padding-top: 30px;
-			font-weight: 555;
-			font-size: 17px;
-		}
-	}
 	.msg-list{
 		width: 96%;
 		padding: 0 2%;
 		position: absolute;
-		top: 60px;
 		bottom: 100upx;
 		.loading{
 			//loading动画

@@ -12,7 +12,7 @@
 	    border-bottom-left-radius: 22px;
 	    border-bottom-right-radius: 22px;
 	    position: absolute;
-	    height: 180rpx;
+	    height: 300rpx;
 	    width: 100%;
 	  }
 	}
@@ -22,11 +22,11 @@
 	  float: right;
 	}
 	.user-card {
-	  height: 150rpx;
+	  height: 200rpx;
 	  padding: 0 15px;
 	  .card {
 	    position: relative;
-	    bottom: 72px;
+	    bottom: 40px;
 	    height: 250rpx;
 	    background-color: #ffffff;
 	    border-radius: 5px;
