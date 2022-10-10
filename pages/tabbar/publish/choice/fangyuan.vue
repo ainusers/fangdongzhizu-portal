@@ -1,4 +1,13 @@
 <style scoped>
+	.region_new_title{
+		font-size:36upx;
+		font-weight:600;
+		color:#101d36;
+		margin-top:20upx;
+		padding-left: 35upx;
+		box-sizing: border-box;
+		margin-bottom: -10upx;
+	}
 	.uni-uploader-head {
 		display: flex;
 		flex-direction: row;
@@ -78,12 +87,6 @@
 		height: 130px;
 		width: 100%;
 	}
-	.uni-textarea {
-		width: 100%;
-		padding: 10upx 15upx;
-		line-height: 1.6;
-		height: 130px;
-	}
 	.uni-list::before {
 		height: 0;
 	}
@@ -114,9 +117,8 @@
 <template>
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
 		<form>
-			<view class="uni-textarea">
-				<textarea placeholder="说点什么吧..." v-model="input_content" />
-			</view>
+			<!-- 资质上传 -->
+			<view class="region_new_title">资质上传</view>
 			<view class="uni-list list-pd">
 				<view class="uni-list-cell cell-pd">
 					<view class="uni-uploader">
@@ -140,6 +142,37 @@
 					</view>
 				</view>
 			</view>
+			
+			<!-- 房源照片 -->
+			<view class="region_new_title">房源照片</view>
+			<view class="uni-list list-pd">
+				<view class="uni-list-cell cell-pd">
+					<view class="uni-uploader">
+						<view class="uni-uploader-head">
+							<view class="uni-uploader-title"></view>
+							<view class="uni-uploader-info">{{imageList.length}}/9</view>
+						</view>
+						<view class="uni-uploader-body">
+							<view class="uni-uploader__files">
+								<block v-for="(image,index) in imageList" :key="index">
+									<view class="uni-uploader__file" style="position: relative;">
+										<image class="uni-uploader__img" mode="aspectFill" :src="image" :data-src="image" @tap="previewImage"></image>
+										<view class="close-view" @click="close(index)">×</view>
+									</view>
+								</block>
+								<view class="uni-uploader__input-box" v-show="imageList.length < 9">
+									<view class="uni-uploader__input" @tap="chooseImage"></view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			
+			<!-- 房屋名称 -->
+			<view class="region_new_title">房屋名称</view>
+			
+			
 			
 			<view class="footer">
 				<button type="default" class="feedback-submit" @click="publish">发布</button>

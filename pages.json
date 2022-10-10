@@ -194,6 +194,19 @@
 					"scrollIndicator": "none"
 				}
 			}
+		},
+		{
+			"path": "pages/tabbar/publish/choice/fangyuan",
+			"style": {
+				"navigationBarTitleText": "发布房源",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle":"light",
+				"app-plus": {
+					"scrollIndicator": "none"
+				}
+			}
 		}
 	],
 	"tabBar": {
