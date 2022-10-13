@@ -3,10 +3,15 @@
 		font-size:36upx;
 		font-weight:600;
 		color:#101d36;
-		margin-top:20upx;
-		padding-left: 35upx;
+		padding-left: 26upx;
 		box-sizing: border-box;
 		margin-bottom: -10upx;
+	}
+	.fabuleixing{ 
+		padding: 7px 7px 7px 15px;
+	}
+	.u-form-item{
+		padding: 7px 15px 7px 15px;
 	}
 	.uni-uploader-head {
 		display: flex;
@@ -117,6 +122,12 @@
 <template>
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
 		<form>
+			<!-- 发布类型 -->
+			<view class="region_new_title">发布类型</view>
+			<u-radio-group class="fabuleixing" v-model="radio" @change="radioGroupChange" :width="radioCheckWidth" :wrap="radioCheckWrap">
+				<u-radio shape="circle" v-for="(item, index) in radioList" :key="index" :name="item.name">{{ item.name }}</u-radio>
+			</u-radio-group>
+			
 			<!-- 资质上传 -->
 			<view class="region_new_title">资质上传</view>
 			<view class="uni-list list-pd">
@@ -169,8 +180,25 @@
 				</view>
 			</view>
 			
-			<!-- 房屋名称 -->
-			<view class="region_new_title">房屋名称</view>
+			<!-- 房屋位置 -->
+			<view class="region_new_title">房屋位置</view>
+			<u-form-item :label-position="labelPosition" label="所属区域" prop="region" label-width="150">
+				<u-input :border="border" type="select" :select-open="pickerShow" v-model="model.region" placeholder="请选择地区" @click="pickerShow = true"></u-input>
+			</u-form-item>
+			<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
+			<!-- 小区名称 -->
+			<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" :label-position="labelPosition" label="小区名称" prop="name">
+				<u-input :border="border" placeholder="请输入小区名称" v-model="model.name" type="text"></u-input>
+			</u-form-item>
+			
+			<!-- 房屋信息 -->
+			<view class="region_new_title">房屋信息</view>
+			<u-form-item :label-position="labelPosition" label="房屋概况" prop="region" label-width="150">
+				<u-input :border="border" placeholder="请选择房屋布局" v-model="model.layout" type="text" @click="show = true"></u-input>
+				<u-select @click="show = true" :default-value="defaultValue" :mode="mode" v-model="show" :list="list" @confirm="confirm" @cancel="cancel"></u-select>
+			</u-form-item>
+			
+			
 			
 			
 			
@@ -197,7 +225,125 @@
 	export default {
 		data() {
 			return {
-				// title: 'choose/previewImage',
+				// 发布类型
+				labelPosition: 'left',
+				radioCheckWidth: 'auto',
+				radioCheckWrap: false,
+				radio: '个人转租',
+				radioList: [
+					{
+						name: '个人转租',
+						checked: true,
+						disabled: false
+					},
+					{
+						name: '房东直租',
+						checked: false,
+						disabled: false
+					},
+					{
+						name: '个人换租',
+						checked: false,
+						disabled: false
+					}
+				],
+				rules: {
+					payType: [
+						{
+							required: true,
+							message: '请选择任意一种支付方式',
+							trigger: 'change'
+						}
+					]
+				},
+				model: {
+					payType: '支付宝'
+				},
+				// 房屋位置
+				border: false,
+				pickerShow: false,
+				region: [
+					{
+						required: true,
+						message: '请选择地区',
+						trigger: 'change',
+					}
+				],
+				// 房屋信息
+				show: false,
+				defaultValue: [1],
+				mode: 'mutil-column',
+				list: [
+					[
+						{
+							value: '一居室',
+							label: '一居室'
+						},
+						{
+							value: '两居室',
+							label: '两居室'
+						},
+						{
+							value: '三居室',
+							label: '三居室'
+						},
+						{
+							value: '四居室',
+							label: '四居室'
+						},
+						{
+							value: '五居室',
+							label: '五居室'
+						}
+					],
+					[
+						{
+							value: '1客厅',
+							label: '1客厅'
+						},
+						{
+							value: '2客厅',
+							label: '2客厅'
+						},
+						{
+							value: '3客厅',
+							label: '3客厅'
+						}
+					],
+					[
+						{
+							value: '1厨房',
+							label: '1厨房'
+						},
+						{
+							value: '2厨房',
+							label: '2厨房'
+						},
+						{
+							value: '3厨房',
+							label: '3厨房'
+						}
+					],
+					[
+						{
+							value: '1卫生间',
+							label: '1卫生间'
+						},
+						{
+							value: '2卫生间',
+							label: '2卫生间'
+						},
+						{
+							value: '3卫生间',
+							label: '3卫生间'
+						}
+					]
+				],
+				
+				
+				
+				
+				
 				input_content:'',
 				imageList: [],
 				sourceTypeIndex: 2,
@@ -220,8 +366,32 @@
 				this.sizeType = ['压缩', '原图', '压缩或原图'],
 				this.countIndex = 8;
 		},
-		
 		methods: {
+			// 发布类型选择发生变化
+			radioGroupChange(e) {
+				this.model.payType = e;
+			},
+			// 选择地区回调
+			regionConfirm(e) {
+				this.model.region = e.province.label + '-' + e.city.label + '-' + e.area.label;
+			},
+			// 房屋概况
+			confirm(e) {
+				let result = '';
+				e.map((val, index) => {
+					result += result == '' ? val.label : '-' + val.label;
+				})
+				this.model.layout = result;
+			},
+			cancel(e) {
+				console.log(e);
+			},
+			
+			
+			
+			
+			
+			
 			async publish(){
 				if (!this.input_content) {
 					uni.showModal({ content: '内容不能为空', showCancel: false, });
