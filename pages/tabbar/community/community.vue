@@ -1,7 +1,7 @@
 <style lang="scss">
 	.community {
 		display: flex;
-		width: 750upx;
+		width: 100%;
 		height: 280upx;
 		align-items: center;
 		background-color: #FFFFFF;

@@ -1,6 +1,6 @@
 <style scoped>
 	.region_new_title{
-		font-size:36upx;
+		font-size:28upx;
 		font-weight:600;
 		color:#101d36;
 		padding-left: 26upx;
@@ -11,7 +11,7 @@
 		padding: 7px 7px 7px 15px;
 	}
 	.u-form-item{
-		padding: 7px 15px 7px 15px;
+		padding: 7px 15px 7px 12px;
 	}
 	.uni-uploader-head {
 		display: flex;
@@ -118,6 +118,19 @@
 		width: 100%;
 		height: 100%;
 	}
+	.more_item {
+		width:150upx;
+		height:62upx;
+		background:#fafafa;
+		line-height:62upx;
+		text-align:center;
+		color:#101d36;
+		border-radius:6upx;
+		font-size:26upx;
+	}
+	.more_item_active{
+		background:#ffd900;
+	}
 </style>
 <template>
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
@@ -133,10 +146,6 @@
 			<view class="uni-list list-pd">
 				<view class="uni-list-cell cell-pd">
 					<view class="uni-uploader">
-						<view class="uni-uploader-head">
-							<view class="uni-uploader-title"></view>
-							<view class="uni-uploader-info">{{imageList.length}}/9</view>
-						</view>
 						<view class="uni-uploader-body">
 							<view class="uni-uploader__files">
 								<block v-for="(image,index) in imageList" :key="index">
@@ -149,6 +158,10 @@
 									<view class="uni-uploader__input" @tap="chooseImage"></view>
 								</view>
 							</view>
+						</view>
+						<view class="uni-uploader-head">
+							<view class="uni-uploader-title"></view>
+							<view class="uni-uploader-info">{{imageList.length}}/9</view>
 						</view>
 					</view>
 				</view>
@@ -159,10 +172,6 @@
 			<view class="uni-list list-pd">
 				<view class="uni-list-cell cell-pd">
 					<view class="uni-uploader">
-						<view class="uni-uploader-head">
-							<view class="uni-uploader-title"></view>
-							<view class="uni-uploader-info">{{imageList.length}}/9</view>
-						</view>
 						<view class="uni-uploader-body">
 							<view class="uni-uploader__files">
 								<block v-for="(image,index) in imageList" :key="index">
@@ -176,29 +185,94 @@
 								</view>
 							</view>
 						</view>
+						<view class="uni-uploader-head">
+							<view class="uni-uploader-title"></view>
+							<view class="uni-uploader-info">{{imageList.length}}/9</view>
+						</view>
 					</view>
 				</view>
 			</view>
 			
 			<!-- 房屋位置 -->
 			<view class="region_new_title">房屋位置</view>
-			<u-form-item :label-position="labelPosition" label="所属区域" prop="region" label-width="150">
+			<u-form-item :label-position="labelPosition" label="所属区域 :" prop="region" label-width="150">
 				<u-input :border="border" type="select" :select-open="pickerShow" v-model="model.region" placeholder="请选择地区" @click="pickerShow = true"></u-input>
 			</u-form-item>
 			<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
 			<!-- 小区名称 -->
-			<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" :label-position="labelPosition" label="小区名称" prop="name">
-				<u-input :border="border" placeholder="请输入小区名称" v-model="model.name" type="text"></u-input>
+			<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" :label-position="labelPosition" label="小区名称 :" prop="name">
+				<u-input :border="border" placeholder="请输入小区名称" type="text"></u-input>
 			</u-form-item>
 			
 			<!-- 房屋信息 -->
 			<view class="region_new_title">房屋信息</view>
-			<u-form-item :label-position="labelPosition" label="房屋概况" prop="region" label-width="150">
-				<u-input :border="border" placeholder="请选择房屋布局" v-model="model.layout" type="text" @click="show = true"></u-input>
-				<u-select @click="show = true" :default-value="defaultValue" :mode="mode" v-model="show" :list="list" @confirm="confirm" @cancel="cancel"></u-select>
+			<u-form-item :label-position="labelPosition" label="房屋布局 :" prop="region" label-width="150">
+				<u-input :border="border" placeholder="请选择房屋结构" v-model="model.layout" type="select" @click="layoutShow = true"></u-input>
+				<u-select :mode="mode" v-model="layoutShow" :list="layoutList" @confirm="layoutConfirm" @cancel="layoutCancel"></u-select>
+			</u-form-item>
+			<!-- 出租房屋 -->
+			<u-form-item :label-position="labelPosition" label="出租房屋 :" prop="region" label-width="150">
+				<u-input :border="border" placeholder="请选择房屋结构" v-model="model.lease" type="select" @click="leaseShow = true"></u-input>
+				<u-select :mode="mode" v-model="leaseShow" :list="leaseList" @confirm="leaseConfirm" @cancel="leaseCancel"></u-select>
+			</u-form-item>
+			<!-- 供暖方式 -->
+			<u-form-item :label-position="labelPosition" label="供暖方式 :" prop="region" label-width="150">
+					<view v-for="(item, index) in heatList" :key="index" 
+					:class="{ more_item_active:heatActiveVar == index }" @click="heatType(item, index)" class="more_item">
+						{{ item }}
+					</view>
+			</u-form-item>
+			<!-- 房屋面积 -->
+			<u-form-item :label-position="labelPosition" label="房屋面积 :" prop="region" label-width="150">
+					<u-input :border="border" placeholder="请输入平方数" type="text"></u-input>m²
+			</u-form-item>
+			<!-- 房屋朝向 -->
+			<u-form-item :label-position="labelPosition" label="房屋朝向 :" prop="region" label-width="150">
+				<u-input :border="border" placeholder="请选择房屋朝向" v-model="model.orientation" type="select" @click="orientationShow = true"></u-input>
+				<u-select :mode="mode" v-model="orientationShow" :list="orientationList" @confirm="orientationConfirm" @cancel="orientationCancel"></u-select>
+			</u-form-item>
+			<!-- 有无电梯 -->
+			<u-form-item :label-position="labelPosition" label="有无电梯 :" prop="region" label-width="150">
+					<view v-for="(item, index) in elevatorList" :key="index" 
+					:class="{ more_item_active:elevatorActiveVar == index }" @click="hasElevator(item, index)" class="more_item">
+						{{ item }}
+					</view>
+			</u-form-item>
+			<!-- 楼层位置 -->
+			<u-form-item :label-position="labelPosition" label="楼层位置 :" prop="region" label-width="150">
+					<u-input :border="border" placeholder="请输入楼层" type="text"></u-input>
 			</u-form-item>
 			
-			
+			<!-- 费用详情 -->
+			<view class="region_new_title">费用详情</view>
+			<u-form-item :label-position="labelPosition" label="付款方式 :" prop="region" label-width="150">
+				<u-input :border="border" placeholder="请选择付款方式" v-model="model.pay" type="select" @click="payShow = true"></u-input>
+				<u-select :mode="mode" v-model="payShow" :list="payList" @confirm="payConfirm" @cancel="payCancel"></u-select>
+			</u-form-item>
+			<!-- 月度租金 -->
+			<u-form-item :label-position="labelPosition" label="月度租金 :" prop="region" label-width="150">
+				<u-input :border="border" :type="Number" placeholder="请输入月度租金" type="text"></u-input>
+			</u-form-item>
+			<!-- 房屋押金 -->
+			<u-form-item :label-position="labelPosition" label="房屋押金 :" prop="region" label-width="150">
+				<u-input :border="border" :type="Number" placeholder="请输入房屋押金" type="text"></u-input>
+			</u-form-item>
+			<!-- 服务费用 -->
+			<u-form-item :label-position="labelPosition" label="服务费用 :" prop="region" label-width="150">
+				<u-input :border="border" :type="Number" placeholder="请输入服务费用" type="text"></u-input>
+			</u-form-item>
+			<!-- 中介费用 -->
+			<u-form-item :label-position="labelPosition" label="中介费用 :" prop="region" label-width="150">
+				<u-input :border="border" :type="Number" placeholder="请输入中介费用" type="text"></u-input>
+			</u-form-item>
+			<!-- 房源配置 -->
+			<u-form-item :label-position="labelPosition" label="房源配置" label-width="150" prop="houseConfig">
+				<u-checkbox-group @change="houseConfig" :width="radioCheckWidth" :wrap="false">
+					<u-checkbox v-model="item.checked" v-for="(item, index) in houseConfigList" :key="index" :name="item.name">
+						{{ item.name }}
+					</u-checkbox>
+				</u-checkbox-group>
+			</u-form-item>
 			
 			
 			
@@ -257,7 +331,8 @@
 					]
 				},
 				model: {
-					payType: '支付宝'
+					payType: '支付宝',
+					houseConfig: '',
 				},
 				// 房屋位置
 				border: false,
@@ -270,10 +345,9 @@
 					}
 				],
 				// 房屋信息
-				show: false,
-				defaultValue: [1],
+				layoutShow: false,
 				mode: 'mutil-column',
-				list: [
+				layoutList: [
 					[
 						{
 							value: '一居室',
@@ -339,9 +413,181 @@
 						}
 					]
 				],
-				
-				
-				
+				// 出租房屋
+				leaseShow: false,
+				leaseList: [
+					[
+						{
+							value: '整租',
+							label: '整租'
+						},
+						{
+							value: '合租',
+							label: '合租'
+						}
+					],
+					[
+						{
+							value: '一居室',
+							label: '一居室'
+						},
+						{
+							value: '两居室',
+							label: '两居室'
+						},
+						{
+							value: '三居室',
+							label: '三居室'
+						},
+						{
+							value: '四居室',
+							label: '四居室'
+						},
+						{
+							value: '五居室',
+							label: '五居室'
+						}
+					],
+					[
+						{
+							value: '主卧',
+							label: '主卧'
+						},
+						{
+							value: '次卧',
+							label: '次卧'
+						},
+						{
+							value: '厅隔',
+							label: '厅隔'
+						},
+						{
+							value: '单间',
+							label: '单间'
+						}
+					]
+				],
+				// 供暖方式
+				heatActiveVar: 0, 
+				heatList:[
+					"集体供暖",
+					"自供暖"
+				],
+				// 有无电梯
+				elevatorActiveVar: 0, 
+				elevatorList:[
+					"有电梯",
+					"无电梯"
+				],
+				// 房屋朝向
+				orientationShow: false,
+				orientationList: [
+					[
+						{
+							value: '南',
+							label: '南'
+						},
+						{
+							value: '北',
+							label: '北'
+						},
+						{
+							value: '东',
+							label: '东'
+						},
+						{
+							value: '西',
+							label: '西'
+						},
+						{
+							value: '西北',
+							label: '西北'
+						},
+						{
+							value: '西南',
+							label: '西南'
+						},
+						{
+							value: '东北',
+							label: '东北'
+						},
+						{
+							value: '东南',
+							label: '东南'
+						}
+					]
+				],
+				// 付款方式
+				payShow: false,
+				payList: [
+					[
+						{
+							value: '月付',
+							label: '月付'
+						},
+						{
+							value: '季付',
+							label: '季付'
+						},
+						{
+							value: '年付',
+							label: '年付'
+						}
+					]
+				],
+				// 房源配置
+				houseConfigList: [
+					{
+						name: '洗衣机',
+						checked: false,
+						disabled: false
+					},
+					{
+						name: '热水器',
+						checked: false,
+						disabled: false
+					},
+					{
+						name: '天然气',
+						checked: false,
+						disabled: false
+					},
+					{
+						name: '冰箱',
+						checked: false,
+						disabled: false
+					},
+					{
+						name: '电视',
+						checked: false,
+						disabled: false
+					},
+					{
+						name: '空调',
+						checked: false,
+						disabled: false
+					},
+					{
+						name: '暖气',
+						checked: false,
+						disabled: false
+					},
+					{
+						name: '无线网',
+						checked: false,
+						disabled: false
+					},
+					{
+						name: '微波炉',
+						checked: false,
+						disabled: false
+					},
+					{
+						name: '电磁炉',
+						checked: false,
+						disabled: false
+					}
+				],
 				
 				
 				input_content:'',
@@ -376,19 +622,61 @@
 				this.model.region = e.province.label + '-' + e.city.label + '-' + e.area.label;
 			},
 			// 房屋概况
-			confirm(e) {
+			layoutConfirm(e) {
 				let result = '';
 				e.map((val, index) => {
 					result += result == '' ? val.label : '-' + val.label;
 				})
 				this.model.layout = result;
 			},
-			cancel(e) {
+			layoutCancel(e) {
 				console.log(e);
 			},
-			
-			
-			
+			// 出租房屋
+			leaseConfirm(e) {
+				let result = '';
+				e.map((val, index) => {
+					result += result == '' ? val.label : '-' + val.label;
+				})
+				this.model.lease = result;
+			},
+			leaseCancel(e) {
+				console.log(e);
+			},
+			// 供暖方式
+			heatType(item,index){
+				this.heatActiveVar=index
+		    },
+			// 有无电梯
+			hasElevator(item,index){
+				this.elevatorActiveVar=index
+		    },
+			// 房屋朝向
+			orientationConfirm(e) {
+				let result = '';
+				e.map((val, index) => {
+					result += result == '' ? val.label : '-' + val.label;
+				})
+				this.model.orientation = result;
+			},
+			orientationCancel(e) {
+				console.log(e);
+			},
+			// 付款方式
+			payConfirm(e) {
+				let result = '';
+				e.map((val, index) => {
+					result += result == '' ? val.label : '-' + val.label;
+				})
+				this.model.pay = result;
+			},
+			payCancel(e) {
+				console.log(e);
+			},
+			// 房源配置
+			houseConfig(e) {
+				this.model.houseConfig = e;
+			},
 			
 			
 			
