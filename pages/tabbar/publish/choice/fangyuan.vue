@@ -131,6 +131,14 @@
 	.more_item_active{
 		background:#ffd900;
 	}
+	.content{
+		text-align: center;
+		margin-top: 10%;
+	}
+	.confirmFloor{
+		width: 30%;
+		margin-top: 10px;
+	}
 </style>
 <template>
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
@@ -240,7 +248,22 @@
 			</u-form-item>
 			<!-- 楼层位置 -->
 			<u-form-item :label-position="labelPosition" label="楼层位置 :" prop="region" label-width="150">
-					<u-input :border="border" placeholder="请输入楼层" type="text"></u-input>
+				<u-input :border="border" placeholder="请输入楼层" type="text" @click="floorClick" v-model="model.floor"></u-input>层
+				<u-popup border-radius="10" v-model="floorShow" 
+					@close="close" @open="open" :mode="mode" length="30%" :mask="mask"
+					:closeable="closeable" :close-icon-pos="closeIconPos">
+					<view class="content">
+						<view class="current">
+							<view>当前楼层</view>
+							<u-number-box :min="1" :max="100" v-model="currentValue" @change="currentChange"></u-number-box>
+						</view>
+						<view class="max">
+							<view>最高楼层</view>
+							<u-number-box :min="1" :max="100" v-model="maxValue" @change="maxChange"></u-number-box>
+						</view>
+						<u-button size="mini" @click="confirmFloor" class="confirmFloor">确认</u-button>
+					</view>
+				</u-popup>
 			</u-form-item>
 			
 			<!-- 费用详情 -->
@@ -588,6 +611,14 @@
 						disabled: false
 					}
 				],
+				// 楼层位置
+				floorShow: false,
+				mode: 'bottom',
+				mask: true, // 是否显示遮罩
+				closeable: true,
+				closeIconPos: 'top-right',
+				currentValue: 1,
+				maxValue: 1,
 				
 				
 				input_content:'',
@@ -676,6 +707,22 @@
 			// 房源配置
 			houseConfig(e) {
 				this.model.houseConfig = e;
+			},
+			// 楼层位置
+			floorClick() {
+				this.floorShow = true;
+			},
+			close() {},
+			open() {},
+			currentChange(e){
+				this.currentValue = e.value;
+			},
+			maxChange(e){
+				this.maxValue = e.value;
+			},
+			confirmFloor(e){
+				this.model.floor = this.currentValue + "/" + this.maxValue;
+				this.floorShow = false;
 			},
 			
 			
