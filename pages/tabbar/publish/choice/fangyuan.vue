@@ -250,7 +250,7 @@
 			<u-form-item :label-position="labelPosition" label="楼层位置 :" prop="region" label-width="150">
 				<u-input :border="border" placeholder="请输入楼层" type="text" @click="floorClick" v-model="model.floor"></u-input>层
 				<u-popup border-radius="10" v-model="floorShow" 
-					@close="close" @open="open" :mode="mode" length="30%" :mask="mask"
+					@close="close" @open="open" :mode="position" length="30%" :mask="mask"
 					:closeable="closeable" :close-icon-pos="closeIconPos">
 					<view class="content">
 						<view class="current">
@@ -288,6 +288,22 @@
 			<u-form-item :label-position="labelPosition" label="中介费用 :" prop="region" label-width="150">
 				<u-input :border="border" :type="Number" placeholder="请输入中介费用" type="text"></u-input>
 			</u-form-item>
+			<!-- 取暖费用 -->
+			<u-form-item :label-position="labelPosition" label="取暖费用 :" prop="region" label-width="150">
+				<u-input :border="border" :type="Number" placeholder="请输入取暖费用" type="text"></u-input>
+			</u-form-item>
+			<!-- 无线费用 -->
+			<u-form-item :label-position="labelPosition" label="无线费用 :" prop="region" label-width="150">
+				<u-input :border="border" :type="Number" placeholder="请输入无线费用" type="text"></u-input>
+			</u-form-item>
+			<!-- 物业费用 -->
+			<u-form-item :label-position="labelPosition" label="物业费用 :" prop="region" label-width="150">
+				<u-input :border="border" :type="Number" placeholder="请输入物业费用" type="text"></u-input>
+			</u-form-item>
+			<!-- 水电费用 -->
+			<u-form-item :label-position="labelPosition" label="水电费用 :" prop="region" label-width="150">
+				<u-input :border="border" :type="Number" placeholder="请输入水电费用" type="text"></u-input>
+			</u-form-item>
 			<!-- 房源配置 -->
 			<u-form-item :label-position="labelPosition" label="房源配置" label-width="150" prop="houseConfig">
 				<u-checkbox-group @change="houseConfig" :width="radioCheckWidth" :wrap="false">
@@ -296,8 +312,6 @@
 					</u-checkbox>
 				</u-checkbox-group>
 			</u-form-item>
-			
-			
 			
 			<view class="footer">
 				<button type="default" class="feedback-submit" @click="publish">发布</button>
@@ -613,7 +627,7 @@
 				],
 				// 楼层位置
 				floorShow: false,
-				mode: 'bottom',
+				position: 'bottom',
 				mask: true, // 是否显示遮罩
 				closeable: true,
 				closeIconPos: 'top-right',

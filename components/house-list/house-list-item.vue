@@ -194,15 +194,14 @@
 		<view class="er_house_cont">
 			<!-- 兰亭新苑 三区 朝向 主卧-->
 			<view class="er_house_title">
-				<text v-if="item.community">{{ item.community }}</text>
-				<text v-if="item.whoCommunity">{{ item.whoCommunity }}</text>
+				<text v-if="item.mode">{{ item.mode }}</text>
+				<text v-if="item.whoCommunity">{{ item.community }}{{ item.whoCommunity }}</text>
 				<text v-if="item.orientation">{{ item.orientation }}</text>
-				<text v-if="item.bedroom">{{ item.bedroom }}</text>
 			</view>
 
 			<!-- 租房类型，两室一厅（配比），大小，楼层 -->
 			<view class="er_house_des">
-				<text v-if="item.mode">{{ item.mode }}</text>
+				<text v-if="item.bedroom">{{ item.bedroom }}</text>
 				<text v-if="item.matche">{{ item.matche }}</text>
 				<text v-if="item.size">{{ item.size }}</text>
 				<text v-if="item.floor">{{ item.floor }}</text>

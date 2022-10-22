@@ -125,9 +125,7 @@
 		    <block v-if="detailData != null">
 			 <view class="description">
 				<view class="position">
-					<view class="community">{{detailData.community}}</view>
-					<view class="whoCommunity">{{detailData.whoCommunity}}</view>
-					<view class="matche">{{detailData.matche}}</view>
+					<view class="community">{{detailData.community}}{{detailData.whoCommunity}}</view>
 					<view class="bedroom"> - {{detailData.bedroom}}</view>
 				</view>
 				<view class="money">
