@@ -88,7 +88,7 @@
 		padding: 20upx 30upx;
 	}
 	textarea {
-		border-bottom: 2px solid #fafafa;
+		border-bottom: 2px solid #f2f2f2;
 		height: 130px;
 		width: 100%;
 	}
@@ -121,7 +121,7 @@
 	.more_item {
 		width:150upx;
 		height:62upx;
-		background:#fafafa;
+		background:#f2f2f2;
 		line-height:62upx;
 		text-align:center;
 		color:#101d36;

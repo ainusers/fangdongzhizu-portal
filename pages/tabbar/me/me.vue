@@ -1,6 +1,6 @@
 <style lang="scss" scoped>
 	.content {
-		background-color: #fafafa;
+		background-color: #f2f2f2;
 		text-align: center;
 		height: 100vh;
 	}

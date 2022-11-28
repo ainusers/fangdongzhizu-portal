@@ -1,6 +1,6 @@
 <style scope lang="scss">
 .main {
-	background-color: #fafafa;
+	background-color: #f2f2f2;
 }
 .home_top {
 	width: 100%;
@@ -186,7 +186,7 @@
 .more_item{
 	width:150upx;
 	height:62upx;
-	background:#fafafa;
+	background:#f2f2f2;
 	line-height:62upx;
 	text-align:center;
 	color:#101d36;
@@ -238,7 +238,7 @@
 .region_new_list_item{
 	width:150upx;
 	height:62upx;
-	background-color:#fafafa;
+	background-color:#f2f2f2;
 	border-radius:6upx;
 	float:left;
 	margin-right:23upx;
@@ -353,7 +353,7 @@
 		  <!-- 选项卡 -->
 		  <view class="type">
 			  <!-- tabs -->
-			  <u-tabs :list="tabList" barWidth="50" gutter="10" font-size="30" bg-color="#fafafa" :current="current" @change="tabChange"></u-tabs>
+			  <u-tabs :list="tabList" barWidth="50" gutter="10" font-size="30" bg-color="#f2f2f2" :current="current" @change="tabChange"></u-tabs>
 		  </view>
 		  <view></view>
 		  <!-- 搜索按钮 -->

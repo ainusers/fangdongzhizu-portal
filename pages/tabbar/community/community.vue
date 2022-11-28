@@ -38,8 +38,8 @@
 					<image mode="aspectFit" src="../../../static/community/function/ad.png"></image>
 				</view>
 				<view class="name">热点资讯</view>
-			</view>
-			<view class="option" @click="goto('/pages/index/cloud/index')">
+			</view>								
+			<view class="option" @click="goto('/pages/tabbar/community/tools/news')">
 				<view class="icon">
 					<image mode="aspectFit" src="../../../static/community/function/churuku.png"></image>
 				</view>
@@ -129,6 +129,13 @@
 			this.getMomentPost();
 		},
 		methods: {
+			// 跳转页面
+			goto(url) {
+				if (!url) return;
+				uni.navigateTo({
+					url
+				});
+			},
 			// 获取图文数据
 			getMomentPost() {
 				// 测试数据待修改

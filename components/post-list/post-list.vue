@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="main-style">
 		<block v-for="(item, index) in list" :key="index">
 			<view @click="toDetail(item)">
 				<view class="post-item">
@@ -256,11 +256,14 @@
 
 <style lang="scss" scoped>
 	// 总体样式
+	.main-style{
+		background: #f2f2f2
+	}
 	.post-item {
 		background: #fff;
 		border: solid 1px #eee;
-		margin: 10px 10px 15px 10px;
-		border-radius: 20px;
+		margin: 0px 0px 10px 0px;
+		border-radius: 10px;
 
 		.post-content {
 			margin-top: 20rpx;

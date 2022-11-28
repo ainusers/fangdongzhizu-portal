@@ -21,7 +21,7 @@
 					<block v-if="row.type=='system'">
 						<view class="system">
 							<!-- 文字消息 -->
-							<view v-if="row.type=='text'" class="text">
+							<view v-if="row.type=='system'" class="text">
 								{{row.msg}}
 							</view>
 						</view>
@@ -241,7 +241,7 @@
 					// 确保你的服务器是运行态
 					url: "ws://192.168.124.11:17180/websocket",
 					success(data) {
-						console.log("websocket连接状态：" + JSON.stringify(data));
+						// console.log("websocket连接状态：" + JSON.stringify(data.errMsg));
 					}
 				});
 				// 打开socket链接
@@ -256,12 +256,6 @@
 					console.log("收到服务器内容：" + res.data);
 					let data = eval("(" + res.data + ")");
 					switch (data.type) {
-						case 'auth':
-							break;
-						case 'online':
-							break;
-						case 'ping':
-							break;
 						case 'system':
 							this.addSystemTextMsg(data);
 							break;
@@ -317,7 +311,7 @@
 			authSocket() {
 				if (this.socket_status) {
 					this.socketInstance.send({
-						data: "{'type':'auth','from':'zhangjun" + Math.floor(Math.random() * 10 + 1) + "'}",
+						data: "{'type':'signal','from':'zhangjun" + Math.floor(Math.random() * 10 + 1) + "'}",
 						async success() {
 							console.log("认证消息发送成功");
 						},
@@ -378,7 +372,7 @@
 					{"auth":true,"datetime":"1657355976767","from":"zhangjun8","id":826627537546224366,"msg":"猜个屁","status":"true","target":"all","type":"text",face:"/static/chat/head/face_6.jpg"},
 					{"auth":true,"datetime":"1657325976766","from":"zhangjun9","id":826627537546224366,"msg":"说不说","status":"true","target":"all","type":"text",face:"/static/chat/head/face_6.jpg"},
 					{"auth":true,"datetime":"1657355976766","from":"zhangjun10","id":826627537546224366,"msg":"不说","status":"true","target":"all","type":"text",face:"/static/chat/head/face_6.jpg"},
-					{"auth":true,"datetime":"1657355976766","from":"zhangjun1","id":826627537546224366,"msg":"那再见","status":"true","target":"all","type":"text",face:"/static/chat/head/face_6.jpg"}
+					{"auth":true,"datetime":"1657355976766","from":"zhangjun1","id":826627537546224366,"msg":"欢迎进入万人群","status":"true","target":"all","type":"system",face:"/static/chat/head/face_6.jpg"}
 				]
 				// 获取消息中的图片,并处理显示尺寸
 				for(let i=0;i<list.length;i++){
@@ -531,14 +525,6 @@
 				// 如果socket状态正常连接，则可以发送消息
 				if (this.socket_status) {
 					switch (type) {
-						case 'auth':
-							break;
-						case 'online':
-							break;
-						case 'ping':
-							break;
-						case 'system':
-							break;
 						case 'text':
 							this.socketInstance.send({
 								data: "{'type':'" + type + "','msg':'" + this.textMsg + "','target':'all'}",

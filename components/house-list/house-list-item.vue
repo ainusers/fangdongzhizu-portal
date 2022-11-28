@@ -18,7 +18,7 @@
         width:300upx;
         height:180upx;
         flex-shrink: 0;
-		background:#fafafa url(http://cdn.haofang.net/static/wxPlusApp/yjk/house/house_list_default.png) no-repeat center center;
+		background:#f2f2f2 url(http://cdn.haofang.net/static/wxPlusApp/yjk/house/house_list_default.png) no-repeat center center;
 		background-size:cover;
 		border-radius: 4upx;
 		box-sizing: border-box;

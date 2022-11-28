@@ -2,12 +2,12 @@
     page{
         width: 100%;
         height: 100%;
-        background-color: #fafafa;
+        background-color: #f2f2f2;
     }
     .cont_view{
         width: 100%;
         height: 100%;
-        background-color: #fafafa;
+        background-color: #f2f2f2;
         overflow-y: auto;
         box-sizing: border-box;
     }
