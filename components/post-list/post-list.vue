@@ -79,10 +79,10 @@
 		</block>
 		<!-- 判断是否加载数据 -->
 		<block v-if="list.length === 0 && loadStatus == 'nomore'">
-			<u-empty margin-top="100" text="暂无内容" mode="favor"></u-empty>
+			<u-empty margin-top="100" text="我可是有底线的" mode="favor"></u-empty>
 		</block>
 		<block v-if="loadStatus == 'loadmore'">
-			<view style="margin: 30rpx 0;">
+			<view style="padding: 30rpx 0;">
 				<u-loadmore :status="loadStatus" />
 			</view>
 		</block>
