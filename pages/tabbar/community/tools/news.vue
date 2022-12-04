@@ -116,7 +116,7 @@
 				<view class="voice-mode" :class="[isVoice?'':'hidden',recording?'recording':'']" @touchstart="voiceBegin" @touchmove.stop.prevent="voiceIng" @touchend="voiceEnd" @touchcancel="voiceCancel">{{voiceTis}}</view>
 				<view class="text-mode"  :class="isVoice?'hidden':''">
 					<view class="box">
-						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus"/>
+						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus" cursor-spacing="20"/>
 					</view>
 					<view class="em" @tap="chooseEmoji">
 						<view class="icon biaoqing"></view>
@@ -225,7 +225,7 @@
 				success:  (res)=>{
 					console.log(res.data);
 					let nowDate = new Date();
-					let lastid = this.msgList[this.msgList.length-1].msg.id;
+					let lastid = this.msgList[this.msgList.length-1].id;
 					lastid++;
 					let row = {type:"user",msg:{id:lastid,type:"redEnvelope",time:nowDate.getHours()+":"+nowDate.getMinutes(),userinfo:{uid:0,username:"大黑哥",face:"/static/chat/face.jpg"},content:{blessing:res.data.blessing,rid:Math.floor(Math.random()*1000+1),isReceived:false}}};
 					this.screenMsg(row);
@@ -269,15 +269,15 @@
 							this.addImgMsg(data);
 							break;
 					}
-					//非自己的消息震动
+					// 非自己的消息震动
 					// if(data.from != 'zhangjun8' || data.from != 'zhangjun4' || data.from != 'zhangjun7' || data.from != 'zhangjun3' || data.from != 'zhangjun5' || data.from != 'zhangjun6'){
 					// 	console.log('振动');
 					// 	uni.vibrateLong();
 					// }
 					// 滚动到底
-					// this.$nextTick(function() {
-					// 	this.scrollToView = 'msg' + data.id
-					// });
+					this.$nextTick(function() {
+						this.scrollToView = 'msg' + data.id
+					});
 				});
 				// 监听socket关闭链接
 				this.socketInstance.onClose(() => {
@@ -325,13 +325,15 @@
 				}
 				this.isHistoryLoading = true; //参数作为进入请求标识，防止重复请求
 				this.scrollAnimation = false; //关闭滑动动画
-				let Viewid = this.msgList[0].msg.id; //记住第一个信息ID
 				//本地模拟请求历史记录效果
 				setTimeout(()=>{
 					// 消息列表
 					let list = [
 						{"auth":true,"datetime":"1657357976767","from":"zhangjun8","id":826627537346224360,"msg":"大家聊的挺好呀","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
 						{"auth":true,"datetime":"1654355976768","from":"zhangjun9","id":826623537546224361,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+						{"auth":true,"datetime":"1654355976768","from":"zhangjun9","id":826623537546224361,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+						{"auth":true,"datetime":"1657358976769","from":"zhangjun10","id":826227537546224362,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_9.jpg"},
+						{"auth":true,"datetime":"1657358976769","from":"zhangjun10","id":826227537546224362,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_9.jpg"},
 						{"auth":true,"datetime":"1657358976769","from":"zhangjun10","id":826227537546224362,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_9.jpg"},
 						{"auth":true,"datetime":"1657355976770","from":"zhangjun7","id":826627557546224363,"msg":"天津","status":"true","target":"all","type":"text",face:"/static/chat/head/face_10.jpg"},
 						{"auth":true,"datetime":"1657355976770","from":"zhangjun7","id":826627557546256363,"msg":"河北","status":"true","target":"all","type":"text",face:"/static/chat/head/face_11.jpg"},
@@ -348,11 +350,12 @@
 						list[i].id = Math.floor(Math.random()*1000+1);
 						this.msgList.unshift(list[i]);
 					}
+					let Viewid = list[0].id; //记住第一个信息ID
 					//这段代码很重要，不然每次加载历史数据都会跳到顶部
 					this.$nextTick(function() {
-						this.scrollToView = 'msg'+Viewid;//跳转上次的第一行信息位置
+						this.scrollToView = 'msg' + Viewid; // 跳转上次的第一行信息位置
 						this.$nextTick(function() {
-							this.scrollAnimation = true;//恢复滚动动画
+							this.scrollAnimation = true; // 恢复滚动动画
 						});
 					});
 					this.isHistoryLoading = false;
@@ -573,7 +576,7 @@
 				this.msgList.push(msg);
 			},
 			sendSystemMsg(content,type){
-				let lastid = this.msgList[this.msgList.length-1].msg.id;
+				let lastid = this.msgList[this.msgList.length-1].id;
 				lastid++;
 				let row = {type:"system",msg:{id:lastid,type:type,content:content}};
 				this.screenMsg(row)
