@@ -6,7 +6,7 @@
 					<!-- 用户数据 -->
 					<view class="post-item-top-user">
 						<!-- 用户头像 -->
-						<view @click.stop="toUcenter(item.uid)">
+						<view class="avatar-img" @click.stop="toUcenter(item.uid)">
 							<u-avatar class="avatar" :src="item.userInfo.avatar" :show-level="item.userInfo.type == 1"
 								level-bg-color="#8072f3"></u-avatar>
 						</view>
@@ -55,22 +55,22 @@
 						<!-- 分享 -->
 						<view class="p-item">
 							<button @click.stop="showShares(index)" class="u-reset-button" open-type="share">
-								<u-icon name="zhuanfa"></u-icon>
+								<u-icon name="zhuanfa" size="38"></u-icon>
 								<text class="count">{{ item.share_count }}</text>
 							</button>
 						</view>
 						<!-- 评论 -->
 						<view class="p-item margin50" @click="toComment('/pages/tabbar/community/comment')">
-							<u-icon name="chat"></u-icon>
+							<u-icon name="chat" size="38"></u-icon>
 							<text class="count">{{ item.comment_count }}</text>
 						</view>
 						<!-- 点赞和取消点赞 -->
 						<view v-show="item.is_collection" class="p-item" @click.stop="cancelCollection(item.id, index)">
-							<u-icon name="heart-fill" color="#cc0000"></u-icon>
+							<u-icon name="heart-fill" color="#cc0000" size="38"></u-icon>
 							<text class="count">{{ item.collection_count }}</text>
 						</view>
 						<view v-show="!item.is_collection" class="p-item" @click.stop="addCollection(item.id, index)">
-							<u-icon name="heart"></u-icon>
+							<u-icon name="heart" size="38"></u-icon>
 							<text class="count">{{ item.collection_count }}</text>
 						</view>
 					</view>
@@ -262,7 +262,7 @@
 	.post-item {
 		background: #fff;
 		border: solid 1px #eee;
-		margin: 0px 0px 10px 0px;
+		margin: 3px 0px 10px 0px;
 		border-radius: 10px;
 
 		.post-content {
@@ -301,7 +301,9 @@
 	.post-item-top-user {
 		display: flex;
 		align-items: center;
-
+		.avatar-img {
+			padding: 5px;
+		}
 		.avatar {
 			width: 85rpx;
 			height: 85rpx;

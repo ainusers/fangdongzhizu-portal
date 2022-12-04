@@ -17,9 +17,8 @@
 	  }
 	}
 	.icon {
-	  color: #96a1ae;
-	  font-size: 24rpx;
 	  float: right;
+	  padding-right: 5px;
 	}
 	.user-card {
 	  height: 200rpx;
@@ -170,7 +169,7 @@
 	            <view class="userNickName">你是我的优乐美</view>
 				<image mode="aspectFit" src="../../../static/me/boy.svg"></image>
 				<view class="option" @click="goto('/pages/tabbar/me/user')">
-					<u-icon class="icon" name="arrow-right"></u-icon>
+					<u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
 				</view>
 	          </view>
 	          <view class="user-phone">因为有你，所以一切变得美好</view>
@@ -242,7 +241,7 @@
 	          <text>分享返现</text>
 	        </view>
 	        <view class="right flex-center">
-	          <u-icon class="icon" name="arrow-right"></u-icon>
+	          <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
 	        </view>
 	      </view>
 	    </view>
@@ -255,7 +254,7 @@
 	          <text>关于我们</text>
 	        </view>
 	        <view class="right flex-center">
-	          <u-icon class="icon" name="arrow-right"></u-icon>
+	          <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
 	        </view>
 	      </view>
 	    </view>

@@ -145,6 +145,7 @@
 					type: 1
 				})
 				.then(res => {
+					// this.tuwen_data.push(res.result);
 					if (res.result.current_page === res.result.last_page || res.result.last_page === 0) {
 						this.load_status_tuwen = 'nomore';
 					} else {

@@ -90,11 +90,11 @@
 		{
 			"path": "pages/tabbar/community/community",
 			"style": {
-				"transparentTitle":  "always"
+				"transparentTitle":  "always",
 				// "navigationBarTitleText": "社区",
 				// "navigationBarTextStyle": "black",
 				// "navigationBarBackgroundColor": "#f2f2f2",
-				// "enablePullDownRefresh": false,
+				"enablePullDownRefresh": true
 				// "backgroundTextStyle":"light",
 				// "app-plus": {
 				// 	"scrollIndicator": "none"

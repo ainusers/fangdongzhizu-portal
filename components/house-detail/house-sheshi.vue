@@ -11,15 +11,15 @@
 		margin-bottom: 30upx;
 	}
 	.pei_icon{
-		width: 40upx;
-		height: 40upx;
+		width: 50upx;
+		height: 50upx;
 		margin: 0 auto;
 	}
 	.pei_text{
 		font-size: 24upx;
 		color: #101D36;
 		line-height: 34upx;
-		margin-top: 17upx;
+		margin-top: 10upx;
 	}
 </style>
 <template>
