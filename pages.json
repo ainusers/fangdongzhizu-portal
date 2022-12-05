@@ -183,6 +183,31 @@
 			}
 		},
 		{
+			"path": "pages/tabbar/me/update/nickname",
+			"style": {
+				"navigationBarTitleText": "修改昵称",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#f2f2f2",
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle":"light",
+				"app-plus": {
+					"scrollIndicator": "none",
+					"bounce": "none",
+					"titleNView": {
+						"buttons": [
+							{
+								"background": "red",
+								"margin":"20px",
+								"text": "保存",
+								"fontSize": "16px",
+								"float": "right"
+							}
+						]
+					}
+				}
+			}
+		},
+		{
 			"path": "pages/tabbar/publish/choice/tuwen",
 			"style": {
 				"navigationBarTitleText": "发布图文",
