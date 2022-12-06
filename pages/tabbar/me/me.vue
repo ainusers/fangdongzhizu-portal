@@ -275,7 +275,7 @@
 		methods: {
 			goto(uri){
 				uni.navigateTo({
-					url: '/pages/tabbar/me/user'
+					url: uri
 				})
 			}
 		}

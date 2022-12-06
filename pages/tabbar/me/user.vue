@@ -93,7 +93,7 @@
                 </view>
             </view>
             <!--昵称-->
-            <view class="item f_r_b">
+            <view class="item f_r_b" @click="goto('/pages/tabbar/me/update/nickname')">
                 <view class="item_text">昵称</view>
                 <view class="item_val">
 					你是我的优乐美
@@ -102,7 +102,7 @@
 				
             </view>
             <!--性别-->
-            <view class="item f_r_b">
+            <view class="item f_r_b" @click="goto('/pages/tabbar/me/update/sex')">
                 <view class="item_text">性别</view>
                 <view class="item_val">
 					女
@@ -111,7 +111,7 @@
 				
             </view>
             <!--地区-->
-            <view class="item f_r_b">
+            <view class="item f_r_b" @click="goto('/pages/tabbar/me/update/region')">
                 <view class="item_text">地区</view>
                 <view class="item_val">
 					北京 海淀
@@ -171,6 +171,11 @@
             
         },
         methods: {
+			goto(uri){
+				uni.navigateTo({
+					url: uri
+				})
+			},
             imgError() {
                 // 这里填充一个默认图片
             },
