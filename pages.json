@@ -258,6 +258,56 @@
 			}
 		},
 		{
+			"path": "pages/tabbar/me/update/pwd",
+			"style": {
+				"navigationBarTitleText": "修改密码",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#f2f2f2",
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle":"light",
+				"app-plus": {
+					"scrollIndicator": "none",
+					"bounce": "none",
+					"titleNView": {
+						"buttons": [
+							{
+								"background": "red",
+								"margin":"20px",
+								"text": "保存",
+								"fontSize": "16px",
+								"float": "right"
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/tabbar/me/update/sign",
+			"style": {
+				"navigationBarTitleText": "个性签名",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#f2f2f2",
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle":"light",
+				"app-plus": {
+					"scrollIndicator": "none",
+					"bounce": "none",
+					"titleNView": {
+						"buttons": [
+							{
+								"background": "red",
+								"margin":"20px",
+								"text": "保存",
+								"fontSize": "16px",
+								"float": "right"
+							}
+						]
+					}
+				}
+			}
+		},
+		{
 			"path": "pages/tabbar/publish/choice/tuwen",
 			"style": {
 				"navigationBarTitleText": "发布图文",

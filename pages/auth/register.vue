@@ -123,22 +123,32 @@
 					});
 					return;
 				}
-				uni.request({
-					method: 'post',
-					header: {
-						'content-type': 'application/json'
-					},
-					data: {
-						username: this.phone,
-						code: this.code,
-						password: this.password,
-						rememberMe: 'true'
-					},
-					url: 'http://81.70.163.240:11001/users/register',
-				    success: (res) => {
-				        console.log(res.data);
-				    }
+				this.$H.post('http://81.70.163.240:11001/zf/v1/user/register',{
+					username: this.phone,
+					code: this.code,
+					password: this.password,
+					rememberMe: 'true'
+				}).then(res => {
+					if (res.code === 200) {
+						this.$u.toast(res.message);
+					}
 				});
+				// uni.request({
+				// 	method: 'post',
+				// 	header: {
+				// 		'content-type': 'application/json'
+				// 	},
+				// 	data: {
+				// 		username: this.phone,
+				// 		code: this.code,
+				// 		password: this.password,
+				// 		rememberMe: 'true'
+				// 	},
+				// 	url: 'http://81.70.163.240:11001/users/register',
+				//     success: (res) => {
+				//         console.log(res.data);
+				//     }
+				// });
 			},
 			goLogin() {
 				uni.navigateTo({

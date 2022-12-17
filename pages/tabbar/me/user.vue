@@ -138,7 +138,7 @@
 				
             </view>
 			<!--修改密码-->
-			<view class="item f_r_b">
+			<view class="item f_r_b" @click="goto('/pages/tabbar/me/update/pwd')">
 			    <view class="item_text">修改密码</view>
 			    <view class="item_val">
 					修改密码
@@ -146,7 +146,7 @@
 				</view>
 			</view>
 			<!--个性签名-->
-			<view class="item f_r_b">
+			<view class="item f_r_b"  @click="goto('/pages/tabbar/me/update/sign')">
 			    <view class="item_text">个性签名</view>
 			    <view class="item_val">
 					因为有你，所以一切变得美好
