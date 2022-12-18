@@ -767,6 +767,10 @@ export default {
 	},
 	onLoad() {},
 	methods: {
+		// 获取选择城市返回的城市名称
+		getValue(cityNameLess){
+			this.cityName = cityNameLess;
+		},
 		// 获得swiper切换后的current索引
 		swipeIndex(index) {
 			this.current = index.detail.current

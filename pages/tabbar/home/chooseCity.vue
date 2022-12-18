@@ -83,7 +83,7 @@
     }
 </style>
 <template>
-	<form report-submit @submit="formSubmit">
+	<form report-submit>
 		<view class="choose_city" :style="{height: pageHeight}">
 			<scroll-view :scroll-with-animation="scrollAnimate" enable-back-to-top :scroll-into-view="scrollIntoId"
 				class="choose_city_scroll" scroll-y>
@@ -106,23 +106,23 @@
 					   </block>
 				   </view>
 
-				  <block v-for="(item, cityIndex) in cityList" :index="cityIndex" :key="cityIndex">
+				  <!-- <block v-for="(item, cityIndex) in cityList" :index="cityIndex" :key="cityIndex">
 					   <view class="choose_title" :id="item.title.id">{{ item.title.text }}</view>
 
 					   <block v-for="(info, cityInfoIndex) in item.list" :index="cityInfoIndex" :key="info.cityName">
 						   <button form-type="submit" hover-class="none" @click="cityBtn(info)"
 								class="city_item">{{ info.cityName }}</button>
 					   </block>
-				   </block>
+				   </block> -->
 				</view>
 			</scroll-view>
 
-			<view class="letter_list f_c_c">
+			<!-- <view class="letter_list f_c_c">
 				<block v-for="(item, letterIndex) in letterList" :index="letterIndex" :key="letterIndex">
 					<view form-type="submit" hover-class="none" @click="letterBtn(item)"
 						class="f_r_c letter_item" :id="item.id">{{ item.text }}</view>
 				</block>
-			</view>
+			</view> -->
 		</view>
 	</form>
 </template>
@@ -159,8 +159,9 @@
 		},
 
         onLoad() {
+			// 获取定位信息
+			this.getGeo();
         	this.initCityList();
-			// new this.InitFormSubmit(this);
         },
 
 		onShow() {
@@ -183,21 +184,21 @@
         },
 
         onShow() {
-        	this.upGpsInfo();
+        	
         },
 
         methods: {
-            // 更新定位信息
-            upGpsInfo() {
-                // if(!new GpsInfoModel().getModel("gpsInfo")) return;
-
-                // let item = new GpsInfoModel().getModel("gpsInfo");
-                // this.gpsCityInfo = {
-                //     cityName: item.cityName || "成都",
-                //     cityId: item.cityId || "1"
-                // };
-            },
-
+			// 获取定位信息
+			getGeo(){
+				uni.getLocation({
+					type: 'wgs84',
+					success: function (res) {
+						console.log(JSON.stringify(res))
+						console.log('当前位置的经度：' + res.longitude);
+						console.log('当前位置的纬度：' + res.latitude);
+					}
+				});
+			},
             // 获取设备信息
             getPhoneInfo() {
                 let res = uni.getSystemInfoSync();
@@ -263,15 +264,11 @@
 				});
 				letterList.sort(function(a, b){
 					if(a.id<b.id) return -1;
-					
 					if(a.id>b.id) return 1;
-					
 					return 0;
 				});
                 this.cityList = cityList;
                 this.letterList = letterList;
-                // new CityListModel().setModel(JSON.stringify(cityList), "cityList");
-                // new CityListModel().setModel(JSON.stringify(letterList), "letterList");
             },
 
             // 字母事件
@@ -281,22 +278,18 @@
 
             // 城市点击事件
             cityBtn(item) {
+				let pages = getCurrentPages() 
+				 // 2. 上一页面实例
+				// 注意是length长度，所以要想得到上一页面的实例需要 -2
+				// 若要返回上上页面的实例就 -3，以此类推
+				 let prevPage = pages[pages.length -2] 
+				 // 3. 给上一页面实例绑定getValue()方法和参数（注意是$vm）
+				 prevPage.$vm.getValue(item.cityNameLess)
+				 // 4. 返回上一页
                 uni.navigateBack({
                     delta: 1
                 });
-
-                // new GpsInfoModel().setModel({
-                //     lng: null,
-                //     lat: null,
-                //     cityId: item.cityId,
-                //     cityName: item.cityNameLess
-                // }, "cityInfo");
-                // new Notification().postNotification(Notify.CityInfoChanged.Name, item);
-            },
-
-            // gps change 回调
-            GpsChanged(name, item) {
-                this.upGpsInfo();
+				console.log(item.cityNameLess);
             }
         }
 	}

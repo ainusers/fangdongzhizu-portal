@@ -16,7 +16,7 @@
 								<text v-if="item.userInfo.vip_expire_time > timestamp" style="color: red;"
 									class="username">{{ item.userInfo.username.substring(0, 12) }}</text>
 								<text v-else class="username">{{ item.userInfo.username.substring(0, 12) }}</text>
-								<view style="float: right;padding-right: 10px;"> ꔷꔷꔷ </view>
+								<view style="float: right;padding-right: 10px;"><u-icon name="more-dot-fill" color="rgb(203,203,203)"></u-icon></view>
 							</view>
 							<view>
 								<text class="time">{{ item.create_time | timeFrom }}</text>

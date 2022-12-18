@@ -6,9 +6,7 @@
     }
 	.content {
 		background-color: #fff;
-	}
-	.region {
-		padding: 8px;
+		padding: 8px 15px 8px 15px;
 	}
 </style>
 <template>

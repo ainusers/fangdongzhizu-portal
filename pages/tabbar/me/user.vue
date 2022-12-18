@@ -32,7 +32,6 @@
         font-family: PingFang-SC-Medium;
         font-size: 30upx;
         color: #191f25;
-        font-weight: bold;
         flex-shrink: 0;
     }
     .img_view_info{

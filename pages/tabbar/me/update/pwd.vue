@@ -6,6 +6,10 @@
     }
 	.content {
 		background-color: #fff;
+		padding: 8px 15px 8px 15px;
+	}
+	.u-input{
+		margin-top: 10px;
 	}
 </style>
 <template>
