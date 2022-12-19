@@ -240,7 +240,7 @@
 	        <view class="center">
 	          <text>分享返现</text>
 	        </view>
-	        <view class="right flex-center">
+	        <view class="right flex-center" @click="goto('/pages/tabbar/me/tools/advise')">
 	          <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
 	        </view>
 	      </view>
