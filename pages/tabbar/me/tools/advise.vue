@@ -1,45 +1,47 @@
 <template>
-	<view class="flex-row">
-		<view class="flex-view-item">
-			<view class="model">
-				<image class="reasonImg" src="@/static/me/tools/quit.png"></image>
-				<text class="reason">页面闪退</text>
+	<view>
+		<view class="flex-row">
+			<view class="flex-view-item">
+				<view class="model">
+					<image class="reasonImg" src="@/static/me/tools/quit.png"></image>
+					<text class="reason">页面闪退</text>
+				</view>
 			</view>
-		</view>
-		<view class="flex-view-item">
-			<view class="model">
-				<image class="reasonImg" src="@/static/me/tools/transform.png"></image>
-				<text class="reason">传输问题</text>
+			<view class="flex-view-item">
+				<view class="model">
+					<image class="reasonImg" src="@/static/me/tools/transform.png"></image>
+					<text class="reason">传输问题</text>
+				</view>
 			</view>
-		</view>
-		<view class="flex-view-item">
-			<view class="model">
-				<image class="reasonImg" src="@/static/me/tools/operation.png"></image>
-				<text class="reason">操作体验</text>
+			<view class="flex-view-item">
+				<view class="model">
+					<image class="reasonImg" src="@/static/me/tools/operation.png"></image>
+					<text class="reason">操作体验</text>
+				</view>
 			</view>
-		</view>
-		<view class="flex-view-item">
-			<view class="model">
-				<image class="reasonImg" src="@/static/me/tools/mei.png"></image>
-				<text class="reason">界面审美</text>
+			<view class="flex-view-item">
+				<view class="model">
+					<image class="reasonImg" src="@/static/me/tools/mei.png"></image>
+					<text class="reason">界面审美</text>
+				</view>
 			</view>
-		</view>
-		<view class="flex-view-item">
-			<view class="model">
-				<image class="reasonImg" src="@/static/me/tools/function.png"></image>
-				<text class="reason">功能建议</text>
+			<view class="flex-view-item">
+				<view class="model">
+					<image class="reasonImg" src="@/static/me/tools/function.png"></image>
+					<text class="reason">功能建议</text>
+				</view>
 			</view>
-		</view>
-		<view class="flex-view-item">
-			<view class="model">
-				<image class="reasonImg" src="@/static/me/tools/other.png"></image>
-				<text class="reason">其他反馈</text>
+			<view class="flex-view-item">
+				<view class="model">
+					<image class="reasonImg" src="@/static/me/tools/other.png"></image>
+					<text class="reason">其他反馈</text>
+				</view>
 			</view>
 		</view>
 		<form bindsubmit="formSubmit">
 			<view class="middle">
 				<view class="record">我要反馈</view>
-				<textarea name="content" class="recordContent" maxlength="500" bindinput='listenInput'
+				<textarea name="content" class="recordContent" maxlength="500" @input = "descInput($event)"
 					placeholder="您想说点什么?" />
 				<span class="wordwrap">{{number}}/500</span>
 			</view>
@@ -55,7 +57,6 @@
 			</button>
 		</form>
 	</view>
-
 </template>
 
 <script>
@@ -75,6 +76,11 @@
 			formSubmit: function(e) {
 				console.log(e);
 			},
+			// // 监听输入内容
+			descInput:function(e){
+				console.log(e)
+				this.number = e.detail.cursor
+			}
 		}
 	}
 </script>
@@ -85,7 +91,6 @@
 	.flex-row {
 		width: 100%;
 		height: 26vh;
-		padding-top: 40rpx;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-around;
@@ -94,13 +99,15 @@
 
 	.flex-view-item {
 		height: 80px;
-		width: 120px;
+		width: 30%;
+		margin-top: 10px;
 		background-color: #f8f9fd;
-		border-radius: 20rpx;
+		border-radius: 15rpx;
 	}
 
 	.model {
 		padding-left: 50rpx;
+		padding-top: 10rpx;
 	}
 
 	.reasonImg {
@@ -121,16 +128,18 @@
 	}
 
 	.record {
-		font-size: 20px;
+		font-size: 16px;
 		font-weight: 500;
-		padding-bottom: 20rpx;
+		padding-bottom: 12rpx;
+		padding-left: 10rpx;
 	}
 
 	.recordContent {
 		background-color: #f8f9fd;
-		width: 100%;
+		width: 98%;
 		height: 87%;
-		border-radius: 25rpx;
+		border-radius: 20rpx;
+		margin: 4px;
 	}
 
 	.wordwrap {
@@ -141,29 +150,28 @@
 
 	/* 联系方式 */
 	.bottom {
-		height: 29vh;
+		height: 25vh;
 		width: 100%;
 	}
 
 	.concact {
-		padding-top: 30rpx;
-		font-size: 20px;
+		font-size: 16px;
 		font-weight: 500;
-		padding-bottom: 30rpx;
+		padding-bottom: 10rpx;
+		padding-left: 8rpx;
 	}
 
 	.communication {
 		font-size: 14px;
 		color: #b9bece;
+		padding-left: 10px;
 	}
 
 	.concactContent {
-		margin-top: 10rpx;
-		margin-bottom: 20rpx;
-		height: 120rpx;
+		margin: 4px 5px 0px 5px;
+		height: 90rpx;
 		background-color: #f8f9fd;
-		width: 100%;
-		border-radius: 25rpx;
+		border-radius: 20rpx;
 	}
 
 	/* 按钮 */
