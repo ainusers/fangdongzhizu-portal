@@ -7,10 +7,10 @@
 					<image class="box-image" src="../../../static/publish/release.png" mode="aspectFit"></image>
 					<text class="explain">发布图文</text>
 				</view>
-				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/tuwen')">
+				<!-- <view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/tuwen')">
 					<image class="box-image" src="../../../static/publish/video.png" mode="aspectFit"></image>
 					<text class="explain">发布视频</text>
-				</view>
+				</view> -->
 				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/fangyuan')">
 					<image class="box-image" src="../../../static/publish/qa.png" mode="aspectFit"></image>
 					<text class="explain">发布房源</text>

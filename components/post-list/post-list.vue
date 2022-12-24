@@ -6,15 +6,14 @@
 					<!-- 用户数据 -->
 					<view class="post-item-top-user">
 						<!-- 用户头像 -->
-						<view class="avatar-img" @click.stop="toUcenter(item.uid)">
+						<view class="avatar-img" @click.stop="toUcenter(item.userInfo.id)">
 							<u-avatar class="avatar" :src="item.userInfo.avatar" :show-level="item.userInfo.type == 1"
 								level-bg-color="#8072f3"></u-avatar>
 						</view>
 						<!-- 用户名称 -->
 						<view class="center">
 							<view style="align-items: center;">
-								<text v-if="item.userInfo.vip_expire_time > timestamp" style="color: red;"
-									class="username">{{ item.userInfo.username.substring(0, 12) }}</text>
+								<text v-if="item.userInfo.vip_expire_time > timestamp" style="color: red;" class="username">{{ item.userInfo.username.substring(0, 12) }}</text>
 								<text v-else class="username">{{ item.userInfo.username.substring(0, 12) }}</text>
 								<view style="float: right;padding-right: 10px;"><u-icon name="more-dot-fill" color="rgb(203,203,203)"></u-icon></view>
 							</view>

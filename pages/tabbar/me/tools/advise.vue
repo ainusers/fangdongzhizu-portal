@@ -78,7 +78,6 @@
 			},
 			// // 监听输入内容
 			descInput:function(e){
-				console.log(e)
 				this.number = e.detail.cursor
 			}
 		}
@@ -136,10 +135,10 @@
 
 	.recordContent {
 		background-color: #f8f9fd;
-		width: 98%;
+		width: 97%;
 		height: 87%;
 		border-radius: 20rpx;
-		margin: 4px;
+		margin: 5px;
 	}
 
 	.wordwrap {
@@ -150,15 +149,15 @@
 
 	/* 联系方式 */
 	.bottom {
-		height: 25vh;
+		height: 31.7vh;
 		width: 100%;
 	}
 
 	.concact {
 		font-size: 16px;
 		font-weight: 500;
-		padding-bottom: 10rpx;
-		padding-left: 8rpx;
+		padding-bottom: 12rpx;
+		padding-left: 10rpx;
 	}
 
 	.communication {

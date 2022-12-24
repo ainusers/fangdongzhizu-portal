@@ -191,29 +191,80 @@
 		methods: {
 			async publish(){
 				if (!this.input_content) {
-					uni.showModal({ content: '内容不能为空', showCancel: false, });
+					uni.showToast({
+						title: '图文内容不能为空',
+						duration: 1000,
+						icon: "none"
+					});
 					return;
 				}
 				uni.showLoading({title:'发布中'});
 				setTimeout(function () {
 					uni.hideLoading();
 				}, 2000);
-				var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
+				// 获取位置信息
+				var location = await this.getLocation(); 
+				// 批量上传接口
 				var images = [];
 				for(var i = 0,len = this.imageList.length; i < len; i++){
-					var image_obj = {name:'image-'+i,uri:this.imageList[i]};
-					images.push(image_obj);
+					// var image_obj = {name:'image-'+i, uri:this.imageList[i]};
+					uni.request({
+						method: 'post',
+						header: {
+							'content-type': 'multipart/form-data'
+						},
+						data: {
+							multipartFile: this.imageList[i]
+						},
+						url: 'http://81.70.163.240:11001/zf/v1/file/upload',
+						success: (res) => {
+							console.log("--------->" + image_obj.data.url);
+							images.push(image_obj.data.url);
+						},
+						fail: (e) => {
+							console.log("e: " + JSON.stringify(e));
+						}
+					});
 				}
+				// 上传动态信息
+				uni.request({
+					method: 'post',
+					header: {
+						'content-type': 'application/json'
+					},
+					data: {
+						'imgUrl': images,
+						'userId': 1606522650501607424,
+						'words': this.input_content,
+						'longitude': location.longitude, // 经度
+						'latitude': location.latitude, // 纬度
+						'country': location.address.country,
+						'province': location.address.province,
+						'city': location.address.city,
+						'address': location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName,
+						'type': location.type
+					},
+					url: 'http://81.70.163.240:11001/zf/v1/dynamic/dynamics',
+					success: (res) => {
+						images.push(image_obj.data.url);
+					},
+					fail: (e) => {
+						console.log("e: " + JSON.stringify(e));
+					}
+				});
 				uni.uploadFile({//该上传仅为示例,可根据自己业务修改或封装,注意:统一上传可能会导致服务器压力过大
-					url: 'moment/moments', //仅为示例，非真实的接口地址
-					files:images,//有files时,会忽略filePath和name
-					filePath: '',
-					name: '',
+					url: 'http://81.70.163.240:11001/zf/v1/dynamic/dynamics', //仅为示例，非真实的接口地址
 					formData: {//后台以post方式接收
-						'user_id':'1',//自己系统中的用户id
-						'text': this.input_content,//moment文字部分
-						'longitude':location.longitude,//经度
-						'latitude':location.latitude//纬度
+						'img_url': images,
+						'user_id': 1606522650501607424, // 用户id
+						'words': this.input_content, // 文字部分
+						'longitude': location.longitude, // 经度
+						'latitude': location.latitude, // 纬度
+						'country': location.address.country,
+						'province': location.address.province,
+						'city': location.address.city,
+						'address': location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName,
+						'type': location.type
 					},
 					success: (uploadFileRes) => {
 						uni.hideLoading();
@@ -235,10 +286,12 @@
 					}
 				});
 			},
-			getLocation(){//h5中可能不支持,自己选择
+			// 获取地理位置（h5中可能不支持）
+			getLocation(){
 				return new Promise((resolve, reject) => {
 					uni.getLocation({
-						type: 'wgs84',
+						type: 'gcj02',
+						geocode: true,
 						success: function (res) {
 							resolve(res);
 						},

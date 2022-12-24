@@ -238,7 +238,7 @@
 	          <image mode="aspectFit" src="../../../static/me/share.svg"></image>
 	        </view>
 	        <view class="center">
-	          <text>分享返现</text>
+	          <text>反馈建议</text>
 	        </view>
 	        <view class="right flex-center" @click="goto('/pages/tabbar/me/tools/advise')">
 	          <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
