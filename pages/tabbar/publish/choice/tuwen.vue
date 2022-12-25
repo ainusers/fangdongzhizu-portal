@@ -189,6 +189,34 @@
 		},
 		
 		methods: {
+			// 批量上传接口
+			attachUpload(){
+				return new Promise((resolve, reject) => {
+					// 批量上传接口
+					var images = [];
+					for(var i = 0,len = this.imageList.length; i < len; i++){
+						uni.uploadFile({
+							url: 'http://81.70.163.240:11001/zf/v1/file/upload',
+							header: {
+								'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MjO3NDU2sjRU0lFKrShQsjI0Mzc2NjY0sDSsBQAkcQnqJgAAAA.xrwwffvn6-vek2iTmx6Cmt6sSbwWMLDf4Hducz83oWehPd6GrSTKmX0zYX_qAY4vcjA3T9_VXZhkM7EJe15J3Q'
+							},
+							filePath: this.imageList[i],
+							name: 'file',
+							formData: {
+								file: this.imageList[i]
+							},
+							success: (res) => {
+								images.push(JSON.parse(res.data).data[0].url);
+								resolve(images);
+							},
+							fail: (e) => {
+								console.log("e: " + JSON.stringify(e));
+								reject(e);
+							}
+						});
+					}
+				})
+			},
 			async publish(){
 				if (!this.input_content) {
 					uni.showToast({
@@ -199,33 +227,10 @@
 					return;
 				}
 				uni.showLoading({title:'发布中'});
-				setTimeout(function () {
-					uni.hideLoading();
-				}, 2000);
 				// 获取位置信息
-				var location = await this.getLocation(); 
-				// 批量上传接口
-				var images = [];
-				for(var i = 0,len = this.imageList.length; i < len; i++){
-					// var image_obj = {name:'image-'+i, uri:this.imageList[i]};
-					uni.request({
-						method: 'post',
-						header: {
-							'content-type': 'multipart/form-data'
-						},
-						data: {
-							multipartFile: this.imageList[i]
-						},
-						url: 'http://81.70.163.240:11001/zf/v1/file/upload',
-						success: (res) => {
-							console.log("--------->" + image_obj.data.url);
-							images.push(image_obj.data.url);
-						},
-						fail: (e) => {
-							console.log("e: " + JSON.stringify(e));
-						}
-					});
-				}
+				let location = await this.getLocation(); 
+				// 获取上传图片地址
+				let images = await this.attachUpload();
 				// 上传动态信息
 				uni.request({
 					method: 'post',
@@ -233,7 +238,8 @@
 						'content-type': 'application/json'
 					},
 					data: {
-						'imgUrl': images,
+						'imgUrl': images.toString(),
+						'username': '俊哥',
 						'userId': 1606522650501607424,
 						'words': this.input_content,
 						'longitude': location.longitude, // 经度
@@ -246,27 +252,6 @@
 					},
 					url: 'http://81.70.163.240:11001/zf/v1/dynamic/dynamics',
 					success: (res) => {
-						images.push(image_obj.data.url);
-					},
-					fail: (e) => {
-						console.log("e: " + JSON.stringify(e));
-					}
-				});
-				uni.uploadFile({//该上传仅为示例,可根据自己业务修改或封装,注意:统一上传可能会导致服务器压力过大
-					url: 'http://81.70.163.240:11001/zf/v1/dynamic/dynamics', //仅为示例，非真实的接口地址
-					formData: {//后台以post方式接收
-						'img_url': images,
-						'user_id': 1606522650501607424, // 用户id
-						'words': this.input_content, // 文字部分
-						'longitude': location.longitude, // 经度
-						'latitude': location.latitude, // 纬度
-						'country': location.address.country,
-						'province': location.address.province,
-						'city': location.address.city,
-						'address': location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName,
-						'type': location.type
-					},
-					success: (uploadFileRes) => {
 						uni.hideLoading();
 						uni.showToast({
 							icon:'success',
@@ -299,7 +284,7 @@
 							reject(e);
 						}
 					});
-				} )
+				})
 			},
 			close(e){
 			    this.imageList.splice(e,1);
