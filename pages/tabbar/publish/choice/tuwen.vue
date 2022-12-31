@@ -193,34 +193,34 @@
 			attachUpload(){
 				return new Promise((resolve, reject) => {
 					// 批量上传接口
-					var images = [];
-					for(var i = 0,len = this.imageList.length; i < len; i++){
-						uni.uploadFile({
-							url: 'http://81.70.163.240:11001/zf/v1/file/upload',
-							header: {
-								'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MjO3NDU2sjRU0lFKrShQsjI0Mzc2NjY0sDSsBQAkcQnqJgAAAA.xrwwffvn6-vek2iTmx6Cmt6sSbwWMLDf4Hducz83oWehPd6GrSTKmX0zYX_qAY4vcjA3T9_VXZhkM7EJe15J3Q'
-							},
-							filePath: this.imageList[i],
-							name: 'file',
-							formData: {
-								file: this.imageList[i]
-							},
-							success: (res) => {
-								images.push(JSON.parse(res.data).data[0].url);
-								resolve(images);
-							},
-							fail: (e) => {
-								console.log("e: " + JSON.stringify(e));
-								reject(e);
-							}
-						});
+					let files = [];
+					for(let i = 0,len = this.imageList.length; i < len; i++){
+						let imgAttr = new Object();
+						imgAttr.name = 'img' + i;
+						imgAttr.uri = this.imageList[i];
+						files.push(imgAttr);
 					}
+					uni.uploadFile({
+						url: 'http://81.70.163.240:11001/zf/v1/file/uploads',
+						header: {
+							'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MjO3NDU2sjRU0lFKrShQsjI0Mzc2NjY0sDSsBQAkcQnqJgAAAA.xrwwffvn6-vek2iTmx6Cmt6sSbwWMLDf4Hducz83oWehPd6GrSTKmX0zYX_qAY4vcjA3T9_VXZhkM7EJe15J3Q'
+						},
+						files: files,
+						success: (res) => {
+							resolve(JSON.parse(res.data).data);
+						},
+						fail: (e) => {
+							console.log("e: " + JSON.stringify(e));
+							uni.hideLoading();
+							reject(e);
+						}
+					});
 				})
 			},
 			async publish(){
 				if (!this.input_content) {
 					uni.showToast({
-						title: '图文内容不能为空',
+						title: '文字内容不能为空',
 						duration: 1000,
 						icon: "none"
 					});
@@ -230,7 +230,12 @@
 				// 获取位置信息
 				let location = await this.getLocation(); 
 				// 获取上传图片地址
-				let images = await this.attachUpload();
+				let images;
+				if(this.imageList.length == 0) {
+					images = [];
+				} else {
+					images = await this.attachUpload();
+				}
 				// 上传动态信息
 				uni.request({
 					method: 'post',
