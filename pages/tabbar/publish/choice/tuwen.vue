@@ -245,6 +245,7 @@
 					data: {
 						'imgUrl': images.toString(),
 						'username': '俊哥',
+						'avatar': 'http://81.70.163.240:25415/avatar-bk/62e20350efcef62d940556e420220726132059.jpg',
 						'userId': 1606522650501607424,
 						'words': this.input_content,
 						'longitude': location.longitude, // 经度

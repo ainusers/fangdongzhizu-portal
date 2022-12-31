@@ -6,33 +6,31 @@
 					<!-- 用户数据 -->
 					<view class="post-item-top-user">
 						<!-- 用户头像 -->
-						<view class="avatar-img" @click.stop="toUcenter(item.userInfo.id)">
-							<u-avatar class="avatar" :src="item.userInfo.avatar" :show-level="item.userInfo.type == 1"
-								level-bg-color="#8072f3"></u-avatar>
+						<view class="avatar-img" @click.stop="toUcenter(item.userId)">
+							<u-avatar class="avatar" :src="item.avatar" level-bg-color="#8072f3"></u-avatar>
 						</view>
 						<!-- 用户名称 -->
 						<view class="center">
 							<view style="align-items: center;">
-								<text v-if="item.userInfo.vip_expire_time > timestamp" style="color: red;" class="username">{{ item.userInfo.username.substring(0, 12) }}</text>
-								<text v-else class="username">{{ item.userInfo.username.substring(0, 12) }}</text>
+								<text class="username">{{ item.username.substring(0, 12) }}</text>
 								<view style="float: right;padding-right: 10px;"><u-icon name="more-dot-fill" color="rgb(203,203,203)"></u-icon></view>
 							</view>
 							<view>
-								<text class="time">{{ item.create_time | timeFrom }}</text>
+								<text class="time">{{ item.createTime | timeFrom }}</text>
 							</view>
 						</view>
 					</view>
 					<!-- 列表内容 -->
 					<view class="post-content">
-						<rich-text class="post-text" :nodes="item.content"></rich-text>
+						<rich-text class="post-text" :nodes="item.words"></rich-text>
 						<block>
 							<!--一张图片-->
-							<block v-if="item.media.length == 1">
+							<block v-if="item.imgUrl.length == 1">
 								<image :lazy-load="true" mode="aspectFill" class="img-style-1" :src="item.media[0]"
 									@tap.stop="previewImage(item.media[0], item.media, item.integral, item.id)"></image>
 							</block>
 							<!--二张图片-->
-							<block v-if="item.media.length == 2">
+							<block v-if="item.imgUrl.length == 2">
 								<view class="img-style-2">
 									<image :lazy-load="true" v-for="(mediaItem, flag) in item.media" :key="flag"
 										@tap.stop="previewImage(mediaItem, item.media, item.integral, item.id)"
@@ -40,7 +38,7 @@
 								</view>
 							</block>
 							<!--三张以上图片-->
-							<block v-if="item.media.length > 2">
+							<block v-if="item.imgUrl.length > 2">
 								<view class="img-style-3">
 									<image :lazy-load="true" v-for="(mediaItem, flag) in item.media" :key="flag"
 										@tap.stop="previewImage(mediaItem, item.media, item.integral, item.id)"
