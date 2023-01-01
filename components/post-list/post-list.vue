@@ -26,23 +26,23 @@
 						<block>
 							<!--一张图片-->
 							<block v-if="item.imgUrl.length == 1">
-								<image :lazy-load="true" mode="aspectFill" class="img-style-1" :src="item.media[0]"
-									@tap.stop="previewImage(item.media[0], item.media, item.integral, item.id)"></image>
+								<image :lazy-load="true" mode="aspectFill" class="img-style-1" :src="item.imgUrl[0]"
+									@tap.stop="previewImage(item.imgUrl[0], item.imgUrl, item.integral, item.id)"></image>
 							</block>
 							<!--二张图片-->
 							<block v-if="item.imgUrl.length == 2">
 								<view class="img-style-2">
-									<image :lazy-load="true" v-for="(mediaItem, flag) in item.media" :key="flag"
-										@tap.stop="previewImage(mediaItem, item.media, item.integral, item.id)"
-										mode="aspectFill" :src="mediaItem"></image>
+									<image :lazy-load="true" v-for="(imgItem, flag) in item.imgUrl" :key="flag"
+										@tap.stop="previewImage(imgItem, item.imgUrl, item.integral, item.id)"
+										mode="aspectFill" :src="imgItem"></image>
 								</view>
 							</block>
 							<!--三张以上图片-->
 							<block v-if="item.imgUrl.length > 2">
 								<view class="img-style-3">
-									<image :lazy-load="true" v-for="(mediaItem, flag) in item.media" :key="flag"
-										@tap.stop="previewImage(mediaItem, item.media, item.integral, item.id)"
-										mode="aspectFill" :src="mediaItem"></image>
+									<image :lazy-load="true" v-for="(imgItem, flag) in item.imgUrl" :key="flag"
+										@tap.stop="previewImage(imgItem, item.imgUrl, item.integral, item.id)"
+										mode="aspectFill" :src="imgItem"></image>
 								</view>
 							</block>
 						</block>
@@ -62,13 +62,13 @@
 							<text class="count">{{ item.comment_count }}</text>
 						</view>
 						<!-- 点赞和取消点赞 -->
-						<view v-show="item.is_collection" class="p-item" @click.stop="cancelCollection(item.id, index)">
+						<view v-show="item.follow" class="p-item" @click.stop="cancelCollection(item.id, index)">
 							<u-icon name="heart-fill" color="#cc0000" size="38"></u-icon>
-							<text class="count">{{ item.collection_count }}</text>
+							<text class="count">{{ item.followCount }}</text>
 						</view>
-						<view v-show="!item.is_collection" class="p-item" @click.stop="addCollection(item.id, index)">
+						<view v-show="!item.follow" class="p-item" @click.stop="addCollection(item.id, index)">
 							<u-icon name="heart" size="38"></u-icon>
-							<text class="count">{{ item.collection_count }}</text>
+							<text class="count">{{ item.followCount }}</text>
 						</view>
 					</view>
 				</view>
@@ -142,8 +142,8 @@
 			},
 			// 点赞
 			addCollection(id, index) {
-				this.list[index].is_collection = true;
-				this.list[index].collection_count++;
+				this.list[index].follow = true;
+				this.list[index].followCount++;
 				
 				// this.$H
 				// 	.post('post/addCollection', {
@@ -159,8 +159,9 @@
 			},
 			// 取消点赞
 			cancelCollection(id, index) {
-				this.list[index].is_collection = false;
-				this.list[index].collection_count--;
+				this.list[index].follow = false;
+				this.list[index].followCount--;
+				
 				// this.$H
 				// 	.post('post/cancelCollection', {
 				// 		id: id
@@ -186,7 +187,7 @@
 			},
 			// 分享至微信
 			shareWX(scene) {
-				let imgURL = (imgURL = this.postDetail.media[0]);
+				let imgURL = (imgURL = this.postDetail.imgUrl[0]);
 				let that = this
 				let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
 				let curRoute = routes[routes.length - 1].$page.fullPath // 获取当前页面路由，也就是最后一个打开的页面路由
@@ -218,7 +219,7 @@
 			},
 			// 分享至qq
 			shareQQ() {
-				let imgURL = (imgURL = this.postDetail.media[0]);
+				let imgURL = (imgURL = this.postDetail.imgUrl[0]);
 				let that = this
 				let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
 				let curRoute = routes[routes.length - 1].$page.fullPath // 获取当前页面路由，也就是最后一个打开的页面路由
