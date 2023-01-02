@@ -46,7 +46,7 @@
 				<view class="name">万人群聊</view>
 			</view>
 		
-			<view class="option" @click="goto('/pages/index/news/section')">
+			<view class="option" @click="goto('/pages/tabbar/me/tools/advise')">
 				<view class="icon">
 					<image mode="aspectFit" src="../../../static/community/function/jiaoyu.png"></image>
 				</view>
@@ -114,6 +114,8 @@
 								"username": "俊哥",
 								"follow": false,
 								"followCount": 0,
+								"comment_count": 0,
+								"share_count": 0,
 								"avatar": "http://81.70.163.240:25415/avatar-bk/63b0463599a03cc34c40d5d2qq.png",
 								"words": "今天是周一，我来上班了，手里的任务好多呀，安排好优先级，一件一件的做！！！",
 								"imgUrl": ["http://81.70.163.240:25415/avatar-bk/63afab8099a04e53014ac2321.webp"],

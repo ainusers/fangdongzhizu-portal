@@ -1,62 +1,32 @@
 <template>
-	<view>
+	<form @submit="formSubmit">
 		<view class="flex-row">
-			<view class="flex-view-item">
-				<view class="model">
-					<image class="reasonImg" src="@/static/me/tools/quit.png"></image>
-					<text class="reason">页面闪退</text>
+			<block v-for="(item, index) in list" :key="index">
+				<view class="flex-view-item" :style="{backgroundColor:item.color}">
+					<view class="model" @click.stop="checkTarget(index)" >
+						<image class="reasonImg" :src="item.src"></image>
+						<text :style="{color: item.wordColor}">{{item.word}}</text>
+					</view>
 				</view>
-			</view>
-			<view class="flex-view-item">
-				<view class="model">
-					<image class="reasonImg" src="@/static/me/tools/transform.png"></image>
-					<text class="reason">传输问题</text>
-				</view>
-			</view>
-			<view class="flex-view-item">
-				<view class="model">
-					<image class="reasonImg" src="@/static/me/tools/operation.png"></image>
-					<text class="reason">操作体验</text>
-				</view>
-			</view>
-			<view class="flex-view-item">
-				<view class="model">
-					<image class="reasonImg" src="@/static/me/tools/mei.png"></image>
-					<text class="reason">界面审美</text>
-				</view>
-			</view>
-			<view class="flex-view-item">
-				<view class="model">
-					<image class="reasonImg" src="@/static/me/tools/function.png"></image>
-					<text class="reason">功能建议</text>
-				</view>
-			</view>
-			<view class="flex-view-item">
-				<view class="model">
-					<image class="reasonImg" src="@/static/me/tools/other.png"></image>
-					<text class="reason">其他反馈</text>
-				</view>
-			</view>
+			</block>
 		</view>
-		<form bindsubmit="formSubmit">
-			<view class="middle">
-				<view class="record">我要反馈</view>
-				<textarea name="content" class="recordContent" maxlength="500" @input = "descInput($event)"
-					placeholder="您想说点什么?" />
-				<span class="wordwrap">{{number}}/500</span>
+		<view class="middle">
+			<view class="record">我要反馈</view>
+			<textarea name="content" class="recordContent" maxlength="500" @input = "descInput($event)"
+				placeholder="您想说点什么?" />
+			<span class="wordwrap">{{number}}/500</span>
+		</view>
+		<view class="bottom">
+			<view class="concact">
+				<text class="way">联系方式</text>
+				<text class="communication">　注：手机号/微信/QQ</text>
 			</view>
-			<view class="bottom">
-				<view class="concact">
-					<text class="way">联系方式</text>
-					<text class="communication">　注：手机号/微信/QQ</text>
-				</view>
-				<input name="contact" class="concactContent" placeholder="请留下任一联系方式" bindinput="userNameInput" />
-			</view>
-			<button form-type='submit' class="commit" type="primary" plain="true">
-				<text class="commitContent">提交</text>
-			</button>
-		</form>
-	</view>
+			<input name="contact" class="concactContent" placeholder="请留下任一联系方式" bindinput="userNameInput" />
+		</view>
+		<button form-type='submit' class="commit" type="primary" plain="true">
+			<text class="commitContent">提交</text>
+		</button>
+	</form>
 </template>
 
 <script>
@@ -65,19 +35,93 @@
 			return {
 				number: 0, // 已输入字数
 				contact: '', // 联系方式
-				content: '' // 反馈内容
+				content: '', // 反馈内容
+				list: [
+					{
+						"src": "/static/me/tools/quit.png",
+						"word": "页面闪退",
+						"color": "#f8f9fd",
+						"wordColor": "#a5acc0",
+						"check": false
+					},
+					{
+						"src": "/static/me/tools/transform.png",
+						"word": "传输问题",
+						"color": "#f8f9fd",
+						"wordColor": "#a5acc0",
+						"check": false
+					},
+					{
+						"src": "/static/me/tools/operation.png",
+						"word": "操作体验",
+						"color": "#f8f9fd",
+						"wordColor": "#a5acc0",
+						"check": false
+					},
+					{
+						"src": "/static/me/tools/mei.png",
+						"word": "界面审美",
+						"color": "#f8f9fd",
+						"wordColor": "#a5acc0",
+						"check": false
+					},
+					{
+						"src": "/static/me/tools/function.png",
+						"word": "功能建议",
+						"color": "#f8f9fd",
+						"wordColor": "#a5acc0",
+						"check": false
+					},
+					{
+						"src": "/static/me/tools/other.png",
+						"word": "其他反馈",
+						"color": "#f8f9fd",
+						"wordColor": "#a5acc0",
+						"check": false
+					}
+				]
 			}
 		},
 		onLoad() {},
 		onShow() {},
 		onUnload() {},
 		methods: {
+			checkTarget(index) {
+				// 判断当前是否之选中一个反馈建议
+				this.list[index].wordColor = this.list[index].wordColor == '#ffffff' ? '#a5acc0' : '#ffffff';
+				this.list[index].color = this.list[index].color == '#f8f9fd' ? '#5199ff' : '#f8f9fd';
+				this.list[index].check = this.list[index].check == false ? true : false;
+				switch(index){
+					case 0: 
+						this.list[index].src = this.list[index].src == '/static/me/tools/quit.png' ? '/static/me/tools/quit-select.png' : '/static/me/tools/quit.png';;
+					break;
+					case 1: 
+						this.list[index].src = this.list[index].src == '/static/me/tools/transform.png' ? '/static/me/tools/transform-select.png' : '/static/me/tools/transform.png';;
+					break;
+					case 2: 
+						this.list[index].src = this.list[index].src == '/static/me/tools/operation.png' ? '/static/me/tools/operation-select.png' : '/static/me/tools/operation.png';;
+					break;
+					case 3: 
+						this.list[index].src = this.list[index].src == '/static/me/tools/mei.png' ? '/static/me/tools/mei-select.png' : '/static/me/tools/mei.png';;
+					break;
+					case 4: 
+						this.list[index].src = this.list[index].src == '/static/me/tools/function.png' ? '/static/me/tools/function-select.png' : '/static/me/tools/function.png';;
+					break;
+					case 5: 
+						this.list[index].src = this.list[index].src == '/static/me/tools/other.png' ? '/static/me/tools/other-select.png' : '/static/me/tools/other.png';;
+					break;
+				}
+			},
 			// 用户反馈内容提交
-			formSubmit: function(e) {
-				console.log(e);
+			formSubmit(e) {
+				let filterList = this.list.filter(item => item.check == true).map(n => {
+					let {word} = {...n};
+					return {word};
+				});
+				console.log("----------> " + JSON.stringify(e.detail.value));
 			},
 			// // 监听输入内容
-			descInput:function(e){
+			descInput(e) {
 				this.number = e.detail.cursor
 			}
 		}
@@ -114,10 +158,6 @@
 		height: 80rpx;
 		display: block;
 		padding-left: 10px;
-	}
-
-	.reason {
-		color: #a5acc0;
 	}
 
 	/* 反馈内容 */
