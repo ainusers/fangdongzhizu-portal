@@ -114,11 +114,41 @@
 			},
 			// 用户反馈内容提交
 			formSubmit(e) {
-				let filterList = this.list.filter(item => item.check == true).map(n => {
+				let words = this.list.filter(item => item.check == true).map(n => {
 					let {word} = {...n};
-					return {word};
+					return {word}.word;
 				});
-				console.log("----------> " + JSON.stringify(e.detail.value));
+				uni.request({
+					method: 'post',
+					header: {
+						'content-type': 'application/json',
+						'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MjO3NDU2sjRU0lFKrShQsjI0Mzc2NjY0sDSsBQAkcQnqJgAAAA.xrwwffvn6-vek2iTmx6Cmt6sSbwWMLDf4Hducz83oWehPd6GrSTKmX0zYX_qAY4vcjA3T9_VXZhkM7EJe15J3Q'
+					},
+					data: {
+						type: words.toString(),
+						content: e.detail.value.content,
+						contact: e.detail.value.contact
+					},
+					url: 'http://81.70.163.240:11001/zf/v1/advise/advises',
+					success: (res) => {
+						if(res.data.code == 200) {
+							uni.showToast({
+								title: '反馈建议已成功提交',
+								icon: 'none',
+								duration: 2000
+							})
+							// 返回上一页
+							setTimeout(() => {
+								uni.navigateBack({
+								    delta: 1
+								});
+							},2000)
+						}
+					},
+					fail: (e) => {
+						console.log("e: " + JSON.stringify(e));
+					}
+				});
 			},
 			// // 监听输入内容
 			descInput(e) {
