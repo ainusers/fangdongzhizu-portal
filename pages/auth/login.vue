@@ -190,9 +190,10 @@
 				});
 			},
 			loginByUser() {
-				uni.switchTab({
-					url: '/pages/tabbar/home/home'
-				})
+				// uni.switchTab({
+				// 	url: '/pages/tabbar/home/home'
+				// })
+				
 				// if (!/^1\d{10}$/.test(this.username)) {
 				// 	uni.showToast({
 				// 		icon: 'none',
@@ -207,24 +208,28 @@
 				// 	});
 				// 	return;
 				// }
-				// uni.request({
-				// 	method: 'post',
-				// 	header: {
-				// 		'content-type': 'application/json'
-				// 	},
-				//     data: {
-				//     	username: this.username,
-				//     	password: this.password
-				//     },
-				// 	url: 'http://81.70.163.240:11001/users/login',
-				//     success: (res) => {
-				// 		if(res.data.success) {
-				// 			uni.switchTab({
-				// 				url: '/pages/tabbar/home/home'
-				// 			})
-				// 		}
-				//     }
-				// })
+				uni.request({
+					method: 'post',
+					header: {
+						'content-type': 'application/json'
+					},
+				    data: {
+				    	username: this.username,
+				    	password: this.password
+				    },
+					url: 'http://81.70.163.240:11001/zf/v1/user/login',
+				    success: (res) => {
+						if(res.data.success) {
+							uni.setStorage({
+								key: 'token',
+								data: res.data.data[0].token
+							});						
+							uni.switchTab({
+								url: '/pages/tabbar/home/home'
+							})
+						}
+				    }
+				})
 			},
 			useWX() {
 				// uni.login({

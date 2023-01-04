@@ -28,6 +28,7 @@
     }
     .gps_city{
         margin-left: 30upx;
+		margin-right: 30upx;
         position:relative;
         height:80upx;
         line-height:84upx;

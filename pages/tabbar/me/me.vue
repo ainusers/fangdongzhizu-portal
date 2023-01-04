@@ -233,14 +233,14 @@
 	  <!-- 横条区域 -->
 	  <view class="list-card">
 	    <view class="card">
-	      <view class="item item-bottom-solid">
+	      <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/advise')">
 	        <view class="left flex-center">
 	          <image mode="aspectFit" src="../../../static/me/share.svg"></image>
 	        </view>
 	        <view class="center">
 	          <text>反馈建议</text>
 	        </view>
-	        <view class="right flex-center" @click="goto('/pages/tabbar/me/tools/advise')">
+	        <view class="right flex-center">
 	          <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
 	        </view>
 	      </view>
@@ -266,13 +266,35 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+				title: 'Hello',
+				token: ''
 			}
 		},
 		onLoad() {
-
+			this.getUserInfo();
 		},
 		methods: {
+			getUserInfo() {
+				console.log("-----> ")
+				uni.getStorage({
+					key: 'token',
+					success: function (res) {
+						this.token = res.data;
+					}
+				});
+				// 获取用户信息
+				uni.request({
+					method: 'get',
+					header: {
+						'content-type': 'application/json',
+						'Authorization': 'Bearer ' + this.token
+					},
+					url: 'http://81.70.163.240:11001/zf/v1/user/attr/token',
+				    success: (res) => {
+						console.log("-------> " + JSON.stringify(res));
+				    }
+				})
+			},
 			goto(uri){
 				uni.navigateTo({
 					url: uri
