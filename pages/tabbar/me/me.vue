@@ -267,7 +267,6 @@
 		data() {
 			return {
 				title: 'Hello',
-				token: ''
 			}
 		},
 		onLoad() {
@@ -275,25 +274,23 @@
 		},
 		methods: {
 			getUserInfo() {
-				console.log("-----> ")
 				uni.getStorage({
 					key: 'token',
 					success: function (res) {
-						this.token = res.data;
+						// 获取用户信息
+						uni.request({
+							method: 'get',
+							header: {
+								'content-type': 'application/json',
+								'Authorization': 'Bearer ' + res.data
+							},
+							url: 'http://81.70.163.240:11001/zf/v1/user/attr/token',
+						    success: (res) => {
+								console.log("-------> " + JSON.stringify(res));
+						    }
+						})
 					}
 				});
-				// 获取用户信息
-				uni.request({
-					method: 'get',
-					header: {
-						'content-type': 'application/json',
-						'Authorization': 'Bearer ' + this.token
-					},
-					url: 'http://81.70.163.240:11001/zf/v1/user/attr/token',
-				    success: (res) => {
-						console.log("-------> " + JSON.stringify(res));
-				    }
-				})
 			},
 			goto(uri){
 				uni.navigateTo({
