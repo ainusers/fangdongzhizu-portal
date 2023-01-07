@@ -144,6 +144,7 @@
 				});
 			},
 			bindLogin() {
+				console.log(this.tabIndex)
 				switch (this.tabIndex) {
 					case 0:
 						this.loginByUser()

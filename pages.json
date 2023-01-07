@@ -143,6 +143,20 @@
 			}
 		},
 		{
+			"path": "pages/tabbar/news/news",
+			"style": {
+				"navigationBarTitleText": "消息",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle":"light",
+				"backgroundColor":"#fff",
+				"app-plus": {
+					"scrollIndicator": "none"
+				}
+			}
+		},
+		{
 			"path": "pages/tabbar/community/tools/news",
 			"style": {
 				"navigationBarTitleText": "万人群",
