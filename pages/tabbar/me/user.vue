@@ -86,7 +86,7 @@
                 <view class="item_text">头像</view>
                 <view class="f_r_e img_view_info">
                     <view class="img_view">
-						<image @error="imgError" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Flmg.jj20.com%2Fup%2Fallimg%2Ftx19%2F190400013682702.jpg&refer=http%3A%2F%2Flmg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1663558223&t=18f5f6031a8617c79e371aa78bcef759" mode="aspectFit"></image>
+						<image @error="imgError" :src="this.userInfo.avatar" mode="aspectFit"></image>
 						<u-icon class="arrow_right" name="arrow-right"></u-icon>
 					</view>
                 </view>
@@ -95,7 +95,7 @@
             <view class="item f_r_b" @click="goto('/pages/tabbar/me/update/nickname')">
                 <view class="item_text">昵称</view>
                 <view class="item_val">
-					你是我的优乐美
+					{{ this.userInfo.nickname }}
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
 				
@@ -104,25 +104,31 @@
             <view class="item f_r_b" @click="goto('/pages/tabbar/me/update/sex')">
                 <view class="item_text">性别</view>
                 <view class="item_val">
-					女
+					{{ this.userInfo.sex == 1 ? '男' : '女'}}
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
-				
             </view>
             <!--地区-->
             <view class="item f_r_b" @click="goto('/pages/tabbar/me/update/region')">
                 <view class="item_text">地区</view>
-                <view class="item_val">
-					北京 海淀
-					<u-icon class="arrow_right" name="arrow-right"></u-icon>
-				</view>
-				
+				<block v-if="this.userInfo.province == ''">
+					<view class="item_val">
+						请选择地区
+						<u-icon class="arrow_right" name="arrow-right"></u-icon>
+					</view>
+				</block>
+                <block v-else>
+					<view class="item_val">
+						{{ this.userInfo.province }} - {{ this.userInfo.city }}
+						<u-icon class="arrow_right" name="arrow-right"></u-icon>
+					</view>
+				</block>
             </view>
             <!--手机号-->
             <view class="item f_r_b">
                 <view class="item_text">手机号</view>
                 <view class="item_val">
-					132****3291
+					{{ this.userInfo.username }}
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
 				
@@ -148,7 +154,7 @@
 			<view class="item f_r_b"  @click="goto('/pages/tabbar/me/update/sign')">
 			    <view class="item_text">个性签名</view>
 			    <view class="item_val">
-					因为有你，所以一切变得美好
+					{{ this.userInfo.signature }}
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
 			</view>
@@ -158,17 +164,15 @@
 <script>
     export default {
         data() {
-            return {}
+            return {
+				userInfo: ''
+			}
         },
-        onLoad() {
-           
+        onLoad(options) {
+		   console.log(options.userInfo)
+           this.userInfo = JSON.parse(options.userInfo);
         },
-        onShow() {
-            
-        },
-        onUnload() {
-            
-        },
+        onShow() {},
         methods: {
 			goto(uri){
 				uni.navigateTo({

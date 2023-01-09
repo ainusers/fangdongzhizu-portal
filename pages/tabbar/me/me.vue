@@ -71,8 +71,8 @@
 			  }
 	        }
 	        .user-phone {
-	          width: 100%;
-			  text-align: center;
+			  width: 300px;
+	          margin: auto;
 			  padding-top: 5px;
 	        }
 	      }
@@ -157,7 +157,7 @@
 	    <view class="background"></view>
 	  </view>
 	  <view class="user-card">
-	    <view class="card" @click="goto('/pages/tabbar/me/user')">
+	    <view class="card" @click="goto(`/pages/tabbar/me/user?userInfo=${encodeURIComponent(JSON.stringify(userInfo))}`)">
 	      <view class="top">
 	        <view class="userImage">
 	          <image :src="this.userInfo.avatar" mode="aspectFit"></image>
