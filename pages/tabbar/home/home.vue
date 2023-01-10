@@ -1,6 +1,7 @@
 <style scope lang="scss">
 .main {
 	background-color: #f2f2f2;
+	 // height: var(--status-bar-height);
 }
 .home_top {
 	width: 100%;
