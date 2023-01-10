@@ -224,7 +224,7 @@
 							uni.setStorage({
 								key: 'token',
 								data: res.data.data[0].token
-							});						
+							});	
 							uni.switchTab({
 								url: '/pages/tabbar/home/home'
 							})

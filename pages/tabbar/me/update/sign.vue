@@ -11,7 +11,7 @@
 </style>
 <template>
 	<view class="content">
-		<u-input v-model="value" :type="type" :border="border" placeholder="展示你的个性签名吧"/>
+		<u-input v-model="value" :type="type" :border="border" :maxlength="18" placeholder="展示你的个性签名吧"/>
 	</view>
 </template>
 <script>

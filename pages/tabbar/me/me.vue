@@ -71,8 +71,8 @@
 			  }
 	        }
 	        .user-phone {
-	          width: 100%;
-			  text-align: center;
+			  width: 300px;
+	          margin: auto;
 			  padding-top: 5px;
 	        }
 	      }
@@ -157,22 +157,27 @@
 	    <view class="background"></view>
 	  </view>
 	  <view class="user-card">
-	    <view class="card">
+	    <view class="card" @click="goto(`/pages/tabbar/me/user?userInfo=${encodeURIComponent(JSON.stringify(userInfo))}`)">
 	      <view class="top">
 	        <view class="userImage">
-	          <image src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Flmg.jj20.com%2Fup%2Fallimg%2Ftx19%2F190400013682702.jpg&refer=http%3A%2F%2Flmg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1663558223&t=18f5f6031a8617c79e371aa78bcef759" mode="aspectFit"></image>
+	          <image :src="this.userInfo.avatar" mode="aspectFit"></image>
 			</view>
 	      </view>
 	      <view class="bottom">
 	        <view class="left">
 	          <view class="user-text">
-	            <view class="userNickName">你是我的优乐美</view>
-				<image mode="aspectFit" src="../../../static/me/boy.svg"></image>
-				<view class="option" @click="goto('/pages/tabbar/me/user')">
+	            <view class="userNickName">{{ this.userInfo.nickname }}</view>
+				<block v-if="this.userInfo.sex == 0">
+					<image mode="aspectFit" src="../../../static/me/girl.svg"></image>
+				</block>
+				<block v-else>
+					<image mode="aspectFit" src="../../../static/me/boy.svg"></image>
+				</block>
+				<view class="option" >
 					<u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
 				</view>
 	          </view>
-	          <view class="user-phone">因为有你，所以一切变得美好</view>
+	          <view class="user-phone">{{ this.userInfo.signature }}</view>
 	        </view>
 	      </view>
 	    </view>
@@ -266,8 +271,7 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello',
-				token: ''
+				userInfo: ''
 			}
 		},
 		onLoad() {
@@ -275,25 +279,25 @@
 		},
 		methods: {
 			getUserInfo() {
-				console.log("-----> ")
+				var that = this;
 				uni.getStorage({
 					key: 'token',
-					success: function (res) {
-						this.token = res.data;
+					success: function (auth) {
+						// 获取用户信息
+						uni.request({
+							method: 'get',
+							header: {
+								'content-type': 'application/json',
+								'Authorization': 'Bearer ' + auth.data
+							},
+							url: 'http://81.70.163.240:11001/zf/v1/user/attr/token',
+						    success: (res) => {
+								that.userInfo = res.data.data[0].user;
+								console.log("----1------->"+ JSON.stringify(that.userInfo))
+						    }
+						})
 					}
 				});
-				// 获取用户信息
-				uni.request({
-					method: 'get',
-					header: {
-						'content-type': 'application/json',
-						'Authorization': 'Bearer ' + this.token
-					},
-					url: 'http://81.70.163.240:11001/zf/v1/user/attr/token',
-				    success: (res) => {
-						console.log("-------> " + JSON.stringify(res));
-				    }
-				})
 			},
 			goto(uri){
 				uni.navigateTo({
