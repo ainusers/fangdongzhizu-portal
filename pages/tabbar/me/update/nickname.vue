@@ -18,12 +18,15 @@
     export default {
         data() {
 			return {
+				userInfo: '',
 				value: '',
 				type: 'text',
 				border: true
 			}
 		},
-        onLoad() {
+        onLoad(data) {
+			this.userInfo = JSON.parse(decodeURIComponent(data.userInfo));
+			this.value = this.userInfo.nickname;
         },
         onShow() {
         },

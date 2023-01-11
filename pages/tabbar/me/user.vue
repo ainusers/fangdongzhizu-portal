@@ -67,7 +67,7 @@
         color: #a3a5a8;
         text-align: right;
         max-width: 100%;
-        padding-left: 40upx;
+        padding-left: 120upx;
         box-sizing: border-box;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -92,16 +92,15 @@
                 </view>
             </view>
             <!--昵称-->
-            <view class="item f_r_b" @click="goto('/pages/tabbar/me/update/nickname')">
+            <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/nickname?userInfo=${encodeURIComponent(JSON.stringify(userInfo))}`)">
                 <view class="item_text">昵称</view>
                 <view class="item_val">
 					{{ this.userInfo.nickname }}
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
-				
             </view>
             <!--性别-->
-            <view class="item f_r_b" @click="goto('/pages/tabbar/me/update/sex')">
+            <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/sex?userInfo=${encodeURIComponent(JSON.stringify(userInfo))}`)">
                 <view class="item_text">性别</view>
                 <view class="item_val">
 					{{ this.userInfo.sex == 1 ? '男' : '女'}}
@@ -109,7 +108,7 @@
 				</view>
             </view>
             <!--地区-->
-            <view class="item f_r_b" @click="goto('/pages/tabbar/me/update/region')">
+            <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/region?userInfo=${encodeURIComponent(JSON.stringify(userInfo))}`)">
                 <view class="item_text">地区</view>
 				<block v-if="this.userInfo.province == ''">
 					<view class="item_val">
@@ -151,7 +150,7 @@
 				</view>
 			</view>
 			<!--个性签名-->
-			<view class="item f_r_b"  @click="goto('/pages/tabbar/me/update/sign')">
+			<view class="item f_r_b"  @click="goto(`/pages/tabbar/me/update/sign?userInfo=${encodeURIComponent(JSON.stringify(userInfo))}`)">
 			    <view class="item_text">个性签名</view>
 			    <view class="item_val">
 					{{ this.userInfo.signature }}
@@ -175,6 +174,7 @@
         onShow() {},
         methods: {
 			goto(uri){
+				console.log(uri)
 				uni.navigateTo({
 					url: uri
 				})

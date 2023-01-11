@@ -21,6 +21,7 @@
     export default {
         data() {
 			return {
+				userInfo: '',
 				labelPosition: 'left',
 				border: false,
 				pickerShow: false,
@@ -44,7 +45,9 @@
 				],
 			}
 		},
-        onLoad() {
+        onLoad(data) {
+			this.userInfo = JSON.parse(decodeURIComponent(data.userInfo));
+			this.model.sex = this.userInfo.sex == 1 ? '男' : '女';
         },
         onShow() {
         },
