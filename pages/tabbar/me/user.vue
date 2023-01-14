@@ -130,7 +130,6 @@
 					{{ this.userInfo.username }}
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
-				
             </view>
             <!--实名认证-->
             <view class="item f_r_b">
@@ -139,7 +138,6 @@
 					未认证
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
-				
             </view>
 			<!--修改密码-->
 			<view class="item f_r_b" @click="goto('/pages/tabbar/me/update/pwd')">

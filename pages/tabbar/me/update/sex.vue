@@ -61,7 +61,40 @@
 		},
 		onNavigationBarButtonTap(e) {
 			console.log(this.model.sex);
-			// 向后端发送请求，设置性别
+			// 向后端发送请求，修改用户性別
+			var that = this;
+			uni.getStorage({
+				key: 'token',
+				success: function (auth) {
+					uni.request({
+						method: 'patch',
+						data: {
+							id: that.userInfo.id,
+							sex: that.model.sex == '男' ? 1 : 0
+						},
+						header: {
+							'content-type': 'application/json',
+							'Authorization': 'Bearer ' + auth.data
+						},
+						url: 'http://81.70.163.240:11001/zf/v1/user/attr',
+						success: (res) => {
+							if(!res.data.data[0].status){
+								uni.showToast({
+									title: '修改成功',
+									icon: 'none',
+									duration: 2000
+								})
+								// 返回上一页
+								setTimeout(() => {
+									uni.navigateBack({
+									    delta: 1
+									});
+								},2000)
+							}
+						}
+					})
+				}
+			})
 		}
     }
 </script>
