@@ -251,7 +251,7 @@
 	      </view>
 	    </view>
 	    <view class="card">
-	      <view class="item item-bottom-solid">
+	      <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/about')">
 	        <view class="left flex-center">
 			  <image mode="aspectFit" src="../../../static/me/about.svg"></image>
 	        </view>

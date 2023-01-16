@@ -21,6 +21,7 @@
     export default {
         data() {
 			return {
+				userInfo: '',
 				// 房屋位置
 				labelPosition: 'left',
 				border: false,
@@ -38,7 +39,9 @@
 				},
 			}
 		},
-        onLoad() {
+        onLoad(data) {
+			this.userInfo = JSON.parse(decodeURIComponent(data.userInfo));
+			this.model.region = this.userInfo.province;
         },
         onShow() {
         },
