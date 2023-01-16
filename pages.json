@@ -76,15 +76,15 @@
 		{
 			"path": "pages/tabbar/home/home",
 			"style": {
-				"transparentTitle":  "always"
-				// "navigationBarTitleText": "主页",
-				// "navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#fafafa",
-				// "enablePullDownRefresh": false,
-				// "backgroundTextStyle":"light",
-				// "app-plus": {
-				// 	"scrollIndicator": "none"
-				// }
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#f2f2f2",
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle":"light",
+				"backgroundColor":"#fff",
+				"app-plus": {
+					"scrollIndicator": "none"
+				}
 			}
 		},
 		{
