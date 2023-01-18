@@ -77,6 +77,9 @@
 		background-color: #F5F5F5;
 		padding: 5px 0;
 	}
+	.logout{
+		padding: 25px 10px 0px 10px;
+	}
 </style>
 <template>
     <view class="cont_view">
@@ -156,6 +159,10 @@
 				</view>
 			</view>
         </view>
+		<!-- 退出登录 -->
+		<view class="logout" @click="logout()">
+			<button type="default" class="feedback-submit" @click="logout">退出登录</button>
+		</view>
     </view>
 </template>
 <script>
@@ -200,7 +207,11 @@
                         // 上传图片操作 (.then().catch(err => {}))
                     }
                 });
-            }
+            },
+			// 退出登录
+			logout() {
+				console.log("----退出登录---> ")
+			}
         }
     }
 </script>
