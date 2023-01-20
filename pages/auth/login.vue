@@ -191,24 +191,20 @@
 				});
 			},
 			loginByUser() {
-				// uni.switchTab({
-				// 	url: '/pages/tabbar/home/home'
-				// })
-				
-				// if (!/^1\d{10}$/.test(this.username)) {
-				// 	uni.showToast({
-				// 		icon: 'none',
-				// 		title: '请填写正确的手机号'
-				// 	});
-				// 	return;
-				// }
-				// if (this.password.length < 1) {
-				// 	uni.showToast({
-				// 		icon: 'none',
-				// 		title: '请输入密码'
-				// 	});
-				// 	return;
-				// }
+				if (!/^1\d{10}$/.test(this.username)) {
+					uni.showToast({
+						icon: 'none',
+						title: '请填写正确的手机号'
+					});
+					return;
+				}
+				if (this.password.length < 1) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入密码'
+					});
+					return;
+				}
 				uni.request({
 					method: 'post',
 					header: {
@@ -224,7 +220,7 @@
 							uni.setStorage({
 								key: 'token',
 								data: res.data.data[0].token
-							});	
+							});
 							uni.switchTab({
 								url: '/pages/tabbar/home/home'
 							})

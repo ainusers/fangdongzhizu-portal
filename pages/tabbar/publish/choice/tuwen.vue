@@ -187,7 +187,6 @@
 				this.sizeType = ['压缩', '原图', '压缩或原图'],
 				this.countIndex = 8;
 		},
-		
 		methods: {
 			// 批量上传接口
 			attachUpload(){
@@ -228,7 +227,7 @@
 				}
 				uni.showLoading({title:'发布中'});
 				// 获取位置信息
-				let location = await this.getLocation(); 
+				let location = await this.getLocation();
 				// 获取上传图片地址
 				let images;
 				if(this.imageList.length == 0) {

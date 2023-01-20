@@ -210,7 +210,15 @@
             },
 			// 退出登录
 			logout() {
-				console.log("----退出登录---> ")
+				uni.removeStorage({
+					key: 'token',
+					success: function (res) {
+						console.log('success');
+					}
+				});
+				uni.navigateTo({
+					url: '/pages/auth/login'
+				})
 			}
         }
     }
