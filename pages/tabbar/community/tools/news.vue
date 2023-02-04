@@ -239,7 +239,7 @@
 				// 创建socketInstance对象实例，进行所有操作
 				this.socketInstance = uni.connectSocket({
 					// 确保你的服务器是运行态
-					url: "ws://192.168.124.11:17180/websocket",
+					url: "ws://www.fangdongzhizu.top:17180/websocket",
 					success(data) {
 						// console.log("websocket连接状态：" + JSON.stringify(data.errMsg));
 					}
