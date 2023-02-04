@@ -290,7 +290,7 @@
 								'content-type': 'application/json',
 								'Authorization': 'Bearer ' + auth.data
 							},
-							url: 'http://81.70.163.240:11001/zf/v1/user/attr/token',
+							url: 'http://www.fangdongzhizu.top:11001/zf/v1/user/attr/token',
 						    success: (res) => {
 								that.userInfo = res.data.data[0].user;
 								console.log("----1------->"+ JSON.stringify(that.userInfo))

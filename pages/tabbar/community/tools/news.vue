@@ -448,7 +448,7 @@
 						for(let i=0;i<res.tempFilePaths.length;i++){
 							uni.uploadFile({
 								name: 'multipartFile',
-								url: 'http://81.70.163.240:15329/uploadFile?buketName=zufang-chat',
+								url: 'http://www.fangdongzhizu.top:15329/uploadFile?buketName=zufang-chat',
 								buketName: 'zufang-chat',
 								filePath: res.tempFilePaths[i],
 								success: uploadFileRes => {
@@ -654,7 +654,7 @@
 				if(!this.willStop){
 					uni.uploadFile({
 						name: 'multipartFile',
-						url: 'http://81.70.163.240:15329/uploadFile?buketName=zufang-chat',
+						url: 'http://www.fangdongzhizu.top:15329/uploadFile?buketName=zufang-chat',
 						buketName: 'zufang-chat',
 						filePath: res.tempFilePath,
 						success: uploadFileRes => {
