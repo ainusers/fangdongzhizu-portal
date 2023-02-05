@@ -180,7 +180,7 @@
 						username: this.phone,
 						password: this.code
 					},
-					url: 'http://www.fangdongzhizu.top:11001/users/login',
+					url: 'http://81.70.163.240:11001/users/login',
 					success: (res) => {
 						if (res.data.success) {
 							uni.switchTab({
@@ -217,7 +217,7 @@
 				    	username: this.username,
 				    	password: this.password
 				    },
-					url: 'http://www.fangdongzhizu.top:11001/zf/v1/user/login',
+					url: 'http://81.70.163.240:11001/zf/v1/user/login',
 				    success: (res) => {
 						if(res.data.success) {
 							uni.setStorage({
@@ -266,7 +266,7 @@
 								'cotent-type': 'application/json',
 							},
 							data: loginRes.authResult,
-							url: 'http://www.fangdongzhizu.top:11001/users/wxlogin',
+							url: 'http://81.70.163.240:11001/users/wxlogin',
 							success(infoRes) {
 								// 查看需要保存的信息
 								console.log('返回信息：' + JSON.stringify(infoRes))

@@ -200,9 +200,9 @@
 						files.push(imgAttr);
 					}
 					uni.uploadFile({
-						url: 'http://www.fangdongzhizu.top:11001/zf/v1/file/uploads',
+						url: 'http://81.70.163.240:11001/zf/v1/file/uploads',
 						header: {
-							'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MTc2MDQ1tDBV0lFKrShQsjI0MzezNDM2MLCsBQCQ-jtPJgAAAA.ZtloF6dqZgM7kz5E0Koo6PsNosVmXQ9ggcmAmxQ_3StncqgiVRBz7KhZHa-tvxQ9jGisxvQq6DktyojyWUW8kA'
+							'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MTc2MDQ1tDBV0lFKrShQsjI0MzeztDA0sTStBQBUK_cjJgAAAA.rThi6WZt-znA26lOrTpEGfS6Vf-TAsQaWBX8tcF0k7kfSUX03mLli7D5LsEJ_d-D_EH1Uwk4H6p6ElNZfyaeLQ'
 						},
 						files: files,
 						success: (res) => {
@@ -235,17 +235,18 @@
 				} else {
 					images = await this.attachUpload();
 				}
+				// console.log("---上传图片---->" + images)
 				// 上传动态信息
 				uni.request({
 					method: 'post',
 					header: {
 						'content-type': 'application/json',
-						'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MTc2MDQ1tDBV0lFKrShQsjI0MzezNDM2MLCsBQCQ-jtPJgAAAA.ZtloF6dqZgM7kz5E0Koo6PsNosVmXQ9ggcmAmxQ_3StncqgiVRBz7KhZHa-tvxQ9jGisxvQq6DktyojyWUW8kA'
+						'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MTc2MDQ1tDBV0lFKrShQsjI0MzeztDA0sTStBQBUK_cjJgAAAA.rThi6WZt-znA26lOrTpEGfS6Vf-TAsQaWBX8tcF0k7kfSUX03mLli7D5LsEJ_d-D_EH1Uwk4H6p6ElNZfyaeLQ'
 					},
 					data: {
 						'imgUrl': images.toString(),
 						'username': '俊哥',
-						'avatar': 'http://www.fangdongzhizu.top:9090/asiatrip/62e20350efcef62d940556e420220726132059.jpg',
+						'avatar': 'http://81.70.163.240:9090/asiatrip/62e20350efcef62d940556e420220726132059.jpg',
 						'userId': 1606522650501607424,
 						'words': this.input_content,
 						'longitude': location.longitude, // 经度
@@ -256,7 +257,7 @@
 						'address': location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName,
 						'type': location.type
 					},
-					url: 'http://www.fangdongzhizu.top:11001/zf/v1/dynamic/dynamics',
+					url: 'http://81.70.163.240:11001/zf/v1/dynamic/dynamics',
 					success: (res) => {
 						uni.hideLoading();
 						uni.showToast({

@@ -51,7 +51,7 @@
 							'content-type': 'application/json',
 							'Authorization': 'Bearer ' + auth.data
 						},
-						url: 'http://www.fangdongzhizu.top:11001/zf/v1/user/attr',
+						url: 'http://81.70.163.240:11001/zf/v1/user/attr',
 						success: (res) => {
 							if(res.data.data[0].status){
 								uni.showToast({

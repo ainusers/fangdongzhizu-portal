@@ -129,7 +129,7 @@
 						content: e.detail.value.content,
 						contact: e.detail.value.contact
 					},
-					url: 'http://www.fangdongzhizu.top:11001/zf/v1/advise/advises',
+					url: 'http://81.70.163.240:11001/zf/v1/advise/advises',
 					success: (res) => {
 						if(res.data.code == 200) {
 							uni.showToast({

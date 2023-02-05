@@ -118,7 +118,7 @@
 					});
 					return;
 				}
-				this.$H.post('http://www.fangdongzhizu.top:11001/zf/v1/user/reset',{
+				this.$H.post('http://81.70.163.240:11001/zf/v1/user/reset',{
 					username: this.phone,
 					code: this.code,
 					password: this.password
@@ -138,7 +138,7 @@
 				// 		password: this.password,
 				// 		rememberMe: 'true'
 				// 	},
-				// 	url: 'http://www.fangdongzhizu.top:11001/users/register',
+				// 	url: 'http://81.70.163.240:11001/users/register',
 				//     success: (res) => {
 				//         console.log(res.data);
 				//     }
