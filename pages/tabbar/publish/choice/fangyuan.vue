@@ -139,6 +139,9 @@
 		width: 30%;
 		margin-top: 10px;
 	}
+	.select_btn{
+		color: #ddd;
+	}
 </style>
 <template>
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
@@ -221,8 +224,15 @@
 			<!-- 出租房屋 -->
 			<u-form-item :label-position="labelPosition" label="出租房屋 :" prop="region" label-width="150">
 				<u-input :border="border" placeholder="请选择房屋结构" v-model="model.lease" type="select" @click="leaseShow = true"></u-input>
-				<u-select :mode="mode" v-model="leaseShow" :list="leaseList" @confirm="leaseConfirm" @cancel="leaseCancel"></u-select>
+				<u-select mode="mutil-column-auto" v-model="leaseShow" :list="leaseList" @confirm="leaseConfirm" @cancel="leaseCancel"></u-select>
 			</u-form-item>
+			<!-- 几室 -->
+			<view class="" v-for="(item,index) in homeArr">
+				<u-form-item :label-position="labelPosition" :label="item" prop="region" label-width="150" v-if="">
+					<u-input :border="border" placeholder="请填写房屋情况" v-model="model.lease" type="select" @click="leaseShow = true"></u-input>
+				</u-form-item>
+			</view>
+			<!-- homeArr -->
 			<!-- 供暖方式 -->
 			<u-form-item :label-position="labelPosition" label="供暖方式 :" prop="region" label-width="150">
 					<view v-for="(item, index) in heatList" :key="index" 
@@ -269,8 +279,9 @@
 			<!-- 费用详情 -->
 			<view class="region_new_title">费用详情</view>
 			<u-form-item :label-position="labelPosition" label="付款方式 :" prop="region" label-width="150">
-				<u-input :border="border" placeholder="请选择付款方式" v-model="model.pay" type="select" @click="payShow = true"></u-input>
-				<u-select :mode="mode" v-model="payShow" :list="payList" @confirm="payConfirm" @cancel="payCancel"></u-select>
+				<view @click="showPicker('pay')" :class="[{'select_btn':currentObj['pay'].valueName.indexOf('请选择')!=-1}]">{{currentObj['pay'].valueName}}</view>
+			<!-- 	<u-input :border="border" placeholder="请选择付款方式" v-model="model.pay" type="select" @click="payShow = true"></u-input> -->
+				<!-- <u-select :mode="mode" v-model="payShow" :list="payList" @confirm="payConfirm" @cancel="payCancel"></u-select> -->
 			</u-form-item>
 			<!-- 月度租金 -->
 			<u-form-item :label-position="labelPosition" label="月度租金 :" prop="region" label-width="150">
@@ -290,19 +301,19 @@
 			</u-form-item>
 			<!-- 取暖费用 -->
 			<u-form-item :label-position="labelPosition" label="取暖费用 :" prop="region" label-width="150">
-				<u-input :border="border" :type="Number" placeholder="请输入取暖费用" type="text"></u-input>
+				<view @click="showPicker('warm')" :class="[{'select_btn':currentObj['warm'].valueName.indexOf('请选择')!=-1}]">{{currentObj['warm'].valueName}}</view>
 			</u-form-item>
 			<!-- 无线费用 -->
 			<u-form-item :label-position="labelPosition" label="无线费用 :" prop="region" label-width="150">
-				<u-input :border="border" :type="Number" placeholder="请输入无线费用" type="text"></u-input>
+			<view @click="showPicker('wireless')" :class="[{'select_btn':currentObj['wireless'].valueName.indexOf('请选择')!=-1}]">{{currentObj['wireless'].valueName}}</view>
 			</u-form-item>
 			<!-- 物业费用 -->
 			<u-form-item :label-position="labelPosition" label="物业费用 :" prop="region" label-width="150">
-				<u-input :border="border" :type="Number" placeholder="请输入物业费用" type="text"></u-input>
+			<view @click="showPicker('property')" :class="[{'select_btn':currentObj['property'].valueName.indexOf('请选择')!=-1}]">{{currentObj['property'].valueName}}</view>
 			</u-form-item>
 			<!-- 水电费用 -->
 			<u-form-item :label-position="labelPosition" label="水电费用 :" prop="region" label-width="150">
-				<u-input :border="border" :type="Number" placeholder="请输入水电费用" type="text"></u-input>
+				<view @click="showPicker('hydropower')" :class="[{'select_btn':currentObj['hydropower'].valueName.indexOf('请选择')!=-1}]">{{currentObj['hydropower'].valueName}}</view>
 			</u-form-item>
 			<!-- 房源配置 -->
 			<u-form-item :label-position="labelPosition" label="房源配置" label-width="150" prop="houseConfig">
@@ -312,7 +323,7 @@
 					</u-checkbox>
 				</u-checkbox-group>
 			</u-form-item>
-			
+				<u-picker mode="selector" v-model="selectShow"  :default-selector="[0]" :range="selectList" @confirm="ConfirmFn" @cancel="CancelFn" range-key="value"></u-picker>
 			<view class="footer">
 				<button type="default" class="feedback-submit" @click="publish">发布</button>
 			</view>
@@ -336,6 +347,40 @@
 	export default {
 		data() {
 			return {
+				currentType:'',
+				currentObj:{
+					warm:{
+						valueName:'请选择取暖费用',
+						valueCode:''
+					},
+					wireless:{
+						valueName:'请选择无线费用',
+						valueCode:''
+					},
+					property:{
+						valueName:'请选择无线费用',
+						valueCode:''
+					},
+					hydropower:{
+						valueName:'请选择水电费用',
+						valueCode:''
+					},
+					pay:{
+						valueName:'请选择付款方式',
+						valueCode:''
+					}
+				},
+				currentHomeNum:'',//当前几居室
+				houseTypeList:{
+					
+				},
+				homeArr:[
+					'A室',
+					'B室',
+					'C室',
+					'D室',
+					'E室'
+				],
 				// 发布类型
 				labelPosition: 'left',
 				radioCheckWidth: 'auto',
@@ -371,6 +416,17 @@
 					payType: '支付宝',
 					houseConfig: '',
 				},
+				selectShow:false,
+				payTypeList:[
+					{
+						value: '租客支付',
+						label: '租客支付'
+					},
+					{
+						value: '房东支付',
+						label: '房东支付'
+					},
+				],
 				// 房屋位置
 				border: false,
 				pickerShow: false,
@@ -384,6 +440,7 @@
 				// 房屋信息
 				layoutShow: false,
 				mode: 'mutil-column',
+				selectList:[],
 				layoutList: [
 					[
 						{
@@ -453,58 +510,161 @@
 				// 出租房屋
 				leaseShow: false,
 				leaseList: [
-					[
-						{
-							value: '整租',
-							label: '整租'
-						},
-						{
-							value: '合租',
-							label: '合租'
-						}
-					],
-					[
-						{
-							value: '一居室',
-							label: '一居室'
-						},
-						{
-							value: '两居室',
-							label: '两居室'
-						},
-						{
-							value: '三居室',
-							label: '三居室'
-						},
-						{
-							value: '四居室',
-							label: '四居室'
-						},
-						{
-							value: '五居室',
-							label: '五居室'
-						}
-					],
-					[
-						{
-							value: '主卧',
-							label: '主卧'
-						},
-						{
-							value: '次卧',
-							label: '次卧'
-						},
-						{
-							value: '厅隔',
-							label: '厅隔'
-						},
-						{
-							value: '单间',
-							label: '单间'
-						}
-					]
+					{
+						value: 1,
+						label: '整租',
+						children:
+							[
+								{
+									value: 1,
+									label: '一居室',
+									children:[
+											{value: '',
+											label: ''}
+										]
+								},
+								{
+									value:2,
+									label: '两居室',
+									children:[
+										{
+											value: '',
+											label: '',
+										}
+									]
+								},
+								{
+									value: 3,
+									label: '三居室',
+									children:[
+										{
+											value: '',
+											label: '',
+										}
+									]
+								},	
+								{
+									value: 4,
+									label: '四居室',
+									children:[
+										{
+											value: '',
+											label: '',
+										}
+									]
+								},
+								{
+									value: 5,
+									label: '五居室',
+									children:[
+										{
+											value: '',
+											label: '',
+										}
+									]
+								}
+							],
+					},
+					{
+						value: 8,
+						label: '合租',
+						children: [
+											
+							{
+								value: '一居室',
+								label: '一居室',
+								children:[
+										{
+											value: '主卧',
+											label: '主卧'
+										},
+										{
+											value: '次卧',
+											label: '次卧'
+										},
+										{
+											value: '单间',
+											label: '单间'
+										}
+										]
+							},
+							{
+								value: '两居室',
+								label: '两居室',
+								children:[
+										{
+											value: '主卧',
+											label: '主卧'
+										},
+										{
+											value: '次卧',
+											label: '次卧'
+										},
+										{
+											value: '单间',
+											label: '单间'
+										}
+										]
+							},
+							{
+								value: '三居室',
+								label: '三居室',
+								children:[
+										{
+											value: '主卧',
+											label: '主卧'
+										},
+										{
+											value: '次卧',
+											label: '次卧'
+										},
+										{
+											value: '单间',
+											label: '单间'
+										}
+										]
+							},
+							{
+								value: '四居室',
+								label: '四居室',
+								children:[
+										{
+											value: '主卧',
+											label: '主卧'
+										},
+										{
+											value: '次卧',
+											label: '次卧'
+										},
+										{
+											value: '单间',
+											label: '单间'
+										}
+																			
+										]
+							},
+							{
+								value: '五居室',
+								label: '五居室',
+								children:[
+										{
+											value: '主卧',
+											label: '主卧'
+										},
+										{
+											value: '次卧',
+											label: '次卧'
+										},
+										{
+											value: '单间',
+											label: '单间'
+										}
+										]
+							}
+						]
+					}
 				],
-				// 供暖方式
+				// // 供暖方式
 				heatActiveVar: 0, 
 				heatList:[
 					"集体供暖",
@@ -557,7 +717,6 @@
 				// 付款方式
 				payShow: false,
 				payList: [
-					[
 						{
 							value: '月付',
 							label: '月付'
@@ -570,7 +729,6 @@
 							value: '年付',
 							label: '年付'
 						}
-					]
 				],
 				// 房源配置
 				houseConfigList: [
@@ -658,6 +816,32 @@
 				this.countIndex = 8;
 		},
 		methods: {
+			showPicker(type){
+				this.selectShow=true
+				this.currentType=type
+				switch(type){ //费用支付方式
+					case "warm":
+					case "wireless":
+					case "property":
+					case "hydropower":
+						this.selectList=this.payTypeList
+					break;
+					case "pay":
+						this.selectList=this.payList
+						console.log(this.selectList)
+					break;
+				}
+			},
+			ConfirmFn(val){
+				let name=this.currentType
+				this.currentObj[name].valueName=this.selectList[val[0]].value
+				this.currentObj[name].valueCode=this.selectList[val[0]].label	
+			
+			},
+			CancelFn(){
+				this.selectShow=false
+			},
+			
 			// 发布类型选择发生变化
 			radioGroupChange(e) {
 				this.model.payType = e;
@@ -680,10 +864,13 @@
 			// 出租房屋
 			leaseConfirm(e) {
 				let result = '';
+				console.log(e)
 				e.map((val, index) => {
-					result += result == '' ? val.label : '-' + val.label;
+					if(val.label) result += result == '' ? val.label : '-' + val.label;	
 				})
+				console.log(e)
 				this.model.lease = result;
+				console.log(result)
 			},
 			leaseCancel(e) {
 				console.log(e);

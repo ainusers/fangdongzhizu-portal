@@ -53,6 +53,10 @@
 		methods: {
 			goInfo(){
 				console.log('点击跳转到消息页面')
+				 uni.navigateTo({
+				            //保留当前页面，跳转到应用内的某个页面
+				            url: '/pages/tabbar/community/tools/news'
+				        })
 			}
 		}
 	};

@@ -3,10 +3,8 @@
 	background-color: #f2f2f2;
 	 // height: var(--status-bar-height);
 }
-.home_top {
-	width: 100%;
+/deep/.u-scroll-box{
 	display: flex;
-	justify-content: space-around;
 }
 .city {
 	align-items: center;
@@ -294,24 +292,13 @@
 <template>
 	<view class="main">
 		<!-- 顶部区域 -->
-		<view class="home_top">
-		  <!-- 城市 -->
-		  <view class="city" @click.stop="chooseCity">
-		    <view>{{ cityName }}</view>
-		    <view class="city_icon"></view>
-		  </view>
 		  <!-- 选项卡 -->
-		  <view class="type">
-			  <!-- tabs -->
-			  <u-tabs :list="tabList" barWidth="50" gutter="10" font-size="30" bg-color="#f2f2f2" :current="current" @change="tabChange"></u-tabs>
-		  </view>
-		  <view></view>
-		  <!-- 搜索按钮 -->
-		  <view class="search" @click.stop="searchBtn"></view>
-		</view>
-		
+			<u-sticky bgColor="#fff">
+			  <u-tabs :list="tabList" :current="current" @change="tabChange" 
+			   lineWidth="30"
+			lineColor="#f56c6c"></u-tabs>
+			</u-sticky>
 		<!-- 内容区域 -->
-		<screenTab :screenFormData="screenFormData" :listTcShow="listTcShow" :priceApiDataMap="priceApiDataMap" :from="from" @screenBtn="screenBtn" :fixedContHeight="fixedContHeight" :fixedTcTop="fixedTcTop" :currentClickType="currentClickType" :contHeight="contHeight" :regionLeftList="regionLeftList" :regionRightMap="regionRightMap" :enterType="enterType"></screenTab>
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
 		
 			<swiper-item>
@@ -342,6 +329,18 @@
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
 					<view v-if="current === 2">我是第2页
+					<view class="content">
+						<!-- 租房列表 -->
+					    <block v-for="(item, index) in houseList" :key="index">
+							<house-list-item :item="item"></house-list-item>
+					    </block>
+					</view>
+					</view>
+				</scroll-view>
+			</swiper-item>
+			<swiper-item>
+				<scroll-view scroll-y="true" class="scroll-view-height list-content">
+					<view v-if="current === 2">
 					<view class="content">
 						<!-- 租房列表 -->
 					    <block v-for="(item, index) in houseList" :key="index">
@@ -440,13 +439,16 @@ export default {
 			current: 0,
 			tabList: [
 				{
-					name: '转租'
+					name: '待审核'
 				},
 				{
-					name: '直租'
+					name: '已发布'
 				},
 				{
-					name: '换租'
+					name: '已下架'
+				},
+				{
+					name: '收藏'
 				}
 			],
 			fixedContHeight: "100%", // 弹窗的高度

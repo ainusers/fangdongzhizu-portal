@@ -159,7 +159,7 @@
 		{
 			"path": "pages/tabbar/community/tools/news",
 			"style": {
-				"navigationBarTitleText": "万人群",
+				"navigationBarTitleText": "",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,
@@ -181,6 +181,34 @@
 				// "app-plus": {
 				// 	"scrollIndicator": "none"
 				// }
+			}
+		},
+		{
+			"path": "pages/tabbar/aftersales/index",
+			"style": {
+				"transparentTitle":  ""
+				// "navigationBarTitleText": "我的",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa",
+				// "enablePullDownRefresh": false,
+				// "backgroundTextStyle":"light",
+				// "app-plus": {
+				// 	"scrollIndicator": "none"
+				// }
+			}
+		},
+		{
+			"path": "pages/tabbar/me/tools/check",
+			"style": {
+				"navigationBarTitleText": "我的动态",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle":"light",
+				"app-plus": {
+					"scrollIndicator": "none",
+					"bounce": "none"
+				}
 			}
 		},
 		{
@@ -403,7 +431,16 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "components/common/screen-tab/screen-tab",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"tabBar": {
 		"color": "#7A7E83",
 		"backgroundColor": "#eee",

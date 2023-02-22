@@ -262,7 +262,7 @@
 		border: solid 1px #eee;
 		margin: 3px 0px 10px 0px;
 		border-radius: 10px;
-
+		padding:10px;
 		.post-content {
 			margin-top: 20rpx;
 			.img-style-1 {
@@ -339,6 +339,7 @@
 		white-space: pre-wrap;
 		overflow: hidden;
 		padding: 0 10rpx 0 10rpx;
+		margin-bottom: 5px;
 	}
 	// 列表操作（分享，评论，点赞）
 	.p-footer {
@@ -363,19 +364,16 @@
 	// 分享弹窗
 	.share-wrap {
 		display: flex;
+		justify-content: space-between;
+		width:80%;
+		margin:0 auto;
 		padding: 30rpx;
-		width: 50%;
-		margin: 0 auto;
-	
 		.share-item {
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
-	
-			&:nth-child(1) {
-				margin-right: auto;
-			}
+			margin:0;
 			image {
 				width: 100rpx;
 				height: 100rpx;

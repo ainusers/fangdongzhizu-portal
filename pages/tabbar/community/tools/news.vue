@@ -29,7 +29,7 @@
 					<!-- 用户消息 -->
 					<block v-if="row.type == 'text' || row.type == 'img' || row.type == 'voice'">
 						<!-- 1. 自己发出的消息 -->
-						<view class="my" v-if="row.from=='zhangjun8' || row.from=='zhangjun4' || row.from=='zhangjun7' || row.from=='zhangjun3' || row.from=='zhangjun5' || row.from=='zhangjun6'">
+						<view class="my" v-if="row.from=='zhangjun8'">
 							<!-- 左-消息 -->
 							<view class="left">
 								<!-- 文字消息 -->
@@ -52,7 +52,7 @@
 							</view>
 						</view>
 						<!-- 2. 别人发出的消息 -->
-						<view class="other" v-if="row.from == 'zhangjun1' || row.from=='zhangjun2' || row.from=='zhangjun9' || row.from=='zhangjun10'">
+						<view class="other" v-else>
 							<!-- 左-头像 -->
 							<view class="left">
 								<image :src="row.face"></image>
@@ -328,19 +328,19 @@
 				//本地模拟请求历史记录效果
 				setTimeout(()=>{
 					// 消息列表
-					let list = [
-						{"auth":true,"datetime":"1657357976767","from":"zhangjun8","id":826627537346224360,"msg":"大家聊的挺好呀","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
-						{"auth":true,"datetime":"1654355976768","from":"zhangjun9","id":826623537546224361,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-						{"auth":true,"datetime":"1654355976768","from":"zhangjun9","id":826623537546224361,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-						{"auth":true,"datetime":"1657358976769","from":"zhangjun10","id":826227537546224362,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_9.jpg"},
-						{"auth":true,"datetime":"1657358976769","from":"zhangjun10","id":826227537546224362,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_9.jpg"},
-						{"auth":true,"datetime":"1657358976769","from":"zhangjun10","id":826227537546224362,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_9.jpg"},
-						{"auth":true,"datetime":"1657355976770","from":"zhangjun7","id":826627557546224363,"msg":"天津","status":"true","target":"all","type":"text",face:"/static/chat/head/face_10.jpg"},
-						{"auth":true,"datetime":"1657355976770","from":"zhangjun7","id":826627557546256363,"msg":"河北","status":"true","target":"all","type":"text",face:"/static/chat/head/face_11.jpg"},
-						{"auth":true,"datetime":"1657355976770","from":"zhangjun7","id":826627557346224363,"msg":"西安","status":"true","target":"all","type":"text",face:"/static/chat/head/face_12.jpg"},
-						{"auth":true,"datetime":"1657355976770","from":"zhangjun7","id":826627557546434363,"msg":"河南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_13.jpg"},
-						{"auth":true,"datetime":"1657355976770","from":"zhangjun7","id":826627532546224363,"msg":"海南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_14.jpg"}
-					]
+				let list = [
+					{"auth":true,"datetime":"1657357976767","from":"zhangjun8","id":826627537346224360,"msg":"大家聊的挺好呀","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+					{"auth":true,"datetime":"1654355976768","from":"zhangjun9","id":826623537546224361,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
+					{"auth":true,"datetime":"1654355976768","from":"zhangjun9","id":826623537546224361,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
+					{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+					{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+					{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+					{"auth":true,"datetime":"1657355976770","from":"zhangjun9","id":826623537546224361,"msg":"天津","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
+					{"auth":true,"datetime":"1657355976770","from":"zhangjun9","id":826623537546224361,"msg":"河北","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
+					{"auth":true,"datetime":"1657355976770","from":"zhangjun9","id":826623537546224361,"msg":"西安","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
+					{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"河南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+					{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"海南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"}
+				]
 					// 获取消息中的图片,并处理显示尺寸
 					for(let i=0;i<list.length;i++){
 						if(list[i].type=='user'&&list[i].type=="img"){
@@ -364,19 +364,19 @@
 			// 加载初始页面消息
 			getMsgList(){
 				// 消息列表
-				let list = [
-					{"auth":true,"datetime":"1657355976760","from":"zhangjun1","id":826627537546224360,"msg":"你好？","status":"true","target":"all","type":"text",face:"/static/chat/head/face.jpg"},
-					{"auth":true,"datetime":"1657355976761","from":"zhangjun2","id":826627537546224361,"msg":"嗯嗯","status":"true","target":"all","type":"text",face:"/static/chat/head/face_1.jpg"},
-					{"auth":true,"datetime":"1657355976762","from":"zhangjun3","id":826627537546224362,"msg":"你是谁呀","status":"true","target":"all","type":"text",face:"/static/chat/head/face_2.jpg"},
-					{"auth":true,"datetime":"1657355976763","from":"zhangjun4","id":826627537546224363,"msg":"我在万人群","status":"true","target":"all","type":"text",face:"/static/chat/head/face_3.jpg"},
-					{"auth":true,"datetime":"1657355976764","from":"zhangjun5","id":826627537546224364,"msg":"你俩不认识？","status":"true","target":"all","type":"text",face:"/static/chat/head/face_4.jpg"},
-					{"auth":true,"datetime":"1657355976765","from":"zhangjun6","id":826627537546224365,"msg":"吃饭了没有","status":"true","target":"all","type":"text",face:"/static/chat/head/face_5.jpg"},
-					{"auth":true,"datetime":"1657355976766","from":"zhangjun7","id":826627537546224366,"msg":"你猜","status":"true","target":"all","type":"text",face:"/static/chat/head/face_6.jpg"},
-					{"auth":true,"datetime":"1657355976767","from":"zhangjun8","id":826627537546224366,"msg":"猜个屁","status":"true","target":"all","type":"text",face:"/static/chat/head/face_6.jpg"},
-					{"auth":true,"datetime":"1657325976766","from":"zhangjun9","id":826627537546224366,"msg":"说不说","status":"true","target":"all","type":"text",face:"/static/chat/head/face_6.jpg"},
-					{"auth":true,"datetime":"1657355976766","from":"zhangjun10","id":826627537546224366,"msg":"不说","status":"true","target":"all","type":"text",face:"/static/chat/head/face_6.jpg"},
-					{"auth":true,"datetime":"1657355976766","from":"zhangjun1","id":826627537546224366,"msg":"欢迎进入万人群","status":"true","target":"all","type":"system",face:"/static/chat/head/face_6.jpg"}
-				]
+			let list = [
+				{"auth":true,"datetime":"1657357976767","from":"zhangjun8","id":826627537346224360,"msg":"大家聊的挺好呀","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+				{"auth":true,"datetime":"1654355976768","from":"zhangjun9","id":826623537546224361,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
+				{"auth":true,"datetime":"1654355976768","from":"zhangjun9","id":826623537546224361,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
+				{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+				{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+				{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+				{"auth":true,"datetime":"1657355976770","from":"zhangjun9","id":826623537546224361,"msg":"天津","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
+				{"auth":true,"datetime":"1657355976770","from":"zhangjun9","id":826623537546224361,"msg":"河北","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
+				{"auth":true,"datetime":"1657355976770","from":"zhangjun9","id":826623537546224361,"msg":"西安","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
+				{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"河南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+				{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"海南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"}
+			]
 				// 获取消息中的图片,并处理显示尺寸
 				for(let i=0;i<list.length;i++){
 					if(list[i].type=='user' && list[i].type=="img"){
