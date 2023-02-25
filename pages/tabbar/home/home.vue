@@ -32,150 +32,6 @@
 .u-tab-item .u-line-1 {
 	line-height: 0px!important;
 }
-
-/* 弹窗 */
-.screen_fixed_list{
-	position: fixed;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: rgba(0, 0, 0, 0.4);
-	z-index: 99999;
-	font-size: 30upx;
-}
-/* #ifdef H5 */
-.screen_fixed_list{
-	max-width: 640px;
-	width: 100%;
-	transform: translateX(-50%);
-	left: 50%;
-}
-/* #endif */
-.region_list_view{
-	height: 70%;
-	background: #FFFFFF;
-	width: 100%;
-	position: relative;
-}
-.region_scroll_left{
-	width: 35%;
-	height: 100%;
-	background: #FFFFFF;
-	box-sizing: border-box;
-}
-.region_scroll_right{
-	width: 65%;
-	height: 100%;
-	background: #F8F8F9;
-	padding-left: 30upx;
-	box-sizing: border-box;
-}
-.scroll_view_list{
-	width: 100%;
-	height: 100%;
-	background: #FFFFFF;
-	box-sizing: border-box;
-	position: relative;
-}
-.region_scroll_right .region_list_item{
-	padding-left: 0;
-}
-.region_list_item{
-	text-align: left;
-	padding-left: 30upx;
-	width:100%;
-	box-sizing:border-box;
-	height:100upx;
-	line-height:100upx;
-	box-sizing: border-box;
-	font-size: 30upx;
-}
-.screen_fixed_list .region_left_active{
-	background:#fff;
-	color:#ab7f2e;
-}
-.price_scroll_list .screen_active{
-	color:#ab7f2e;
-	border: none;
-	color:#ab7f2e;
-}
-.region_scroll_right .screen_active{
-	background: #F8F8F9;
-	border: none;
-	color:#ab7f2e;
-}
-.region_new_cont .screen_active{
-	background: #ffd900;
-}
-.room_list_view{
-	width: 100%;
-}
-/* 更多 */
-.more_list_cont{
-	padding-left: 30upx;
-	box-sizing: border-box;
-	padding-bottom: 190upx;
-}
-.more_list{
-/* border-bottom:1px solid #f3f3f3; */
-}
-.more_title{
-	height:90upx;
-	line-height:90upx;
-	color:#2d2c2c;
-	letter-spacing:1upx;
-	font-family:'黑体';
-	font-size:36upx;
-	font-weight:600;
-}
-.more_cont{
-	flex-wrap: wrap;
-	display: flex;
-	flex-direction: row;
-}
-.more_item{
-	width:150upx;
-	height:62upx;
-	background:#f2f2f2;
-	line-height:62upx;
-	text-align:center;
-	color:#101d36;
-	border-radius:6upx;
-	font-size:26upx;
-	margin-right:20upx;
-	margin-bottom:20upx;
-	letter-spacing:1px;
-	box-sizing:border-box;
-}
-.more_list .more_item_active{
-	background:#ffd900;
-}
-.more_btn_view{
-	width:100%;
-	height:156upx;
-	position:absolute;
-	bottom:0;
-	align-items:center;
-	background:#ffffff;
-	z-index:99;
-	padding:0 39upx 0 39upx;
-	box-sizing:border-box;
-}
-.more_btn_view view{
-	width:48%;
-	height:80upx;
-	border-radius:6upx;
-	background:#f1f3f6;
-	text-align:center;
-	line-height:85upx;
-	font-size:30upx;
-	letter-spacing:10upx;
-	border-radius:40upx;
-}
-.more_btn_view .confirmBtn{
-	background:-webkit-linear-gradient(left, #ffd900 , rgb(255,84,0));
-	color:#fff;
-}
 .region_new_title{
 	font-size:36upx;
 	font-weight:600;
@@ -272,6 +128,11 @@
 	text-align:center;
 	margin: auto 0;
 }
+.home_nodata{
+	text-align: center;
+	color:#aaa;
+	padding: 10upx 0;
+}
 /* 新房价格切换 */
 .new_house_price_change_view{
 	width: 28%;
@@ -309,44 +170,53 @@
 		  <!-- 搜索按钮 -->
 		  <view class="search" @click.stop="searchBtn"></view>
 		</view>
-		
+		<!-- 筛选项 -->
+		<screenTab :screenFormData="screenFormData" :priceApiDataMap="priceApiDataMap" :from="from" @screenBtn="screenBtn"    :regionLeftList="regionLeftList" :regionRightMap="regionRightMap" :enterType="enterType" @regionLeftBtn="regionLeftBtn" @regionRightBtn="regionRightBtn"></screenTab>
 		<!-- 内容区域 -->
-		<screenTab :screenFormData="screenFormData" :listTcShow="listTcShow" :priceApiDataMap="priceApiDataMap" :from="from" @screenBtn="screenBtn" :fixedContHeight="fixedContHeight" :fixedTcTop="fixedTcTop" :currentClickType="currentClickType" :contHeight="contHeight" :regionLeftList="regionLeftList" :regionRightMap="regionRightMap" :enterType="enterType"></screenTab>
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
 		
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
 					<view v-if="current === 0">
 						<!-- 内容区域 -->
-						<view class="content">
+						<view class="content" v-if="houseList.length>0">
 							<!-- 租房列表 -->
 						    <block v-for="(item, index) in houseList" :key="index">
 								<house-list-item :item="item"></house-list-item>
 						    </block>
+						</view>
+						<view v-else>
+							暂无数据
 						</view>
 					</view>
 				</scroll-view>
 			</swiper-item>
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
-					<view v-if="current === 1">我是第1页
-					<view class="content">
+					<view v-if="current === 1">
+					<view class="content" v-if="houseList.length>0">
 						<!-- 租房列表 -->
 					    <block v-for="(item, index) in houseList" :key="index">
 							<house-list-item :item="item"></house-list-item>
 					    </block>
+					</view>
+					<view class="home_nodata" v-else>
+						暂无数据
 					</view>
 					</view>
 				</scroll-view>
 			</swiper-item>
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
-					<view v-if="current === 2">我是第2页
-					<view class="content">
+					<view v-if="current === 2">
+					<view class="content" v-if="houseList.length>0">
 						<!-- 租房列表 -->
 					    <block v-for="(item, index) in houseList" :key="index">
 							<house-list-item :item="item"></house-list-item>
 					    </block>
+					</view>
+					<view class="home_nodata" v-else>
+						暂无数据
 					</view>
 					</view>
 				</scroll-view>
@@ -449,7 +319,7 @@ export default {
 					name: '换租'
 				}
 			],
-			fixedContHeight: "100%", // 弹窗的高度
+			
 			isRequestIng: false,
 			screenFormData: {
 			    erHouse: {
@@ -494,11 +364,12 @@ export default {
 			},
 			
 			// 区域筛选
-			regionLeftList: [],
-			regionRightMap: {},
-			regionLeftIndex: 0,
-			regionRightIndex: 0,
-			
+			regionLeftList: [{
+				text:'北京'
+			}],
+			regionRightMap: {
+				region:[]
+			},
 			// 二手房价格
 			erHousePriceList: [],
 			erHousePriceIndex: 0,
@@ -546,11 +417,6 @@ export default {
 			
 			listTcShow: false,
 			currentClickType: "region",
-			
-			fixedTcTop: "43px",   // 筛选条件距离顶部高度
-			contHeight: "50%",   // 筛选条件高度
-			
-			
 			roomItem: {text:"不限", id: ""},
 			priceItem: {text:"不限", id: ""},
 			newHouseTypeItem: {text:"不限", id: ""},
@@ -584,14 +450,14 @@ export default {
 					unit: "元",
 					defaultText: "租金"
 				}
-			}
+			},
+			enterType:'erHouse',
+			publish_type:1, //(1：转租，2：直租，3：换租)
+			currPage:1,
+			size:10
 		};
 	},
 	props: {
-		enterType: {
-			type: String,
-			default: "erHouse"
-		},
 		from: {
 			type: String,
 			default: "erHouse"
@@ -603,21 +469,65 @@ export default {
 	    city: {
 	        type: String,
 	        default: ""
-	    }
+	    },
 	},
-	onLoad() {},
+	onLoad() {
+		this.getArea()
+		this.getHouseList()
+	},
+	onReady(){
+		
+	},
 	methods: {
+		getHouseList(){
+			var that=this
+			uni.getStorage({
+				key:'token',
+				success(auth){
+					uni.request({
+						method:'POST',
+						url:'http://81.70.163.240:11001/zf/v1/room/list',
+						data:{
+							publish_type:that.publish_type,
+							page:that.currPage,
+							size:that.size
+						},
+						header: {
+							'content-type': 'application/json',
+							'Authorization': 'Bearer ' + auth.data
+						},
+						success(res){
+							if(res.data.success){
+								that.houseList=res.data.data
+								console.log(that.houseList)
+							}
+						}
+					})
+				}
+			})	
+		},
 		// 获取选择城市返回的城市名称
 		getValue(cityNameLess){
 			this.cityName = cityNameLess;
 		},
 		// 获得swiper切换后的current索引
 		swipeIndex(index) {
+			if(index==this.current) return
 			this.current = index.detail.current
+			this.init()
 		},
 		// 切换选项卡
 		tabChange(index) {
+			console.log(index)
+			if(index==this.current) return
 			this.current = index;
+			this.init()
+			
+		},
+		init(){
+			this.currPage=1
+			this.publish_type=this.current+1
+			this.getHouseList()
 		},
 		// 搜索
 		searchBtn() {
@@ -632,41 +542,10 @@ export default {
 		    url: "/pages/tabbar/home/chooseCity"
 		  });
 		},
-		// 点击外部空白区域，弹窗关闭
-		screenClose() {
-		    this.listTcShow = false;
-		    let screenFormData = this.screenFormData;
-		    let enterType = this.enterType;
-		    let moreIds = ["source", "area"];
-		    for(let key in (screenFormData[enterType] || {})) {
-		        let item = screenFormData[enterType][key];
-		        if(key === "region" && !item.rightId) {
-		            screenFormData[enterType][key].show = false;
-		            continue;
-		        }
-		        if(key === "more") {
-		            let moreNotIdNum = 0;
-		            for(let i = 0;i<moreIds.length;i++) {
-		                if(!screenFormData[enterType][moreIds[i]].id) {
-		                    moreNotIdNum++;
-		                }
-		            }
-		            if(moreNotIdNum === moreIds.length) {
-		                screenFormData[enterType][key].show = false;
-		                screenFormData[enterType][key].text = "更多";
-		            }
-		            continue;
-		        }
-		        if(!item.rightId) {
-		            screenFormData[enterType][key].show = false;
-		        }
-		    }
-		    this.screenFormData = screenFormData;
-		},
-		// 选项卡点击事件
-		screenContBtn() {},
+	
 		// 选项卡点击 - 弹出div
 		screenBtn(type) {
+			console.log(type)
 			// this.setTabNodeInfo();
 		    this.currentClickType = type;
 			let screenFormData = this.screenFormData;
@@ -830,6 +709,42 @@ export default {
 		
 		    this.screenFormData = screenFormData;
 		},
+		getArea(){
+			var that=this
+			uni.getStorage({
+					key: 'token',
+					success: function (auth) {
+						uni.request({
+							method: 'GET',
+							data: {
+								city:'北京'
+							},
+							header: {
+								'content-type': 'application/json',
+								'Authorization': 'Bearer ' + auth.data
+							},
+							url: 'http://81.70.163.240:11001/zf/v1/const/area',
+							success: (res) => {
+								console.log(res)
+								if(res.data.success){
+									console.log(res.data.data)
+									console.log(that.regionRightMap)
+									that.regionRightMap['region']=res.data.data
+								}
+							}
+						})
+					}
+				})
+			
+		},
+		regionLeftBtn(item,index){
+			console.log(item)
+			console.log(index)
+		},
+		// 区域筛选
+		regionRightBtn(item,index){
+			console.log(item,index)
+		}
 	}
 }
 </script>

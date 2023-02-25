@@ -188,25 +188,19 @@
 <template>
 	<view @click="homeDetail(item)" class="er_house_item f_r_s">
 		<view class="er_house_img_view">
-			<image mode="aspectFill" class="er_house_img" :src="item.houseImg" lazy-load></image>
+			<image mode="aspectFill" class="er_house_img" :src="item.imgUrl" lazy-load></image>
 		</view>
-
 		<view class="er_house_cont">
 			<!-- 兰亭新苑 三区 朝向 主卧-->
 			<view class="er_house_title">
-				<text v-if="item.mode">{{ item.mode }}</text>
-				<text v-if="item.whoCommunity">{{ item.community }}{{ item.whoCommunity }}</text>
+				<text v-if="item.rentalHouse">{{ item.rentalHouse }}</text>
+				<text v-if="item.whoCommunity || item.communityName">{{ item.communityName }}{{ item.whoCommunity }}</text>
 				<text v-if="item.orientation">{{ item.orientation }}</text>
 			</view>
-
 			<!-- 租房类型，两室一厅（配比），大小，楼层 -->
 			<view class="er_house_des">
-				<text v-if="item.bedroom">{{ item.bedroom }}</text>
-				<text v-if="item.matche">{{ item.matche }}</text>
-				<text v-if="item.size">{{ item.size }}</text>
-				<text v-if="item.floor">{{ item.floor }}</text>
+				<text v-if="item.layout">{{ item.layout }}</text>
 			</view>
-
 			<!-- 地理位置：距离昌平线沙河地铁站1020米 -->
 			<view class="er_house_tag_info f_r_s">
 				<text v-if="item.position">{{ item.position }}</text>
@@ -215,7 +209,7 @@
 			<!-- 房屋价格，朝阳区，酒仙桥 -->
 			<view class="er_house_price_view f_r_s">
 				<view class="er_house_price main_color f_r_s">
-					<text v-if="item.price" class="price">{{ item.price }}</text>
+					<text v-if="item.rent" class="price">{{ item.rent }}</text>
 					<text>元/月</text>
 				</view>
 				<view class="place">

@@ -143,7 +143,7 @@
 				</view>
             </view>
 			<!--修改密码-->
-			<view class="item f_r_b" @click="goto('/pages/tabbar/me/update/pwd')">
+			<view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/pwd?username=${userInfo.username}`)">
 			    <view class="item_text">修改密码</view>
 			    <view class="item_val">
 					修改密码

@@ -42,9 +42,9 @@
 								</block>
 							</scroll-view>
 							<scroll-view class="region_scroll_right" scroll-y>
-								<block v-for="(item, index) in regionRightMap[screenFormData[enterType].region.leftId]" :key="index">
+								<block v-for="(item, index) in regionRightMap['region']" :key="index">
 									<view hover-class="none" form-type="submit" :class="{screen_active: regionRightIndex == index}"
-										@click="regionRightBtn(item, index)" class="region_list_item">{{ item.text }}</view>
+										@click="regionRightBtn(item, index)" class="region_list_item">{{ item.name }}</view>
 								</block>
 							</scroll-view>
 						</view>
@@ -129,22 +129,230 @@
 
 <script>
 	export default {
-		props:["screenFormData","listTcShow","priceApiDataMap","from","fixedContHeight","fixedTcTop","currentClickType","contHeight","regionLeftList","regionRightMap","enterType"],
+		props:["screenFormData","priceApiDataMap","from","regionLeftList","regionRightMap","enterType"],
 		data() {
 			return {
 				downIcon: "http://cdn.haofang.net/static/uuminiapp/pageNewUi/list/filter_btn_nomal.png",
 				topIcon: "http://cdn.haofang.net/static/kdbweb/zdzfminiapp/zdzfPlatform/newUiStyle/down-active.png",
+				listTcShow:false,
+				fixedContHeight: "100%", // 弹窗的高度
+				fixedTcTop: "43px",   // 筛选条件距离顶部高度
+				currentClickType:'',
+				contHeight: "50%",   // 筛选条件高度
+				regionLeftIndex: 0,
+				regionRightIndex: 0,
 			}
+		},
+		onShow(){
+			console.log(this.regionRightMap)
+			console.log(this.regionRightMap[region])
+		},
+		onLoad(){
+			console.log('页面加载')
 		},
 		methods: {
 			screenBtn(str){
-				this.$emit('screenBtn',str)
+				console.log(str)
+					this.currentClickType=str
+				switch(str){
+					case "region":
+						this.listTcShow=true
+					
+						console.log(this.listTcShow)
+					break;
+				}
+				// this.$emit('screenBtn',str)
+			},
+			// 点击外部空白区域，弹窗关闭
+			screenClose() {
+			    this.listTcShow = false;
+			    let screenFormData = this.screenFormData;
+			    let enterType = this.enterType;
+			    let moreIds = ["source", "area"];
+			    for(let key in (screenFormData[enterType] || {})) {
+			        let item = screenFormData[enterType][key];
+			        if(key === "region" && !item.rightId) {
+			            screenFormData[enterType][key].show = false;
+			            continue;
+			        }
+			        if(key === "more") {
+			            let moreNotIdNum = 0;
+			            for(let i = 0;i<moreIds.length;i++) {
+			                if(!screenFormData[enterType][moreIds[i]].id) {
+			                    moreNotIdNum++;
+			                }
+			            }
+			            if(moreNotIdNum === moreIds.length) {
+			                screenFormData[enterType][key].show = false;
+			                screenFormData[enterType][key].text = "更多";
+			            }
+			            continue;
+			        }
+			        if(!item.rightId) {
+			            screenFormData[enterType][key].show = false;
+			        }
+			    }
+			    this.screenFormData = screenFormData;
+			},
+			// 选项卡点击事件
+			screenContBtn() {},
+			regionLeftBtn(item,index){
+				this.regionLeftIndex=index
+				this.$emit('regionLeftBtn',item,index)
+			},
+			regionRightBtn(item,index){
+				this.regionRightIndex=index
+				this.$emit('regionRightBtn',item,index)
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
+	/* 弹窗 */
+	.screen_fixed_list{
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.4);
+		z-index: 99999;
+		font-size: 30upx;
+	}
+	/* #ifdef H5 */
+	.screen_fixed_list{
+		max-width: 640px;
+		width: 100%;
+		transform: translateX(-50%);
+		left: 50%;
+	}
+	
+	/* #endif */
+	.region_list_view{
+		height: 70%;
+		background: #FFFFFF;
+		width: 100%;
+		position: relative;
+	}
+	.region_scroll_left{
+		width: 35%;
+		height: 100%;
+		background: #FFFFFF;
+		box-sizing: border-box;
+	}
+	.region_scroll_right{
+		width: 65%;
+		height: 100%;
+		background: #F8F8F9;
+		padding-left: 30upx;
+		box-sizing: border-box;
+	}
+	.scroll_view_list{
+		width: 100%;
+		height: 100%;
+		background: #FFFFFF;
+		box-sizing: border-box;
+		position: relative;
+	}
+	.region_scroll_right .region_list_item{
+		padding-left: 0;
+	}
+	.region_list_item{
+		text-align: left;
+		padding-left: 30upx;
+		width:100%;
+		box-sizing:border-box;
+		height:100upx;
+		line-height:100upx;
+		box-sizing: border-box;
+		font-size: 30upx;
+	}
+	.screen_fixed_list .region_left_active{
+		background:#fff;
+		color:#ab7f2e;
+	}
+	.price_scroll_list .screen_active{
+		color:#ab7f2e;
+		border: none;
+		color:#ab7f2e;
+	}
+	.region_scroll_right .screen_active{
+		background: #F8F8F9;
+		border: none;
+		color:#ab7f2e;
+	}
+	.region_new_cont .screen_active{
+		background: #ffd900;
+	}
+	.room_list_view{
+		width: 100%;
+	}
+	/* 更多 */
+	.more_list_cont{
+		padding-left: 30upx;
+		box-sizing: border-box;
+		padding-bottom: 190upx;
+	}
+	.more_list{
+	/* border-bottom:1px solid #f3f3f3; */
+	}
+	.more_title{
+		height:90upx;
+		line-height:90upx;
+		color:#2d2c2c;
+		letter-spacing:1upx;
+		font-family:'黑体';
+		font-size:36upx;
+		font-weight:600;
+	}
+	.more_cont{
+		flex-wrap: wrap;
+		display: flex;
+		flex-direction: row;
+	}
+	.more_item{
+		width:150upx;
+		height:62upx;
+		background:#f2f2f2;
+		line-height:62upx;
+		text-align:center;
+		color:#101d36;
+		border-radius:6upx;
+		font-size:26upx;
+		margin-right:20upx;
+		margin-bottom:20upx;
+		letter-spacing:1px;
+		box-sizing:border-box;
+	}
+	.more_list .more_item_active{
+		background:#ffd900;
+	}
+	.more_btn_view{
+		width:100%;
+		height:156upx;
+		position:absolute;
+		bottom:0;
+		align-items:center;
+		background:#ffffff;
+		z-index:99;
+		padding:0 39upx 0 39upx;
+		box-sizing:border-box;
+	}
+	.more_btn_view view{
+		width:48%;
+		height:80upx;
+		border-radius:6upx;
+		background:#f1f3f6;
+		text-align:center;
+		line-height:85upx;
+		font-size:30upx;
+		letter-spacing:10upx;
+		border-radius:40upx;
+	}
+	.more_btn_view .confirmBtn{
+		background:-webkit-linear-gradient(left, #ffd900 , rgb(255,84,0));
+		color:#fff;
+	}
 .screen_view {
 	height:80upx;
 	border-bottom:1upx solid #f6f6f6;

@@ -23,6 +23,7 @@
     export default {
         data() {
 			return {
+				username:'',
 				pwd: '',
 				newpwd: '',
 				newpwd2: '',
@@ -30,7 +31,9 @@
 				border: true
 			}
 		},
-        onLoad() {
+        onLoad(options) {
+			this.username=options.username
+				console.log(options.username)
         },
         onShow() {
         },
@@ -40,39 +43,49 @@
 		},
 		onNavigationBarButtonTap(e) {
 			console.log(this.pwd +  " - " + this.newpwd + " - " + this.newpwd2);
-			uni.getStorage({
-				key: 'token',
-				success: function (auth) {
-					uni.request({
-						method: 'patch',
-						data: {
-							id: that.userInfo.id,
-							signature: that.value
-						},
-						header: {
-							'content-type': 'application/json',
-							'Authorization': 'Bearer ' + auth.data
-						},
-						url: 'http://81.70.163.240:11001/zf/v1/user/attr',
-						success: (res) => {
-							if(res.data.data[0].status){
-								uni.showToast({
-									title: '修改成功',
-									icon: 'none',
-									duration: 2000
-								})
-								// 返回上一页
-								setTimeout(() => {
-									uni.navigateBack({
-									    delta: 1
-									});
-								},2000)
-							}
-						}
-					})
+			
+			if(this.pwd==this.newpwd){
+				uni.showToast({
+					title: '原密码与新密码相同',
+					icon: 'none',
+					duration: 2000
+				})
+				return
+			}
+			if(this.newpwd!=this.newpwd2){
+				uni.showToast({
+					title: '两次密码输入不相同',
+					icon: 'none',
+					duration: 2000
+				})
+				return
+			}
+			// 向后端发送请求，修改用户昵称
+			uni.request({
+				url: 'http://81.70.163.240:11001/zf/v1/user/reset',
+				method: 'POST',
+				data: {
+					username: this.username,
+					code: this.pwd,
+					password:this.pwd
+				},
+				success: (res) => {
+					console.log(res)
+					if(res.data.status){
+						uni.showToast({
+							title: '修改成功',
+							icon: 'none',
+							duration: 2000
+						})
+						// 返回上一页
+						setTimeout(() => {
+							uni.navigateBack({
+							    delta: 1
+							});
+						},2000)
+					}
 				}
 			})
-			// 向后端发送请求，修改用户昵称
 		}
     }
 </script>
