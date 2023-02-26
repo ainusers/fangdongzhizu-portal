@@ -161,7 +161,8 @@
 
         onLoad() {
 			// 获取定位信息
-			this.getGeo();
+			// this.getGeo();
+			this.getLocation()
         	this.initCityList();
         },
 
@@ -191,6 +192,7 @@
         methods: {
 			// 获取定位信息
 			getGeo(){
+				console.log('获取定位信息')
 				uni.getLocation({
 					type: 'wgs84',
 					success: function (res) {
@@ -279,7 +281,9 @@
 
             // 城市点击事件
             cityBtn(item) {
+				console.log(item)
 				let pages = getCurrentPages() 
+				console.log(pages)
 				 // 2. 上一页面实例
 				// 注意是length长度，所以要想得到上一页面的实例需要 -2
 				// 若要返回上上页面的实例就 -3，以此类推
@@ -291,7 +295,115 @@
                     delta: 1
                 });
 				console.log(item.cityNameLess);
-            }
+            },
+			// 定位授权
+			    getLocation() {
+			      let that = this;
+			      // 1、判断手机定位服务【GPS】 是否授权
+			      uni.getSystemInfo({
+			        success(res) {
+			          console.log("判断手机定位服务是否授权:", res);
+			          let locationEnabled = res.locationEnabled; //判断手机定位服务是否开启
+			          let locationAuthorized = res.locationAuthorized; //判断定位服务是否允许微信授权
+			          if (locationEnabled == false || locationAuthorized == false) {
+			            //手机定位服务（GPS）未授权
+			            uni.showToast({
+			              title: "请打开手机GPS",
+			              icon: "none",
+			            });
+			          } else {
+			            //手机定位服务（GPS）已授权
+							that.fnGetlocation()
+			          }
+			        },
+			      });
+			    },
+				// 定位获取
+				fnGetlocation() {
+				      let that = this;
+					  console.log('定位获取')
+				      uni.getLocation({
+				        type: "wgs84", //默认为 wgs84 返回 gps 坐标
+				        geocode: "true",
+				        isHighAccuracy: "true",
+				        accuracy: "best", // 精度值为20m
+				        success: function (res) {
+				          console.log("定位获取:", res);
+				          let platform = uni.getSystemInfoSync().platform;
+				          if (platform == "ios") {
+				          	//toFixed() 方法可把 Number 四舍五入为指定小数位数的数字。
+				            that.bindList.long = res.longitude.toFixed(6);
+				            that.bindList.lat = res.latitude.toFixed(6);
+				          } else {
+				            that.bindList.long = res.longitude;
+				            that.bindList.lat = res.latitude;
+				          }
+				          that.bindList.longlat =
+				            "经度" +
+				            that.changeTwoDecimal_f(that.bindList.long) +
+				            "/" +
+				            "纬度" +
+				            that.changeTwoDecimal_f(that.bindList.lat);
+				          that.getAreaCode(res.latitude, res.longitude);
+				        },
+				        fail(err) {
+				          if (
+				            err.errMsg ===
+				            "getLocation:fail 频繁调用会增加电量损耗，可考虑使用 wx.onLocationChange 监听地理位置变化"
+				          ) {
+				            uni.showToast({
+				              title: "请勿频繁定位",
+				              icon: "none",
+				            });
+				          }
+				          if (err.errMsg === "getLocation:fail auth deny") {
+				            // 未授权
+				            uni.showToast({
+				              title: "无法定位，请重新获取位置信息",
+				              icon: "none",
+				            });
+				            authDenyCb && authDenyCb();
+				            that.isLocated = false;
+				          }
+				          if (
+				            err.errMsg ===
+				            "getLocation:fail:ERROR_NOCELL&WIFI_LOCATIONSWITCHOFF"
+				          ) {
+				            uni.showModal({
+				              content: "请开启手机定位服务",
+				              showCancel: false,
+				            });
+				          }
+				        },
+				      });
+				    },
+					// getAreaCode通过经纬度(wgs84)坐标获取区域码
+				getAreaCode(latitude, longitude) {
+						  this.$refs.uForm.resetFields();
+						  var that = this;
+						  that.$u.api
+							.getAreaCode({
+							  latitude: latitude,
+							  longitude: longitude,
+							})
+							.then((res) => {
+							  if (res.code == 100000000) {
+								console.log("通过经纬度坐标获取区域码:", res);
+								// console.log(res, 'areaCode');
+								that.bindList.areaCode = res.data.areaCode;
+								that.bindList.specificAddress = res.data.detailLocation;
+								that.bindList.address = res.data.areaLocation;
+							  } else {
+								uni.showToast({ title: res.msg, icon: "none" });
+							  }
+							})
+							.catch((err) => {
+							  this.loadState = "加载失败err";
+							  console.log("getDevList_err:", err); //--------------------
+							});
+						},
+				
+
         }
 	}
 </script>

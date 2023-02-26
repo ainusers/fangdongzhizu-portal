@@ -1,4 +1,4 @@
-<style scoped>
+<style lang="scss" scoped>
 	.region_new_title{
 		font-size:28upx;
 		font-weight:600;
@@ -135,10 +135,15 @@
 		text-align: center;
 		margin-top: 10%;
 	}
-	.confirmFloor{
-		width: 30%;
-		margin-top: 10px;
+	.confirm_con{
+		text-align: center;
+		padding:20upx 0;
+		.confirm{
+			width: 30%;
+			margin-top: 10px;
+		}
 	}
+	
 	.select_btn{
 		color: #ddd;
 	}
@@ -228,8 +233,8 @@
 			</u-form-item>
 			<!-- 几室 -->
 			<view class="" v-for="(item,index) in homeArr">
-				<u-form-item :label-position="labelPosition" :label="item" prop="region" label-width="150" v-if="">
-					<u-input :border="border" placeholder="请填写房屋情况" v-model="model.lease" type="select" @click="leaseShow = true"></u-input>
+				<u-form-item :label-position="labelPosition" :label="item.name" prop="region" label-width="150" v-if="chekcNum!=0&&index<chekcNum">
+					<u-input :border="border" placeholder="请填写房屋情况" v-model="item.tenantStr"  type="select"  @click="popUpShowFn('tenant',index)"></u-input>
 				</u-form-item>
 			</view>
 			<!-- homeArr -->
@@ -258,22 +263,7 @@
 			</u-form-item>
 			<!-- 楼层位置 -->
 			<u-form-item :label-position="labelPosition" label="楼层位置 :" prop="region" label-width="150">
-				<u-input :border="border" placeholder="请输入楼层" type="text" @click="floorClick" v-model="model.floor"></u-input>层
-				<u-popup border-radius="10" v-model="floorShow" 
-					@close="close" @open="open" :mode="position" length="30%" :mask="mask"
-					:closeable="closeable" :close-icon-pos="closeIconPos">
-					<view class="content">
-						<view class="current">
-							<view>当前楼层</view>
-							<u-number-box :min="1" :max="100" v-model="currentValue" @change="currentChange"></u-number-box>
-						</view>
-						<view class="max">
-							<view>最高楼层</view>
-							<u-number-box :min="1" :max="100" v-model="maxValue" @change="maxChange"></u-number-box>
-						</view>
-						<u-button size="mini" @click="confirmFloor" class="confirmFloor">确认</u-button>
-					</view>
-				</u-popup>
+				<u-input :border="border" placeholder="请输入楼层" type="text" @click="popUpShowFn('floor')" v-model="model.floor"></u-input>层
 			</u-form-item>
 			
 			<!-- 费用详情 -->
@@ -323,7 +313,46 @@
 					</u-checkbox>
 				</u-checkbox-group>
 			</u-form-item>
-				<u-picker mode="selector" v-model="selectShow"  :default-selector="[0]" :range="selectList" @confirm="ConfirmFn" @cancel="CancelFn" range-key="value"></u-picker>
+			<!-- picker -->
+			<u-picker mode="selector" v-model="selectShow"  :default-selector="[0]" :range="selectList" @confirm="ConfirmFn" @cancel="CancelFn" range-key="value"></u-picker>
+			<!-- u-popup 弹窗 -->
+			<u-popup border-radius="10" v-model="popUpShow"
+					@close="close" @open="open" :mode="position" length="30%" :mask="mask"
+					:closeable="closeable" :close-icon-pos="closeIconPos">
+					<view class="content" v-if="floorShow">
+						<view class="current">
+							<view>当前楼层</view>
+							<u-number-box :min="1" :max="100" v-model="currentValue" @change="currentChange"></u-number-box>
+						</view>
+						<view class="max">
+							<view>最高楼层</view>
+							<u-number-box :min="1" :max="100" v-model="maxValue" @change="maxChange"></u-number-box>
+						</view>
+					</view>
+					<view v-if="tenantShow">
+						<!-- 出租情况 -->
+						<u-form-item :label-position="labelPosition" label="出租情况 :" prop="region" label-width="150">
+							<view @click="showPicker('hire')" :class="[{'select_btn':currentObj['hire'].valueName.indexOf('请选择')!=-1}]">{{currentObj['hire'].valueName}}</view>
+						</u-form-item>
+						<!-- 性别 -->
+						<u-form-item :label-position="labelPosition" label="性别 :" prop="region" label-width="150" v-if='currentObj["hire"].valueName=="已出租"'>
+							<view @click="showPicker('sex')" :class="[{'select_btn':currentObj['sex'].valueName.indexOf('请选择')!=-1}]">{{currentObj['sex'].valueName}}</view>
+						</u-form-item>
+					<!-- 价钱 -->
+						<u-form-item :label-position="labelPosition" label="价钱 :" prop="region" label-width="150" v-if='currentObj["hire"].valueName=="未出租"'>
+							<u-input :border="border" :type="Number" placeholder="请输入出租价钱" type="text" v-model="tenantPrice"></u-input>元/月
+						</u-form-item>
+						<!-- 面积 -->
+						<u-form-item :label-position="labelPosition" label="面积 :" prop="region" label-width="150" >
+							<u-input :border="border" :type="Number" placeholder="请输入房屋面积" type="text" v-model="tenantArea"></u-input>m²
+						</u-form-item>
+						
+					</view>
+					<view class="confirm_con">
+						<u-button size="mini" @click="confirmPopup" class="confirm">确认</u-button>
+					</view>
+					
+			</u-popup>
 			<view class="footer">
 				<button type="default" class="feedback-submit" @click="publish">发布</button>
 			</view>
@@ -347,8 +376,15 @@
 	export default {
 		data() {
 			return {
+				homeNum:'', //当前一共有几间房
+				rentNum:'',//当前出租几间
+				chekcNum:0,//当前入住的有几位
 				currentType:'',
-				currentObj:{
+				tenantObj:[],//每个租户的信息
+				tenantStr:'',//租户A
+				tenantArea:'',//入住房间面积
+				tenantPrice:'',//未入住价格
+				currentObj:{  //所有picker选中的内容
 					warm:{
 						valueName:'请选择取暖费用',
 						valueCode:''
@@ -368,19 +404,50 @@
 					pay:{
 						valueName:'请选择付款方式',
 						valueCode:''
+					},
+					hire:{
+						valueName:'请选择出租情况',
+						valueCode:''
+					},
+					sex:{
+						valueName:'请选择性别',
+						valueCode:''
 					}
 				},
-				currentHomeNum:'',//当前几居室
-				houseTypeList:{
-					
+				//用于配置所有picker的数据
+				listPickerConfig:{
+					hire:[
+						{
+							value: '已出租',
+							label: '已出租'
+						},
+						{
+							value: '未出租',
+							label: '未出租'
+						}
+					],
+					sex:[
+						{
+							value: '男',
+							label: '男'
+						},
+						{
+							value: '女',
+							label: '女'
+						}
+					]
+				},
+				popUpType:'', //当前展示的是什么pop弹窗
+				houseTypeList:{	
 				},
 				homeArr:[
-					'A室',
-					'B室',
-					'C室',
-					'D室',
-					'E室'
+					{name:'A室',tenantStr:''},
+					{name:'B室',tenantStr:''},
+					{name:'C室',tenantStr:''},
+					{name:'D室',tenantStr:''},
+					{name:'E室',tenantStr:''},
 				],
+				homeArrIndex:'',//当前点击的是什么室
 				// 发布类型
 				labelPosition: 'left',
 				radioCheckWidth: 'auto',
@@ -444,23 +511,23 @@
 				layoutList: [
 					[
 						{
-							value: '一居室',
+							value: '1',
 							label: '一居室'
 						},
 						{
-							value: '两居室',
+							value: '2',
 							label: '两居室'
 						},
 						{
-							value: '三居室',
+							value: '3',
 							label: '三居室'
 						},
 						{
-							value: '四居室',
+							value: '4',
 							label: '四居室'
 						},
 						{
-							value: '五居室',
+							value: '5',
 							label: '五居室'
 						}
 					],
@@ -515,54 +582,55 @@
 						label: '整租',
 						children:
 							[
-								{
-									value: 1,
-									label: '一居室',
-									children:[
-											{value: '',
-											label: ''}
-										]
-								},
-								{
-									value:2,
-									label: '两居室',
-									children:[
-										{
-											value: '',
-											label: '',
-										}
-									]
-								},
-								{
-									value: 3,
-									label: '三居室',
-									children:[
-										{
-											value: '',
-											label: '',
-										}
-									]
-								},	
-								{
-									value: 4,
-									label: '四居室',
-									children:[
-										{
-											value: '',
-											label: '',
-										}
-									]
-								},
-								{
-									value: 5,
-									label: '五居室',
-									children:[
-										{
-											value: '',
-											label: '',
-										}
-									]
-								}
+								{}
+								// {
+								// 	value: 1,
+								// 	label: '一居室',
+								// 	children:[
+								// 			{value: '',
+								// 			label: ''}
+								// 		]
+								// },
+								// {
+								// 	value:2,
+								// 	label: '两居室',
+								// 	children:[
+								// 		{
+								// 			value: '',
+								// 			label: '',
+								// 		}
+								// 	]
+								// },
+								// {
+								// 	value: 3,
+								// 	label: '三居室',
+								// 	children:[
+								// 		{
+								// 			value: '',
+								// 			label: '',
+								// 		}
+								// 	]
+								// },	
+								// {
+								// 	value: 4,
+								// 	label: '四居室',
+								// 	children:[
+								// 		{
+								// 			value: '',
+								// 			label: '',
+								// 		}
+								// 	]
+								// },
+								// {
+								// 	value: 5,
+								// 	label: '五居室',
+								// 	children:[
+								// 		{
+								// 			value: '',
+								// 			label: '',
+								// 		}
+								// 	]
+								// }
 							],
 					},
 					{
@@ -571,94 +639,94 @@
 						children: [
 											
 							{
-								value: '一居室',
+								value: '1',
 								label: '一居室',
 								children:[
-										{
-											value: '主卧',
-											label: '主卧'
-										},
-										{
-											value: '次卧',
-											label: '次卧'
-										},
-										{
-											value: '单间',
-											label: '单间'
-										}
+										// {
+										// 	value: '主卧',
+										// 	label: '主卧'
+										// },
+										// {
+										// 	value: '次卧',
+										// 	label: '次卧'
+										// },
+										// {
+										// 	value: '单间',
+										// 	label: '单间'
+										// }
 										]
 							},
 							{
-								value: '两居室',
+								value: '2',
 								label: '两居室',
 								children:[
-										{
-											value: '主卧',
-											label: '主卧'
-										},
-										{
-											value: '次卧',
-											label: '次卧'
-										},
-										{
-											value: '单间',
-											label: '单间'
-										}
+										// {
+										// 	value: '主卧',
+										// 	label: '主卧'
+										// },
+										// {
+										// 	value: '次卧',
+										// 	label: '次卧'
+										// },
+										// {
+										// 	value: '单间',
+										// 	label: '单间'
+										// }
 										]
 							},
 							{
-								value: '三居室',
+								value: '3',
 								label: '三居室',
 								children:[
-										{
-											value: '主卧',
-											label: '主卧'
-										},
-										{
-											value: '次卧',
-											label: '次卧'
-										},
-										{
-											value: '单间',
-											label: '单间'
-										}
+										// {
+										// 	value: '主卧',
+										// 	label: '主卧'
+										// },
+										// {
+										// 	value: '次卧',
+										// 	label: '次卧'
+										// },
+										// {
+										// 	value: '单间',
+										// 	label: '单间'
+										// }
 										]
 							},
 							{
-								value: '四居室',
+								value: '4',
 								label: '四居室',
 								children:[
-										{
-											value: '主卧',
-											label: '主卧'
-										},
-										{
-											value: '次卧',
-											label: '次卧'
-										},
-										{
-											value: '单间',
-											label: '单间'
-										}
+										// {
+										// 	value: '主卧',
+										// 	label: '主卧'
+										// },
+										// {
+										// 	value: '次卧',
+										// 	label: '次卧'
+										// },
+										// {
+										// 	value: '单间',
+										// 	label: '单间'
+										// }
 																			
 										]
 							},
 							{
-								value: '五居室',
+								value: '5',
 								label: '五居室',
 								children:[
-										{
-											value: '主卧',
-											label: '主卧'
-										},
-										{
-											value: '次卧',
-											label: '次卧'
-										},
-										{
-											value: '单间',
-											label: '单间'
-										}
+										// {
+										// 	value: '主卧',
+										// 	label: '主卧'
+										// },
+										// {
+										// 	value: '次卧',
+										// 	label: '次卧'
+										// },
+										// {
+										// 	value: '单间',
+										// 	label: '单间'
+										// }
 										]
 							}
 						]
@@ -730,6 +798,7 @@
 							label: '年付'
 						}
 				],
+				
 				// 房源配置
 				houseConfigList: [
 					{
@@ -784,15 +853,15 @@
 					}
 				],
 				// 楼层位置
-				floorShow: false,
+				floorShow: false, //楼层
+				popUpShow:false,//底部弹窗显隐
+				tenantShow:false, //房屋情况
 				position: 'bottom',
 				mask: true, // 是否显示遮罩
 				closeable: true,
 				closeIconPos: 'top-right',
 				currentValue: 1,
 				maxValue: 1,
-				
-				
 				input_content:'',
 				imageList: [],
 				sourceTypeIndex: 2,
@@ -805,6 +874,7 @@
 				startX: 0, //点击屏幕起始位置
 				movedX: 0, //横向移动的距离
 				endX: 0, //接触屏幕后移开时的位置
+				isJoint:false
 			}
 		},
 		onUnload() {
@@ -816,6 +886,7 @@
 				this.countIndex = 8;
 		},
 		methods: {
+				//展示picker
 			showPicker(type){
 				this.selectShow=true
 				this.currentType=type
@@ -829,14 +900,40 @@
 					case "pay":
 						this.selectList=this.payList
 						console.log(this.selectList)
+						break;
+					case "hire":
+					case "sex":
+					this.popUpShow=false
 					break;
 				}
+				this.selectList=this.listPickerConfig[type]
 			},
+			//点击确认picker 选择
 			ConfirmFn(val){
 				let name=this.currentType
+				if(name=='hire' || name=='sex'){
+					this.popUpShow=true
+				}
 				this.currentObj[name].valueName=this.selectList[val[0]].value
 				this.currentObj[name].valueCode=this.selectList[val[0]].label	
 			
+			},
+			popUpShowFn(type,index){
+				this.popUpType=type
+				this.popUpShow=true
+				if(type=='tenant'){  //仅针对房屋情况
+					this.tenantInit()
+					this.homeArrIndex=index
+				}
+				this[type+'Show']=true
+			},
+			tenantInit(){
+				this.currentObj['hire'].valueName='请选择出租情况'
+				this.currentObj['hire'].valueCode=''
+				this.currentObj['sex'].valueName='请选择性别'
+				this.currentObj['sex'].valueCode=''
+				this.tenantArea=''
+				this.tenantPrice=''
 			},
 			CancelFn(){
 				this.selectShow=false
@@ -853,9 +950,14 @@
 			// 房屋概况
 			layoutConfirm(e) {
 				let result = '';
+				console.log(e)
 				e.map((val, index) => {
+					if(index==0){
+						this.homeNum=val.value
+					}
 					result += result == '' ? val.label : '-' + val.label;
 				})
+				this.isJoint?this.chekcNum=Number(this.homeNum)-Number(this.rentNum):this.chekcNum=0
 				this.model.layout = result;
 			},
 			layoutCancel(e) {
@@ -866,9 +968,16 @@
 				let result = '';
 				console.log(e)
 				e.map((val, index) => {
+					//当前为合租
+					if(index==0&&val.value==8){
+						this.isJoint=true
+					}
+					if(index==1){
+						this.rentNum=val.value
+					}
 					if(val.label) result += result == '' ? val.label : '-' + val.label;	
 				})
-				console.log(e)
+				this.isJoint?this.chekcNum=Number(this.homeNum)-Number(this.rentNum):this.chekcNum=0
 				this.model.lease = result;
 				console.log(result)
 			},
@@ -909,9 +1018,15 @@
 			houseConfig(e) {
 				this.model.houseConfig = e;
 			},
+			//将所有的底部弹窗都隐藏
+			popupinit(){
+				this.popUpShow=false
+				this.floorShow = false;
+				this.tenantShow=false
+			},
 			// 楼层位置
 			floorClick() {
-				this.floorShow = true;
+				this.popupinit()
 			},
 			close() {},
 			open() {},
@@ -921,13 +1036,26 @@
 			maxChange(e){
 				this.maxValue = e.value;
 			},
-			confirmFloor(e){
-				this.model.floor = this.currentValue + "/" + this.maxValue;
-				this.floorShow = false;
+			confirmPopup(e){
+				switch(this.popUpType){
+					case "floor":
+						this.model.floor = this.currentValue + "/" + this.maxValue;
+					break;
+					case "tenant":
+						let obj={
+							hirecircum:this.currentObj['hire'].valueName,//出租情况
+							sex:this.currentObj['sex'].valueName,
+							area:this.tenantArea,
+							price:this.tenantPrice,
+						}
+						let tenantStr=obj.hirecircum + '-'+(obj.sex.indexOf('请选择')==-1?obj.sex:obj.price+'元/月')+'-'+obj.area+'m²'
+						this.tenantObj.push(obj)
+						this.homeArr[this.homeArrIndex].tenantStr=tenantStr
+					break;
+				}
+				
+				this.popupinit()
 			},
-			
-			
-			
 			async publish(){
 				if (!this.input_content) {
 					uni.showModal({ content: '内容不能为空', showCancel: false, });

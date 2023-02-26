@@ -51,7 +51,7 @@
 						<!-- 价格 -->
 						<view :style="{height: contHeight}" @click.stop="screenContBtn"
 							v-if="currentClickType == 'price' && enterType != 'newHouse'" class="region_list_view f_r_b">
-							<scroll-view class="scroll_view_list price_scroll_list" scroll-y>
+							<scroll-view class="scroll_view_list price_scroll_list"  v-if="erHousePriceList.length>0" scroll-y>
 								<block v-for="(item, index) in erHousePriceList" :key="index">
 									<view hover-class="none" form-type="submit" :class="{screen_active: erHousePriceIndex == index}"
 										@click="priceBtn(item, index)" class="region_list_item">{{ item.text }}</view>
@@ -129,18 +129,21 @@
 
 <script>
 	export default {
-		props:["screenFormData","priceApiDataMap","from","regionLeftList","regionRightMap","enterType"],
+		props:["screenFormData","priceApiDataMap","from","regionLeftList","regionRightMap","enterType","erHousePriceList"],
 		data() {
 			return {
 				downIcon: "http://cdn.haofang.net/static/uuminiapp/pageNewUi/list/filter_btn_nomal.png",
 				topIcon: "http://cdn.haofang.net/static/kdbweb/zdzfminiapp/zdzfPlatform/newUiStyle/down-active.png",
 				listTcShow:false,
 				fixedContHeight: "100%", // 弹窗的高度
-				fixedTcTop: "43px",   // 筛选条件距离顶部高度
+				fixedTcTop:  "128px",   // 筛选条件距离顶部高度43px
 				currentClickType:'',
 				contHeight: "50%",   // 筛选条件高度
 				regionLeftIndex: 0,
 				regionRightIndex: 0,
+				// 价格输入
+				minPriceVal: "",
+				maxPriceVal: "",
 			}
 		},
 		onShow(){
@@ -154,14 +157,7 @@
 			screenBtn(str){
 				console.log(str)
 					this.currentClickType=str
-				switch(str){
-					case "region":
-						this.listTcShow=true
-					
-						console.log(this.listTcShow)
-					break;
-				}
-				// this.$emit('screenBtn',str)
+					this.listTcShow=true
 			},
 			// 点击外部空白区域，弹窗关闭
 			screenClose() {
@@ -404,5 +400,55 @@
 		flex-direction: row;
 		justify-content: space-between;
 	}
+}
+/* 新房价格切换 */
+.new_house_price_change_view{
+	width: 28%;
+	flex-shrink: 0;
+	background: #FFFFFF;
+}
+.new_house_price_change_view>view{
+	text-align: center;
+	line-height: 100upx;
+}
+.new_house_price_change_view>.new_price_tab_active{
+	color: #ab7f2e;
+}
+.scroll-view-height {
+	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
+	height: calc(100vh - var(--status-bar-height) - 88rpx);
+	background-color: #ffffff;
+}
+
+.screen_view .price_scroll_list{
+	padding-bottom: 140upx;
+	box-sizing: border-box;
+}
+.price_bottom_view{
+	position:absolute;
+	bottom: 0;
+	left: 0;
+	height:140upx;
+	width:100%;
+	box-sizing:border-box;
+	padding:0 40upx 0;
+	background-color:#ffffff;
+}
+.price_bottom_view .price_input_val{
+	width:160upx;
+	height:60upx;
+	line-height: 60upx;
+	text-align:center;
+	border:1px solid #cccccc;
+	border-radius:6upx;
+	font-size:24upx;
+	margin: auto 0;
+}
+.price_bottom_view .price_input_val:last-child{
+	margin-left: 50upx;
+}
+.f_r_s {
+	display: flex;
+	flex-direction: row;
 }
 </style>

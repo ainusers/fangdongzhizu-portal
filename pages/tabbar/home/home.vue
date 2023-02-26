@@ -86,33 +86,8 @@
 	background:-webkit-linear-gradient(left, #ffd900 , rgb(255,84,0));
 	color:#fff;
 }
-.screen_view .price_scroll_list{
-	padding-bottom: 140upx;
-	box-sizing: border-box;
-}
-.price_bottom_view{
-	position:absolute;
-	bottom: 0;
-	left: 0;
-	height:140upx;
-	width:100%;
-	box-sizing:border-box;
-	padding:0 40upx 0;
-	background-color:#ffffff;
-}
-.price_bottom_view .price_input_val{
-	width:160upx;
-	height:60upx;
-	line-height: 60upx;
-	text-align:center;
-	border:1px solid #cccccc;
-	border-radius:6upx;
-	font-size:24upx;
-	margin: auto 0;
-}
-.price_bottom_view .price_input_val:last-child{
-	margin-left: 50upx;
-}
+
+
 .f_r_s {
 	display: flex;
 	flex-direction: row;
@@ -133,24 +108,7 @@
 	color:#aaa;
 	padding: 10upx 0;
 }
-/* 新房价格切换 */
-.new_house_price_change_view{
-	width: 28%;
-	flex-shrink: 0;
-	background: #FFFFFF;
-}
-.new_house_price_change_view>view{
-	text-align: center;
-	line-height: 100upx;
-}
-.new_house_price_change_view>.new_price_tab_active{
-	color: #ab7f2e;
-}
-.scroll-view-height {
-	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
-	height: calc(100vh - var(--status-bar-height) - 88rpx);
-	background-color: #ffffff;
-}
+
 </style>
 <template>
 	<view class="main">
@@ -171,7 +129,7 @@
 		  <view class="search" @click.stop="searchBtn"></view>
 		</view>
 		<!-- 筛选项 -->
-		<screenTab :screenFormData="screenFormData" :priceApiDataMap="priceApiDataMap" :from="from" @screenBtn="screenBtn"    :regionLeftList="regionLeftList" :regionRightMap="regionRightMap" :enterType="enterType" @regionLeftBtn="regionLeftBtn" @regionRightBtn="regionRightBtn"></screenTab>
+		<screenTab :screenFormData="screenFormData" :priceApiDataMap="priceApiDataMap" :from="from" @screenBtn="screenBtn"    :regionLeftList="regionLeftList" :regionRightMap="regionRightMap" :enterType="enterType"  :erHousePriceList="erHousePriceList" @regionLeftBtn="regionLeftBtn" @regionRightBtn="regionRightBtn" ref="screenTab"></screenTab>
 		<!-- 内容区域 -->
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
 		
@@ -371,7 +329,8 @@ export default {
 				region:[]
 			},
 			// 二手房价格
-			erHousePriceList: [],
+			erHousePriceList: [
+			],
 			erHousePriceIndex: 0,
 			
 			// 户型筛选
@@ -422,9 +381,7 @@ export default {
 			newHouseTypeItem: {text:"不限", id: ""},
 			aparmentChuZuTypeItem: {text:"不限", id: ""},
 			
-			// 价格输入
-			minPriceVal: "",
-			maxPriceVal: "",
+			
 			
 			cityId: "1",
 			
@@ -475,6 +432,9 @@ export default {
 		this.getArea()
 		this.getHouseList()
 	},
+	onShow(){
+		console.log('又展示了')
+	},
 	onReady(){
 		
 	},
@@ -508,6 +468,7 @@ export default {
 		},
 		// 获取选择城市返回的城市名称
 		getValue(cityNameLess){
+			console.log(cityNameLess)
 			this.cityName = cityNameLess;
 		},
 		// 获得swiper切换后的current索引
@@ -744,6 +705,7 @@ export default {
 		// 区域筛选
 		regionRightBtn(item,index){
 			console.log(item,index)
+			this.$refs.screenTab.listTcShow=false
 		}
 	}
 }

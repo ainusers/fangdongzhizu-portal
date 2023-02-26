@@ -232,7 +232,7 @@
 				let images;
 				if(this.imageList.length == 0) {
 					images = [];
-				} else {
+				} else {Q
 					images = await this.attachUpload();
 				}
 				// console.log("---上传图片---->" + images)

@@ -125,14 +125,14 @@
 		    <block v-if="detailData != null">
 			 <view class="description">
 				<view class="position">
-					<view class="community">{{detailData.community}}{{detailData.whoCommunity}}</view>
-					<view class="bedroom"> - {{detailData.bedroom}}</view>
+					<view class="community">{{detailData.communityName}}{{detailData.whoCommunity}}</view>
+					<view class="bedroom"> - {{detailData.rentalHouse}}</view>
 				</view>
 				<view class="money">
 					<view class="pay">
 						<view class="fix">月租金</view>
-						<view class="price">{{detailData.price}}</view>元/月
-						<view class="way">({{detailData.way}})</view>
+						<view class="price">{{detailData.rent}}</view>元/月
+						<view class="way">({{detailData.roomType}})</view>
 					</view>
 					<view class="datetime">{{detailData.datetime}}</view>
 				</view>
@@ -243,6 +243,7 @@
 	// 页面传值
 	onLoad(options) {
 		this.detailData = JSON.parse(options.detail);
+		console.log(this.detailData)
 	},
     data() {
       return {
