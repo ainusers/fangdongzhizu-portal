@@ -127,7 +127,7 @@
 				</block>
             </view>
             <!--手机号-->
-            <view class="item f_r_b">
+            <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/updatephone?userInfo=${encodeURIComponent(JSON.stringify(userInfo))}`)">
                 <view class="item_text">手机号</view>
                 <view class="item_val">
 					{{ this.userInfo.username }}
@@ -189,25 +189,103 @@
             },
             // 更新头像
             chooseAvatar() {
+				console.log('更新了')
                 uni.showActionSheet({
                     itemList: ['拍照', '从手机相册选择'],
                     success: (res) => {
+						console.log(res)
                         this.uploadImg(res.tapIndex === 0 ? "camera" : "album")
                     }
                 });
             },
             // 上传图片
             uploadImg(sourceType = "camera") {
+				var that = this;
                 uni.chooseImage({
                     count: 1,
-                    sizeType: ['compressed'],
+                    // sizeType: ['compressed'],
                     sourceType: [sourceType],
                     success: function (res) {
-                        uni.showLoading({title: '上传中...', mask: Config.mask});
+						console.log(res)
+                        uni.showLoading({title: '上传中...'});
                         // 上传图片操作 (.then().catch(err => {}))
+						
+							uni.getStorage({
+								key: 'token',
+								success: function (auth) {
+									console.log(auth)
+									let files=res.tempFiles
+									let filesPath=res.tempFilePaths
+									that.uploadFileAvtar(files,filesPath,auth).then(res=>{
+										that.updateImg(res[0],auth)
+									})
+								}
+							})
+						
                     }
                 });
             },
+			// 上传图片
+			uploadFileAvtar(files,filesPath,auth){
+				console.log(files)
+				console.log(auth)
+				console.log(filesPath)
+				return new Promise((resolve,reject)=>{
+					uni.uploadFile({
+						url: 'http://81.70.163.240:11001/zf/v1/file/uploads',
+						filePath:filesPath[0],
+						name:'file',
+						header: {
+							// 'content-type': 'multipart/form-data',
+							'Authorization': 'Bearer ' + auth.data
+						},
+						formData:{
+							// file:files[0]
+							},
+						success: (res) => {
+							resolve(JSON.parse(res.data).data);
+						},
+						fail: (e) => {A
+							console.log("e: " + JSON.stringify(e));
+							uni.hideLoading();
+							reject(e);
+							}
+						});
+				})
+			},
+			//更改头像
+			updateImg(imgAvtar,auth){
+				let that=this
+				uni.request({
+					method: 'patch',
+					data: {
+						id: that.userInfo.id,
+						avatar: imgAvtar
+					},
+					header: {
+						'content-type': 'application/json',
+						'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MTc2MDQ1tDBV0lFKrShQsjI0M7c0MDM1NzWsBQAVKAbfJgAAAA.Jl3mnZemYEXQuvUpbqLFiK93_RhAZGLAPt99bz7PxEWdWlxufeMcDCasfmQk9qGmA8AebkQgRyhAoTBeatfPOw' //+ auth.data
+					},
+					url: 'http://81.70.163.240:11001/zf/v1/user/attr',
+					success: (res) => {
+						console.log(res)
+						 uni.hideLoading();
+						// if(res.data.data[0].status){
+						// 	uni.showToast({
+						// 		title: '修改成功',
+						// 		icon: 'none',
+						// 		duration: 2000
+						// 	})
+						// 	// 返回上一页
+						// 	setTimeout(() => {
+						// 		uni.navigateBack({
+						// 		    delta: 1
+						// 		});
+						// 	},2000)
+						// }
+					}
+				})
+			},
 			// 退出登录
 			logout() {
 				uni.removeStorage({

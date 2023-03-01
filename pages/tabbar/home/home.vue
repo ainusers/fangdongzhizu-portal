@@ -32,83 +32,27 @@
 .u-tab-item .u-line-1 {
 	line-height: 0px!important;
 }
-.region_new_title{
-	font-size:36upx;
-	font-weight:600;
-	color:#101d36;
-	margin-top:20upx;
-	padding-left: 30upx;
-	box-sizing: border-box;
-	margin-bottom: -10upx;
-}
-.region_new_list_item{
-	width:150upx;
-	height:62upx;
-	background-color:#f2f2f2;
-	border-radius:6upx;
-	float:left;
-	margin-right:23upx;
-	text-align:center;
-	line-height:62upx;
-	color:#101d36;
-	font-size:24upx;
-	margin-top:24upx;
-}
-.region_new_cont{
-	padding-left: 30upx;
-	box-sizing: border-box;
-	flex-wrap: wrap;
-}
-.room_new_btn_view{
-	display:flex;
-	justify-content:space-between;
-	width:100%;
-	height:156upx;
-	position:absolute;
-	bottom:0;
-	align-items:center;
-	background:#ffffff;
-	z-index:99;
-	padding:0 39upx 0 39upx;
-	box-sizing:border-box;
-}
-.room_new_btn_view view, .room_new_btn_view view, .room_new_btn_view button{
-	width:48%;
-	height:80upx;
-	border-radius:40upx;
-	background:#f1f3f6;
-	text-align:center;
-	line-height:85upx;
-	letter-spacing:10upx;
-	font-size:30upx;
-}
-.room_new_btn_view .room_new_btn_confirm{
-	background:-webkit-linear-gradient(left, #ffd900 , rgb(255,84,0));
-	color:#fff;
-}
+
 
 
 .f_r_s {
 	display: flex;
 	flex-direction: row;
 }
-.price_bottom_confirm{
-	width:200upx;
-	height:74upx;
-	background-image:linear-gradient(246deg, #ffd900 0%, #ff8400 100%), linear-gradient( #eeeff5, #eeeff5);
-	border-radius:37upx;
-	color:#ffffff;
-	font-size:28upx;
-	line-height:74upx;
-	text-align:center;
-	margin: auto 0;
-}
+
 .home_nodata{
 	text-align: center;
 	color:#aaa;
 	padding: 10upx 0;
 }
-
+.scroll-view-height {
+	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
+	height: calc(100vh - var(--status-bar-height) - 88rpx);
+	background-color: #ffffff;
+}
+.list-swiper{
+	height:79vh;
+}
 </style>
 <template>
 	<view class="main">
@@ -129,12 +73,31 @@
 		  <view class="search" @click.stop="searchBtn"></view>
 		</view>
 		<!-- 筛选项 -->
-		<screenTab :screenFormData="screenFormData" :priceApiDataMap="priceApiDataMap" :from="from" @screenBtn="screenBtn"    :regionLeftList="regionLeftList" :regionRightMap="regionRightMap" :enterType="enterType"  :erHousePriceList="erHousePriceList" @regionLeftBtn="regionLeftBtn" @regionRightBtn="regionRightBtn" ref="screenTab"></screenTab>
+		<screenTab ref="screenTab" 
+		:screenFormData="screenFormData" 
+		:roomList="roomList"
+		:priceApiDataMap="priceApiDataMap" 
+		:from="from" @screenBtn="screenBtn"  
+		:regionLeftList="regionLeftList" 
+		:regionRightMap="regionRightMap" 
+		:enterType="enterType"  
+		:erHousePriceList="erHousePriceList"
+		@regionLeftBtn="regionLeftBtn"
+		@regionRightBtn="regionRightBtn" 
+		@roomBtn="roomBtn"
+		@priceBtn="priceBtn"
+		@confirmBtn="confirmBtn"
+		@resetBtn="resetBtn"
+		@areaBtn="areaBtn"
+		@sourceBtn="sourceBtn"
+		@roomConfirm="roomConfirm"
+		 >
+			</screenTab>
 		<!-- 内容区域 -->
-		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
+		<swiper class="list-swiper" @change="swipeIndex" :current="current" :duration="300">
 		
 			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content">
+				<scroll-view scroll-y="true" class=" list-content">
 					<view v-if="current === 0">
 						<!-- 内容区域 -->
 						<view class="content" v-if="houseList.length>0">
@@ -330,20 +293,17 @@ export default {
 			},
 			// 二手房价格
 			erHousePriceList: [
+				{text:'1000元以下'},
+				{text:'2000-4000元'},
+				{text:'4000-60000元'},
+				{text:'6000-80000元'},
+				{text:'8000-100000元'},
 			],
-			erHousePriceIndex: 0,
+			
 			
 			// 户型筛选
 			roomList: Const.roomList,
-			roomListIndex: 0,
 			
-			// 来源
-			sourceLsit: Const.sourceLsit,
-			sourceLsitIndex: -1,
-			
-			// 面积
-			areaLsit: Const.areaList,
-			areaLsitIndex: -1,
 			
 			// 公寓出租方式
 			aparmentChuZuTypeList: Const.aparmentChuZuTypeList,
@@ -376,7 +336,7 @@ export default {
 			
 			listTcShow: false,
 			currentClickType: "region",
-			roomItem: {text:"不限", id: ""},
+			
 			priceItem: {text:"不限", id: ""},
 			newHouseTypeItem: {text:"不限", id: ""},
 			aparmentChuZuTypeItem: {text:"不限", id: ""},
@@ -450,14 +410,15 @@ export default {
 						data:{
 							publish_type:that.publish_type,
 							page:that.currPage,
-							size:that.size
+							size:that.size,
+							city:that.cityName
 						},
 						header: {
 							'content-type': 'application/json',
 							'Authorization': 'Bearer ' + auth.data
 						},
 						success(res){
-							if(res.data.success){
+							if(res.data.status){
 								that.houseList=res.data.data
 								console.log(that.houseList)
 							}
@@ -527,15 +488,10 @@ export default {
 		    //     , this.listTcShow);
 		    // this.screenFormData = screenFormData;
 		},
-		// 价格选项卡
-		minPriceBlur(e) {
-			this.minPriceVal = e.detail.value;
-		},
-		maxPriceBlur(e) {
-			this.maxPriceVal = e.detail.value;
-		},
+		
 		// 价格选择
 		priceBtn(item, index, isInput = false) {
+			console.log(item)
 			if(!isInput) {
 				this.minPriceVal = "";
 				this.maxPriceVal = "";
@@ -549,7 +505,7 @@ export default {
 		    if(!item.id) {
 		        screenFormData[enterType].price.text = this.priceApiDataMap[this.from].defaultText;
 		    }
-		    this.listTcShow = false;
+		    // this.$refs.screenTab.listTcShow=false
 		    this.erHousePriceIndex = index;
 		    this.screenFormData = screenFormData;
 		},
@@ -598,7 +554,6 @@ export default {
 		    if(!item.id) {
 		        screenFormData[enterType].room.text = "户型";
 		    }
-		    this.listTcShow = false;
 		    this.roomListIndex = index;
 		    this.screenFormData = screenFormData;
 		},
@@ -650,7 +605,7 @@ export default {
 		        screenFormData[enterType].more.text = "更多";
 		    }
 		    this.screenFormData = screenFormData;
-		    this.listTcShow = false;
+		    this.$refs.screenTab.listTcShow=false
 		},
 		// 更多选项卡 - 重置按钮
 		resetBtn() {
@@ -660,11 +615,11 @@ export default {
 		    screenFormData[enterType].more.text = "更多";
 		    screenFormData[enterType].more.show = true;
 		
-		    this.areaLsitIndex = -1;
+		     this.$refs.screenTab.areaLsitIndex = -1;
 		    screenFormData[enterType].area.id = "";
 		    screenFormData[enterType].area.text = "面积";
 		
-		    this.sourceLsitIndex = -1;
+		     this.$refs.screenTab.sourceLsitIndex = -1;
 		    screenFormData[enterType].source.id = "";
 		    screenFormData[enterType].source.text = "来源";
 		
@@ -686,10 +641,7 @@ export default {
 							},
 							url: 'http://81.70.163.240:11001/zf/v1/const/area',
 							success: (res) => {
-								console.log(res)
-								if(res.data.success){
-									console.log(res.data.data)
-									console.log(that.regionRightMap)
+								if(res.data.status){
 									that.regionRightMap['region']=res.data.data
 								}
 							}
@@ -705,6 +657,9 @@ export default {
 		// 区域筛选
 		regionRightBtn(item,index){
 			console.log(item,index)
+			this.$refs.screenTab.listTcShow=false
+		},
+		roomConfirm(item,index){
 			this.$refs.screenTab.listTcShow=false
 		}
 	}

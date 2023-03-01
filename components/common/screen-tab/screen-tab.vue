@@ -81,7 +81,7 @@
 							</scroll-view>
 							<view class="room_new_btn_view">
 								<view hover-class="none" form-type="submit" @click='roomBtn({text:"不限", id: ""}, 0)'>重置</view>
-								<view hover-class="none" form-type="submit" @click='roomBtn(roomItem, 0)' class="room_new_btn_confirm">确认</view>
+								<view hover-class="none" form-type="submit" @click='roomConfirm(roomItem, 0)' class="room_new_btn_confirm">确认</view>
 							</view>
 						</view>
 						<!-- 更多 -->
@@ -128,8 +128,9 @@
 </template>
 
 <script>
+	import { Const } from "@/utils/const/Const.js";
 	export default {
-		props:["screenFormData","priceApiDataMap","from","regionLeftList","regionRightMap","enterType","erHousePriceList"],
+		props:["screenFormData","priceApiDataMap","from","regionLeftList","regionRightMap","enterType","erHousePriceList","roomList"],
 		data() {
 			return {
 				downIcon: "http://cdn.haofang.net/static/uuminiapp/pageNewUi/list/filter_btn_nomal.png",
@@ -141,9 +142,19 @@
 				contHeight: "50%",   // 筛选条件高度
 				regionLeftIndex: 0,
 				regionRightIndex: 0,
+				erHousePriceIndex: 0,
+				roomListIndex: 0,
 				// 价格输入
 				minPriceVal: "",
 				maxPriceVal: "",
+				roomItem: {text:"不限", id: ""},
+				// 来源
+				sourceLsit: Const.sourceLsit,
+				sourceLsitIndex: -1,
+				
+				// 面积
+				areaLsit: Const.areaList,
+				areaLsitIndex: -1,
 			}
 		},
 		onShow(){
@@ -155,7 +166,6 @@
 		},
 		methods: {
 			screenBtn(str){
-				console.log(str)
 					this.currentClickType=str
 					this.listTcShow=true
 			},
@@ -199,12 +209,49 @@
 			regionRightBtn(item,index){
 				this.regionRightIndex=index
 				this.$emit('regionRightBtn',item,index)
+			},
+			roomBtn(item,index){
+				this.roomListIndex=index
+				this.$emit('roomBtn',item,index)
+			},
+			// 价格选项卡
+			minPriceBlur(e) {
+				this.minPriceVal = e.detail.value;
+			},
+			maxPriceBlur(e) {
+				this.maxPriceVal = e.detail.value;
+			},
+			//选择价格
+			priceBtn(item,index){
+				this.erHousePriceIndex=index
+				this.$emit('priceBtn',item,index)
+			},
+			confirmPrice(){
+				this.$emit('confirmPrice',1)
+			},
+			confirmBtn(){
+				this.$emit('confirmBtn',1)
+			},
+			resetBtn(){
+				this.$emit('resetBtn',1)
+			},
+			areaBtn(item, index){
+				this.areaLsitIndex=index
+				this.$emit('areaBtn',1)
+			},
+			sourceBtn(item,index){
+				this.sourceLsitIndex=index
+				this.$emit('sourceBtn',item,index)
+			},
+			roomConfirm(item,index){
+				this.$emit('roomConfirm',item)
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
+	
 	/* 弹窗 */
 	.screen_fixed_list{
 		position: fixed;
@@ -268,8 +315,6 @@
 		color:#ab7f2e;
 	}
 	.price_scroll_list .screen_active{
-		color:#ab7f2e;
-		border: none;
 		color:#ab7f2e;
 	}
 	.region_scroll_right .screen_active{
@@ -414,11 +459,7 @@
 .new_house_price_change_view>.new_price_tab_active{
 	color: #ab7f2e;
 }
-.scroll-view-height {
-	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
-	height: calc(100vh - var(--status-bar-height) - 88rpx);
-	background-color: #ffffff;
-}
+
 
 .screen_view .price_scroll_list{
 	padding-bottom: 140upx;
@@ -450,5 +491,74 @@
 .f_r_s {
 	display: flex;
 	flex-direction: row;
+}
+.region_list_item{
+	border-bottom: 1px solid #ddd;
+}
+.price_bottom_confirm{
+	width:200upx;
+	height:74upx;
+	background-image:linear-gradient(246deg, #ffd900 0%, #ff8400 100%), linear-gradient( #eeeff5, #eeeff5);
+	border-radius:37upx;
+	color:#ffffff;
+	font-size:28upx;
+	line-height:74upx;
+	text-align:center;
+	margin: auto 0;
+}
+//户型筛选
+.region_new_title{
+	font-size:36upx;
+	font-weight:600;
+	color:#101d36;
+	margin-top:20upx;
+	padding-left: 30upx;
+	box-sizing: border-box;
+	margin-bottom: -10upx;
+}
+.region_new_list_item{
+	width:150upx;
+	height:62upx;
+	background-color:#f2f2f2;
+	border-radius:6upx;
+	float:left;
+	margin-right:23upx;
+	text-align:center;
+	line-height:62upx;
+	color:#101d36;
+	font-size:24upx;
+	margin-top:24upx;
+}
+.region_new_cont{
+	padding-left: 30upx;
+	box-sizing: border-box;
+	flex-wrap: wrap;
+}
+.room_new_btn_view{
+	display:flex;
+	justify-content:space-between;
+	width:100%;
+	height:156upx;
+	position:absolute;
+	bottom:0;
+	align-items:center;
+	background:#ffffff;
+	z-index:99;
+	padding:0 39upx 0 39upx;
+	box-sizing:border-box;
+}
+.room_new_btn_view view, .room_new_btn_view view, .room_new_btn_view button{
+	width:48%;
+	height:80upx;
+	border-radius:40upx;
+	background:#f1f3f6;
+	text-align:center;
+	line-height:85upx;
+	letter-spacing:10upx;
+	font-size:30upx;
+}
+.room_new_btn_view .room_new_btn_confirm{
+	background:-webkit-linear-gradient(left, #ffd900 , rgb(255,84,0));
+	color:#fff;
 }
 </style>

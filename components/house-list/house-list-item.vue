@@ -193,27 +193,29 @@
 		<view class="er_house_cont">
 			<!-- 兰亭新苑 三区 朝向 主卧-->
 			<view class="er_house_title">
-				<text v-if="item.rentalHouse">{{ item.rentalHouse }}</text>
-				<text v-if="item.whoCommunity || item.communityName">{{ item.communityName }}{{ item.whoCommunity }}</text>
+				<text v-if="item.rentalHouse">{{ item.rentalHouse.split('-')[0] }}</text>
+				<text v-if=" item.communityName">{{ item.communityName }}</text>
 				<text v-if="item.orientation">{{ item.orientation }}</text>
 			</view>
 			<!-- 租房类型，两室一厅（配比），大小，楼层 -->
 			<view class="er_house_des">
-				<text v-if="item.layout">{{ item.layout }}</text>
+				<text v-if="item.layout">{{ item.roomType }}|</text>
+				<text v-if="item.layout">{{ item.size }}m² |</text>
+				<text v-if="item.layout">{{ item.floor }}层</text>
 			</view>
 			<!-- 地理位置：距离昌平线沙河地铁站1020米 -->
 			<view class="er_house_tag_info f_r_s">
-				<text v-if="item.position">{{ item.position }}</text>
+				<text> 距离{{item.area}}{{item.subway }}地铁站{{item.distanceSubway}}米</text>
 			</view>
 
 			<!-- 房屋价格，朝阳区，酒仙桥 -->
 			<view class="er_house_price_view f_r_s">
 				<view class="er_house_price main_color f_r_s">
-					<text v-if="item.rent" class="price">{{ item.rent }}</text>
+					<text v-if="item.money" class="price">{{ item.money }}</text>
 					<text>元/月</text>
 				</view>
 				<view class="place">
-					<text v-if="item.region">{{ item.region }}</text>
+					<text v-if="item.area">{{item.area}}</text>
 					<text v-if="item.subway">{{ item.subway }}</text>
 				</view>
 			</view>

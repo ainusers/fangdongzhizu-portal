@@ -37,6 +37,7 @@
 		onNavigationBarButtonTap(e) {
 			// 向后端发送请求，修改用户昵称
 			var that = this;
+			console.log(that.userInfo)
 			uni.getStorage({
 				key: 'token',
 				success: function (auth) {
@@ -48,11 +49,12 @@
 						},
 						header: {
 							'content-type': 'application/json',
-							'Authorization': 'Bearer ' + auth.data
+							'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MTc2MDQ1tDBV0lFKrShQsjI0M7c0MDMzNjKtBQATFud2JgAAAA.Cn4ABUTwUoCmF3I4XATE6nRr2gPFMyIp4s2He5gIru02Va6Rj1NmAs_3pj9KerX6UK9Ppp8YWk-9WlRm4IhbOg' //+ auth.data
 						},
 						url: 'http://81.70.163.240:11001/zf/v1/user/attr',
 						success: (res) => {
-							if(res.data.data[0].status){
+							console.log(res)
+							if(res.data.status){
 								uni.showToast({
 									title: '修改成功',
 									icon: 'none',

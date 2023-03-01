@@ -55,7 +55,40 @@
 		},
 		onNavigationBarButtonTap(e) {
 			console.log(this.model.region);
-			// 向后端发送请求，设置性别
+			// 向后端发送请求，设置地区
+			var that = this;
+			uni.getStorage({
+				key: 'token',
+				success: function (auth) {
+					uni.request({
+						method: 'patch',
+						data: {
+							id: that.userInfo.id,
+							province: that.model.region
+						},
+						header: {
+							'content-type': 'application/json',
+							'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MTc2MDQ1tDBV0lFKrShQsjI0M7c0NDGzMDeoBQADDeUxJgAAAA.WD4qZISXzIJ1cr2X5-CzhMAOFF7z0zl-F12fzBdCQRzMFLKYKBO5oFZ38gNdGeNyOhT0uQQm65TYtb5E09n9Aw'// + auth.data
+						},
+						url: 'http://81.70.163.240:11001/zf/v1/user/attr',
+						success: (res) => {
+							if(!res.data.data[0].status){
+								uni.showToast({
+									title: '修改成功',
+									icon: 'none',
+									duration: 2000
+								})
+								// 返回上一页
+								// setTimeout(() => {
+								// 	uni.navigateBack({
+								// 	    delta: 1
+								// 	});
+								// },2000)
+							}
+						}
+					})
+				}
+			})
 		}
     }
 </script>

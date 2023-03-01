@@ -125,32 +125,32 @@
 		    <block v-if="detailData != null">
 			 <view class="description">
 				<view class="position">
-					<view class="community">{{detailData.communityName}}{{detailData.whoCommunity}}</view>
-					<view class="bedroom"> - {{detailData.rentalHouse}}</view>
+					<view class="community">{{detailData.communityName}}</view>
+					<view class="bedroom"> - {{detailData.roomType}}</view>
 				</view>
 				<view class="money">
 					<view class="pay">
 						<view class="fix">月租金</view>
-						<view class="price">{{detailData.rent}}</view>元/月
-						<view class="way">({{detailData.roomType}})</view>
+						<view class="price">{{detailData.money}}</view>元/月
+						<view class="way">({{detailData.payType}})</view>
 					</view>
-					<view class="datetime">{{detailData.datetime}}</view>
+					<view class="datetime">{{detailData.updateTime.split('T')[0]}}</view>
 				</view>
 			 </view>
 			 <view class="detail">
 				<view class="chaoxiang">
 					<view  class="orientation">朝向 - {{detailData.orientation}}</view>
-					<view  class="size">{{detailData.size}}</view>
+					<view  class="size">{{detailData.size}}m²</view>
 				</view>
 				<image style="width:5px;height: 40px;" src="/static/home/detail/vertical.png"></image>
 				<view class="pattern">
 					<view  class="layout">{{detailData.layout}}</view>
-					<view  class="heating">{{detailData.heating}}</view>
+					<view  class="heating">{{detailData.heatType}}</view>
 				</view>
 				<image style="width:5px;height: 40px;" src="/static/home/detail/vertical.png"></image>
 				<view class="height">
 					<view  class="floor">{{detailData.floor}}</view>
-					<view  class="elevator">{{detailData.elevator}}</view>
+					<view  class="elevator">{{detailData.hasElevator}}电梯</view>
 				</view>
 			 </view>
 		   </block>
@@ -243,7 +243,8 @@
 	// 页面传值
 	onLoad(options) {
 		this.detailData = JSON.parse(options.detail);
-		console.log(this.detailData)
+			console.log(this.detailData)
+		this.initData()
 	},
     data() {
       return {
@@ -252,22 +253,14 @@
         haveVillageExpert: false,// 是否有小区专家
         loadingReqeust: true,
         swiperList: [
-			{
-				'url':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271',
-				'type':'img',
-				'urls':[
-					'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271',
-					'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.2ge.cn%2Fgroup1%2FM00%2F02%2FCD%2FwKgBPFts7U2AL2nJAANbVDfzFAE955.jpg&refer=http%3A%2F%2Fimage.2ge.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1667388805&t=52cc1fc3e6d2a0642d25a3de480f716f'
-				]
-			},
-			{
-				'url':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.2ge.cn%2Fgroup1%2FM00%2F02%2FCD%2FwKgBPFts7U2AL2nJAANbVDfzFAE955.jpg&refer=http%3A%2F%2Fimage.2ge.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1667388805&t=52cc1fc3e6d2a0642d25a3de480f716f',
-				'type':'img',
-				'urls':[
-					'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271',
-					'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.2ge.cn%2Fgroup1%2FM00%2F02%2FCD%2FwKgBPFts7U2AL2nJAANbVDfzFAE955.jpg&refer=http%3A%2F%2Fimage.2ge.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1667388805&t=52cc1fc3e6d2a0642d25a3de480f716f'
-				]
-			}
+			// {
+			// 	'url':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271',
+			// 	'type':'img',
+			// 	'urls':[
+			// 		'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271',
+			// 		'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.2ge.cn%2Fgroup1%2FM00%2F02%2FCD%2FwKgBPFts7U2AL2nJAANbVDfzFAE955.jpg&refer=http%3A%2F%2Fimage.2ge.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1667388805&t=52cc1fc3e6d2a0642d25a3de480f716f'
+			// 	]
+			// },
 		],
         archiveId: "",  // 经纪人id
         cityId: "",
@@ -288,19 +281,28 @@
         nearNewHouseList: [],
         guaPaiAgentList: [],
         bottomAgentInfo: {},
-        sheshiData: [{'iconUrl':'../../../static/home/detail/xiyiji-bak.svg','text':'洗衣机'},
-							{'iconUrl':'../../../static/home/detail/bingxiang-bak.svg','text':'冰箱'},
-							{'iconUrl':'../../../static/home/detail/dianshi-bak.svg','text':'电视'},
-							{'iconUrl':'../../../static/home/detail/kongtiao-bak.svg','text':'空调'},
-							{'iconUrl':'../../../static/home/detail/reshuiqi-bak.svg','text':'热水器'},
-							{'iconUrl':'../../../static/home/detail/ranqi.svg','text':'燃气灶'},
-							{'iconUrl':'../../../static/home/detail/nuanqi.svg','text':'暖气'},
-							{'iconUrl':'../../../static/home/detail/wifi.svg','text':'网络'},
-							{'iconUrl':'../../../static/home/detail/weibolu.svg','text':'微波炉'},
-							{'iconUrl':'../../../static/home/detail/diancilu.svg','text':'电磁炉'}],
-		feiyongData: [{'title':'付款方式','value':'季付'},{'title':'租金','value':'3590元/月'},{'title':'押金','value':'3590元/月'},{'title':'服务费','value':'0元'},
-					  {'title':'中介费','value':'0元'},{'title':'','value':''},{'title':'取暖费','value':'0元'},{'title':'无线费','value':'0元'},
-					  {'title':'物业费','value':'0元'},{'title':'水电费','value':'0元'}],
+        sheshiData: [{'iconUrl':'../../../static/home/detail/xiyiji-bak.svg','text':'洗衣机',isShow:false}, 
+							{'iconUrl':'../../../static/home/detail/bingxiang-bak.svg','text':'冰箱',isShow:false},
+							{'iconUrl':'../../../static/home/detail/dianshi-bak.svg','text':'电视',isShow:false},
+							{'iconUrl':'../../../static/home/detail/kongtiao-bak.svg','text':'空调',isShow:false},
+							{'iconUrl':'../../../static/home/detail/reshuiqi-bak.svg','text':'热水器',isShow:false},
+							{'iconUrl':'../../../static/home/detail/ranqi.svg','text':'燃气灶',isShow:false},
+							{'iconUrl':'../../../static/home/detail/nuanqi.svg','text':'暖气',isShow:false},
+							{'iconUrl':'../../../static/home/detail/wifi.svg','text':'网络',isShow:false},
+							{'iconUrl':'../../../static/home/detail/weibolu.svg','text':'微波炉',isShow:false}, 
+							{'iconUrl':'../../../static/home/detail/diancilu.svg','text':'电磁炉',isShow:false}],
+		feiyongData: [
+				{'title':'付款方式','value':'季付'},
+				{'title':'租金','value':'3590元/月'},
+				{'title':'押金','value':'3590元/月'},
+				{'title':'服务费','value':'0元'},
+				{'title':'中介费','value':'0元'},
+				{'title':'','value':''},
+				{'title':'取暖费','value':'0元'},
+				{'title':'无线费','value':'0元'},
+				{'title':'物业费','value':'0元'},
+				{'title':'水电费','value':'0元'},
+			],
 		zulinData: [{'house':'A室','sex':'男','size':'15m²','money':'3590元','status':'已出租'},
 					{'house':'B室','sex':'女','size':'12m²','money':'2310元','status':'已出租'},
 					{'house':'C室','sex':'-','size':'10m²','money':'-','status':'未出租'}],
@@ -320,7 +322,68 @@
           show: false
         },
       };
-    }
+    },
+	methods:{
+		//初始化数据
+		initData(){
+			// 轮播图 img 数据初始化
+			this.swiperImgInit()
+			//费用数据初始化
+			this.coseDataInit()
+			//地图展示
+			this.showMap()
+			// 配套设施展示
+			this.showSupport()
+		},
+		swiperImgInit(){
+			let obj={
+				url:'',
+				type:'img',
+				urls:[]
+			}
+			let imgUrl=this.detailData.imgUrl.split(',')
+			console.log(imgUrl)
+			obj.urls=imgUrl
+			for(let i=0;i<imgUrl.length;i++){
+				obj.url=imgUrl[i]
+				this.swiperList.push(obj)
+			}
+		},
+		coseDataInit(){
+			this.feiyongData[0].value=this.detailData.payType//支付方式
+			this.feiyongData[1].value=this.detailData.money//租金
+			this.feiyongData[2].value=this.detailData.mortgageMoney//押金
+			this.feiyongData[3].value=this.detailData.serviceMoney+'元'//服务费
+			this.feiyongData[4].value=this.detailData.proxyMoney+'元'//中介费
+			this.feiyongData[6].value=this.detailData.heatMoney+'元' //取暖费
+			this.feiyongData[7].value=this.detailData.wifiMoney+'元' //无线费用
+			this.feiyongData[8].value=this.detailData.manageMoney+'元' //物业费
+			this.feiyongData[9].value=this.detailData.waterElectricMoney+'元' //水电费
+		},
+		showMap(){
+			let that=this
+			console.log('展示地图')
+			console.log(that.detailData.latitude)
+			console.log(that.detailData.longitude)
+			uni.openLocation({
+						latitude: that.detailData.latitude,
+						longitude: that.detailData.longitude,
+						success: function () {
+							console.log('success');
+						}
+					});
+		},
+		showSupport(){
+			let support=this.detailData.support.split(',')
+			console.log(support)
+			this.sheshiData.forEach(item=>{
+				if(support.indexOf(item.text)!=-1){
+					item.isShow=true
+				}
+			})
+			console.log(this.sheshiData)
+		}
+	}
 }
   //   onShareAppMessage() {
   //     let that = this;

@@ -219,7 +219,8 @@
 				    },
 					url: 'http://81.70.163.240:11001/zf/v1/user/login',
 				    success: (res) => {
-						if(res.data.success) {
+						console.log(res)
+						if(res.data.status) {
 							uni.setStorage({
 								key: 'token',
 								data: res.data.data[0].token
