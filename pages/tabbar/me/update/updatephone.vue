@@ -38,8 +38,8 @@
 		},
 		onLoad(options){
 			that=this
-			this.userInfo=this.options.userInfo
-			console.log(this.userInfo)
+			this.userInfo=this.$store.state.userInfo
+			// console.log(this.userInfo)
 		},
 		methods: {
 			sendCode() {
@@ -77,9 +77,6 @@
 				console.log(that.currenphone) //校验手机号
 				console.log(that.newphone)
 				console.log(that.Verification)
-				uni.getStorage({
-					key: 'token',
-					success: function (auth) {
 						uni.request({
 							method: 'patch',
 							data: {
@@ -89,7 +86,7 @@
 							},
 							header: {
 								'content-type': 'application/json',
-								'Authorization': 'Bearer ' + auth.data
+								'Authorization': 'Bearer ' + that.$store.state.token
 							},
 							url: 'http://81.70.163.240:11001/zf/v1/user/attr',
 							success: (res) => {
@@ -118,8 +115,7 @@
 								console.log(e)
 							}
 						})
-					}
-				})
+			
 			}
 		
 	}

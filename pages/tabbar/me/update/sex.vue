@@ -46,7 +46,7 @@
 			}
 		},
         onLoad(data) {
-			this.userInfo = JSON.parse(decodeURIComponent(data.userInfo));
+			this.userInfo = this.$store.state.userInfo
 			this.model.sex = this.userInfo.sex == 1 ? '男' : '女';
         },
         onShow() {
@@ -63,9 +63,6 @@
 			console.log(this.model.sex);
 			// 向后端发送请求，修改用户性別
 			var that = this;
-			uni.getStorage({
-				key: 'token',
-				success: function (auth) {
 					uni.request({
 						method: 'patch',
 						data: {
@@ -74,27 +71,35 @@
 						},
 						header: {
 							'content-type': 'application/json',
-							'Authorization': 'Bearer ' + auth.data
+							'Authorization': 'Bearer ' +that.$store.state.token
 						},
 						url: 'http://81.70.163.240:11001/zf/v1/user/attr',
 						success: (res) => {
-							if(!res.data.data[0].status){
+							console.log(res)
+							if(res.data.status){
 								uni.showToast({
 									title: '修改成功',
 									icon: 'none',
 									duration: 2000
 								})
+								that.userInfo.sex=that.model.sex == '男' ? 1 : 0
+								that.$store.commit('userInfo',that.userInfo)
 								// 返回上一页
 								setTimeout(() => {
 									uni.navigateBack({
 									    delta: 1
 									});
 								},2000)
+							}else{
+								uni.showToast({
+									title: res.data.message,
+									icon: 'none',
+									duration: 2000
+								})
 							}
 						}
 					})
-				}
-			})
+		
 		}
     }
 </script>

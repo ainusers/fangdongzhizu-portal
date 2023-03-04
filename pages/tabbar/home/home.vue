@@ -73,7 +73,9 @@
 		  <view class="search" @click.stop="searchBtn"></view>
 		</view>
 		<!-- 筛选项 -->
+		<!-- 转租和直租 -->
 		<screenTab ref="screenTab" 
+		v-if="current == 0 || current == 2"
 		:screenFormData="screenFormData" 
 		:roomList="roomList"
 		:priceApiDataMap="priceApiDataMap" 
@@ -92,7 +94,9 @@
 		@sourceBtn="sourceBtn"
 		@roomConfirm="roomConfirm"
 		 >
-			</screenTab>
+		</screenTab>
+		<!-- 换租的筛选 -->
+		<screenHuan v-if="current==1"></screenHuan>
 		<!-- 内容区域 -->
 		<swiper class="list-swiper" @change="swipeIndex" :current="current" :duration="300">
 		
@@ -147,10 +151,12 @@
 </template>
 
 <script>
-	
+var that;
 import houseListItem from '@/components/house-list/house-list-item.vue';
 import screenTab from '@/components/common/screen-tab/screen-tab.vue'
+import screenHuan from '@/components/common/screen-tab/screen_huan.vue'
 import { Const } from "@/utils/const/Const.js";
+
 let privateData = {
 	room: {
 		height: ""
@@ -168,65 +174,12 @@ let privateData = {
 export default {
 	components: {
 		houseListItem,
-		screenTab
+		screenTab,
+		screenHuan
 	},
 	data() {
 		return {
-			houseList: [{
-							"houseImg":"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271",
-							"community":"松兰铺",
-							"whoCommunity":"圣龙家园",
-							"orientation":"朝南",
-							"bedroom":"主卧",
-							"mode":"整租",
-							"layout":"四室一厅一厨一卫",
-							"heating":"集中供暖",
-							"elevator":"无电梯",
-							"size":"23m²",
-							"floor":"2/3层",
-							"way":"季付",
-							"datetime":"2022-09-22 21:54",
-							"position":"距离昌平线沙河地铁站1020米",
-							"price":"2300",
-							"region":"昌平",
-							"subway":"沙河"},
-						{
-							"houseImg":"https://img1.baidu.com/it/u=3942334258,820952260&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=344",
-							"community":"兰亭新苑",
-							"whoCommunity":"三区",
-							"orientation":"朝南",
-							"bedroom":"次臥",
-							"mode":"合租",
-							"layout":"三室一厅一厨一卫",
-							"heating":"自供暖",
-							"elevator":"有电梯",
-							"size":"16m²",
-							"floor":"16/27层",
-							"way":"月付",
-							"datetime":"2022-09-22 21:54",
-							"position":"距离10号线劲松地铁站950米",
-							"price":"1800",
-							"region":"朝阳",
-							"subway":"酒仙桥"},
-						{
-							"houseImg":"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271",
-							"community":"松兰铺",
-							"whoCommunity":"圣龙家园",
-							"orientation":"朝南",
-							"bedroom":"主卧",
-							"mode":"整租",
-							"layout":"一室一厅一厨一卫",
-							"heating":"自供暖",
-							"size":"23m²",
-							"floor":"2/3层",
-							"elevator":"无电梯",
-							"way":"年付",
-							"datetime":"2022-09-22 21:54",
-							"position":"距离昌平线沙河地铁站1020米",
-							"price":"2300",
-							"region":"昌平",
-							"subway":"沙河"}
-						],
+			houseList: [],
 			cityName: "北京",
 			current: 0,
 			tabList: [
@@ -240,7 +193,6 @@ export default {
 					name: '换租'
 				}
 			],
-			
 			isRequestIng: false,
 			screenFormData: {
 			    erHouse: {
@@ -283,7 +235,6 @@ export default {
 			        }
 			    }
 			},
-			
 			// 区域筛选
 			regionLeftList: [{
 				text:'北京'
@@ -299,16 +250,11 @@ export default {
 				{text:'6000-80000元'},
 				{text:'8000-100000元'},
 			],
-			
-			
 			// 户型筛选
 			roomList: Const.roomList,
-			
-			
 			// 公寓出租方式
 			aparmentChuZuTypeList: Const.aparmentChuZuTypeList,
 			aparmentChuZuTypeListIndex: 0,
-			
 			// 公寓更多
 			aparmentMoreMap: {
 				ruZhuTime: {
@@ -332,19 +278,12 @@ export default {
 					index: -1
 				}
 			},
-			
-			
 			listTcShow: false,
 			currentClickType: "region",
-			
 			priceItem: {text:"不限", id: ""},
 			newHouseTypeItem: {text:"不限", id: ""},
-			aparmentChuZuTypeItem: {text:"不限", id: ""},
-			
-			
-			
+			aparmentChuZuTypeItem: {text:"不限", id: ""},	
 			cityId: "1",
-			
 			// 价格列表的map
 			priceApiDataMap: {
 				"erHouse": {
@@ -389,8 +328,10 @@ export default {
 	    },
 	},
 	onLoad() {
+		that=this
 		this.getArea()
 		this.getHouseList()
+		
 	},
 	onShow(){
 		console.log('又展示了')
@@ -399,11 +340,9 @@ export default {
 		
 	},
 	methods: {
+		
 		getHouseList(){
-			var that=this
-			uni.getStorage({
-				key:'token',
-				success(auth){
+			console.log(that.$store.state.token)
 					uni.request({
 						method:'POST',
 						url:'http://81.70.163.240:11001/zf/v1/room/list',
@@ -415,17 +354,15 @@ export default {
 						},
 						header: {
 							'content-type': 'application/json',
-							'Authorization': 'Bearer ' + auth.data
+							'Authorization': 'Bearer ' + that.$store.state.token
 						},
 						success(res){
 							if(res.data.status){
 								that.houseList=res.data.data
-								console.log(that.houseList)
 							}
 						}
 					})
-				}
-			})	
+			
 		},
 		// 获取选择城市返回的城市名称
 		getValue(cityNameLess){
@@ -627,9 +564,6 @@ export default {
 		},
 		getArea(){
 			var that=this
-			uni.getStorage({
-					key: 'token',
-					success: function (auth) {
 						uni.request({
 							method: 'GET',
 							data: {
@@ -637,7 +571,7 @@ export default {
 							},
 							header: {
 								'content-type': 'application/json',
-								'Authorization': 'Bearer ' + auth.data
+								'Authorization': 'Bearer ' + that.$store.state.token
 							},
 							url: 'http://81.70.163.240:11001/zf/v1/const/area',
 							success: (res) => {
@@ -646,8 +580,7 @@ export default {
 								}
 							}
 						})
-					}
-				})
+			
 			
 		},
 		regionLeftBtn(item,index){

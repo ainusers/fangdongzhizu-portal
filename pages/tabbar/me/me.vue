@@ -157,7 +157,7 @@
 	    <view class="background"></view>
 	  </view>
 	  <view class="user-card">
-	    <view class="card" @click="goto(`/pages/tabbar/me/user?userInfo=${encodeURIComponent(JSON.stringify(userInfo))}`)">
+	    <view class="card" @click="goto('/pages/tabbar/me/user')">
 	      <view class="top">
 	        <view class="userImage">
 	          <image :src="this.userInfo.avatar" mode="aspectFit"></image>
@@ -274,31 +274,12 @@
 				userInfo: ''
 			}
 		},
+		
 		onLoad() {
-			this.getUserInfo();
+			this.userInfo=this.$store.state.userInfo
 		},
 		methods: {
-			getUserInfo() {
-				var that = this;
-				uni.getStorage({
-					key: 'token',
-					success: function (auth) {
-						// 获取用户信息
-						uni.request({
-							method: 'get',
-							header: {
-								'content-type': 'application/json',
-								'Authorization': 'Bearer ' + auth.data
-							},
-							url: 'http://81.70.163.240:11001/zf/v1/user/attr/token',
-						    success: (res) => {
-								that.userInfo = res.data.data[0].user;
-								console.log("----1------->"+ JSON.stringify(that.userInfo))
-						    }
-						})
-					}
-				});
-			},
+		
 			goto(uri){
 				uni.navigateTo({
 					url: uri

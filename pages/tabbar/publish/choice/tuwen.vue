@@ -150,7 +150,7 @@
 
 <script>
 	import image from '@/store/image.js';
-	
+	import {attachUpload} from '@/utils/utils.js'
 	var sourceType = [
 		['camera'],
 		['album'],
@@ -161,6 +161,7 @@
 		['original'],
 		['compressed', 'original']
 	]
+	var that;
 	export default {
 		data() {
 			return {
@@ -179,8 +180,11 @@
 				endX: 0, //接触屏幕后移开时的位置
 			}
 		},
+		onLoad(){
+			that=this
+		},
 		onUnload() {
-			this.imageList = [],
+				this.imageList = [],
 				this.sourceTypeIndex = 2,
 				this.sourceType = ['拍照', '相册', '拍照或相册'],
 				this.sizeTypeIndex = 2,
@@ -188,35 +192,8 @@
 				this.countIndex = 8;
 		},
 		methods: {
-			// 批量上传接口
-			attachUpload(){
-				return new Promise((resolve, reject) => {
-					// 批量上传接口
-					let files = [];
-					for(let i = 0,len = this.imageList.length; i < len; i++){
-						let imgAttr = new Object();
-						imgAttr.name = 'img' + i;
-						imgAttr.uri = this.imageList[i];
-						files.push(imgAttr);
-					}
-					uni.uploadFile({
-						url: 'http://81.70.163.240:11001/zf/v1/file/uploads',
-						header: {
-							'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MTc2MDQ1tDBV0lFKrShQsjI0MzeztDA0sTStBQBUK_cjJgAAAA.rThi6WZt-znA26lOrTpEGfS6Vf-TAsQaWBX8tcF0k7kfSUX03mLli7D5LsEJ_d-D_EH1Uwk4H6p6ElNZfyaeLQ'
-						},
-						files: files,
-						success: (res) => {
-							resolve(JSON.parse(res.data).data);
-						},
-						fail: (e) => {
-							console.log("e: " + JSON.stringify(e));
-							uni.hideLoading();
-							reject(e);
-						}
-					});
-				})
-			},
 			async publish(){
+				console.log('fabu ')
 				if (!this.input_content) {
 					uni.showToast({
 						title: '文字内容不能为空',
@@ -227,21 +204,22 @@
 				}
 				uni.showLoading({title:'发布中'});
 				// 获取位置信息
-				let location = await this.getLocation();
+				// let location = await this.getLocation();
 				// 获取上传图片地址
 				let images;
 				if(this.imageList.length == 0) {
 					images = [];
-				} else {Q
-					images = await this.attachUpload();
+				} else {
+					images = await attachUpload(this.imageList);
 				}
+				console.log(image)
 				// console.log("---上传图片---->" + images)
 				// 上传动态信息
 				uni.request({
 					method: 'post',
 					header: {
 						'content-type': 'application/json',
-						'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MTc2MDQ1tDBV0lFKrShQsjI0MzeztDA0sTStBQBUK_cjJgAAAA.rThi6WZt-znA26lOrTpEGfS6Vf-TAsQaWBX8tcF0k7kfSUX03mLli7D5LsEJ_d-D_EH1Uwk4H6p6ElNZfyaeLQ'
+						'Authorization': 'Bearer '+that.$store.state.token
 					},
 					data: {
 						'imgUrl': images.toString(),
@@ -249,13 +227,13 @@
 						'avatar': 'http://81.70.163.240:9090/asiatrip/62e20350efcef62d940556e420220726132059.jpg',
 						'userId': 1606522650501607424,
 						'words': this.input_content,
-						'longitude': location.longitude, // 经度
-						'latitude': location.latitude, // 纬度
-						'country': location.address.country,
-						'province': location.address.province,
-						'city': location.address.city,
-						'address': location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName,
-						'type': location.type
+						// 'longitude': location.longitude, // 经度
+						// 'latitude': location.latitude, // 纬度
+						// 'country': location.address.country,
+						// 'province': location.address.province,
+						// 'city': location.address.city,
+						// 'address': location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName,
+						// 'type': location.type
 					},
 					url: 'http://81.70.163.240:11001/zf/v1/dynamic/dynamics',
 					success: (res) => {
@@ -264,9 +242,9 @@
 							icon:'success',
 							title:"发布成功"
 						})
-						uni.navigateBack({//可根据实际情况使用其他路由方式
-							delta:1
-						});
+						// uni.navigateBack({//可根据实际情况使用其他路由方式
+						// 	delta:1
+						// });
 					},
 					fail: (e) => {
 						console.log("e: " + JSON.stringify(e));

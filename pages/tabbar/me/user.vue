@@ -95,7 +95,7 @@
                 </view>
             </view>
             <!--昵称-->
-            <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/nickname?userInfo=${encodeURIComponent(JSON.stringify(userInfo))}`)">
+            <view class="item f_r_b" @click="goto('/pages/tabbar/me/update/nickname')">
                 <view class="item_text">昵称</view>
                 <view class="item_val">
 					{{ this.userInfo.nickname }}
@@ -103,7 +103,7 @@
 				</view>
             </view>
             <!--性别-->
-            <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/sex?userInfo=${encodeURIComponent(JSON.stringify(userInfo))}`)">
+            <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/sex`)">
                 <view class="item_text">性别</view>
                 <view class="item_val">
 					{{ this.userInfo.sex == 1 ? '男' : '女'}}
@@ -111,7 +111,7 @@
 				</view>
             </view>
             <!--地区-->
-            <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/region?userInfo=${encodeURIComponent(JSON.stringify(userInfo))}`)">
+            <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/region`)">
                 <view class="item_text">地区</view>
 				<block v-if="this.userInfo.province == ''">
 					<view class="item_val">
@@ -121,13 +121,13 @@
 				</block>
                 <block v-else>
 					<view class="item_val">
-						{{ this.userInfo.province }} - {{ this.userInfo.city }}
+						{{ this.userInfo.province }} 
 						<u-icon class="arrow_right" name="arrow-right"></u-icon>
 					</view>
 				</block>
             </view>
             <!--手机号-->
-            <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/updatephone?userInfo=${encodeURIComponent(JSON.stringify(userInfo))}`)">
+            <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/updatephone`)">
                 <view class="item_text">手机号</view>
                 <view class="item_val">
 					{{ this.userInfo.username }}
@@ -151,7 +151,7 @@
 				</view>
 			</view>
 			<!--个性签名-->
-			<view class="item f_r_b"  @click="goto(`/pages/tabbar/me/update/sign?userInfo=${encodeURIComponent(JSON.stringify(userInfo))}`)">
+			<view class="item f_r_b"  @click="goto(`/pages/tabbar/me/update/sign`)">
 			    <view class="item_text">个性签名</view>
 			    <view class="item_val">
 					{{ this.userInfo.signature }}
@@ -161,11 +161,12 @@
         </view>
 		<!-- 退出登录 -->
 		<view class="logout" @click="logout()">
-			<button type="default" class="feedback-submit" @click="logout">退出登录</button>
+			<button type="default" class="feedback-submit">退出登录</button>
 		</view>
     </view>
 </template>
 <script>
+	var that;
     export default {
         data() {
             return {
@@ -173,10 +174,13 @@
 			}
         },
         onLoad(options) {
-		   console.log(options.userInfo)
-           this.userInfo = JSON.parse(options.userInfo);
+			
         },
-        onShow() {},
+       onShow(){
+		   that=this
+			this.userInfo =this.$store.state.userInfo
+       },
+
         methods: {
 			goto(uri){
 				console.log(uri)
@@ -209,26 +213,19 @@
 						console.log(res)
                         uni.showLoading({title: '上传中...'});
                         // 上传图片操作 (.then().catch(err => {}))
-						
-							uni.getStorage({
-								key: 'token',
-								success: function (auth) {
-									console.log(auth)
 									let files=res.tempFiles
 									let filesPath=res.tempFilePaths
-									that.uploadFileAvtar(files,filesPath,auth).then(res=>{
-										that.updateImg(res[0],auth)
+									that.uploadFileAvtar(files,filesPath).then(res=>{
+										that.updateImg(res[0])
 									})
-								}
-							})
+						
 						
                     }
                 });
             },
 			// 上传图片
-			uploadFileAvtar(files,filesPath,auth){
+			uploadFileAvtar(files,filesPath){
 				console.log(files)
-				console.log(auth)
 				console.log(filesPath)
 				return new Promise((resolve,reject)=>{
 					uni.uploadFile({
@@ -237,7 +234,7 @@
 						name:'file',
 						header: {
 							// 'content-type': 'multipart/form-data',
-							'Authorization': 'Bearer ' + auth.data
+							'Authorization': 'Bearer ' + that.$store.state.token
 						},
 						formData:{
 							// file:files[0]
@@ -245,7 +242,7 @@
 						success: (res) => {
 							resolve(JSON.parse(res.data).data);
 						},
-						fail: (e) => {A
+						fail: (e) => {
 							console.log("e: " + JSON.stringify(e));
 							uni.hideLoading();
 							reject(e);
@@ -254,7 +251,8 @@
 				})
 			},
 			//更改头像
-			updateImg(imgAvtar,auth){
+			updateImg(imgAvtar){
+				console.log(imgAvtar)
 				let that=this
 				uni.request({
 					method: 'patch',
@@ -264,25 +262,22 @@
 					},
 					header: {
 						'content-type': 'application/json',
-						'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MTc2MDQ1tDBV0lFKrShQsjI0M7c0MDM1NzWsBQAVKAbfJgAAAA.Jl3mnZemYEXQuvUpbqLFiK93_RhAZGLAPt99bz7PxEWdWlxufeMcDCasfmQk9qGmA8AebkQgRyhAoTBeatfPOw' //+ auth.data
+						'Authorization': 'Bearer ' +  that.$store.state.token
 					},
 					url: 'http://81.70.163.240:11001/zf/v1/user/attr',
 					success: (res) => {
 						console.log(res)
+						console.log(res.data)
 						 uni.hideLoading();
-						// if(res.data.data[0].status){
-						// 	uni.showToast({
-						// 		title: '修改成功',
-						// 		icon: 'none',
-						// 		duration: 2000
-						// 	})
-						// 	// 返回上一页
-						// 	setTimeout(() => {
-						// 		uni.navigateBack({
-						// 		    delta: 1
-						// 		});
-						// 	},2000)
-						// }
+						if(res.data.status){
+							uni.showToast({
+								title: '修改成功',
+								icon: 'none',
+								duration: 2000
+							})
+							that.userInfo.avatar=imgAvtar
+							that.$store.commit('userInfo',that.userInfo)
+						}
 					}
 				})
 			},
@@ -290,6 +285,12 @@
 			logout() {
 				uni.removeStorage({
 					key: 'token',
+					success: function (res) {
+						console.log('success');
+					}
+				});
+				uni.removeStorage({
+					key: 'userInfo',
 					success: function (res) {
 						console.log('success');
 					}

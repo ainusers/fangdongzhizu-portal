@@ -15,6 +15,7 @@
 	</view>
 </template>
 <script>
+	var that;
     export default {
         data() {
 			return {
@@ -25,7 +26,8 @@
 			}
 		},
         onLoad(data) {
-			this.userInfo = JSON.parse(decodeURIComponent(data.userInfo));
+			that=this
+			this.userInfo = this.$store.state.userInfo;
 			this.value = this.userInfo.nickname;
         },
         onShow() {
@@ -38,9 +40,6 @@
 			// 向后端发送请求，修改用户昵称
 			var that = this;
 			console.log(that.userInfo)
-			uni.getStorage({
-				key: 'token',
-				success: function (auth) {
 					uni.request({
 						method: 'patch',
 						data: {
@@ -49,7 +48,7 @@
 						},
 						header: {
 							'content-type': 'application/json',
-							'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MTc2MDQ1tDBV0lFKrShQsjI0M7c0MDMzNjKtBQATFud2JgAAAA.Cn4ABUTwUoCmF3I4XATE6nRr2gPFMyIp4s2He5gIru02Va6Rj1NmAs_3pj9KerX6UK9Ppp8YWk-9WlRm4IhbOg' //+ auth.data
+							'Authorization': 'Bearer ' + that.$store.state.token
 						},
 						url: 'http://81.70.163.240:11001/zf/v1/user/attr',
 						success: (res) => {
@@ -60,17 +59,24 @@
 									icon: 'none',
 									duration: 2000
 								})
+								that.userInfo.nickname=that.value
+								that.$store.commit('userInfo',that.userInfo)
 								// 返回上一页
 								setTimeout(() => {
 									uni.navigateBack({
 									    delta: 1
 									});
 								},2000)
+							}else{
+								uni.showToast({
+									title: res.data.message,
+									icon: 'none',
+									duration: 2000
+								})
 							}
 						}
 					})
-				}
-			})
+		
 		}
     }
 </script>

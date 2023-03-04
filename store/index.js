@@ -5,11 +5,31 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
-		hasLogin: uni.getStorageSync("hasLogin"),
-		userInfo:uni.getStorageSync("userInfo"),
+		userInfo:"",
+		token:'',
 		messegeNum:[]
 	},
 	mutations: {
+		userInfo(state,obj){
+			if(obj){
+				state.userInfo=obj
+				uni.setStorage({
+					key:'userInfo',
+					data:obj
+				})
+			}
+			
+		},
+		token(state,token){
+			if(token){
+				state.token=token
+				uni.setStorage({
+					key:'token',
+					data:token
+				})
+			}
+			
+		},
 		login(state, userInfo) {			
 			state.hasLogin = true;
 			uni.setStorageSync("hasLogin",true);
@@ -18,9 +38,6 @@ const store = new Vuex.Store({
 			uni.setStorageSync("userInfo",userInfo);
 		},
 		logout(state) {
-			state.hasLogin = false;
-			uni.removeStorageSync("hasLogin");
-			
 			state.userInfo = {
 				uid:null,
 				fans:0,

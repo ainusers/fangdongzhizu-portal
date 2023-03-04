@@ -221,16 +221,35 @@
 				    success: (res) => {
 						console.log(res)
 						if(res.data.status) {
-							uni.setStorage({
-								key: 'token',
-								data: res.data.data[0].token
-							});
+							this.$store.commit('token',res.data.data[0].token)
+							this.getUserInfo()
 							uni.switchTab({
 								url: '/pages/tabbar/home/home'
 							})
 						}
 				    }
 				})
+			},
+			getUserInfo() {
+						// 获取用户信息
+						uni.request({
+							method: 'get',
+							header: {
+								'content-type': 'application/json',
+								'Authorization': 'Bearer ' + that.$store.state.token
+							},
+							url: 'http://81.70.163.240:11001/zf/v1/user/attr/token',
+						    success: (res) => {
+								that.userInfo = res.data.data[0].user;
+								that.$store.commit('userInfo',that.userInfo)
+								uni.setStorage({
+									key:'userInfo',
+									data:that.userInfo
+								})
+								console.log(that.$store.state.userInfo)
+						    }
+						})
+			
 			},
 			useWX() {
 				// uni.login({

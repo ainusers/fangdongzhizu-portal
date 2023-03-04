@@ -1,4 +1,5 @@
 <script>
+import {initStorestate} from '@/utils/utils.js'
 export default {
 	onLaunch: function() {
 		console.log('App Launch');
@@ -12,8 +13,10 @@ export default {
 				index: 3
 			});
 		}, 1000);
+		initStorestate()
 	},
 	onShow: function() {
+		initStorestate()
 		console.log('App Show');
 	},
 	onHide: function() {

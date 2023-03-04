@@ -33,7 +33,6 @@
 		},
         onLoad(options) {
 			this.username=options.username
-				console.log(options.username)
         },
         onShow() {
         },
@@ -66,11 +65,10 @@
 				method: 'POST',
 				data: {
 					username: this.username,
-					code: this.pwd,
-					password:this.pwd
+					code: this.pwd, //原有密码
+					password:this.newpwd  //新密码
 				},
 				success: (res) => {
-					console.log(res)
 					if(res.data.status){
 						uni.showToast({
 							title: '修改成功',
@@ -83,6 +81,12 @@
 							    delta: 1
 							});
 						},2000)
+					}else{
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 2000
+						})
 					}
 				}
 			})

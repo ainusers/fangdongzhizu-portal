@@ -25,7 +25,7 @@
 			}
 		},
         onLoad(data) {
-			this.userInfo = JSON.parse(decodeURIComponent(data.userInfo));
+			this.userInfo = this.$store.state.userInfo
 			this.value = this.userInfo.signature;
         },
         onShow() {
@@ -38,9 +38,6 @@
 			console.log(this.value);
 			// 向后端发送请求，修改用户簽名
 			var that = this;
-			uni.getStorage({
-				key: 'token',
-				success: function (auth) {
 					uni.request({
 						method: 'patch',
 						data: {
@@ -49,16 +46,18 @@
 						},
 						header: {
 							'content-type': 'application/json',
-							'Authorization': 'Bearer ' + auth.data
+							'Authorization': 'Bearer ' + that.$store.state.token
 						},
 						url: 'http://81.70.163.240:11001/zf/v1/user/attr',
 						success: (res) => {
-							if(res.data.data[0].status){
+							if(res.data.status){
 								uni.showToast({
 									title: '修改成功',
 									icon: 'none',
 									duration: 2000
 								})
+								that.userInfo.signature=that.value
+								that.$store.commit('userInfo',that.userInfo)
 								// 返回上一页
 								setTimeout(() => {
 									uni.navigateBack({
@@ -68,8 +67,7 @@
 							}
 						}
 					})
-				}
-			})
+			
 		}
     }
 </script>
