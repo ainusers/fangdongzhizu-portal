@@ -122,7 +122,7 @@
 					method: 'post',
 					header: {
 						'content-type': 'application/json',
-						'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MjO3NDU2sjRU0lFKrShQsjI0Mzc2NjY0sDSsBQAkcQnqJgAAAA.xrwwffvn6-vek2iTmx6Cmt6sSbwWMLDf4Hducz83oWehPd6GrSTKmX0zYX_qAY4vcjA3T9_VXZhkM7EJe15J3Q'
+						'Authorization': 'Bearer '+this.$store.state.token
 					},
 					data: {
 						type: words.toString(),
@@ -131,6 +131,7 @@
 					},
 					url: 'http://81.70.163.240:11001/zf/v1/advise/advises',
 					success: (res) => {
+						console.log(res)
 						if(res.data.code == 200) {
 							uni.showToast({
 								title: '反馈建议已成功提交',

@@ -1,7 +1,7 @@
 
 	import store from '@/store/index.js';  
 	//获取本地存储中的数据
-	const initKey=['token','userInfo'] //防止刷新vuex丢失数据 
+	const initKey=['token','userInfo','houseDeatil'] //防止刷新vuex丢失数据 
 	const getStoreData= function (key){
 		uni.getStorage({
 			key:key,
@@ -23,7 +23,6 @@
 		return new Promise((resolve, reject) => {
 			// 批量上传接口
 			let files = [];
-			console.log(imageList)
 			for(let i = 0,len =imageList.length; i < len; i++){
 				let imgAttr = new Object();
 				imgAttr.name = 'img' + i;

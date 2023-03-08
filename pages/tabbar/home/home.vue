@@ -75,7 +75,7 @@
 		<!-- 筛选项 -->
 		<!-- 转租和直租 -->
 		<screenTab ref="screenTab" 
-		v-if="current == 0 || current == 2"
+		v-if="current == 0 || current == 1"
 		:screenFormData="screenFormData" 
 		:roomList="roomList"
 		:priceApiDataMap="priceApiDataMap" 
@@ -96,7 +96,7 @@
 		 >
 		</screenTab>
 		<!-- 换租的筛选 -->
-		<screenHuan v-if="current==1"></screenHuan>
+		<screenHuan v-if="current==2"></screenHuan>
 		<!-- 内容区域 -->
 		<swiper class="list-swiper" @change="swipeIndex" :current="current" :duration="300">
 		

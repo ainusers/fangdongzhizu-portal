@@ -194,7 +194,7 @@
 				<view class="collect">
 					<u-icon name="bell" size="50"></u-icon>
 				</view>
-				<view class="target">举报</view>
+				<view class="target" @click="report">举报</view>
 				<view class="report">
 					<u-icon name="heart" size="50"></u-icon>
 				</view>
@@ -232,6 +232,7 @@
 	way: '',
 	datetime: ''
   }
+  let that;
   export default {
 	components: {
 	    houseSwiper,
@@ -242,6 +243,7 @@
 	},
 	// 页面传值
 	onLoad(options) {
+		that=this
 		this.detailData = JSON.parse(options.detail);
 			console.log(this.detailData)
 		this.initData()
@@ -324,6 +326,7 @@
       };
     },
 	methods:{
+		
 		//初始化数据
 		initData(){
 			// 轮播图 img 数据初始化
@@ -334,6 +337,8 @@
 			this.showMap()
 			// 配套设施展示
 			this.showSupport()
+			//租赁信息
+			this.initzulinData()
 		},
 		swiperImgInit(){
 			let obj={
@@ -372,6 +377,31 @@
 							console.log('success');
 						}
 					});
+		},
+		report(){
+			console.log(this.detailData)
+			uni.request({
+				method:'POST',
+				url:'http://81.70.163.240:11001/zf/v1/const/save/statistics',
+				data:{
+					"userId": this.$store.state.userInfo.id,
+					  "roomId": this.detailData,
+					  "chat": 2
+				},
+				header: {
+					'content-type': 'application/json',
+					'Authorization': 'Bearer ' + that.$store.state.token
+				},
+				success(res){
+					console.log(res)
+				}
+			})
+		},
+		initzulinData(){
+			// {'house':'A室','sex':'男','size':'15m²','money':'3590元','status':'已出租'}
+			// this.detailData.roommate.keys((item,index)=>{
+			// 	console.log(item)
+			// })
 		},
 		showSupport(){
 			let support=this.detailData.support.split(',')

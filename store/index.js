@@ -7,7 +7,8 @@ const store = new Vuex.Store({
 	state: {
 		userInfo:"",
 		token:'',
-		messegeNum:[]
+		messegeNum:[],
+		houseDeatil:{}
 	},
 	mutations: {
 		userInfo(state,obj){
@@ -29,6 +30,15 @@ const store = new Vuex.Store({
 				})
 			}
 			
+		},
+		houseDeatil(state,houseDeatil){
+			if(houseDeatil){
+				state.houseDeatil=houseDeatil
+				uni.setStorage({
+					key:'houseDeatil',
+					data:houseDeatil
+				})
+			}
 		},
 		login(state, userInfo) {			
 			state.hasLogin = true;

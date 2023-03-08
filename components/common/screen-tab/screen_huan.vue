@@ -2,14 +2,14 @@
 	<view class="screen_main">
 		<u-input
 		    placeholder="出发地铁站名称"
-		    border="surround"
+		    :border="broder"
 		    v-model="startValue"
 		    @change="change"
 		  ></u-input>
 		  <img src="../../../static/home/toend.png" alt="" srcset=""/>
 		  <u-input
 		      placeholder="目的地铁站名称"
-		      border="surround"
+		       :border="broder"
 		      v-model="endValue"
 		      @change="change"
 		    ></u-input>
@@ -21,7 +21,9 @@
 		data(){
 			return{
 				startValue:'',
-				endValue:''
+				endValue:'',
+				broder:true
+				
 			}
 		}
 	}

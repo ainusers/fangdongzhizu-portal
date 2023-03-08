@@ -16,7 +16,7 @@
 								<view style="float: right;padding-right: 10px;"><u-icon name="more-dot-fill" color="rgb(203,203,203)"></u-icon></view>
 							</view>
 							<view>
-								<text class="time">{{ item.createTime | timeFrom }}</text>
+								<text class="time">{{ item.createTime.split('T')[0]  }}</text>
 							</view>
 						</view>
 					</view>
@@ -25,23 +25,23 @@
 						<rich-text class="post-text" :nodes="item.words"></rich-text>
 						<block>
 							<!--一张图片-->
-							<block v-if="item.imgUrl.length == 1">
-								<image :lazy-load="true" mode="aspectFill" class="img-style-1" :src="item.imgUrl[0]"
-									@tap.stop="previewImage(item.imgUrl[0], item.imgUrl, item.integral, item.id)"></image>
+							<block v-if="item.image&&item.image.length == 1">
+								<image :lazy-load="true" mode="aspectFill" class="img-style-1" :src="item.image[0]"
+									@tap.stop="previewImage(item.image[0], item.image, item.integral, item.id)"></image>
 							</block>
 							<!--二张图片-->
-							<block v-if="item.imgUrl.length == 2">
+							<block v-if="item.image&&item.image.length == 2">
 								<view class="img-style-2">
-									<image :lazy-load="true" v-for="(imgItem, flag) in item.imgUrl" :key="flag"
-										@tap.stop="previewImage(imgItem, item.imgUrl, item.integral, item.id)"
+									<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
+										@tap.stop="previewImage(imgItem, item.image, item.integral, item.id)"
 										mode="aspectFill" :src="imgItem"></image>
 								</view>
 							</block>
 							<!--三张以上图片-->
-							<block v-if="item.imgUrl.length > 2">
+							<block v-if="item.image&&item.image.length > 2">
 								<view class="img-style-3">
-									<image :lazy-load="true" v-for="(imgItem, flag) in item.imgUrl" :key="flag"
-										@tap.stop="previewImage(imgItem, item.imgUrl, item.integral, item.id)"
+									<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
+										@tap.stop="previewImage(imgItem, item.image, item.integral, item.id)"
 										mode="aspectFill" :src="imgItem"></image>
 								</view>
 							</block>
@@ -57,7 +57,7 @@
 							</button>
 						</view>
 						<!-- 评论 -->
-						<view class="p-item margin50" @click="toComment('/pages/tabbar/community/comment')">
+						<view class="p-item margin50" @click="toComment('/pages/tabbar/community/comment?info='+JSON.stringify(item))">
 							<u-icon name="chat" size="38"></u-icon>
 							<text class="count">{{ item.comment_count }}</text>
 						</view>
@@ -131,7 +131,7 @@
 			// 跳转详情页
 			toDetail(data) {
 				uni.navigateTo({
-					url: "/pages/tabbar/community/comment?id=" + data.id + "&cid=" + data.cid
+					url: "/pages/tabbar/community/comment?info=" +JSON.stringify(data)  
 				})
 			},
 			// 跳转评论区

@@ -32,7 +32,7 @@
 		<u-swiper :list="swiperList" @click="click" radius="20rpx"></u-swiper>
 		
 		<!-- 功能菜单 -->
-		<view class="community">
+<!-- 		<view class="community">
 			<view class="option" @click="goto('/pages/index/check/index')">
 				<view class="icon">
 					<image mode="aspectFit" src="../../../static/community/function/ad.png"></image>
@@ -83,7 +83,7 @@
 				<view class="name">商务合作</view>
 			</view>
 		</view>
-
+ -->
 		<!-- 朋友圈 -->
 		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen"></post-list>
 		
@@ -357,21 +357,26 @@
 				// 	type: 1
 				// })
 				
-				// uni.request({
-				// 	method: 'get',
-				// 	header: {
-				// 		'content-type': 'application/json',
-				// 		'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjQ2MjO3NDU2sjRU0lFKrShQsjI0Mzc2NjY0sDSsBQAkcQnqJgAAAA.xrwwffvn6-vek2iTmx6Cmt6sSbwWMLDf4Hducz83oWehPd6GrSTKmX0zYX_qAY4vcjA3T9_VXZhkM7EJe15J3Q'
-				// 	},
-				// 	url: 'http://81.70.163.240:11001/zf/v1/dynamic/list',
-				// 	success: (res) => {
-				// 		this.tuwen_data = res.data.data;
-				// 		console.log("---------------> " + JSON.stringify(this.tuwen_data));
-				// 	},
-				// 	fail: (e) => {
-				// 		console.log("e: " + JSON.stringify(e));
-				// 	}
-				// });
+				uni.request({
+					method: 'get',
+					header: {
+						'content-type': 'application/json',
+						'Authorization': 'Bearer '+this.$store.state.token
+					},
+					url: 'http://81.70.163.240:11001/zf/v1/dynamic/list',
+					success: (res) => {
+						console.log(res)
+						if(res.data.code==200){
+							this.tuwen_data = res.data.data;
+							console.log(this.tuwen_data)
+							// console.log("---------------> " + JSON.stringify(this.tuwen_data));
+						}
+						
+					},
+					fail: (e) => {
+						console.log("e: " + JSON.stringify(e));
+					}
+				});
 				
 				// .then(res => {
 				// 	if (res.result.current_page === res.result.last_page || res.result.last_page === 0) {
