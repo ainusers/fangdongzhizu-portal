@@ -240,8 +240,8 @@
 				<u-select mode="mutil-column-auto" v-model="leaseShow" :list="leaseList" @confirm="leaseConfirm" @cancel="leaseCancel"></u-select>
 			</u-form-item>
 			<!-- 几室 -->
-			<view class="" v-for="(item,index) in homeArr">
-				<u-form-item :label-position="labelPosition" :label="item.name" prop="tenantStr" label-width="150" v-if="chekcNum!=0&&index<chekcNum">
+			<view class="" v-for="(item,index) in houseModel.homeArr">
+				<u-form-item :label-position="labelPosition" :label="item.name" prop="homeArr" label-width="150" v-if="chekcNum!=0&&index<chekcNum" >
 					<u-input :border="border" placeholder="请填写房屋情况" v-model="item.tenantStr"  type="select"  @click="popUpShowFn('tenant',index)"></u-input>
 				</u-form-item>
 			</view>
@@ -409,6 +409,13 @@ import { attachUpload } from '../../../../utils/utils';
 					propertyType:'',//物业费用
 					hydropowerType:'',//水电费用
 					houseConfigStr:'',//房屋配置
+					homeArr:[
+						{name:'A室',tenantStr:''},
+						{name:'B室',tenantStr:''},
+						{name:'C室',tenantStr:''},
+						{name:'D室',tenantStr:''},
+						{name:'E室',tenantStr:''},
+					],
 				},
 				//表单规则
 				rules:{
@@ -519,8 +526,29 @@ import { attachUpload } from '../../../../utils/utils';
 						required: true,
 						message: '请选择房屋配置',
 						trigger: ['change', 'blur']
-					}
-						
+					},
+					homeArr:[
+				        {
+								type:'array',
+								required: true, 
+								message: '请输入手机号',
+								trigger: ['change','blur'],
+						},
+						{
+							validator: (rule, value, callback) => {
+								let isT=true
+									value.forEach((item,index)=>{
+										if(index<this.chekcNum&&item.tenantStr==""){
+											isT=false
+										}
+									})
+									return isT;
+							},
+										message: '请填写房屋信息',
+										// 触发器可以同时用blur和change
+										trigger: ['change','blur'],
+						}
+					]
 				},
 				userInfo:'',
 				homeNum:'', //当前一共有几间房
@@ -601,13 +629,7 @@ import { attachUpload } from '../../../../utils/utils';
 				popUpType:'', //当前展示的是什么pop弹窗
 				houseTypeList:{	
 				},
-				homeArr:[
-					{name:'A室',tenantStr:''},
-					{name:'B室',tenantStr:''},
-					{name:'C室',tenantStr:''},
-					{name:'D室',tenantStr:''},
-					{name:'E室',tenantStr:''},
-				],
+				
 				homeArrIndex:'',//当前点击的是什么室
 				// 发布类型
 				labelPosition: 'left',
@@ -1214,7 +1236,7 @@ import { attachUpload } from '../../../../utils/utils';
 						}
 						let tenantStr=obj.hirecircum + '-'+(obj.sex.indexOf('请选择')==-1?obj.sex:obj.price+'元/月')+'-'+obj.area+'m²'
 						this.tenantObj.push(obj)
-						this.homeArr[this.homeArrIndex].tenantStr=tenantStr
+						this.houseModel.homeArr[this.homeArrIndex].tenantStr=tenantStr
 					break;
 				}
 				
@@ -1234,12 +1256,12 @@ import { attachUpload } from '../../../../utils/utils';
 				})
 				
 			},
+
 			async publish(){
-			
 			 this.validateParam().then( async (res)=>{
-					// if(!this.isCheck){
-					// 					return
-					// 				}
+									if(!this.isCheck){
+										return
+									}
 									let imagesNatureArr=await  attachUpload(this.houseModel.naturalImageList)
 									let imagesHouseArr=await attachUpload(this.houseModel.houseImageList)
 									var imagesnatura = [];
@@ -1255,17 +1277,6 @@ import { attachUpload } from '../../../../utils/utils';
 
 									uni.showLoading({title:'发布中'});
 									// var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
-									let newObj={}
-								// this.homeArr.forEach((item,index)=>{
-								// 	if(index<this.chekcNum){
-								// 		console.log(item)
-								// 		let obj={
-								// 			`${item.name}`:item.tenantStr
-								// 		}
-								// 		newObj=newObj.concat(obj)
-								// 	}
-								// })
-								// return;
 					let params={
 									 id:this.userInfo.id,
 									 imgUrl:imagesHouseArr.toString(), //房源图片
@@ -1277,7 +1288,7 @@ import { attachUpload } from '../../../../utils/utils';
 									 communityName:this.houseModel.communityName,
 									layout:this.houseModel.layout, //房屋布局
 									 orientation:this.houseModel.orientation,
-									 roomType: this.houseModel.lease, //出租房屋 
+									
 									 size:this.houseModel.homesize, //房屋面积
 									 floor:this.houseModel.floor,
 									 distanceSubway:'距离西二旗地铁站600米',
@@ -1299,12 +1310,19 @@ import { attachUpload } from '../../../../utils/utils';
 									 position:'北京动物园',
 									 support:this.houseConfigStr,
 									 status:1,
-									 roommate:{
-										 
-									 }
+									
 					}
-					console.log(params)
-					
+					 let roommate=[]
+					 this.houseModel.homeArr.forEach(item=>{
+						 if(item.tenantStr){
+							 roommate.push(item)
+						 }
+					 })
+					if( this.houseModel.lease ){//出租房屋
+							params['roomType'] =this.houseModel.lease
+							params['roommate']=roommate
+						
+					}
 					uni.request({
 						url:'http://81.70.163.240:11001/zf/v1/room/increase',
 									header: {
@@ -1317,6 +1335,12 @@ import { attachUpload } from '../../../../utils/utils';
 										if(res.data&&res.data.status){
 											console.log(res)
 											uni.$u.toast('发布成功')
+												
+											setTimeout(()=>{
+												uni.switchTab({
+												        url: '/pages/tabbar/home/home'
+												       })
+											},2000)
 										}else{
 											uni.$u.toast('发布失败')
 										}

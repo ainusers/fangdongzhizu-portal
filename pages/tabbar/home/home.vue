@@ -335,6 +335,7 @@ export default {
 	},
 	onShow(){
 		console.log('又展示了')
+		this.getHouseList()
 	},
 	onReady(){
 		
