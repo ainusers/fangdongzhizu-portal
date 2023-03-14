@@ -53,6 +53,9 @@
 .list-swiper{
 	height:79vh;
 }
+uni-swiper-item{
+	overflow: scroll;
+}
 </style>
 <template>
 	<view class="main">
@@ -107,7 +110,7 @@
 						<view class="content" v-if="houseList.length>0">
 							<!-- 租房列表 -->
 						    <block v-for="(item, index) in houseList" :key="index">
-								<house-list-item :item="item"></house-list-item>
+								<house-list-item :item="item" :index="index"></house-list-item>
 						    </block>
 						</view>
 						<view v-else>
@@ -122,7 +125,7 @@
 					<view class="content" v-if="houseList.length>0">
 						<!-- 租房列表 -->
 					    <block v-for="(item, index) in houseList" :key="index">
-							<house-list-item :item="item"></house-list-item>
+							<house-list-item :item="item" :index="index"></house-list-item>
 					    </block>
 					</view>
 					<view class="home_nodata" v-else>
@@ -137,7 +140,7 @@
 					<view class="content" v-if="houseList.length>0">
 						<!-- 租房列表 -->
 					    <block v-for="(item, index) in houseList" :key="index">
-							<house-list-item :item="item"></house-list-item>
+							<house-list-item :item="item" :index="index"></house-list-item>
 					    </block>
 					</view>
 					<view class="home_nodata" v-else>
@@ -180,7 +183,7 @@ export default {
 	data() {
 		return {
 			houseList: [],
-			cityName: "北京",
+			cityName: "北京市",
 			current: 0,
 			tabList: [
 				{
@@ -360,6 +363,7 @@ export default {
 						success(res){
 							if(res.data.status){
 								that.houseList=res.data.data
+								that.$store.commit('houseInfo',that.houseList)
 							}
 						}
 					})

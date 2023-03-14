@@ -91,6 +91,7 @@ let privateData = {
 		height: ""
 	}
 };
+var that=''
 export default {
 	components: {
 		screenTab,
@@ -333,8 +334,10 @@ export default {
 	},
 	onLoad() {
 		console.log('进入页面')
+		that=this
 		 let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
 		 console.log(routes)
+		 this.getShowData()
 		 this.current=Number(routes[routes.length - 1].options.id) ;
 	},
 	methods: {
@@ -346,7 +349,24 @@ export default {
 		tabChange(index) {
 			this.current = index;
 		},
-
+		getShowData(){
+			uni.request({
+				url:'http://81.70.163.240:11001/zf/v1/dynamic/list',
+				header: {
+					'Authorization': 'Bearer '+that.$store.state.token
+				},
+				method:'GET',
+				data:{
+					userId:that.$store.state.userInfo.id
+				},
+				success(res){	
+					if(res.data.status){
+						that.tuwen_data=res.data.data	
+					}
+					
+				}
+			})
+		}
 
 	}
 }

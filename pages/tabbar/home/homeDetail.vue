@@ -150,7 +150,7 @@
 				<image style="width:5px;height: 40px;" src="/static/home/detail/vertical.png"></image>
 				<view class="height">
 					<view  class="floor">{{detailData.floor}}</view>
-					<view  class="elevator">{{detailData.hasElevator}}电梯</view>
+					<view  class="elevator">{{detailData.hasElevator}}</view>
 				</view>
 			 </view>
 		   </block>
@@ -178,9 +178,9 @@
 			 <view class="modelName">地理位置</view>
 			 <di-li-wei-zhi :list="diliData"></di-li-wei-zhi>
 		   </block>
+		<!-- 详情页 - 配套设施 -->
 		</view>
 		
-		<!-- 详情页 - 配套设施 -->
 		<view class="model">
 		  <block v-if="sheshiData.length > 0">
 			 <view class="modelName">配套设施</view>
@@ -194,14 +194,14 @@
 				<view class="collect">
 					<u-icon name="bell" size="50"></u-icon>
 				</view>
-				<view class="target" @click="report">举报</view>
+				<view class="target" @click="report(1)">举报</view>
 				<view class="report">
 					<u-icon name="heart" size="50"></u-icon>
 				</view>
-				<view class="target">收藏</view>
+				<view class="target" @click="report(2)">收藏</view>
 			</view>
 			<view class="contact">
-				<u-button shape="square">立即沟通</u-button>
+				<u-button shape="square" @click="report(3)">立即沟通</u-button>
 			</view>
 		</view>
     </view>
@@ -244,9 +244,12 @@
 	// 页面传值
 	onLoad(options) {
 		that=this
-		this.detailData = JSON.parse(options.detail);
-			console.log(this.detailData)
+		this.detailData =this.$store.state.houseInfo[options.index]
+		console.log(this.detailData)
 		this.initData()
+	},
+	onShow() {
+		
 	},
     data() {
       return {
@@ -283,31 +286,31 @@
         nearNewHouseList: [],
         guaPaiAgentList: [],
         bottomAgentInfo: {},
-        sheshiData: [{'iconUrl':'../../../static/home/detail/xiyiji-bak.svg','text':'洗衣机',isShow:false}, 
-							{'iconUrl':'../../../static/home/detail/bingxiang-bak.svg','text':'冰箱',isShow:false},
-							{'iconUrl':'../../../static/home/detail/dianshi-bak.svg','text':'电视',isShow:false},
-							{'iconUrl':'../../../static/home/detail/kongtiao-bak.svg','text':'空调',isShow:false},
-							{'iconUrl':'../../../static/home/detail/reshuiqi-bak.svg','text':'热水器',isShow:false},
-							{'iconUrl':'../../../static/home/detail/ranqi.svg','text':'燃气灶',isShow:false},
-							{'iconUrl':'../../../static/home/detail/nuanqi.svg','text':'暖气',isShow:false},
-							{'iconUrl':'../../../static/home/detail/wifi.svg','text':'网络',isShow:false},
-							{'iconUrl':'../../../static/home/detail/weibolu.svg','text':'微波炉',isShow:false}, 
-							{'iconUrl':'../../../static/home/detail/diancilu.svg','text':'电磁炉',isShow:false}],
+        sheshiData: [
+							{'iconUrl':'../../../static/home/detail/xiyiji-bak.svg','text':'洗衣机',isShow:false,hIconUrl:'../../../static/home/detail/xiyiji.svg'}, 
+							{'iconUrl':'../../../static/home/detail/bingxiang-bak.svg','text':'冰箱',isShow:false,hIconUrl:'../../../static/home/detail/bingxiang.svg'},
+							{'iconUrl':'../../../static/home/detail/dianshi-bak.svg','text':'电视',isShow:false,hIconUrl:'../../../static/home/detail/dianshi.svg'},
+							{'iconUrl':'../../../static/home/detail/kongtiao-bak.svg','text':'空调',isShow:false,hIconUrl:'../../../static/home/detail/kongtiao.svg'},
+							{'iconUrl':'../../../static/home/detail/reshuiqi-bak.svg','text':'热水器',isShow:false,hIconUrl:'../../../static/home/detail/reshuiqi.svg'},
+							{'iconUrl':'../../../static/home/detail/ranqi-bak.svg','text':'燃气灶',isShow:false,hIconUrl:'../../../static/home/detail/ranqi.svg'},
+							{'iconUrl':'../../../static/home/detail/nuanqi-bak.svg','text':'暖气',isShow:false,hIconUrl:'../../../static/home/detail/nuanqi.svg'},
+							{'iconUrl':'../../../static/home/detail/wifi-bak.svg','text':'网络',isShow:false,hIconUrl:'../../../static/home/detail/wifi.svg'},
+							{'iconUrl':'../../../static/home/detail/weibolu-bak.svg','text':'微波炉',isShow:false,hIconUrl:'../../../static/home/detail/weibolu.svg'}, 
+							{'iconUrl':'../../../static/home/detail/diancilu-bak.svg','text':'电磁炉',isShow:false,hIconUrl:'../../../static/home/detail/diancilu.svg'},
+					],
 		feiyongData: [
-				{'title':'付款方式','value':'季付'},
-				{'title':'租金','value':'3590元/月'},
-				{'title':'押金','value':'3590元/月'},
-				{'title':'服务费','value':'0元'},
-				{'title':'中介费','value':'0元'},
-				{'title':'','value':''},
-				{'title':'取暖费','value':'0元'},
-				{'title':'无线费','value':'0元'},
-				{'title':'物业费','value':'0元'},
-				{'title':'水电费','value':'0元'},
+				{'title':'付款方式','value':'-'},
+				{'title':'租金','value':'-'},
+				{'title':'押金','value':'-'},
+				{'title':'服务费','value':'-'},
+				{'title':'中介费','value':'-'},
+				{'title':'','value':'-'},
+				{'title':'取暖费','value':'-'},
+				{'title':'无线费','value':'-'},
+				{'title':'物业费','value':'-'},
+				{'title':'水电费','value':'-'},
 			],
-		zulinData: [{'house':'A室','sex':'男','size':'15m²','money':'3590元','status':'已出租'},
-					{'house':'B室','sex':'女','size':'12m²','money':'2310元','status':'已出租'},
-					{'house':'C室','sex':'-','size':'10m²','money':'-','status':'未出租'}],
+		zulinData: [],
 		diliData: [{}],
 
         housePhone: "", // 按月付的电话
@@ -339,6 +342,7 @@
 			this.showSupport()
 			//租赁信息
 			this.initzulinData()
+			
 		},
 		swiperImgInit(){
 			let obj={
@@ -347,7 +351,7 @@
 				urls:[]
 			}
 			let imgUrl=this.detailData.imgUrl.split(',')
-			console.log(imgUrl)
+			// console.log(imgUrl)
 			obj.urls=imgUrl
 			for(let i=0;i<imgUrl.length;i++){
 				obj.url=imgUrl[i]
@@ -365,6 +369,27 @@
 			this.feiyongData[8].value=this.detailData.manageMoney+'元' //物业费
 			this.feiyongData[9].value=this.detailData.waterElectricMoney+'元' //水电费
 		},
+		initzulinData(){
+			let roommate=this.detailData.roommate
+			roommate.forEach((item,index)=>{
+				let otherInfo=item.tenatStr.split('-')
+				let money=''
+				let sex=''
+				if(otherInfo[1] instanceof Number){
+					money=otherInfo[1]
+				}else if(otherInfo[1] instanceof String){
+					sex=otherInfo[1]
+				}
+				let obj={
+					house:item.name,
+					status:otherInfo[0],
+					sex:sex,
+					money:money,
+					size:otherInfo[2]
+				}
+				this.zulinData.push(obj)
+			})
+		},
 		showMap(){
 			let that=this
 			console.log('展示地图')
@@ -378,16 +403,30 @@
 						}
 					});
 		},
-		report(){
-			console.log(this.detailData)
+		//举报，收藏，
+		report(index){
+			let params={
+				"userId": this.$store.state.userInfo.id,
+				"roomId": this.detailData.id,
+			}
+			// 1 举报  2 收藏  3立即沟通
+			switch (index){
+				case 1:
+				params['complain']=1
+				break;
+				case 2:
+				params['collection']=1
+				break;
+				case 3:
+				params['chat']=1
+				break;
+			}
+			console.log(params)
+			
 			uni.request({
 				method:'POST',
 				url:'http://81.70.163.240:11001/zf/v1/const/save/statistics',
-				data:{
-					"userId": this.$store.state.userInfo.id,
-					  "roomId": this.detailData,
-					  "chat": 2
-				},
+				data:params,
 				header: {
 					'content-type': 'application/json',
 					'Authorization': 'Bearer ' + that.$store.state.token
@@ -397,18 +436,15 @@
 				}
 			})
 		},
-		initzulinData(){
-			// {'house':'A室','sex':'男','size':'15m²','money':'3590元','status':'已出租'}
-			// this.detailData.roommate.keys((item,index)=>{
-			// 	console.log(item)
-			// })
-		},
+		
 		showSupport(){
 			let support=this.detailData.support.split(',')
 			console.log(support)
 			this.sheshiData.forEach(item=>{
 				if(support.indexOf(item.text)!=-1){
 					item.isShow=true
+					item.iconUrl=item.hIconUrl
+					
 				}
 			})
 			console.log(this.sheshiData)

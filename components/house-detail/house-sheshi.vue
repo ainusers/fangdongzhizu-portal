@@ -21,13 +21,16 @@
 		line-height: 34upx;
 		margin-top: 10upx;
 	}
+	.isNoHas{
+		color: #9e9fa3;
+	}
 </style>
 <template>
 	<view class="f_r_s pei_tao_she_shi">
 		<block v-for="(item, index) in list" :key="index">
-			<view class="pei_item f_c_c" v-if="item.isShow">
+			<view class="pei_item f_c_c" >
 				<image mode="widthFix" class="pei_icon" :src="item.iconUrl"></image>
-				<view class="pei_text">{{ item.text }}</view>
+				<view class="pei_text" :class="{'isNoHas':!item.isShow}">{{ item.text }}</view>
 			</view>
 		</block>
 	</view>

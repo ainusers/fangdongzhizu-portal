@@ -20,6 +20,7 @@
 	</view>
 </template>
 <script>
+	var that=''
     export default {
         data() {
 			return {
@@ -32,6 +33,7 @@
 			}
 		},
         onLoad(options) {
+			that=this
 			this.username=options.username
         },
         onShow() {
@@ -61,26 +63,33 @@
 			}
 			// 向后端发送请求，修改用户昵称
 			uni.request({
-				url: 'http://81.70.163.240:11001/zf/v1/user/reset',
+				url: 'http://81.70.163.240:11001/zf/v1/user/pwd',
 				method: 'POST',
 				data: {
-					username: this.username,
-					code: this.pwd, //原有密码
-					password:this.newpwd  //新密码
+					userId: this.$store.state.userInfo.id,
+					oldPassword: this.pwd, //原有密码
+					password:this.newpwd,  //新密码
+					secondPassword:this.newpwd2
+				},
+				header:{
+					'content-type': 'application/json',
+					'Authorization': 'Bearer ' + that.$store.state.token
 				},
 				success: (res) => {
-					if(res.data.status){
-						uni.showToast({
-							title: '修改成功',
-							icon: 'none',
-							duration: 2000
-						})
-						// 返回上一页
-						setTimeout(() => {
-							uni.navigateBack({
-							    delta: 1
-							});
-						},2000)
+					console.log(res)
+					if(res.data.status&&res.data.statusCode==200){
+						
+						// uni.showToast({
+						// 	title: '修改成功',
+						// 	icon: 'none',
+						// 	duration: 2000
+						// })
+						// // 返回上一页
+						// setTimeout(() => {
+						// 	uni.navigateBack({
+						// 	    delta: 1
+						// 	});
+						// },2000)
 					}else{
 						uni.showToast({
 							title: res.data.message,

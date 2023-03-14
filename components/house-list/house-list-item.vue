@@ -186,7 +186,7 @@
 	}
 </style>
 <template>
-	<view @click="homeDetail(item)" class="er_house_item f_r_s">
+	<view @click="homeDetail(item,index)" class="er_house_item f_r_s">
 		<view class="er_house_img_view">
 			<image mode="aspectFill" class="er_house_img" :src="item.imgUrl" lazy-load></image>
 		</view>
@@ -227,12 +227,13 @@
 	export default {
 		name: 'house-list-item',
         computed:{},
-        props: ["item"],
+        props: ["item","index"],
         methods: {
-        	homeDetail(item) {
+        	homeDetail(item,index) {
+					console.log(index)
 				console.log("----> " + JSON.stringify(item))
                 uni.navigateTo({
-                    url: `./homeDetail?detail=${encodeURIComponent(JSON.stringify(item))}`
+                    url: `./homeDetail?index=${index}`
                 });
         	}
         },

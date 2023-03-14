@@ -8,7 +8,7 @@ const store = new Vuex.Store({
 		userInfo:"",
 		token:'',
 		messegeNum:[],
-		houseDeatil:{}
+		houseInfo:{}
 	},
 	mutations: {
 		userInfo(state,obj){
@@ -31,12 +31,12 @@ const store = new Vuex.Store({
 			}
 			
 		},
-		houseDeatil(state,houseDeatil){
-			if(houseDeatil){
-				state.houseDeatil=houseDeatil
+		houseInfo(state,houseInfo){
+			if(houseInfo){
+				state.houseInfo=houseInfo
 				uni.setStorage({
-					key:'houseDeatil',
-					data:houseDeatil
+					key:'houseInfo',
+					data:houseInfo
 				})
 			}
 		},

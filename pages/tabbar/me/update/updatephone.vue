@@ -2,7 +2,7 @@
 	<view class="main">
 		<form action="">
 			<u-form-item :label-position="labelPosition" label="当前手机号 :" prop="region" label-width="200">
-				<u-input v-model="currenphone" type="number" :border="border" placeholder="请输入当前手机号"/>
+				<u-input v-model="oldPhone" type="number" :border="border" placeholder="请输入当前手机号"/>
 			</u-form-item>
 			<u-form-item :label-position="labelPosition" label="更换手机号 :" prop="region" label-width="200">
 						<u-input v-model="newphone" type="number" :border="border" placeholder="请输入需要更换的手机号"/>
@@ -28,7 +28,7 @@
 		data() {
 			return {
 				border:true,
-				currenphone:'',
+				oldPhone:'',
 				newphone:'',
 				Verification:'',
 				codeDuration: 0,
@@ -74,21 +74,54 @@
 		onNavigationBarButtonTap(e) {
 				console.log(this.value);
 				// 向后端发送请求，修改用户簽名
-				console.log(that.currenphone) //校验手机号
+				console.log(that.oldPhone) //校验手机号
 				console.log(that.newphone)
 				console.log(that.Verification)
+				if(!that.oldPhone) {
+					uni.showToast({
+						title: '请输入当前手机号',
+						icon: 'none',
+						duration: 2000
+					}) 
+					return
+				}
+				if(!that.newphone) {
+					uni.showToast({
+						title: '请输入更换手机号',
+						icon: 'none',
+						duration: 2000
+					}) 
+					return
+				}
+				if(!that.Verification) {
+					uni.showToast({
+						title: '请输入验证码',
+						icon: 'none',
+						duration: 2000
+					}) 
+					return
+				}
+				if(that.oldPhone==that.newPhone){
+					uni.showToast({
+						title: '新老手机号相同',
+						icon: 'none',
+						duration: 2000
+					}) 
+					return
+				}
 						uni.request({
 							method: 'patch',
 							data: {
-								id: that.userInfo.id,
-								username: that.newphone,
+								userId: that.userInfo.id,
+								oldPhone: that.oldPhone,
+								newPhone:that.newphone,
 								code:that.Verification
 							},
 							header: {
 								'content-type': 'application/json',
 								'Authorization': 'Bearer ' + that.$store.state.token
 							},
-							url: 'http://81.70.163.240:11001/zf/v1/user/attr',
+							url: 'http://81.70.163.240:11001/zf/v1/user/phone',
 							success: (res) => {
 								console.log(res)
 								if(res.data.status){
@@ -98,11 +131,11 @@
 										duration: 2000
 									})
 									// 返回上一页
-									setTimeout(() => {
-										uni.navigateBack({
-										    delta: 1
-										});
-									},2000)
+									// setTimeout(() => {
+									// 	uni.navigateBack({
+									// 	    delta: 1
+									// 	});
+									// },2000)
 								}else{
 									uni.showToast({
 										title: res.data.message,

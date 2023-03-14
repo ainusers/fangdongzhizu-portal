@@ -1,7 +1,7 @@
 
 	import store from '@/store/index.js';  
 	//获取本地存储中的数据
-	const initKey=['token','userInfo','houseDeatil'] //防止刷新vuex丢失数据 
+	const initKey=['token','userInfo','houseInfo'] //防止刷新vuex丢失数据 
 	const getStoreData= function (key){
 		uni.getStorage({
 			key:key,
