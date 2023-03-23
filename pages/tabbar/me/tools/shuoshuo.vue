@@ -333,10 +333,10 @@ export default {
 	props: {
 	},
 	onLoad() {
-		console.log('进入页面')
+		// console.log('进入页面')
 		that=this
 		 let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
-		 console.log(routes)
+		 // console.log(routes)
 		 this.getShowData()
 		 this.current=Number(routes[routes.length - 1].options.id) ;
 	},
@@ -361,7 +361,10 @@ export default {
 				},
 				success(res){	
 					if(res.data.status){
-						that.tuwen_data=res.data.data	
+						that.tuwen_data=res.data.data
+							if(that.tuwen_data.length==0){
+								that.load_status_tuwen='nomore'
+							}
 					}
 					
 				}

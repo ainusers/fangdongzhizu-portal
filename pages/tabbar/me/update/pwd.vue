@@ -64,11 +64,11 @@
 			// 向后端发送请求，修改用户昵称
 			uni.request({
 				url: 'http://81.70.163.240:11001/zf/v1/user/pwd',
-				method: 'POST',
+				method: 'PATCH',
 				data: {
 					userId: this.$store.state.userInfo.id,
 					oldPassword: this.pwd, //原有密码
-					password:this.newpwd,  //新密码
+					newPassword:this.newpwd,  //新密码
 					secondPassword:this.newpwd2
 				},
 				header:{

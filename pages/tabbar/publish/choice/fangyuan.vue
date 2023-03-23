@@ -1278,7 +1278,7 @@ import { attachUpload } from '../../../../utils/utils';
 									uni.showLoading({title:'发布中'});
 									// var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
 					let params={
-									 id:this.userInfo.id,
+									 userId:this.userInfo.id,
 									 imgUrl:imagesHouseArr.toString(), //房源图片
 									 condition:imagesNatureArr.toString(),//资质图片
 									 publishType:this.houseModel.publishType, //1 个人转租  2.房东直租  3.个人换租

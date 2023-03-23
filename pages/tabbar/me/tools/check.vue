@@ -303,8 +303,8 @@
 		
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
-					<view v-if="current === 0">
-						<!-- 内容区域 -->
+					<view v-if="current == 0">
+						<!-- 待审核 -->
 						<view class="content">
 							<!-- 租房列表 -->
 						    <block v-for="(item, index) in houseList" :key="index">
@@ -316,7 +316,8 @@
 			</swiper-item>
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
-					<view v-if="current === 1">我是第1页
+					<view v-if="current == 1">
+						<!-- 已发布 -->
 					<view class="content">
 						<!-- 租房列表 -->
 					    <block v-for="(item, index) in houseList" :key="index">
@@ -328,7 +329,8 @@
 			</swiper-item>
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
-					<view v-if="current === 2">我是第2页
+					<view v-if="current == 2">
+						<!-- 已下架 -->
 					<view class="content">
 						<!-- 租房列表 -->
 					    <block v-for="(item, index) in houseList" :key="index">
@@ -340,7 +342,8 @@
 			</swiper-item>
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
-					<view v-if="current === 2">
+					<view v-if="current == 3">
+						<!-- 收藏 -->
 					<view class="content">
 						<!-- 租房列表 -->
 					    <block v-for="(item, index) in houseList" :key="index">
@@ -373,6 +376,7 @@ let privateData = {
 		height: ""
 	}
 };
+let that='';
 export default {
 	components: {
 		houseListItem,
@@ -607,8 +611,37 @@ export default {
 	        default: ""
 	    }
 	},
-	onLoad() {},
+	onLoad(options) {
+		console.log(options)
+		that=this
+		this.current=options.index
+		this.getCollect()
+	},
 	methods: {
+		//获取收藏的房源
+		getCollect(){
+			uni.request({
+				url: 'http://81.70.163.240:11001/zf/v1/const/collect/rooms',
+				method:'GET',
+				header: {
+					'content-type': 'application/json',
+					'Authorization': 'Bearer ' + that.$store.state.token
+				},
+				data:{
+					userId:that.$store.state.userInfo.id
+				},
+				success(res){
+					if(res.data.status){
+						that.houseList=res.data.data
+					}else{
+						uni.showToast({
+							icon:'none',
+							title:res.data.messages
+						})
+					}
+				}
+			})
+		},
 		// 获取选择城市返回的城市名称
 		getValue(cityNameLess){
 			this.cityName = cityNameLess;

@@ -80,7 +80,7 @@
 		</block>
 		<block v-if="loadStatus == 'loadmore'">
 			<view style="padding: 30rpx 0;">
-				<u-loadmore :status="loadStatus" />
+				<u-loadmore :status="loadStatus" :load-text="loadText"/>
 			</view>
 		</block>
 		<block v-else>
@@ -115,16 +115,26 @@
 		},
 		data() {
 			return {
-				showShare: false
+				showShare: false,
+				loadText:{
+					 loadmore: '轻轻上拉加载更多...',
+					 loading: '努力加载中...',
+					 nomore: '没有更多了'
+				}
 			};
 		},
-		watch: {},
+		watch: {
+			
+		},
 		computed: {
 			timestamp() {
 				return Date.parse(new Date()) / 1000;
 			}
 		},
 		created() {
+			console.log(this.list)
+		},
+		onLoad(){
 			
 		},
 		methods: {

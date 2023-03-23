@@ -185,25 +185,25 @@
 	  
 	  <!-- 功能区域 -->
 	  <view class="func">
-	      <view class="option" @click="goto('/pages/tabbar/me/tools/check?id=0')">
+	      <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=0')">
 	      	<view class="icon">
 	      		<image src="../../../static/me/daishenhe.svg" mode="aspectFit"></image>
 	      	</view>
 	      	<view class="name">待审核</view>
 	      </view>
-	      <view class="option" @click="goto('/pages/tabbar/me/tools/check?id=1')">
+	      <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=1')">
 	      	<view class="icon">
 	      		<image src="../../../static/me/publish.svg" mode="aspectFit"></image>
 	      	</view>
 	      	<view class="name">已发布</view>
 	      </view>
-		  <view class="option" @click="goto('/pages/tabbar/me/tools/check?id=2')">
+		  <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=2')">
 		  	<view class="icon">
 		  		<image src="../../../static/me/xiajia.svg" mode="aspectFit"></image>
 		  	</view>
 		  	<view class="name">已下架</view>
 		  </view>
-		  <view class="option" @click="goto('/pages/tabbar/me/tools/check?id=3')">
+		  <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=3')">
 		  	<view class="icon">
 		  		<image src="../../../static/me/save.svg" mode="aspectFit"></image>
 		  	</view>

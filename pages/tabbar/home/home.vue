@@ -73,7 +73,7 @@ uni-swiper-item{
 		  </view>
 		  <view></view>
 		  <!-- 搜索按钮 -->
-		  <view class="search" @click.stop="searchBtn"></view>
+		  <!-- <view class="search" @click.stop="searchBtn"></view> -->
 		</view>
 		<!-- 筛选项 -->
 		<!-- 转租和直租 -->
@@ -334,6 +334,7 @@ export default {
 		that=this
 		this.getArea()
 		this.getHouseList()
+		this.getStation()
 		
 	},
 	onShow(){
@@ -567,12 +568,12 @@ export default {
 		
 		    this.screenFormData = screenFormData;
 		},
+		//获取该城市的所有区
 		getArea(){
-			var that=this
 						uni.request({
 							method: 'GET',
 							data: {
-								city:'北京'
+								city:'北京市'
 							},
 							header: {
 								'content-type': 'application/json',
@@ -587,6 +588,26 @@ export default {
 						})
 			
 			
+		},
+		//获取该城市下的所有地铁
+		getStation(){
+			uni.request({
+				method: 'GET',
+				data: {
+					city:'北京市'
+				},
+				header: {
+					'content-type': 'application/json',
+					'Authorization': 'Bearer ' + that.$store.state.token
+				},
+				url: 'http://81.70.163.240:11001/zf/v1/const/station',
+				success: (res) => {
+					if(res.data.status){
+						// that.regionRightMap['region']=res.data.data
+						console.log(res.data.data)
+					}
+				}
+			})
 		},
 		regionLeftBtn(item,index){
 			console.log(item)
