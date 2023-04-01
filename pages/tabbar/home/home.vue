@@ -32,9 +32,6 @@
 .u-tab-item .u-line-1 {
 	line-height: 0px!important;
 }
-
-
-
 .f_r_s {
 	display: flex;
 	flex-direction: row;
@@ -113,7 +110,7 @@ uni-swiper-item{
 								<house-list-item :item="item" :index="index"></house-list-item>
 						    </block>
 						</view>
-						<view v-else>
+						<view  class="home_nodata" v-else>
 							暂无数据
 						</view>
 					</view>
@@ -374,6 +371,7 @@ export default {
 		getValue(cityNameLess){
 			console.log(cityNameLess)
 			this.cityName = cityNameLess;
+			this.$store.commit('currentCity',cityNameLess)
 		},
 		// 获得swiper切换后的current索引
 		swipeIndex(index) {

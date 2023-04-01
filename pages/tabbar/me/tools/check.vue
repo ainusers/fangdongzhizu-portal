@@ -288,6 +288,10 @@
 	height: calc(100vh - var(--status-bar-height) - 88rpx);
 	background-color: #ffffff;
 }
+.home_nodata{
+	padding: 5px 0 ;
+	text-align: center;
+}
 </style>
 <template>
 	<view class="main">
@@ -300,60 +304,25 @@
 			</u-sticky>
 		<!-- 内容区域 -->
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
-		
-			<swiper-item>
+			<swiper-item v-for=" (item,index) in tabList" :key="index">
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
-					<view v-if="current == 0">
+					<view v-if="current == index">
 						<!-- 待审核 -->
 						<view class="content">
 							<!-- 租房列表 -->
-						    <block v-for="(item, index) in houseList" :key="index">
-								<house-list-item :item="item"></house-list-item>
-						    </block>
+							<div v-if="houseList.length>0">
+								<block v-for="(item, index) in houseList" :key="index">
+									<house-list-item :item="item"></house-list-item>
+								</block>
+							</div>
+						   <div v-else>
+								<p class="home_nodata">暂无数据</p>
+						   </div>
 						</view>
 					</view>
 				</scroll-view>
 			</swiper-item>
-			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content">
-					<view v-if="current == 1">
-						<!-- 已发布 -->
-					<view class="content">
-						<!-- 租房列表 -->
-					    <block v-for="(item, index) in houseList" :key="index">
-							<house-list-item :item="item"></house-list-item>
-					    </block>
-					</view>
-					</view>
-				</scroll-view>
-			</swiper-item>
-			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content">
-					<view v-if="current == 2">
-						<!-- 已下架 -->
-					<view class="content">
-						<!-- 租房列表 -->
-					    <block v-for="(item, index) in houseList" :key="index">
-							<house-list-item :item="item"></house-list-item>
-					    </block>
-					</view>
-					</view>
-				</scroll-view>
-			</swiper-item>
-			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content">
-					<view v-if="current == 3">
-						<!-- 收藏 -->
-					<view class="content">
-						<!-- 租房列表 -->
-					    <block v-for="(item, index) in houseList" :key="index">
-							<house-list-item :item="item"></house-list-item>
-					    </block>
-					</view>
-					</view>
-				</scroll-view>
-			</swiper-item>
-		</swiper>
+        </swiper>
 	</view>
 </template>
 
@@ -384,60 +353,61 @@ export default {
 	},
 	data() {
 		return {
-			houseList: [{
-							"houseImg":"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271",
-							"community":"松兰铺",
-							"whoCommunity":"圣龙家园",
-							"orientation":"朝南",
-							"bedroom":"主卧",
-							"mode":"整租",
-							"layout":"四室一厅一厨一卫",
-							"heating":"集中供暖",
-							"elevator":"无电梯",
-							"size":"23m²",
-							"floor":"2/3层",
-							"way":"季付",
-							"datetime":"2022-09-22 21:54",
-							"position":"距离昌平线沙河地铁站1020米",
-							"price":"2300",
-							"region":"昌平",
-							"subway":"沙河"},
-						{
-							"houseImg":"https://img1.baidu.com/it/u=3942334258,820952260&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=344",
-							"community":"兰亭新苑",
-							"whoCommunity":"三区",
-							"orientation":"朝南",
-							"bedroom":"次臥",
-							"mode":"合租",
-							"layout":"三室一厅一厨一卫",
-							"heating":"自供暖",
-							"elevator":"有电梯",
-							"size":"16m²",
-							"floor":"16/27层",
-							"way":"月付",
-							"datetime":"2022-09-22 21:54",
-							"position":"距离10号线劲松地铁站950米",
-							"price":"1800",
-							"region":"朝阳",
-							"subway":"酒仙桥"},
-						{
-							"houseImg":"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271",
-							"community":"松兰铺",
-							"whoCommunity":"圣龙家园",
-							"orientation":"朝南",
-							"bedroom":"主卧",
-							"mode":"整租",
-							"layout":"一室一厅一厨一卫",
-							"heating":"自供暖",
-							"size":"23m²",
-							"floor":"2/3层",
-							"elevator":"无电梯",
-							"way":"年付",
-							"datetime":"2022-09-22 21:54",
-							"position":"距离昌平线沙河地铁站1020米",
-							"price":"2300",
-							"region":"昌平",
-							"subway":"沙河"}
+			houseList: [
+				// {
+				// 			"houseImg":"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271",
+				// 			"community":"松兰铺",
+				// 			"whoCommunity":"圣龙家园",
+				// 			"orientation":"朝南",
+				// 			"bedroom":"主卧",
+				// 			"mode":"整租",
+				// 			"layout":"四室一厅一厨一卫",
+				// 			"heating":"集中供暖",
+				// 			"elevator":"无电梯",
+				// 			"size":"23m²",
+				// 			"floor":"2/3层",
+				// 			"way":"季付",
+				// 			"datetime":"2022-09-22 21:54",
+				// 			"position":"距离昌平线沙河地铁站1020米",
+				// 			"price":"2300",
+				// 			"region":"昌平",
+				// 			"subway":"沙河"},
+				// 		{
+				// 			"houseImg":"https://img1.baidu.com/it/u=3942334258,820952260&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=344",
+				// 			"community":"兰亭新苑",
+				// 			"whoCommunity":"三区",
+				// 			"orientation":"朝南",
+				// 			"bedroom":"次臥",
+				// 			"mode":"合租",
+				// 			"layout":"三室一厅一厨一卫",
+				// 			"heating":"自供暖",
+				// 			"elevator":"有电梯",
+				// 			"size":"16m²",
+				// 			"floor":"16/27层",
+				// 			"way":"月付",
+				// 			"datetime":"2022-09-22 21:54",
+				// 			"position":"距离10号线劲松地铁站950米",
+				// 			"price":"1800",
+				// 			"region":"朝阳",
+				// 			"subway":"酒仙桥"},
+				// 		{
+				// 			"houseImg":"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271",
+				// 			"community":"松兰铺",
+				// 			"whoCommunity":"圣龙家园",
+				// 			"orientation":"朝南",
+				// 			"bedroom":"主卧",
+				// 			"mode":"整租",
+				// 			"layout":"一室一厅一厨一卫",
+				// 			"heating":"自供暖",
+				// 			"size":"23m²",
+				// 			"floor":"2/3层",
+				// 			"elevator":"无电梯",
+				// 			"way":"年付",
+				// 			"datetime":"2022-09-22 21:54",
+				// 			"position":"距离昌平线沙河地铁站1020米",
+				// 			"price":"2300",
+				// 			"region":"昌平",
+				// 			"subway":"沙河"}
 						],
 			cityName: "北京",
 			current: 0,
@@ -611,6 +581,18 @@ export default {
 	        default: ""
 	    }
 	},
+	watch:{
+		current:{
+			handler(newVal,oldVal){
+				// console.log(newVal)
+				if(newVal==3){
+					that.getCollect()
+				}else{
+					that.getstatusHouseList(Number(newVal)+1)
+				}
+			}
+		}
+	},
 	onLoad(options) {
 		console.log(options)
 		that=this
@@ -653,6 +635,41 @@ export default {
 		// 切换选项卡
 		tabChange(index) {
 			this.current = index;
+		},
+		//获取不同状态的数据
+		getstatusHouseList(type){
+			let page='1'
+			let params={
+				"publish_type": 1, //(1：转租，2：直租，3：换租),
+				"page":page,
+				"size":"10",
+				"city":that.$store.state.currentCity,
+				"status":type, //(1:待审核,2:已发布,3:已下架)
+				"user_id": that.$store.state.userInfo.id
+			}
+			//1 待审核 2 已发布  3已下架
+			uni.request({
+				method:'POST',
+				url:'http://81.70.163.240:11001/zf/v1/room/list',
+				data:params,
+				header: {
+					'content-type': 'application/json',
+					'Authorization': 'Bearer ' + that.$store.state.token
+				},
+				success:(res)=>{
+					console.log(res)
+					if(res.data&&res.data.status){
+						this.houseList=res.data.data
+					}else if(res.data.length==0){
+						this.houseList=[]
+					}else{
+						uni.showToast({
+							icon: 'none',
+							title: res.data.message
+						});
+					}
+				}
+			})
 		},
 		// 搜索
 		searchBtn() {

@@ -1,20 +1,17 @@
 
 	import store from '@/store/index.js';  
 	//获取本地存储中的数据
-	const initKey=['token','userInfo','houseInfo'] //防止刷新vuex丢失数据 
+	const initKey=['token','userInfo','houseInfo','communityInfo'] //防止刷新vuex丢失数据 
 	const getStoreData= function (key){
 		uni.getStorage({
 			key:key,
 			success:(res)=>{
-				console.log(res)
 				store.state[key]=res.data
-				console.log(store.state[key])
 			}
 		})
 	}
 	const initStorestate=function(){
 		initKey.forEach(item=>{
-			console.log(item)
 			getStoreData(item)
 		})
 	}
@@ -39,7 +36,6 @@
 					resolve(JSON.parse(res.data).data);
 				},
 				fail: (e) => {
-					console.log("e: " + JSON.stringify(e));
 					uni.hideLoading();
 					reject(e);
 				}

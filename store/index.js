@@ -8,7 +8,9 @@ const store = new Vuex.Store({
 		userInfo:"",
 		token:'',
 		messegeNum:[],
-		houseInfo:{}
+		houseInfo:{},
+		communityInfo:{},
+		currentCity:'北京市',//当前城市
 	},
 	mutations: {
 		userInfo(state,obj){
@@ -55,6 +57,25 @@ const store = new Vuex.Store({
 			};
 			uni.removeStorageSync("userInfo");
 			
+		},
+		communityInfo(state,communityInfo){
+			state.communityInfo=communityInfo
+			uni.setStorage({
+				key:'communityInfo',
+				data:communityInfo
+			})
+		},
+		currentCity(state,city){
+			state.currentCity=city
+			uni.setStorage({
+				key:'currentCity',
+				data:city
+			})
+		}
+	},
+	getters:{
+		token:state=>{
+			return state.token
 		}
 	}
 })

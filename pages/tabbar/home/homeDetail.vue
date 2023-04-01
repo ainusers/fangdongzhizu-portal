@@ -337,7 +337,7 @@
 			//费用数据初始化
 			this.coseDataInit()
 			//地图展示
-			this.showMap()
+			// this.showMap()
 			// 配套设施展示
 			this.showSupport()
 			//租赁信息
@@ -350,7 +350,10 @@
 				type:'img',
 				urls:[]
 			}
-			let imgUrl=this.detailData.imgUrl.split(',')
+			let imgUrl=this.detailData.imgUrl
+			if(imgUrl){
+				imgUrl=imgUrl.split(',')
+			}
 			// console.log(imgUrl)
 			obj.urls=imgUrl
 			for(let i=0;i<imgUrl.length;i++){
@@ -413,16 +416,22 @@
 			switch (index){
 				case 1:
 				params['complain']=1
+				this.statistics(params)
 				break;
 				case 2:
 				params['collection']=1
+				this.statistics(params)
 				break;
 				case 3:
+				console.log('跳转页面')
 				params['chat']=1
+				uni.navigateTo({
+					url:'/pages/tabbar/community/tools/news'
+				})
 				break;
 			}
-			console.log(params)
-			
+		},
+		statistics(params){
 			uni.request({
 				method:'POST',
 				url:'http://81.70.163.240:11001/zf/v1/const/save/statistics',
@@ -436,18 +445,19 @@
 				}
 			})
 		},
-		
 		showSupport(){
-			let support=this.detailData.support.split(',')
-			console.log(support)
-			this.sheshiData.forEach(item=>{
-				if(support.indexOf(item.text)!=-1){
-					item.isShow=true
-					item.iconUrl=item.hIconUrl
-					
-				}
-			})
-			console.log(this.sheshiData)
+			console.log(this.detailData)
+			let support=this.detailData.support
+			if(support){
+				support=support.split(',')
+				this.sheshiData.forEach(item=>{
+					if(support.indexOf(item.text)!=-1){
+						item.isShow=true
+						item.iconUrl=item.hIconUrl
+						
+					}
+				})
+			}
 		}
 	}
 }

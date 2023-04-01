@@ -107,6 +107,7 @@
 </template>
 
 <script>
+	let that=null;
 	export default {
 		name: 'post-list',
 		props: {
@@ -135,13 +136,14 @@
 			console.log(this.list)
 		},
 		onLoad(){
-			
+			that=this
 		},
 		methods: {
 			// 跳转详情页
 			toDetail(data) {
+				this.$store.commit('communityInfo',data)
 				uni.navigateTo({
-					url: "/pages/tabbar/community/comment?info=" +JSON.stringify(data)  
+					url: "/pages/tabbar/community/comment"
 				})
 			},
 			// 跳转评论区

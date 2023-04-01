@@ -1,5 +1,6 @@
 import App from './App.vue'
-
+import Router from './router/index.js'
+import { RouterMount } from 'uni-simple-router'
 // 挂载Vuex
 import store from './store';  
 Vue.prototype.$store = store;
@@ -15,18 +16,21 @@ Vue.prototype.$H = request;
 // 引入uview-ui框架
 import uView from "uview-ui";
 Vue.use(uView);
-
+Vue.use(Router)
 // #ifndef VUE3
 import Vue from 'vue'
 Vue.config.productionTip = false
 App.mpType = 'app'
 const app = new Vue({
 	...App,
-	store
+	store,
 })
-app.$mount()
-// #endif
 
+// app.$mount()
+// #endif
+// #ifdef H5
+	RouterMount(app,'#app');
+// #endif
 // #ifdef VUE3
 import {createSSRApp} from 'vue'
 export function createApp() {

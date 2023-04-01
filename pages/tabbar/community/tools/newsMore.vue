@@ -29,7 +29,7 @@
 					<!-- 用户消息 -->
 					<block v-if="row.type == 'text' || row.type == 'img' || row.type == 'voice'">
 						<!-- 1. 自己发出的消息 -->
-						<view class="my" v-if="row.from==currentName">
+						<view class="my" v-if="row.from=='zhangjun8'">
 							<!-- 左-消息 -->
 							<view class="left">
 								<!-- 文字消息 -->
@@ -195,13 +195,10 @@
 					face:null,
 					blessing:null,
 					money:null
-				},
-				currentName:'',//当前登录人的name
+				}
 			};
 		},
 		onLoad(option) {
-			this.currentName=this.$store.state.userInfo.username
-			console.log(this.currentName)
 			this.getMsgList();
 			// 语音自然播放结束
 			this.AUDIO.onEnded((res)=>{
@@ -258,8 +255,6 @@
 				this.socketInstance.onMessage((res) => {
 					console.log("收到服务器内容：" + res.data);
 					let data = eval("(" + res.data + ")");
-
-										console.log(data)
 					switch (data.type) {
 						case 'system':
 							this.addSystemTextMsg(data);
@@ -315,9 +310,8 @@
 			// 发送认证消息
 			authSocket() {
 				if (this.socket_status) {
-					let that=this
 					this.socketInstance.send({
-						data: "{'type':'signal','from':"+that.$store.state.userInfo.username+"}",
+						data: "{'type':'signal','from':'zhangjun" + Math.floor(Math.random() * 10 + 1) + "'}",
 						async success() {
 							console.log("认证消息发送成功");
 						},

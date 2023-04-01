@@ -176,6 +176,7 @@ export default {
 			focus: false,
 			isSubmitD: false,
 			placeholder: '说点什么...',
+			commlistOne:[],//一级评论
 			commentList: [{
 					id: 1,
 					cid: 1,
@@ -282,9 +283,11 @@ export default {
 	},
 	onLoad(options) {
 		console.log(options)
-		this.tuwen_data=[JSON.parse(options.info)]
+		console.log('comment',this.$store.state.communityInfo)
+		this.tuwen_data=[this.$store.state.communityInfo]
 		console.log(this.tuwen_data)
 		this.commentList = this.commentList.filter(item => item.cid == options.cid)
+		this.getOneList()
 	},
 	methods: {
 		// 跳转到全部回复
@@ -310,32 +313,48 @@ export default {
 				this.isSubmitD = false;
 				return;
 			}
-			let addComment = {
-					id: 5,
-					cid: 5,
-					name: '叶轻眉',
-					date: '12-25 18:58',
-					contentText: '我不信伊朗会没有后续反应，美国肯定会为今天的事情付出代价的',
-					url: 'https://cdn.uviewui.com/uview/template/niannian.jpg',
-					allReply: 12,
-					likeNum: 33,
-					isLike: false,
-					replyList: [
-						{
-							name: '我是1号',
-							date: '03-25 13:58',
-							url: 'https://cdn.uviewui.com/uview/template/niannian.jpg',
-							contentStr: 'uview是基于uniapp的一个UI框架，代码优美简洁，宇宙超级无敌彩虹旋转好用，用它！'
-						},
-						{
-							name: '我是2号',
-							date: '03-25 13:58',
-							url: 'https://cdn.uviewui.com/uview/template/niannian.jpg',
-							contentStr: 'uview是基于uniapp的一个UI框架，代码优美简洁，宇宙超级无敌彩虹旋转好用，用它！'
-						}
-					]
-				};
+			console.log(this.$store.state.userInfo)
+			// let addComment = {
+			// 		id: 5,
+			// 		cid: 5,
+			// 		name:this.$store.state.userInfo.username,
+			// 		date:  new Date().getDate(),//'12-25 18:58',
+			// 		contentText: '我不信伊朗会没有后续反应，美国肯定会为今天的事情付出代价的',
+			// 		url: 'https://cdn.uviewui.com/uview/template/niannian.jpg',
+			// 		allReply: 12,
+			// 		likeNum: 33,
+			// 		isLike: false,
+			// 		replyList: [
+			// 			{
+			// 				name: '我是1号',
+			// 				date: '03-25 13:58',
+			// 				url: 'https://cdn.uviewui.com/uview/template/niannian.jpg',
+			// 				contentStr: 'uview是基于uniapp的一个UI框架，代码优美简洁，宇宙超级无敌彩虹旋转好用，用它！'
+			// 			},
+			// 			{
+			// 				name: '我是2号',
+			// 				date: '03-25 13:58',
+			// 				url: 'https://cdn.uviewui.com/uview/template/niannian.jpg',
+			// 				contentStr: 'uview是基于uniapp的一个UI框架，代码优美简洁，宇宙超级无敌彩虹旋转好用，用它！'
+			// 			}
+			// 		]
+			// 	};
+			let beCommentUserId=0 //被回复id，如果没有就默认0
+			let addComment={
+				words:this.content,
+				commentUserId:this.$store.state.userInfo.id,//回复用户id，也就是用户本人
+				beCommentUserId:beCommentUserId,//被回复id也就别人id
+				dynamicId:this.$store.state.communityInfo.id,//动态id
+			}
 			this.commentList.push(addComment);
+			uni.request({
+				url:'http://81.70.163.240:11001/zf/v1/comment/increase',
+				method:'POST',
+				data:addComment,
+				success:(res)=>{
+					console.log(res)
+				}
+			})
 			this.content = '';
 			this.$u.toast('评论成功');
 			this.isSubmitD = false;
@@ -369,6 +388,23 @@ export default {
 			} else {
 				this.commentList[index].likeNum--;
 			}
+		},
+		//获取一级评论的
+		getOneList(){
+			let that=this
+			uni.request({
+				methods:'GET',
+				url:'http://81.70.163.240:11001/zf/v1/comment/list',
+				header: {
+					'content-type': 'application/json',
+					'Authorization': 'Bearer ' + that.$store.state.token
+				},
+				success(res){
+					if(res.data.status){
+						that.commlistOne=res.data.data
+					}
+				}
+			})
 		}
 	}
 };

@@ -77,19 +77,18 @@
 				},
 				success: (res) => {
 					console.log(res)
-					if(res.data.status&&res.data.statusCode==200){
-						
-						// uni.showToast({
-						// 	title: '修改成功',
-						// 	icon: 'none',
-						// 	duration: 2000
-						// })
-						// // 返回上一页
-						// setTimeout(() => {
-						// 	uni.navigateBack({
-						// 	    delta: 1
-						// 	});
-						// },2000)
+					if(res.data.status){
+						uni.showToast({
+							title: '修改成功',
+							icon: 'none',
+							duration: 2000
+						})
+						// 返回上一页
+						setTimeout(() => {
+							uni.navigateBack({
+							    delta: 1
+							});
+						},2000)
 					}else{
 						uni.showToast({
 							title: res.data.message,

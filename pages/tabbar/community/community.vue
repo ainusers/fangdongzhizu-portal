@@ -365,7 +365,7 @@
 					},
 					url: 'http://81.70.163.240:11001/zf/v1/dynamic/list',
 					success: (res) => {
-						console.log(res)
+						console.log('res',res)
 						if(res.data.code==200){
 							this.tuwen_data = res.data.data;
 							console.log(this.tuwen_data)
