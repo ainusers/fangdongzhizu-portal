@@ -44,7 +44,7 @@
 							<scroll-view class="region_scroll_right" scroll-y>
 								<block v-for="(item, index) in regionRightMap['region']" :key="index">
 									<view hover-class="none" form-type="submit" :class="{screen_active: regionRightIndex == index}"
-										@click="regionRightBtn(item, index)" class="region_list_item">{{ item.name }}</view>
+										@click="regionRightBtn(item, index)" class="region_list_item">{{ item.name ||item.line }}</view>
 								</block>
 							</scroll-view>
 						</view>

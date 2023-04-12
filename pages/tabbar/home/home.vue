@@ -47,6 +47,9 @@
 	height: calc(100vh - var(--status-bar-height) - 88rpx);
 	background-color: #ffffff;
 }
+.list-content{
+	height: calc(100vh - var(--status-bar-height) - 88rpx);
+}
 .list-swiper{
 	height:79vh;
 }
@@ -101,7 +104,7 @@ uni-swiper-item{
 		<swiper class="list-swiper" @change="swipeIndex" :current="current" :duration="300">
 		
 			<swiper-item>
-				<scroll-view scroll-y="true" class=" list-content">
+				<scroll-view scroll-y="true" class=" list-content" @scrolltolower="scrolltolower">
 					<view v-if="current === 0">
 						<!-- 内容区域 -->
 						<view class="content" v-if="houseList.length>0">
@@ -117,7 +120,7 @@ uni-swiper-item{
 				</scroll-view>
 			</swiper-item>
 			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content">
+				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
 					<view v-if="current === 1">
 					<view class="content" v-if="houseList.length>0">
 						<!-- 租房列表 -->
@@ -132,7 +135,7 @@ uni-swiper-item{
 				</scroll-view>
 			</swiper-item>
 			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content">
+				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
 					<view v-if="current === 2">
 					<view class="content" v-if="houseList.length>0">
 						<!-- 租房列表 -->
@@ -189,9 +192,9 @@ export default {
 				{
 					name: '直租'
 				},
-				{
-					name: '换租'
-				}
+				// {
+				// 	name: '换租'
+				// }
 			],
 			isRequestIng: false,
 			screenFormData: {
@@ -236,9 +239,14 @@ export default {
 			    }
 			},
 			// 区域筛选
-			regionLeftList: [{
-				text:'北京'
-			}],
+			regionLeftList: [
+				{
+					text:''
+				},
+				{
+					text:'地铁'
+				}
+			],
 			regionRightMap: {
 				region:[]
 			},
@@ -310,7 +318,8 @@ export default {
 			enterType:'erHouse',
 			publish_type:1, //(1：转租，2：直租，3：换租)
 			currPage:1,
-			size:10
+			size:10,
+			isLoad:false,
 		};
 	},
 	props: {
@@ -329,41 +338,49 @@ export default {
 	},
 	onLoad() {
 		that=this
+		this.regionLeftList[0].text=this.cityName
 		this.getArea()
 		this.getHouseList()
-		this.getStation()
-		
 	},
 	onShow(){
 		console.log('又展示了')
-		this.getHouseList()
+		// this.getHouseList()
 	},
 	onReady(){
 		
 	},
-	methods: {
-		
+	onPullDownRefresh() {
+		// this.tuwen_default_page = 1;
+		// this.tuwen_data = this.tuwen_data.reverse();
+		// this.getMomentPost();
+		// uni.stopPullDownRefresh();
+		console.log('刷新')
+	},
+	methods: {	
+		scrolltolower(){
+			console.log('加载更多')
+			if(this.isLoad){
+				return;
+			}
+			this.currPage++
+			this.getHouseList()
+		},
 		getHouseList(){
-			console.log(that.$store.state.token)
-					uni.request({
-						method:'POST',
-						url:'http://81.70.163.240:11001/zf/v1/room/list',
-						data:{
+					let data={
 							publish_type:that.publish_type,
 							page:that.currPage,
 							size:that.size,
-							city:that.cityName
-						},
-						header: {
-							'content-type': 'application/json',
-							'Authorization': 'Bearer ' + that.$store.state.token
-						},
-						success(res){
-							if(res.data.status){
-								that.houseList=res.data.data
+							city:that.cityName,
+							user_id:that.$store.state.userInfo.id
+						}
+					this.$H.post('v1/room/list',data,true).then(res=>{
+							if(res.status){
+								that.houseList=that.houseList.concat(res.data)
+								if(res.data.length<10){
+									this.isLoad=true
+								}
 								that.$store.commit('houseInfo',that.houseList)
 							}
-						}
 					})
 			
 		},
@@ -376,6 +393,7 @@ export default {
 		// 获得swiper切换后的current索引
 		swipeIndex(index) {
 			if(index==this.current) return
+			this.currPage=1
 			this.current = index.detail.current
 			this.init()
 		},
@@ -389,6 +407,7 @@ export default {
 		},
 		init(){
 			this.currPage=1
+			this.houseList=[]
 			this.publish_type=this.current+1
 			this.getHouseList()
 		},
@@ -563,52 +582,42 @@ export default {
 		     this.$refs.screenTab.sourceLsitIndex = -1;
 		    screenFormData[enterType].source.id = "";
 		    screenFormData[enterType].source.text = "来源";
-		
 		    this.screenFormData = screenFormData;
 		},
 		//获取该城市的所有区
 		getArea(){
-						uni.request({
-							method: 'GET',
-							data: {
-								city:'北京市'
-							},
-							header: {
-								'content-type': 'application/json',
-								'Authorization': 'Bearer ' + that.$store.state.token
-							},
-							url: 'http://81.70.163.240:11001/zf/v1/const/area',
-							success: (res) => {
-								if(res.data.status){
-									that.regionRightMap['region']=res.data.data
-								}
-							}
-						})
-			
-			
+			let data={
+						city:this.cityName
+					}
+			this.$H.get('v1/const/area',data,true).then(res=>{
+				if(res.status){
+					that.regionRightMap['region']=res.data
+				}
+			})
 		},
 		//获取该城市下的所有地铁
 		getStation(){
-			uni.request({
-				method: 'GET',
-				data: {
-					city:'北京市'
-				},
-				header: {
-					'content-type': 'application/json',
-					'Authorization': 'Bearer ' + that.$store.state.token
-				},
-				url: 'http://81.70.163.240:11001/zf/v1/const/station',
-				success: (res) => {
-					if(res.data.status){
-						// that.regionRightMap['region']=res.data.data
-						console.log(res.data.data)
-					}
+			let data={
+					city:this.cityName
 				}
+			this.$H.get('v1/const/station',data,true).then(res=>{
+				if(res.status){
+					that.regionRightMap['region']=res.data
+					console.log(res.data)
+				}			
 			})
 		},
 		regionLeftBtn(item,index){
 			console.log(item)
+			console.log(index)
+			switch(index){
+				case 0:
+					this.getArea()
+				break;
+				case 1:
+				this.getStation()
+				break
+			}
 			console.log(index)
 		},
 		// 区域筛选

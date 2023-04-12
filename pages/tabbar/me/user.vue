@@ -135,11 +135,14 @@
 				</view>
             </view>
             <!--实名认证-->
-            <view class="item f_r_b">
+            <view class="item f_r_b" >
                 <view class="item_text">实名认证</view>
-                <view class="item_val">
+                <view class="item_val" v-if="!userInfo.auth" @click="goto(`/pages/tabbar/me/update/realname?username=${userInfo.username}`)">
 					未认证
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
+				</view>
+				<view class="item_val" v-if="userInfo.auth">
+					已认证
 				</view>
             </view>
 			<!--修改密码-->

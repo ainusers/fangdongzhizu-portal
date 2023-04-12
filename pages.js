@@ -97,8 +97,9 @@ module.exports=()=>({
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light",
 				"backgroundColor":"#fff",
+				"onReachBottomDistance":200,
 				"app-plus": {
-					"scrollIndicator": "none"
+					// "scrollIndicator": "none"
 				}
 			},
 			meta:{
@@ -125,7 +126,8 @@ module.exports=()=>({
 		{
 			"path": "pages/tabbar/community/comment",
 			"style": {
-				"transparentTitle":  "always"
+				"transparentTitle":  "always",
+				"enablePullDownRefresh": true
 				// "navigationBarTitleText": "聊天",
 				// "navigationBarTextStyle": "black",
 				// "navigationBarBackgroundColor": "#fafafa",
@@ -262,6 +264,7 @@ module.exports=()=>({
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light",
 				"app-plus": {
 					"scrollIndicator": "none",
@@ -292,6 +295,34 @@ module.exports=()=>({
 			"path": "pages/tabbar/me/update/nickname",
 			"style": {
 				"navigationBarTitleText": "修改昵称",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle":"light",
+				"app-plus": {
+					"scrollIndicator": "none",
+					"bounce": "none",
+					"titleNView": {
+						"buttons": [
+							{
+								"background": "red",
+								"margin":"20px",
+								"text": "保存",
+								"fontSize": "16px",
+								"float": "right"
+							}
+						]
+					}
+				}
+			},
+			meta:{
+				needLogin:true
+			}
+		},
+		{
+			"path": "pages/tabbar/me/update/realname",
+			"style": {
+				"navigationBarTitleText": "实名认证",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,

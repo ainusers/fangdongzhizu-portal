@@ -1,15 +1,9 @@
 <template>
 	<view class="container" :class="{'active':active}">
 		<u-cell-group>
-				<u-cell-item icon="https://cdn.uviewui.com/uview/example/button.png" icon-size="100" :icon-style="iconStype" title="个人设置" label='消息信息' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  value="星期一" @click="goInfo" ></u-cell-item>
-				<u-cell-item icon="https://cdn.uviewui.com/uview/example/button.png" icon-size="100" :icon-style="iconStype" title="个人设置" label='消息信息' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  value="星期一" @click="goInfo" ></u-cell-item>
-				<u-cell-item icon="https://cdn.uviewui.com/uview/example/button.png" icon-size="100" :icon-style="iconStype" title="个人设置" label='消息信息' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  value="星期一" @click="goInfo" ></u-cell-item>
-				<u-cell-item icon="https://cdn.uviewui.com/uview/example/button.png" icon-size="100" :icon-style="iconStype" title="个人设置" label='消息信息' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  value="星期一" @click="goInfo" ></u-cell-item>
-				<u-cell-item icon="https://cdn.uviewui.com/uview/example/button.png" icon-size="100" :icon-style="iconStype" title="个人设置" label='消息信息' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  value="星期一" @click="goInfo" ></u-cell-item>
-				<u-cell-item icon="https://cdn.uviewui.com/uview/example/button.png" icon-size="100" :icon-style="iconStype" title="个人设置" label='消息信息' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  value="星期一" @click="goInfo" ></u-cell-item>
-				<u-cell-item icon="https://cdn.uviewui.com/uview/example/button.png" icon-size="100" :icon-style="iconStype" title="个人设置" label='消息信息' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  value="星期一" @click="goInfo" ></u-cell-item>
-				<u-cell-item icon="https://cdn.uviewui.com/uview/example/button.png" icon-size="100" :icon-style="iconStype" title="个人设置" label='消息信息' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  value="星期一" @click="goInfo" ></u-cell-item>
-				<u-cell-item icon="https://cdn.uviewui.com/uview/example/button.png" icon-size="100" :icon-style="iconStype" title="个人设置" label='消息信息' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  value="星期一" @click="goInfo" ></u-cell-item>
+			<block v-for="(item,index) in InfoList" :key="index">
+				<u-cell-item :icon="item.data[0].otherAvatar" icon-size="100" :icon-style="iconStype" :title="item.data[0].from" :label='item.data[0].msg' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  value="星期一" @click="goInfo" v-if="item.data[0]"></u-cell-item>
+			</block>
 		</u-cell-group>
 	</view>
 </template>
@@ -31,10 +25,20 @@
 				lableStyle:{
 					"color":"#333",
 					"font-weight":"normal"
-				}
+				},
+				InfoList:[]
 			};
 		},
-		onLoad() {},
+		onLoad() {
+			var that=this
+			uni.getStorage({
+				key:'chatList',
+				success(res){
+					that.InfoList=JSON.parse(res.data)
+				}
+			})
+			console.log(this.InfoList[0].data[0].msg)
+		},
 		onShow() {
 			// setTimeout(() => {
 			this.active = true;

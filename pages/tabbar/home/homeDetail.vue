@@ -375,7 +375,10 @@
 		initzulinData(){
 			let roommate=this.detailData.roommate
 			roommate.forEach((item,index)=>{
-				let otherInfo=item.tenatStr.split('-')
+				let otherInfo=''
+				if(item.tenatStr){
+					otherInfo=item.tenatStr.split('-')
+				}				
 				let money=''
 				let sex=''
 				if(otherInfo[1] instanceof Number){
@@ -423,10 +426,9 @@
 				this.statistics(params)
 				break;
 				case 3:
-				console.log('跳转页面')
 				params['chat']=1
 				uni.navigateTo({
-					url:'/pages/tabbar/community/tools/news'
+					url:'/pages/tabbar/community/tools/news?houseId='+this.detailData.id+'&userId='+this.detailData.userId
 				})
 				break;
 			}

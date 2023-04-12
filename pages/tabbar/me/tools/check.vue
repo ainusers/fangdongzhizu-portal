@@ -311,6 +311,7 @@
 						<view class="content">
 							<!-- 租房列表 -->
 							<div v-if="houseList.length>0">
+							<!-- {{houseList}} -->
 								<block v-for="(item, index) in houseList" :key="index">
 									<house-list-item :item="item"></house-list-item>
 								</block>
@@ -353,62 +354,7 @@ export default {
 	},
 	data() {
 		return {
-			houseList: [
-				// {
-				// 			"houseImg":"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271",
-				// 			"community":"松兰铺",
-				// 			"whoCommunity":"圣龙家园",
-				// 			"orientation":"朝南",
-				// 			"bedroom":"主卧",
-				// 			"mode":"整租",
-				// 			"layout":"四室一厅一厨一卫",
-				// 			"heating":"集中供暖",
-				// 			"elevator":"无电梯",
-				// 			"size":"23m²",
-				// 			"floor":"2/3层",
-				// 			"way":"季付",
-				// 			"datetime":"2022-09-22 21:54",
-				// 			"position":"距离昌平线沙河地铁站1020米",
-				// 			"price":"2300",
-				// 			"region":"昌平",
-				// 			"subway":"沙河"},
-				// 		{
-				// 			"houseImg":"https://img1.baidu.com/it/u=3942334258,820952260&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=344",
-				// 			"community":"兰亭新苑",
-				// 			"whoCommunity":"三区",
-				// 			"orientation":"朝南",
-				// 			"bedroom":"次臥",
-				// 			"mode":"合租",
-				// 			"layout":"三室一厅一厨一卫",
-				// 			"heating":"自供暖",
-				// 			"elevator":"有电梯",
-				// 			"size":"16m²",
-				// 			"floor":"16/27层",
-				// 			"way":"月付",
-				// 			"datetime":"2022-09-22 21:54",
-				// 			"position":"距离10号线劲松地铁站950米",
-				// 			"price":"1800",
-				// 			"region":"朝阳",
-				// 			"subway":"酒仙桥"},
-				// 		{
-				// 			"houseImg":"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271",
-				// 			"community":"松兰铺",
-				// 			"whoCommunity":"圣龙家园",
-				// 			"orientation":"朝南",
-				// 			"bedroom":"主卧",
-				// 			"mode":"整租",
-				// 			"layout":"一室一厅一厨一卫",
-				// 			"heating":"自供暖",
-				// 			"size":"23m²",
-				// 			"floor":"2/3层",
-				// 			"elevator":"无电梯",
-				// 			"way":"年付",
-				// 			"datetime":"2022-09-22 21:54",
-				// 			"position":"距离昌平线沙河地铁站1020米",
-				// 			"price":"2300",
-				// 			"region":"昌平",
-				// 			"subway":"沙河"}
-						],
+			houseList: [],
 			cityName: "北京",
 			current: 0,
 			tabList: [
@@ -560,7 +506,9 @@ export default {
 					unit: "元",
 					defaultText: "租金"
 				}
-			}
+			},
+			pageNum:1,//当前请求页码
+			loadStatus:'loadmore'
 		};
 	},
 	props: {
@@ -594,10 +542,15 @@ export default {
 		}
 	},
 	onLoad(options) {
-		console.log(options)
 		that=this
 		this.current=options.index
-		this.getCollect()
+	},
+	onReachBottom(){
+		if(this.loadStatus=='loadmore'){
+			this.pageNum++
+			this.getstatusHouseList(this.current)
+		}
+		
 	},
 	methods: {
 		//获取收藏的房源
@@ -613,6 +566,7 @@ export default {
 					userId:that.$store.state.userInfo.id
 				},
 				success(res){
+					console.log(res)
 					if(res.data.status){
 						that.houseList=res.data.data
 					}else{
@@ -637,13 +591,10 @@ export default {
 			this.current = index;
 		},
 		//获取不同状态的数据
-		getstatusHouseList(type){
-			let page='1'
+		getstatusHouseList(type){			
 			let params={
-				"publish_type": 1, //(1：转租，2：直租，3：换租),
-				"page":page,
+				"page":this.pageNum,
 				"size":"10",
-				"city":that.$store.state.currentCity,
 				"status":type, //(1:待审核,2:已发布,3:已下架)
 				"user_id": that.$store.state.userInfo.id
 			}
@@ -658,9 +609,12 @@ export default {
 				},
 				success:(res)=>{
 					console.log(res)
-					if(res.data&&res.data.status){
+					console.log(res.data.data)
+					if(res.data&&res.data.status&&res.data.data.length>0){
+						console.log('12')
 						this.houseList=res.data.data
-					}else if(res.data.length==0){
+					}else if(res.data.data.length==0){
+						console.log('123')
 						this.houseList=[]
 					}else{
 						uni.showToast({

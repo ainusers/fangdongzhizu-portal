@@ -6,7 +6,7 @@
 		<view class="content" @touchstart="hideDrawer">
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory" upper-threshold="50">
 				<!-- 加载历史数据的滚动动画 -->
-				<view class="loading">
+				<view class="loading" v-if="!isHistoryLoading">
 					<view class="spinner">
 						<view class="rect1"></view>
 						<view class="rect2"></view>
@@ -48,14 +48,14 @@
 							</view>
 							<!-- 右-头像 -->
 							<view class="right">
-								<image :src="row.face"></image>
+								<image :src="myAvatar"></image>
 							</view>
 						</view>
 						<!-- 2. 别人发出的消息 -->
 						<view class="other" v-else>
 							<!-- 左-头像 -->
 							<view class="left">
-								<image :src="row.face"></image>
+								<image :src="otherAvatar"></image>
 							</view>
 							<!-- 右-用户名称-时间-消息 -->
 							<view class="right">
@@ -197,12 +197,25 @@
 					money:null
 				},
 				currentName:'',//当前登录人的name
+				currentChatList:[],//当前人的聊天记录
+				chatList:[],//所有聊天记录的数据
+				houseId:'',//当前房源id
+				isChat:false,//有没有曾经聊天过
+				isChatStatus:false,//当前聊天连接的状态
+				otherAvatar:'',//房主的头像
+				myAvatar:'',//自己的头像
 			};
 		},
 		onLoad(option) {
+			this.currentChatList=[]
+			console.log(option)
+			this.houseId=option.houseId
 			this.currentName=this.$store.state.userInfo.username
+			this.myAvatar=this.$store.state.userInfo.avatar
 			console.log(this.currentName)
-			this.getMsgList();
+			this.getHead(option.userId)
+			//处理聊天记录
+			this.chatSaveLocal()
 			// 语音自然播放结束
 			this.AUDIO.onEnded((res)=>{
 				this.playMsgid=null;
@@ -217,7 +230,7 @@
 				this.recordEnd(e);
 			})
 			// #endif
-			// 进入页面就创建万人群链接
+			// 进入页面聊天链接
 			this.initSocket();
 		},
 		onShow(){
@@ -237,12 +250,55 @@
 			});
 		},
 		methods:{
+			//保存聊天记录到本地
+			chatSaveLocal(){
+				uni.getStorage({
+					key:'chatList',
+					success:(res)=>{
+						console.log(res)
+						if(res.data){
+							this.chatList=res.data?JSON.parse(res.data):[]
+						}
+					}
+				})
+				this.chatList.forEach(item=>{
+					if(item.houseId==this.houseId){
+						this.currentChatList=item.data
+						this.isChat=true
+						console.log(this.currentChatList)
+					}
+				})
+				//从来没有聊天过，
+				if(!this.isChat){
+					this.chatList.push({houseId:this.houseId,data:[]})
+				}
+				if(this.currentChatList.length<20){
+					this.isHistoryLoading=true
+				}
+				this.getMsgList(this.currentChatList)
+				uni.setStorage({
+					key:'chatList',
+					data:JSON.stringify(this.chatList)
+				})
+			},
+			getHead(userId){
+				let data={
+					userId:userId
+				}
+				this.$H.get('v1/user/id',data,true).then(res=>{
+					console.log(res)
+					if(res.id){
+						this.otherAvatar=res.avatar
+					}	
+				})
+			},
 			// 创建websocket连接方法
 			initSocket() {
 				// 创建socketInstance对象实例，进行所有操作
 				this.socketInstance = uni.connectSocket({
 					// 确保你的服务器是运行态
 					url: "ws://81.70.163.240:17180/websocket",
+					
 					success(data) {
 						// console.log("websocket连接状态：" + JSON.stringify(data.errMsg));
 					}
@@ -258,8 +314,24 @@
 				this.socketInstance.onMessage((res) => {
 					console.log("收到服务器内容：" + res.data);
 					let data = eval("(" + res.data + ")");
-
-										console.log(data)
+					data.avatar=this.$store.state.userInfo.avatar
+					data.otherAvatar=this.otherAvatar
+					if(data.id){
+						this.chatList.forEach(item=>{
+							if(item.houseId==this.houseId){
+								item.data.unshift(data)
+								let date=new Date(item.datetime)
+								console.log(date)
+								let y=date.getFullYear()
+								console.log(y)
+							}
+						})
+						uni.setStorage({
+							key:'chatList',
+							data:JSON.stringify(this.chatList)
+						})
+					}
+					
 					switch (data.type) {
 						case 'system':
 							this.addSystemTextMsg(data);
@@ -275,10 +347,10 @@
 							break;
 					}
 					// 非自己的消息震动
-					// if(data.from != 'zhangjun8' || data.from != 'zhangjun4' || data.from != 'zhangjun7' || data.from != 'zhangjun3' || data.from != 'zhangjun5' || data.from != 'zhangjun6'){
-					// 	console.log('振动');
-					// 	uni.vibrateLong();
-					// }
+					if(data.id!=this.$store.state.userInfo.id){
+						console.log('振动');
+						uni.vibrateLong();
+					}
 					// 滚动到底
 					this.$nextTick(function() {
 						this.scrollToView = 'msg' + data.id
@@ -286,6 +358,7 @@
 				});
 				// 监听socket关闭链接
 				this.socketInstance.onClose(() => {
+					this.isChatStatus=false
 					console.log("已经被关闭了")
 				})
 			},
@@ -304,6 +377,7 @@
 			// 点击发送数据按钮
 			sendGenernalMsg() {
 				if (this.socket_status) {
+					// target   变成房源id
 					this.socketInstance.send({
 						data: "{'type':'text','msg':'" + this.textMsg + "','target':'all'}",
 						async success() {
@@ -314,11 +388,13 @@
 			},
 			// 发送认证消息
 			authSocket() {
+				let that=this
 				if (this.socket_status) {
 					let that=this
 					this.socketInstance.send({
 						data: "{'type':'signal','from':"+that.$store.state.userInfo.username+"}",
 						async success() {
+							that.isChatStatus=true
 							console.log("认证消息发送成功");
 						},
 					});
@@ -326,6 +402,7 @@
 			},
 			// 触发滑动到顶部 (加载历史信息记录)
 			loadHistory(e){
+				console.log('chufa')
 				if(this.isHistoryLoading){
 					return;
 				}
@@ -336,14 +413,14 @@
 					// 消息列表
 				let list = [
 					{"auth":true,"datetime":"1657357976767","from":"zhangjun8","id":826627537346224360,"msg":"大家聊的挺好呀","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-					{"auth":true,"datetime":"1654355976768","from":"zhangjun9","id":826623537546224361,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
-					{"auth":true,"datetime":"1654355976768","from":"zhangjun9","id":826623537546224361,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
+					{"auth":true,"datetime":"1654355976768","from":"zhangjun8","id":826627537346224360,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+					{"auth":true,"datetime":"1654355976768","from":"zhangjun8","id":826627537346224360,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
 					{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
 					{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
 					{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-					{"auth":true,"datetime":"1657355976770","from":"zhangjun9","id":826623537546224361,"msg":"天津","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
-					{"auth":true,"datetime":"1657355976770","from":"zhangjun9","id":826623537546224361,"msg":"河北","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
-					{"auth":true,"datetime":"1657355976770","from":"zhangjun9","id":826623537546224361,"msg":"西安","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
+					{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"天津","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+					{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"河北","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
+					{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"西安","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
 					{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"河南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
 					{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"海南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"}
 				]
@@ -368,21 +445,9 @@
 				},1000)
 			},
 			// 加载初始页面消息
-			getMsgList(){
+			getMsgList(list){
 				// 消息列表
-			let list = [
-				{"auth":true,"datetime":"1657357976767","from":"zhangjun8","id":826627537346224360,"msg":"大家聊的挺好呀","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-				{"auth":true,"datetime":"1654355976768","from":"zhangjun9","id":826623537546224361,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
-				{"auth":true,"datetime":"1654355976768","from":"zhangjun9","id":826623537546224361,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
-				{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-				{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-				{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-				{"auth":true,"datetime":"1657355976770","from":"zhangjun9","id":826623537546224361,"msg":"天津","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
-				{"auth":true,"datetime":"1657355976770","from":"zhangjun9","id":826623537546224361,"msg":"河北","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
-				{"auth":true,"datetime":"1657355976770","from":"zhangjun9","id":826623537546224361,"msg":"西安","status":"true","target":"all","type":"text",face:"/static/chat/head/face_7.jpg"},
-				{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"河南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-				{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"海南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"}
-			]
+			console.log(list)
 				// 获取消息中的图片,并处理显示尺寸
 				for(let i=0;i<list.length;i++){
 					if(list[i].type=='user' && list[i].type=="img"){
@@ -390,7 +455,7 @@
 						this.msgImgList.push(list[i].msg.content.url);
 					}
 				}
-				this.msgList = list;
+				this.msgList = list.reverse();
 				// 滚动到底部
 				this.$nextTick(function() {
 					//进入页面滚动到底部
@@ -499,14 +564,21 @@
 			},
 			// 发送文字消息
 			sendText(){
-				this.hideDrawer(); // 隐藏抽屉
-				if(!this.textMsg){
-					return;
+				if(this.isChatStatus){
+					console.log('发送')
+					this.hideDrawer(); // 隐藏抽屉
+					if(!this.textMsg){
+						return;
+					}
+					let content = this.replaceEmoji(this.textMsg);
+					let msg = {text:content}
+					this.sendMsg(msg,'text');
+					this.textMsg = ''; // 清空输入框
+				}else{
+					this.initSocket()
+					this.sendText()
 				}
-				let content = this.replaceEmoji(this.textMsg);
-				let msg = {text:content}
-				this.sendMsg(msg,'text');
-				this.textMsg = ''; // 清空输入框
+				
 			},
 			// 替换表情符号为图片
 			replaceEmoji(str){
@@ -537,8 +609,14 @@
 				if (this.socket_status) {
 					switch (type) {
 						case 'text':
+						let data={
+							'type': type,
+							'msg':this.textMsg,
+							'target':'all',
+							'face':this.$store.state.userInfo.avatar
+							}
 							this.socketInstance.send({
-								data: "{'type':'" + type + "','msg':'" + this.textMsg + "','target':'all'}",
+								data: JSON.stringify(data),
 								async success() {
 									console.log("普通消息发送成功");
 								},
@@ -567,6 +645,7 @@
 			},
 			// 添加文字消息到列表
 			addTextMsg(msg){
+				console.log(msg)
 				this.msgList.push(msg);
 			},
 			// 添加语音消息到列表

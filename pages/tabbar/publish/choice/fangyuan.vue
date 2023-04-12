@@ -1369,8 +1369,6 @@ import { attachUpload } from '../../../../utils/utils';
 			},
 			chooseImage: async function(type) {
 				this.chooseImageFn(type)
-				
-
 			},
 			chooseImageFn:async function(type){
 				let imageList=[]

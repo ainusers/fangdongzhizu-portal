@@ -1,5 +1,5 @@
 import config from './config.js';
-import store from './index.js';
+import store from '../../store/index.js';
 export default {
 	request(options = {}) {
 		return new Promise((resolve, reject) => {
@@ -7,26 +7,13 @@ export default {
 			if (url.indexOf("http://") == -1 && url.indexOf("https://") == -1) {
 				options.url = config.domain + url;
 			}
-			
-			if(store.state.userInfo){
-				options.header.token = store.state.userInfo.token;
-			}
 			options.complete = (response) => {
 				if (response.statusCode == 200) {
 					if (response.data.code == 410 || response.data.code == 420) {
-						// #ifdef MP-WEIXIN
 							uni.navigateTo({
-								url: "/pages/user/login"
+								url: '/pages/auth/login'
 							})
-						// #endif
-						
-						// #ifdef H5
-							uni.navigateTo({
-								url: "/pages/user/sms-login"
-							})
-						// #endif
 					}
-
 					if (response.data.code == 400) {
 						uni.showToast({
 							title: response.data.msg,
@@ -46,8 +33,13 @@ export default {
 		})
 	},
 
-	post(url, data = {}, header = {}) {
-
+	post(url, data = {},isToken, header = {}) {
+		if(isToken){
+			header={
+					'content-type': 'application/json',
+					'Authorization': 'Bearer ' + store.state.token
+			}
+		}
 		let options = {
 			url: url,
 			data: data,
@@ -58,7 +50,13 @@ export default {
 		return this.request(options);
 	},
 
-	get(url, data = {}, header = {}) {
+	get(url, data = {},isToken, header = {}) {
+		if(isToken){
+			header={
+					'content-type': 'application/json',
+					'Authorization': 'Bearer ' + store.state.token
+			}
+		}
 		let options = {
 			url: url,
 			data: data,

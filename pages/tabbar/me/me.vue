@@ -38,8 +38,8 @@
 	        position: relative;
 	        bottom: 40px;
 			margin: 0 auto;
-	        width: 190rpx;
-	        height: 150rpx;
+	        width: 140rpx;
+	        height: 140rpx;
 	        overflow: hidden;
 	        border-radius: 50%;
 	        border: 1px solid #eee;
@@ -57,8 +57,14 @@
 	        position: relative;
 	        .user-text {
 	          width: 100%;
-	          font-size: 1.4em;
+	          font-size: 30rpx;
 			  text-align: center;
+			  .sex_con{
+				  img{
+					  width:25rpx;
+					  height:33rpx
+				  }
+			  }
 			  .userNickName {
 				  padding-top: 10px;
 				  display: inline-block;
@@ -74,6 +80,7 @@
 			  width: 300px;
 	          margin: auto;
 			  padding-top: 5px;
+			  font-size: 28rpx;
 	        }
 	      }
 	      .right {
@@ -167,7 +174,7 @@
 	        <view class="left">
 	          <view class="user-text">
 	            <view class="userNickName">{{ this.userInfo.nickname }}</view>
-				<block v-if="this.userInfo.sex == 0">
+				<block v-if="this.userInfo.sex == 0" class="sex_con">
 					<image mode="aspectFit" src="../../../static/me/girl.svg"></image>
 				</block>
 				<block v-else>

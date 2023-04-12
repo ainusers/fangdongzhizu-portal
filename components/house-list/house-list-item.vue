@@ -228,6 +228,10 @@
 		name: 'house-list-item',
         computed:{},
         props: ["item","index"],
+		onLoad() {
+			console.log(this.item)
+		},
+		
         methods: {
         	homeDetail(item,index) {
 					console.log(index)
