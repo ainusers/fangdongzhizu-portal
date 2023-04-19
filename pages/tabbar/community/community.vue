@@ -116,20 +116,27 @@
 			this.getMomentPost();
 		},
 		onShow() {
-			
+			this.getMomentPost();
 		},
 		onPullDownRefresh() {
-			console.log('书信')
 			this.tuwen_default_page = 1;
-			this.tuwen_data = this.tuwen_data.reverse();
+			// this.tuwen_data = this.tuwen_data.reverse();
 			this.getMomentPost();
 			uni.stopPullDownRefresh();
 		},
 		onReachBottom() {
-			console.log('加载')
-			this.tuwen_default_page++;
-			this.getMomentPost();
-		    this.tuwen_data = this.tuwen_data.concat(this.tuwen_data.slice(1,2));
+			
+			if(this.load_status_tuwen!='nomore'){
+				this.tuwen_default_page++;
+				this.getMomentPost();
+				this.tuwen_data = this.tuwen_data.concat(this.tuwen_data.slice(1,2));
+			}else{
+				uni.showToast({
+					icon:'none',
+					title:"已加载完成"
+				})
+			}
+			
 		},
 		methods: {
 			// 跳转页面
@@ -143,45 +150,30 @@
 			getMomentPost() {
 				// 测试数据待修改
 				this.load_status_tuwen = 'loading';
-				// this.$H.get('post/list', {
-				// 	page: this.tuwen_default_page,
-				// 	type: 1
-				// })
-				let page=1
-				console.log('加载数据')
-				uni.request({
-					method: 'POST',
-					header: {
-						'content-type': 'application/json',
-						'Authorization': 'Bearer '+this.$store.state.token
-					},
-					url: 'http://81.70.163.240:11001/zf/v1/dynamic/list',
-					data:{
+
+				let data={
 						  "userId": this.$store.state.userInfo.id,
-						  "page":page ,
+						  "page":this.tuwen_default_page ,
 						  "size": "10"
-					},
-					success: (res) => {
-						console.log('res',res)
-						if(res.data.code==200){
-							this.tuwen_data = res.data.data;
-							console.log(this.tuwen_data)
-							// console.log("---------------> " + JSON.stringify(this.tuwen_data));
+					}
+				this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
+					if(res.status){
+						
+						if(this.tuwen_default_page==1){
+							this.tuwen_data = res.data
+						}else{
+							this.tuwen_data.concat(this.tuwen_data,res.data)
 						}
 						
-					},
-					fail: (e) => {
-						console.log("e: " + JSON.stringify(e));
+						if(res.data.length>10){
+							this.load_status_tuwen = 'loadmore';
+						}else{
+							this.load_status_tuwen = 'nomore';
+						}
+						console.log(res.data)
+						console.log(this.load_status_tuwen)
 					}
-				});
-				
-				// .then(res => {
-				// 	if (res.result.current_page === res.result.last_page || res.result.last_page === 0) {
-				// 		this.load_status_tuwen = 'nomore';
-				// 	} else {
-				// 		this.load_status_tuwen = 'loadmore';
-				// 	}
-				// });
+				})
 			}
 		}
 	}

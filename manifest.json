@@ -12,7 +12,9 @@
         "usingComponents" : true,
         "compilerVersion" : 3,
         /* 5+App特有相关 */
-        "modules" : {},
+        "modules" : {
+            "OAuth" : {}
+        },
         /* 模块配置 */
         "distribute" : {
             /* 应用发布信息 */
@@ -39,7 +41,8 @@
             "ios" : {},
             /* ios打包配置 */
             "sdkConfigs" : {
-                "geolocation" : {}
+                "geolocation" : {},
+                "oauth" : {}
             }
         }
     },
@@ -59,7 +62,7 @@
         "sdkConfigs" : {
             "maps" : {
                 "qqmap" : {
-                    "key" : "4L2BZ-KAGCU-MUOVV-BGFKX-B6SKT-RCFLE"
+                    "key" : "GGSBZ-TCJEX-DVR45-Z2CM2-2ZPO7-U5B6X"
                 }
             }
         }

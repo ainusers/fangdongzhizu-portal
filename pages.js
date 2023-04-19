@@ -18,7 +18,7 @@ module.exports=()=>({
 				// }
 			},
 			meta:{
-				needLogin:true
+				needLogin:false
 			}
 		},
 		{
@@ -68,7 +68,7 @@ module.exports=()=>({
 				// }
 			},
 			meta:{
-				needLogin:true
+				needLogin:false
 			}
 		},
 		{
@@ -85,7 +85,7 @@ module.exports=()=>({
 				// }
 			},
 			meta:{
-				needLogin:true
+				needLogin:false
 			}
 		},
 		{

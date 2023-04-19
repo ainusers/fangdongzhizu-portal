@@ -26,7 +26,7 @@
 				<image class="label_icon" src="/static/login/code.png" mode=""></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input placeholder-class="placeholder" :password="password" class="qui-input" type="number" v-model="code" value="" placeholder="请输入验证码" />
+					<input placeholder-class="placeholder"  class="qui-input" type="number" v-model="code" value="" placeholder="请输入验证码" maxlength="6"/>
 				</view>
 				<view>
 					<text style="opacity: 0.8;" class="fs28 ptb20 main-color yzm" @tap="sendCode">{{codeDuration ? codeDuration + 's' : '获取验证码' }}</text>
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+	var that='';
 	export default {
 		data() {
 			return {
@@ -66,6 +67,9 @@
 				code: '',
 				codeDuration: 0
 			}
+		},
+		onLoad(){
+			that=this
 		},
 		methods: {
 			sendCode() {
@@ -118,31 +122,23 @@
 					});
 					return;
 				}
-				this.$H.post('http://81.70.163.240:11001/zf/v1/user/reset',{
+				this.$H.post('v1/user/reset',{
 					username: this.phone,
 					code: this.code,
 					password: this.password
 				}).then(res => {
 					if (res.code === 200) {
+						this.$u.toast('修改成功');
+						setTimeout(function(){
+							uni.navigateTo({
+								url: '/pages/auth/login'
+							})
+						},2000)
+						
+					}else{
 						this.$u.toast(res.message);
 					}
 				});
-				// uni.request({
-				// 	method: 'post',
-				// 	header: {
-				// 		'content-type': 'application/json'
-				// 	},
-				// 	data: {
-				// 		username: this.phone,
-				// 		code: this.code,
-				// 		password: this.password,
-				// 		rememberMe: 'true'
-				// 	},
-				// 	url: 'http://81.70.163.240:11001/users/register',
-				//     success: (res) => {
-				//         console.log(res.data);
-				//     }
-				// });
 			},
 			goLogin() {
 				uni.navigateTo({

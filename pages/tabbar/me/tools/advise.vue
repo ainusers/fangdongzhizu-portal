@@ -1,25 +1,25 @@
 <template>
 	<form @submit="formSubmit">
 		<view class="flex-row">
-			<block v-for="(item, index) in list" :key="index">
-				<view class="flex-view-item" :style="{backgroundColor:item.color}">
-					<view class="model" @click.stop="checkTarget(index)" >
-						<image class="reasonImg" :src="item.src"></image>
-						<text :style="{color: item.wordColor}">{{item.word}}</text>
-					</view>
-				</view>
-			</block>
+			<u-radio-group v-model="value" @change="checkTarget">
+				<u-radio 
+							@change="checkTarget(index)" 
+							v-for="(item, index) in list" :key="index" 
+							:name="item.word"
+				>
+					{{item.word}}
+				</u-radio>
+			</u-radio-group>
 		</view>
 		<view class="middle">
-			<view class="record">我要反馈</view>
 			<textarea name="content" class="recordContent" maxlength="500" @input = "descInput($event)"
-				placeholder="您想说点什么?" />
+				placeholder="输入内容帮我们了解您的意见和建议" />
 			<span class="wordwrap">{{number}}/500</span>
 		</view>
 		<view class="bottom">
 			<view class="concact">
-				<text class="way">联系方式</text>
-				<text class="communication">　注：手机号/微信/QQ</text>
+				<text class="way">请留下真实联系方式(邮箱，QQ,微信,手机号)，方便我们答疑解惑</text>
+				<!-- <text class="communication">　注：手机号/微信/QQ</text> -->
 			</view>
 			<input name="contact" class="concactContent" placeholder="请留下任一联系方式" bindinput="userNameInput" />
 		</view>
@@ -33,6 +33,7 @@
 	export default {
 		data() {
 			return {
+				value:'',//建议反馈枚举
 				number: 0, // 已输入字数
 				contact: '', // 联系方式
 				content: '', // 反馈内容
@@ -118,21 +119,13 @@
 					let {word} = {...n};
 					return {word}.word;
 				});
-				uni.request({
-					method: 'post',
-					header: {
-						'content-type': 'application/json',
-						'Authorization': 'Bearer '+this.$store.state.token
-					},
-					data: {
-						type: words.toString(),
-						content: e.detail.value.content,
-						contact: e.detail.value.contact
-					},
-					url: 'http://81.70.163.240:11001/zf/v1/advise/advises',
-					success: (res) => {
-						console.log(res)
-						if(res.data.code == 200) {
+				let data={
+					type: words.toString(),
+					content: e.detail.value.content,
+					contact: e.detail.value.contact
+				}
+				this.$H.post('/zf/v1/advise/advises',data,true).then(res=>{
+					if(res.status){
 							uni.showToast({
 								title: '反馈建议已成功提交',
 								icon: 'none',
@@ -143,13 +136,9 @@
 								uni.navigateBack({
 								    delta: 1
 								});
-							},2000)
-						}
-					},
-					fail: (e) => {
-						console.log("e: " + JSON.stringify(e));
+							},2000)		
 					}
-				});
+				})
 			},
 			// // 监听输入内容
 			descInput(e) {
@@ -159,16 +148,21 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scope>
 	/* pages/record/record.wxss */
 	/* 反馈选项 */
 	.flex-row {
 		width: 100%;
-		height: 26vh;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-around;
 		flex-wrap: wrap;
+		padding:30upx;
+	}
+	/deep/.u-radio__label{
+		margin-bottom: 10upx;
+		font-size: 24upx;
+		color: #333;
 	}
 
 	.flex-view-item {
@@ -195,6 +189,7 @@
 	.middle {
 		height: 36vh;
 		width: 100%;
+		position: relative;
 	}
 
 	.record {
@@ -205,16 +200,18 @@
 	}
 
 	.recordContent {
-		background-color: #f8f9fd;
 		width: 97%;
 		height: 87%;
 		border-radius: 20rpx;
 		margin: 5px;
+		font-size:24upx;
+		padding:20upx;
+		background:#f6f8f9;
 	}
 
 	.wordwrap {
 		position: absolute;
-		top: 61vh;
+		bottom:50upx;
 		right: 10rpx;
 	}
 
@@ -225,7 +222,7 @@
 	}
 
 	.concact {
-		font-size: 16px;
+		font-size: 24upx;
 		font-weight: 500;
 		padding-bottom: 12rpx;
 		padding-left: 10rpx;
@@ -242,11 +239,22 @@
 		height: 90rpx;
 		background-color: #f8f9fd;
 		border-radius: 20rpx;
+		font-size:24upx;
+		padding:10upx;
+		padding-left: 20upx;
+		font-size:#f6f8f9;
 	}
 
 	/* 按钮 */
 	.commit {
-		background-color: #2f7af1 !important;
+		position: absolute;
+		bottom:0;
+		width:100%;
+		border-radius: 0;
+		background-color: #5199ff !important;
+		&::after{
+			border:none;
+		}
 	}
 
 	.commitContent {

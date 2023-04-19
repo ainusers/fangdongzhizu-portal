@@ -76,7 +76,8 @@
 		</block>
 		<!-- 判断是否加载数据 -->
 		<block v-if="list.length === 0 && loadStatus == 'nomore'">
-			<u-empty margin-top="100" text="我可是有底线的" mode="favor"></u-empty>
+			<!-- margin-top="100" -->
+			<u-empty  text="我可是有底线的" mode="favor"></u-empty>
 		</block>
 		<block v-if="loadStatus == 'loadmore'">
 			<view style="padding: 30rpx 0;">
@@ -156,18 +157,16 @@
 			addCollection(id, index) {
 				this.list[index].follow = true;
 				this.list[index].followCount++;
-				
-				// this.$H
-				// 	.post('post/addCollection', {
-				// 		id: id,
-				// 		uid: this.list[index].uid
-				// 	})
-				// 	.then(res => {
-				// 		if (res.code === 200) {
-				// 			this.list[index].is_collection = true;
-				// 			this.list[index].collection_count++;
-				// 		}
-				// 	});
+				let data={
+					dynamicId:this.$store.state.communityInfo.id,
+					love:1
+				}
+				this.$H.patch('/zf/v1/comment/love',data,true).then(res=>{
+					if(res.status){
+						this.list[index].is_collection = true;
+						this.list[index].collection_count++;
+					}
+				})
 			},
 			// 取消点赞
 			cancelCollection(id, index) {

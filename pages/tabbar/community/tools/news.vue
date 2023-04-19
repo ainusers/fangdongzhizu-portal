@@ -4,7 +4,8 @@
 <template>
 	<view class="news">
 		<view class="content" @touchstart="hideDrawer">
-			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory" upper-threshold="50">
+			<!-- @scrolltoupper="loadHistory"  获取历史记录的 -->
+			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView"  upper-threshold="50">
 				<!-- 加载历史数据的滚动动画 -->
 				<view class="loading" v-if="!isHistoryLoading">
 					<view class="spinner">
@@ -211,9 +212,10 @@
 			console.log(option)
 			this.houseId=option.houseId
 			this.currentName=this.$store.state.userInfo.username
-			this.myAvatar=this.$store.state.userInfo.avatar
-			console.log(this.currentName)
-			this.getHead(option.userId)
+			this.myAvatar=this.$store.state.userInfo.avatar 
+			if(option.userId){
+				this.getHead(option.userId)
+			}
 			//处理聊天记录
 			this.chatSaveLocal()
 			// 语音自然播放结束
@@ -269,7 +271,7 @@
 					}
 				})
 				//从来没有聊天过，
-				if(!this.isChat){
+				if(!this.isChat&&this.houseId){
 					this.chatList.push({houseId:this.houseId,data:[]})
 				}
 				if(this.currentChatList.length<20){
@@ -319,7 +321,7 @@
 					if(data.id){
 						this.chatList.forEach(item=>{
 							if(item.houseId==this.houseId){
-								item.data.unshift(data)
+								item.data.push(data)
 								let date=new Date(item.datetime)
 								console.log(date)
 								let y=date.getFullYear()
@@ -379,7 +381,7 @@
 				if (this.socket_status) {
 					// target   变成房源id
 					this.socketInstance.send({
-						data: "{'type':'text','msg':'" + this.textMsg + "','target':'all'}",
+						data: "{'type':'text','msg':'" + this.textMsg + "','target'"+this.houseId+"}",
 						async success() {
 							console.log("普通消息发送成功");
 						},
@@ -455,7 +457,7 @@
 						this.msgImgList.push(list[i].msg.content.url);
 					}
 				}
-				this.msgList = list.reverse();
+				this.msgList = list;
 				// 滚动到底部
 				this.$nextTick(function() {
 					//进入页面滚动到底部

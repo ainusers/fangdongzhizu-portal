@@ -24,14 +24,11 @@ const store = new Vuex.Store({
 			
 		},
 		token(state,token){
-			if(token){
 				state.token=token
 				uni.setStorage({
 					key:'token',
 					data:token
-				})
-			}
-			
+				})	
 		},
 		houseInfo(state,houseInfo){
 			if(houseInfo){

@@ -7,7 +7,7 @@
 </style>
 <template>
 	<view class="f_r_s pei_tao_she_shi" @click="click()" >
-		<map style="width: 100%; height: 200px;" :scale="12" :latitude="latitude" :longitude="longitude" :markers="markers"></map>
+		<map style="width: 100%; height: 284upx;" :scale="12" :latitude="latitude" :longitude="longitude" :markers="markers"></map>
 	</view>
 </template>
 <script>

@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-.comment_con{
+.comment_main{
 	padding-bottom: 200rpx;
 }
 .comment {
@@ -123,18 +123,25 @@
 		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen"></post-list>
 		
 		<!-- 评论区 -->
-					<block v-if="commentList.length > 0&&commentListShow" >
+		<view class="comment_main">
+			
+		
+					<block v-show="commentList.length > 0&&commentListShow" >
 						<!-- @tap.stop="onReply(res, index)" -->
+					
 							<view class="comment_con">
 								<view @longpress="delComment(res, index)"  class="comment" v-for="(res, index) in commentList" :key="res.id">
-									<view class="left"><image :src="res.avatar" mode="aspectFill"></image></view>
+									<view class="left">
+										<!-- <image :src="res.avatar" mode="aspectFill"></image> -->
+											<u-avatar class="avatar" :src="res.avatar" level-bg-color="#8072f3"></u-avatar>
+										</view>
 									<view class="right">
-										<view class="top">
+										<view class="top" @tap.stop="onReply(res, index)">
 											<view class="desc">
 												<view class="name">{{ res.username }}</view>
 												<view class="date">{{ res.create_time }}</view>
 											</view>
-											<view class="like" :class="{ highlight: res.love }">
+											<view class="like" :class="{ highlight: res.love }"  @click="clickLike">
 												<view class="num">{{ res.love }}</view>
 												<u-icon v-if="!res.isLike" name="thumb-up" :size="30" color="#9a9a9a" @click="getLike(index)"></u-icon>
 												<u-icon v-if="res.isLike" name="thumb-up-fill" :size="30" @click="getLike(index)"></u-icon>
@@ -142,7 +149,7 @@
 										</view>
 										<view class="content">{{ res.words }}</view>
 										<view class="reply-box">
-											<view v-if="AllReply">
+											<view v-if="res.AllReply">
 												<view class="item" @tap.stop="onReply(item, index)" v-for="(item, index) in res.replyList" :key="item.index">
 													<view class="left"><image :src="res.avatar" mode="aspectFill"></image></view>
 													<view class="right">
@@ -154,18 +161,20 @@
 													</view>
 												</view>
 											</view>
-											<view :class="[commentText?'all-reply':'']" @tap="toAllReply(index)" v-if="res.replyList != undefined">
-												 {{commentText}}
-												<u-icon class="more" name="arrow-right" :size="26"v-if="commentText"></u-icon>
+											<view :class="[res.commentText?'all-reply':'']" @tap="toAllReply(index)" v-show="res.replyList">
+												 {{res.commentText}}
+												<u-icon class="more" name="arrow-right" :size="26"v-if="res.commentText"></u-icon>
 											</view>
 										</view>
 									</view>
 								</view>
 							</view>
 						</block>
-						<block v-else>
+						<view v-show="commentList.length <= 0" >
+							{{commentList.length}}
 							<u-empty text="暂无评论" mode="message"></u-empty>
-						</block>
+						</view>
+		</view>
 		<!-- 评论输入框 -->
 		<view class="comment-tool">
 			<textarea :placeholder="placeholder" :focus="focus" fixed="true" cursor-spacing="10"
@@ -216,6 +225,7 @@ export default {
 		// 跳转到全部回复
 		toAllReply(index) {
 			this.AllReply=true
+			this.commentList[index].AllReply=true
 			if(Number(this.beforeIndex)!=Number(index)){
 				this.pageNum=1
 			}else{
@@ -230,6 +240,7 @@ export default {
 			this.placeholder = '回复' + e.username + '：';
 			this.beCommentUserId=e.comment_user_id
 			this.focus = true;
+			
 		},
 		// 添加评论
 		addComment() {
@@ -246,24 +257,16 @@ export default {
 				beCommentUserId:this.beCommentUserId,//被回复id也就别人id
 				dynamicId:this.$store.state.communityInfo.id,//动态id
 				avatar:this.$store.state.userInfo.avatar,
+				username:this.$store.state.userInfo.username
 			}
 			let that=this
-			uni.request({
-				url:'http://81.70.163.240:11001/zf/v1/comment/increase',
-				method:'POST',
-				header: {
-					'content-type': 'application/json',
-					'Authorization': 'Bearer ' + that.$store.state.token
-				},
-				data:addComment,
-				success:(res)=>{
-					if(res.data.status&&this.beCommentUserId){
-						//回复二级评论
-						this.commentList[this.beforeIndex].replyList.unshift(addComment)
-					}
-					if(res.data.status&&!this.beCommentUserId){
-						this.commentList.unshift(addComment);
-					}
+			this.$H.post('/zf/v1/comment/increase',addComment,true).then(res=>{
+				if(res.status&&this.beCommentUserId){
+					//回复二级评论
+					this.commentList[this.beforeIndex].replyList.unshift(addComment)
+				}
+				if(res.status&&!this.beCommentUserId){
+					this.commentList.unshift(addComment);
 				}
 			})
 			this.content = '';
@@ -303,65 +306,70 @@ export default {
 		//获取一级评论的
 		getOneList(){
 			let that=this
-			uni.request({
-				method:'GET',
-				url:'http://81.70.163.240:11001/zf/v1/comment/list',
-				header: {
-					'content-type': 'application/json',
-					'Authorization': 'Bearer ' + that.$store.state.token
-				},
-				data:{
-					dynamicId:this.$store.state.communityInfo.id,
-					pageNum:this.pageNumOne,
-					pageSize:10
-				},
-				success(res){
-					if(res.data.status){
-						let commentList=res.data.data
-						if(commentList.length<10){
-							this.loadStatus='state'
+			let data={
+				dynamicId:this.$store.state.communityInfo.id,
+				pageNum:this.pageNumOne,
+				pageSize:10
+			}
+			this.$H.post('/zf/v1/comment/list',data,true).then(res=>{
+						if(res.status){
+							let commentList=res.data
+							if(commentList.length<10){
+								this.loadStatus='state'
+							}
+							commentList.forEach((item,index)=>{
+								this.$set(item,'replyList',[])
+								// item.replyList=[]
+								item.AllReply=false
+								item.commentText='展开查看更多'
+								let time=new Date(item.create_time)
+								let y=time.getFullYear()
+								let m=time.getMonth()+1
+								let d=time.getDate()
+								let h=time.getHours()
+								let mm=time.getMinutes()
+								let s=time.getSeconds()
+								item.create_time=y+'-'+m+'-'+d +'  '+h+':'+mm+':'+s
+								that.commentList.push(item)
+								that.getTwoList(item.comment_user_id,index)
+							})
 						}
-						commentList.forEach((item,index)=>{
-							item.replyList=[]
-							let time=new Date(item.create_time)
-							let y=time.getFullYear()
-							let m=time.getMonth()+1
-							let d=time.getDate()
-							let h=time.getHours()
-							let mm=time.getMinutes()
-							let s=time.getSeconds()
-							item.create_time=y+'-'+m+'-'+d +'  '+h+':'+mm+':'+s
-							that.commentList.push(item)
-							
-						})
+			})
+
+		},
+		getTwoList(beCommentUserId,index){
+			let that=this
+			let data={
+				beCommentUserId:beCommentUserId,
+				pageNum:this.pageNum,
+			    pageSize:10
+			}
+			this.$H.post('/zf/v1/comment/second/list',data,true).then(res=>{
+				if(res.status){
+					// this.commentListShow=false
+					// setTimeout(()=>{
+					// 	this.commentListShow=true
+					// },100)
+					console.log(this.commentList)
+					if(this.commentList[index].AllReply&&res.data.length<10){
+						this.commentList[index].commentText=''
+					}
+					console.log(this.commentText)
+					if(this.pageNum>1){
+						this.commentList[index].replyList=[...this.commentList[index].replyList,...res.data]
+					}else{
+						this.commentList[index].replyList=res.data
 					}
 				}
 			})
 		},
-		getTwoList(beCommentUserId,index){
-			let that=this
-			uni.request({
-				method:'POST',
-				url:'http://81.70.163.240:11001/zf/v1/comment/second/list',
-				header:{
-					'content-type': 'application/json',
-					'Authorization': 'Bearer ' + that.$store.state.token
-				},
-				data:{
-					beCommentUserId:beCommentUserId,
-					pageNum:this.pageNum,
-					pageSize:10
-				},
-				success:(res)=>{
-					if(res.data.status&&res.data.data.length>0){
-						this.commentListShow=false
-						this.commentListShow=true
-						if(res.data.data.length<10){
-							this.commentText=''
-						}
-						this.commentList[index].replyList=[...this.commentList[index].replyList,...res.data.data]
-					}
-				}
+		clickLike(){
+			let data={
+				dynamicId:this.$store.state.communityInfo.id,
+				love:1
+			}
+			this.$H.patch('/zf/v1/comment/love',data,true).then(res=>{
+				console.log(res)
 			})
 		}
 	}

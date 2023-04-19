@@ -8,7 +8,7 @@
 	.pei_item{
 		width: 20%;
 		text-align: center;
-		margin-bottom: 20upx;
+		margin-bottom: 45upx;
 	}
 	.pei_icon{
 		width: 40upx;
@@ -17,7 +17,8 @@
 	}
 	.pei_title{
 		font-size: 24upx;
-		color: #8E94A1;
+		color: #999;
+		margin-bottom: 30upx;
 	}
 	.pei_text{
 		font-size: 24upx;

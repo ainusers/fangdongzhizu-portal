@@ -122,7 +122,7 @@
 			let data={
 					userId:this.$store.state.userInfo.id,
 					imageUrl:this.form.straightUrl[0],
-					// +','+this.form.reverseUrl
+					reverseImageUrl:this.form.reverseUrl[0]
 				}
 				
 			this.$H.post('v1/card/verifi',data,true).then(res=>{

@@ -286,10 +286,13 @@
 			},
 			// 退出登录
 			logout() {
+				
 				uni.removeStorage({
 					key: 'token',
 					success: function (res) {
 						console.log('success');
+						that.$store.commit('token','')
+						console.log(that.$store.state.token)
 					}
 				});
 				uni.removeStorage({
@@ -298,9 +301,11 @@
 						console.log('success');
 					}
 				});
-				uni.navigateTo({
-					url: '/pages/auth/login'
-				})
+				
+					uni.navigateTo({
+						url: '/pages/auth/login'
+					})
+				
 			}
         }
     }

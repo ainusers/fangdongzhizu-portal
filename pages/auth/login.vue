@@ -16,58 +16,18 @@
 				<text class="fs34 fw600 text-gray" :class="tabIndex==1&&'curtext'">手机登录</text>
 			</view>
 		</view>
-		<view class="form" v-if="tabIndex ==0">
-			<view class="flex a-center form-item">
-				<view class="label">
-					<text>账号</text>
-				</view>
-				<image class="label_icon" src="/static/login/user.png" mode=""></image>
-				<view class="label_fgs"></view>
-				<view class="flex-1">
-					<input placeholder-class="placeholder" class="qui-input" type="text" value="" v-model="username"
-						placeholder="请输入账号" />
-				</view>
-			</view>
-			<view class="flex a-center form-item">
-				<view class="label">
-					<text>密码</text>
-				</view>
-				<image class="label_icon" src="/static/login/pw.png" mode=""></image>
-				<view class="label_fgs"></view>
-				<view class="flex-1">
-					<input placeholder-class="placeholder" :password="password" class="qui-input" type="text" value=""
-						v-model="password" placeholder="请输入密码" />
-				</view>
-			</view>
+		<view class="form" v-show="tabIndex ==0">
+			<!-- //用户名 -->
+			<phoneTab type="user" ref="userName"></phoneTab>
+			<!-- //密码 -->
+			<pwdTab ref="passWord"/>
 		</view>
 
 		<view class="form" v-if="tabIndex ==1">
-			<view class="flex a-center form-item">
-				<view class="label">
-					<text>手机号</text>
-				</view>
-				<image class="label_icon" src="/static/login/phone.png" mode=""></image>
-				<view class="label_fgs"></view>
-				<view class="flex-1">
-					<input placeholder-class="placeholder" class="qui-input" type="number" value="" maxlength="11"
-						v-model="phone" placeholder="请输入手机号" />
-				</view>
-			</view>
-			<view class="flex a-center form-item">
-				<view class="label">
-					<text>验证码</text>
-				</view>
-				<image class="label_icon" src="/static/login/code.png" mode=""></image>
-				<view class="label_fgs"></view>
-				<view class="flex-1">
-					<input placeholder-class="placeholder" :password="password" class="qui-input" type="number" value=""
-						v-model="code" placeholder="请输入验证码" />
-				</view>
-				<view>
-					<view style="opacity: 0.8;" class="yzm fs28 ptb20 main-color" @click="sendCode">
-						{{codeDuration ? codeDuration + 's' : '获取验证码' }}</view>
-				</view>
-			</view>
+			<!-- 手机号 -->
+			<phoneTab type="phone" ref="phone"></phoneTab>
+			<!-- 验证码 -->
+			<yzmCode ref="yzmCode" />
 		</view>
 
 		<view class="btns">
@@ -96,6 +56,9 @@
 
 <script>
 	var that, timer;
+	import phoneTab from '../../components/common/form/phone_tab.vue'
+	import pwdTab from '../../components/common/form/pwd_tab.vue'
+	import yzmCode from'../../components/common/form/yzm_code.vue'
 	export default {
 		data() {
 			return {
@@ -108,6 +71,11 @@
 				codeDuration: 0
 			}
 		},
+		components:{
+			phoneTab,
+			pwdTab,
+			yzmCode
+		},
 		onLoad() {
 			that = this;
 		},
@@ -115,41 +83,14 @@
 			clearInterval(timer);
 		},
 		methods: {
-			sendCode() {
-				if (this.phone.length < 1) {
-					uni.showToast({
-						icon: 'none',
-						title: '请填写正确的手机号'
-					});
-					return;
-				}
-				if (this.codeDuration > 0) {
-					return;
-				}
-				this.codeDuration = 60;
-				// 倒计时
-				timer = setInterval(function() {
-					that.codeDuration--;
-					if (that.codeDuration == 0) {
-						clearInterval(timer);
-					}
-				}, 1000)
-				// 获取验证码
-				this.$H.get('http://sc.tujingzg.com/api/user/phoneReg', {
-					phone: this.phone
-				}).then(res => {
-					if (res.code === 200) {
-						this.$u.toast(res.msg);
-					}
-				});
-			},
 			bindLogin() {
-				console.log(this.tabIndex)
 				switch (this.tabIndex) {
 					case 0:
 						this.loginByUser()
+						this.username=this.$refs.userName.username
 						break;
 					case 1:
+						this.username=this.$refs.phone.username
 						this.loginByMsg()
 						break;
 					default:
@@ -157,104 +98,76 @@
 				}
 			},
 			loginByMsg() {
-				if (!/^1\d{10}$/.test(this.phone)) {
+				console.log(this.$refs.phone.username)
+				if (!/^1\d{10}$/.test(this.$refs.phone.username)) {
 					uni.showToast({
 						icon: 'none',
 						title: '请填写正确的手机号'
 					});
 					return;
 				}
-				if (this.code.length < 1) {
+				if (this.$refs.yzmCode.code.length < 1) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入验证码'
 					});
 					return;
 				}
-				uni.request({
-					method: 'post',
-					header: {
-						'content-type': 'application/json'
-					},
-					data: {
-						username: this.phone,
-						password: this.code
-					},
-					url: 'http://81.70.163.240:11001/users/login',
-					success: (res) => {
-						if (res.data.success) {
-							uni.switchTab({
-								url: '/pages/tabbar/home/home'
-							})
-						}
-					}
-				});
+				let data={
+					username: this.$refs.phone.username,
+					code: this.$refs.yzmCode.code
+				}
+				this.$H.post('/zf/v1/user/login',data,false).then(res=>{
+							if (res.status) {
+								this.$store.commit('token',res.data[0].token)
+								this.getUserInfo()
+								uni.switchTab({
+									url: '/pages/tabbar/home/home'
+								})
+							}
+				})
 			},
 			loginByUser() {
-				// uni.switchTab({
-				// 	url: '/pages/tabbar/home/home'
-				// })
-				if (!/^1\d{10}$/.test(this.username)) {
+				if (!/^1\d{10}$/.test(this.$refs.userName.username)) {
 					uni.showToast({
 						icon: 'none',
 						title: '请填写正确的手机号'
 					});
 					return;
 				}
-				if (this.password.length < 1) {
+				if (this.$refs.passWord.password.length < 1) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入密码'
 					});
 					return;
 				}
-				uni.request({
-					method: 'post',
-					header: {
-						'content-type': 'application/json'
-					},
-				    data: {
-				    	username: this.username,
-				    	password: this.password
-				    },
-					url: 'http://81.70.163.240:11001/zf/v1/user/login',
-				    success: (res) => {
-						console.log(res)
-						if(res.data.status) {
-							this.$store.commit('token',res.data.data[0].token)
-							this.getUserInfo()
-							uni.switchTab({
-								url: '/pages/tabbar/home/home'
-							})
-						}else{
-							uni.showToast({
-								icon: 'none',
-								title: res.data.message
-							});
-							return;
-						}
+				let data={
+				    	username: this.$refs.userName.username,
+				    	password: this.$refs.passWord.password
 				    }
+				this.$H.post('/zf/v1/user/login',data,false).then(res=>{
+							if(res.status) {
+								this.$store.commit('token',res.data[0].token)
+								this.getUserInfo()
+								uni.switchTab({
+									url: '/pages/tabbar/home/home'
+								})
+							}
 				})
 			},
 			getUserInfo() {
-						// 获取用户信息
-						uni.request({
-							method: 'get',
-							header: {
-								'content-type': 'application/json',
-								'Authorization': 'Bearer ' + that.$store.state.token
-							},
-							url: 'http://81.70.163.240:11001/zf/v1/user/attr/token',
-						    success: (res) => {
-								that.userInfo = res.data.data[0].user;
-								that.$store.commit('userInfo',that.userInfo)
-								uni.setStorage({
-									key:'userInfo',
-									data:that.userInfo
-								})
-								console.log(that.$store.state.userInfo)
-						    }
+				this.$H.get('/zf/v1/user/attr/token',{},true).then(res=>{
+					console.log(res)
+					if(res.status){
+						that.userInfo = res.data[0].user;
+						that.$store.commit('userInfo',that.userInfo)
+						uni.setStorage({
+							key:'userInfo',
+							data:that.userInfo
 						})
+					}
+				})
 			
 			},
 			useWX() {
@@ -325,6 +238,7 @@
 				})
 			},
 			goRegister() {
+				console.log('注册')
 				uni.navigateTo({
 					url: '/pages/auth/register'
 				})

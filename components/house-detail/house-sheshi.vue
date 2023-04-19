@@ -4,11 +4,16 @@
 		flex-wrap: wrap;
 		box-sizing: border-box;
 		margin-top: 20upx;
+		justify-content: space-between;
 	}
 	.pei_item{
-		width: 20%;
+		width: 19%;
 		text-align: center;
-		margin-bottom: 30upx;
+        margin-bottom: 30upx;
+		padding: 20upx;
+		border:1px solid #dcdcdc;
+		
+		border-radius: 10upx;
 	}
 	.pei_icon{
 		width: 50upx;

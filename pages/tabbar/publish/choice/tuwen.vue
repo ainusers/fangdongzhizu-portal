@@ -58,9 +58,10 @@
 		opacity: 0;
 	}
 	.uni-uploader__file {
-	    margin: 4px;
+	    margin: 4px 31upx;
 	    width: 100px;
 	    height: 100px;
+		margin-left: 0;
 	}
 	uni-image{
 		width: 100px;
@@ -110,6 +111,11 @@
 		width: 100%;
 		height: 100%;
 	}
+	.feedback-submit{
+		border-radius: 50upx;
+		background: #5199ff;
+		color:#fff;
+	}
 </style>
 <template>
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
@@ -120,10 +126,6 @@
 			<view class="uni-list list-pd">
 				<view class="uni-list-cell cell-pd">
 					<view class="uni-uploader">
-						<view class="uni-uploader-head">
-							<view class="uni-uploader-title"></view>
-							<view class="uni-uploader-info">{{imageList.length}}/9</view>
-						</view>
 						<view class="uni-uploader-body">
 							<view class="uni-uploader__files">
 								<block v-for="(image,index) in imageList" :key="index">
@@ -136,6 +138,10 @@
 									<view class="uni-uploader__input" @tap="chooseImage"></view>
 								</view>
 							</view>
+						</view>
+						<view class="uni-uploader-head">
+							<view class="uni-uploader-title"></view>
+							<view class="uni-uploader-info">{{imageList.length}}/9</view>
 						</view>
 					</view>
 				</view>
@@ -204,7 +210,7 @@
 				}
 				uni.showLoading({title:'发布中'});
 				// 获取位置信息
-				// let location = await this.getLocation();
+				let location = await this.getLocation();
 				// 获取上传图片地址
 				let images;
 				if(this.imageList.length == 0) {
@@ -212,49 +218,35 @@
 				} else {
 					images = await attachUpload(this.imageList);
 				}
-				console.log(image)
-				// console.log("---上传图片---->" + images)
-				// 上传动态信息
-				uni.request({
-					method: 'post',
-					header: {
-						'content-type': 'application/json',
-						'Authorization': 'Bearer '+that.$store.state.token
-					},
-					data: {
+				let data= {
 						'imgUrl': images.toString(),
-						'username': '俊哥',
-						'avatar': 'http://81.70.163.240:9090/asiatrip/62e20350efcef62d940556e420220726132059.jpg',
-						'userId': 1606522650501607424,
+						'username': this.$store.state.userInfo.username,
+						'avatar': this.$store.state.userInfo.avatar,
+						'userId': this.$store.state.userInfo.id,
 						'words': this.input_content,
-						// 'longitude': location.longitude, // 经度
-						// 'latitude': location.latitude, // 纬度
-						// 'country': location.address.country,
-						// 'province': location.address.province,
-						// 'city': location.address.city,
-						// 'address': location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName,
-						// 'type': location.type
-					},
-					url: 'http://81.70.163.240:11001/zf/v1/dynamic/dynamics',
-					success: (res) => {
-						uni.hideLoading();
-						uni.showToast({
-							icon:'success',
-							title:"发布成功"
-						})
-						// uni.navigateBack({//可根据实际情况使用其他路由方式
-						// 	delta:1
-						// });
-					},
-					fail: (e) => {
-						console.log("e: " + JSON.stringify(e));
-						uni.hideLoading();
-						uni.showToast({
-							icon:'none',
-							title:"发布失败,请检查网络"
-						})
+						'longitude': location.longitude, // 经度
+						'latitude': location.latitude, // 纬度
+						'country': location.address.country,
+						'province': location.address.province,
+						'city': location.address.city,
+						'address': location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName,
+						'type': location.type
 					}
-				});
+				// 上传动态信息
+				this.$H.post('/zf/v1/dynamic/dynamics',data,true).then(res=>{
+					if(res.status){
+								uni.hideLoading();
+								uni.showToast({
+									icon:'success',
+									title:"发布成功"
+								})
+								setTimeout(()=>{
+									uni.switchTab({
+										url: '/pages/tabbar/community/community'
+									})
+								},2000)
+					}
+				})
 			},
 			// 获取地理位置（h5中可能不支持）
 			getLocation(){

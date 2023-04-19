@@ -87,6 +87,7 @@ uni-swiper-item{
 		:regionRightMap="regionRightMap" 
 		:enterType="enterType"  
 		:erHousePriceList="erHousePriceList"
+		:key="updateSearch"
 		@regionLeftBtn="regionLeftBtn"
 		@regionRightBtn="regionRightBtn" 
 		@roomBtn="roomBtn"
@@ -134,11 +135,11 @@ uni-swiper-item{
 					</view>
 				</scroll-view>
 			</swiper-item>
-			<swiper-item>
+			<!-- <swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
 					<view v-if="current === 2">
 					<view class="content" v-if="houseList.length>0">
-						<!-- 租房列表 -->
+						
 					    <block v-for="(item, index) in houseList" :key="index">
 							<house-list-item :item="item" :index="index"></house-list-item>
 					    </block>
@@ -148,7 +149,7 @@ uni-swiper-item{
 					</view>
 					</view>
 				</scroll-view>
-			</swiper-item>
+			</swiper-item> -->
 		</swiper>
 	</view>
 </template>
@@ -182,8 +183,9 @@ export default {
 	},
 	data() {
 		return {
+			updateSearch:0,
 			houseList: [],
-			cityName: "北京市",
+			cityName: '',
 			current: 0,
 			tabList: [
 				{
@@ -338,6 +340,7 @@ export default {
 	},
 	onLoad() {
 		that=this
+		this.cityName=this.$store.state.currentCity
 		this.regionLeftList[0].text=this.cityName
 		this.getArea()
 		this.getHouseList()
@@ -353,8 +356,12 @@ export default {
 		// this.tuwen_default_page = 1;
 		// this.tuwen_data = this.tuwen_data.reverse();
 		// this.getMomentPost();
-		// uni.stopPullDownRefresh();
+		// 
 		console.log('刷新')
+		that.currPage=1
+		this.getHouseList()
+		this.houseList=[]
+		uni.stopPullDownRefresh();
 	},
 	methods: {	
 		scrolltolower(){
@@ -373,7 +380,7 @@ export default {
 							city:that.cityName,
 							user_id:that.$store.state.userInfo.id
 						}
-					this.$H.post('v1/room/list',data,true).then(res=>{
+					this.$H.post('/zf/v1/room/list',data,true).then(res=>{
 							if(res.status){
 								that.houseList=that.houseList.concat(res.data)
 								if(res.data.length<10){
@@ -386,8 +393,16 @@ export default {
 		},
 		// 获取选择城市返回的城市名称
 		getValue(cityNameLess){
-			console.log(cityNameLess)
-			this.cityName = cityNameLess;
+			this.cityName = cityNameLess+'市';
+			let regionLeftIndex=this.$refs.screenTab.regionLeftIndex
+			console.log(regionLeftIndex)
+			if(regionLeftIndex==0){
+				this.getArea()
+			}else if(regionLeftIndex==1){
+				this.getStation()
+			}
+			this.getHouseList()
+			this.currPage=1
 			this.$store.commit('currentCity',cityNameLess)
 		},
 		// 获得swiper切换后的current索引
@@ -589,7 +604,7 @@ export default {
 			let data={
 						city:this.cityName
 					}
-			this.$H.get('v1/const/area',data,true).then(res=>{
+			this.$H.get('/zf/v1/const/area',data,true).then(res=>{
 				if(res.status){
 					that.regionRightMap['region']=res.data
 				}
@@ -600,7 +615,7 @@ export default {
 			let data={
 					city:this.cityName
 				}
-			this.$H.get('v1/const/station',data,true).then(res=>{
+			this.$H.get('/zf/v1/const/station',data,true).then(res=>{
 				if(res.status){
 					that.regionRightMap['region']=res.data
 					console.log(res.data)

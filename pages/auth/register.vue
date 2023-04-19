@@ -31,7 +31,7 @@
 				<image class="label_icon" src="/static/login/code.png" mode=""></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input placeholder-class="placeholder" :password="password" class="qui-input" type="number" value="" maxlength="11" v-model="code" placeholder="请输入验证码" />
+					<input placeholder-class="placeholder"  class="qui-input" type="number" value="" maxlength="6" v-model="code" placeholder="请输入验证码" />
 				</view>
 				<view>
 					<text style="opacity: 0.8;" class="fs28 ptb20 main-color yzm"@tap="sendCode">{{codeDuration ? codeDuration + 's' : '获取验证码' }}</text>
@@ -63,14 +63,18 @@
 </template>
 
 <script>
+	var that=''
 	export default {
 		data() {
 			return {
 				phone: '',
-				code: '',
+				code: '', //验证码
 				password: '',
 				codeDuration: 0
 			}
+		},
+		onLoad(){
+			that=this
 		},
 		methods: {
 			sendCode() {
@@ -123,32 +127,22 @@
 					});
 					return;
 				}
-				this.$H.post('http://81.70.163.240:11001/zf/v1/user/register',{
+				this.$H.post('v1/user/register',{
 					username: this.phone,
 					code: this.code,
 					password: this.password,
 					rememberMe: 'true'
 				}).then(res => {
+					console.log(res)
 					if (res.code === 200) {
+						this.$u.toast(res.message);
+						uni.navigateTo({
+							url: '/pages/auth/login'
+						})
+					}else if(res.code!=200){
 						this.$u.toast(res.message);
 					}
 				});
-				// uni.request({
-				// 	method: 'post',
-				// 	header: {
-				// 		'content-type': 'application/json'
-				// 	},
-				// 	data: {
-				// 		username: this.phone,
-				// 		code: this.code,
-				// 		password: this.password,
-				// 		rememberMe: 'true'
-				// 	},
-				// 	url: 'http://81.70.163.240:11001/users/register',
-				//     success: (res) => {
-				//         console.log(res.data);
-				//     }
-				// });
 			},
 			goLogin() {
 				uni.navigateTo({

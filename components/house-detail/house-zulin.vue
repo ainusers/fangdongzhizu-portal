@@ -20,6 +20,7 @@
 		font-size: 24upx;
 		color: #101D36;
 		line-height: 34upx;
+		text-align: left;
 	}
 </style>
 <template>

@@ -7,11 +7,18 @@
 	box-shadow: 0 1px 0 2px rgba(0,0,0,0.05);
   }
   .model {
-	  border: 1px solid #F5F5F5
+	  border-bottom: 10upx solid #F5F5F5;
+	  padding:30upx;
   }
   .modelName{
-	  padding: 5px 5px 0px 5px;
-	  font-weight: bolder;
+	 font-size:28upx;
+	 font-weight:600;
+	 color:#101d36;
+	 padding-left: 26upx;
+	 box-sizing: border-box;
+	 border-left: 6rpx solid #5199ff;
+	 margin-top: 24upx;
+	 margin-bottom: 40upx;
   }
   .near_map_item {
     height: 25upx;
@@ -37,7 +44,7 @@
 	  display: flex;
 	  padding: 8px 0px 8px 0px;
 	  font-weight: bolder;
-	  font-size: 16px;
+	  font-size: 30upx;
 	  .community{
 		  padding-left: 8px
 	  }
@@ -53,65 +60,108 @@
   }
   .money{
 	  display: flex;
-	  font-weight: bolder;
-	  font-size: 16px;
-	  padding: 0px 0px 8px 0px;
+	  font-size: 24upx;
 	  justify-content: space-between;
 	  .pay{
 	  	  padding-left: 8px;
 		  display: flex;
+		  align-items: center;
 	  }
 	  .price{
 		  color: red;
-		  padding-left: 8px;
+		  .num{
+			  display: inline-block;
+			  font-size: 30upx;
+			  font-weight: bold;
+			  margin-right: 10upx;
+		  }
 	  }
 	  .way{
 	  	  padding-left: 8px;
 	  }
 	  .datetime{
 		  margin-right: 8px;
+		  color: #999999;
+		  font-size: 24upx;
 	  }
   }
   .detail{
 	  display: flex;
 	  justify-content: space-around;
 	  margin: 10px 8px 10px 8px;
-	  .size{
+	  .info_con{
 		  text-align: center;
-		  padding-top: 5px;
-
-	  }
-	  .heating{
-		  text-align: center;
-		  padding-top: 5px;
-	  }
-	  .elevator{
-		  text-align: center;
-		  padding-top: 5px;
-	  }
-	  .floor{
-		  text-align: center;
-	  }
+		  .value{
+			  font-size: 30upx;
+			  color: #333;
+			  margin-bottom: 28upx;
+		  }
+		  .key{
+			  font-size: 24upx;
+			  color:#999
+		  }
+	  } 
+  }
+  .icon_list{
+  		  .item{
+  			  display: inline-block;
+  			  color: #333;
+  			  background: #eee;
+  			  padding: 10upx 30upx;
+			  margin-right: 20upx;
+  		  }
   }
   .final{
 	  display: flex;
 	  justify-content: space-between;
 	  .report{
+		  display: flex;
 		  padding: 8px 0px 8px 10px;
 	  }
+	  .report_active,.collect_active{
+		  .target{
+			  color:#5199ff;
+		  }
+		  /deep/.uicon-heart{
+		  	color:#5199ff;
+		  }
+	  }
 	  .collect{
+		  display: flex;
 		  padding: 8px 0px 8px 10px;
 	  }
 	  .left{
 		  display: flex;
+		  align-items: center;
 	  }
 	  .contact{
 		  width: 60%;
 		  padding: 0px 4px 4px 0px;
+		  background: #5199ff;
+		   border-radius: 50upx;
+		  .u-btn--default{
+			  background: none;
+			  color:#fff;
+			 
+			  &:after{
+				  border:none;
+			  }
+		  }
 	  }
 	  .target{
-		  padding-top: 8px;
 		  font-size: 14px;
+		  margin-left: 10upx;
+	  }
+  }
+  .pei_tao_she_shi{
+	  padding:20upx;
+  }
+  .report_con{
+	  width:100%;
+	  padding: 35upx 60upx;
+	  /deep/.u-radio{
+		  width: 50%;
+		  margin-bottom: 30upx;
 	  }
   }
 </style>
@@ -126,39 +176,55 @@
 			 <view class="description">
 				<view class="position">
 					<view class="community">{{detailData.communityName}}</view>
-					<view class="bedroom"> - {{detailData.roomType}}</view>
+					<!-- <view class="bedroom"> - {{detailData.roomType}}</view> -->
 				</view>
 				<view class="money">
 					<view class="pay">
-						<view class="fix">月租金</view>
-						<view class="price">{{detailData.money}}</view>元/月
+						<view class="price"><view class="num">{{detailData.money}}</view>元/月</view>
 						<view class="way">({{detailData.payType}})</view>
 					</view>
 					<view class="datetime">{{detailData.updateTime.split('T')[0]}}</view>
 				</view>
 			 </view>
 			 <view class="detail">
-				<view class="chaoxiang">
-					<view  class="orientation">朝向 - {{detailData.orientation}}</view>
-					<view  class="size">{{detailData.size}}m²</view>
+				<view class="info_con">
+					<view  class="value"> {{detailData.orientation}}</view>
+					<view  class="key">朝向 </view>
 				</view>
-				<image style="width:5px;height: 40px;" src="/static/home/detail/vertical.png"></image>
-				<view class="pattern">
-					<view  class="layout">{{detailData.layout}}</view>
-					<view  class="heating">{{detailData.heatType}}</view>
+				<view class="info_con">
+					<view class="value">
+						{{detailData.size}}m²
+					</view>
+					<view class="key">
+						建筑面积
+					</view>
 				</view>
-				<image style="width:5px;height: 40px;" src="/static/home/detail/vertical.png"></image>
-				<view class="height">
-					<view  class="floor">{{detailData.floor}}</view>
-					<view  class="elevator">{{detailData.hasElevator}}</view>
+				
+				<view class="info_con">
+					<view  class="value">{{detailData.layout}}</view>
+					<view  class="key">  {{detailData.roomType}}</view>
 				</view>
+				
+				<view class="info_con">
+					<view  class="value">{{detailData.floor}}</view>
+					<view  class="key">楼层</view>
+				</view>
+			 </view>
+			 <view class="icon_list">
+				 <view class="item">
+					 <!-- 有无电梯 -->
+					 {{detailData.hasElevator}} 
+				 </view>
+				 <view class="item">
+				 	<!-- 集中供暖-->
+				 	{{detailData.heatType}} 
+				 </view>
 			 </view>
 		   </block>
 		</view>
-		
 		<!-- 详情页 - 租赁信息 -->
-		<view class="model">
-		  <block v-if="zulinData.length > 0">
+		<view class="model" v-if="zulinData.length > 0">
+		  <block>
 			 <view class="modelName">租赁信息</view>
 			 <zu-lin-xin-xi :list="zulinData"></zu-lin-xin-xi>
 		   </block>
@@ -187,18 +253,35 @@
 			 <pei-tao-she-shi :list="sheshiData"></pei-tao-she-shi>
 		   </block>
 		</view>
-		
+		<!-- //举报模态框 -->
+		<u-modal v-model="reportShow" title="请选择举报类型" :show-cancel-button="true" confirm-text="提交举报" cancel-text="再想想" @confirm="goReport">
+			<view class="report_con">
+				<u-radio-group v-model="reportValue" @change="radioGroupChange" width="50%">
+							<u-radio 
+								v-for="(item, index) in reportList" :key="index" 
+								:name="item.name"
+								:disabled="item.disabled"
+							>
+								{{item.name}}
+							</u-radio>
+				</u-radio-group>
+				<u-input v-model="otherReport" :type="type" :border="border" :height="height" :auto-height="autoHeight" v-show="isOtherR"/>
+			</view>
+		</u-modal>
+	
 		<!-- 详情页 - 立即沟通 -->
 		<view class="final">
 			<view class="left">
-				<view class="collect">
+				<view class="collect" @click="reportShow=true">
 					<u-icon name="bell" size="50"></u-icon>
+					<view class="target">举报</view>
 				</view>
-				<view class="target" @click="report(1)">举报</view>
-				<view class="report">
+				
+				<view class="report report_active" @click="report(2)">
 					<u-icon name="heart" size="50"></u-icon>
+					<view class="target" >收藏</view>
 				</view>
-				<view class="target" @click="report(2)">收藏</view>
+				
 			</view>
 			<view class="contact">
 				<u-button shape="square" @click="report(3)">立即沟通</u-button>
@@ -253,6 +336,40 @@
 	},
     data() {
       return {
+		reportShow:false,
+		reportList:[
+			{
+				name:'涉政有害'
+			},
+			{
+				name:'违规违法'
+			},
+			{
+				name:'垃圾广告'
+			},
+			{
+				name:'色情低俗'
+			},
+			{
+				name:'虚假房源'
+			},
+			{
+				name:'涉嫌抄袭'
+			},
+			{
+				name:'网络暴力'
+			},
+			{
+				name:'其它'
+			}
+		],
+		type:'textarea',
+		otherReport:'',
+		border: true,
+		reportValue:'',
+		height: 100,
+		autoHeight: true,
+		isOtherR:false,
         sourceTypeId: 2201, // 数据采集 - lh
         shareOption: {},
         haveVillageExpert: false,// 是否有小区专家
@@ -363,38 +480,40 @@
 		},
 		coseDataInit(){
 			this.feiyongData[0].value=this.detailData.payType//支付方式
-			this.feiyongData[1].value=this.detailData.money//租金
+			this.feiyongData[1].value=this.detailData.money+'元'//租金
 			this.feiyongData[2].value=this.detailData.mortgageMoney//押金
 			this.feiyongData[3].value=this.detailData.serviceMoney+'元'//服务费
 			this.feiyongData[4].value=this.detailData.proxyMoney+'元'//中介费
-			this.feiyongData[6].value=this.detailData.heatMoney+'元' //取暖费
-			this.feiyongData[7].value=this.detailData.wifiMoney+'元' //无线费用
-			this.feiyongData[8].value=this.detailData.manageMoney+'元' //物业费
-			this.feiyongData[9].value=this.detailData.waterElectricMoney+'元' //水电费
+			this.feiyongData[6].value=this.detailData.heatMoney //取暖费
+			this.feiyongData[7].value=this.detailData.wifiMoney //无线费用
+			this.feiyongData[8].value=this.detailData.manageMoney //物业费
+			this.feiyongData[9].value=this.detailData.waterElectricMoney //水电费
 		},
 		initzulinData(){
 			let roommate=this.detailData.roommate
 			roommate.forEach((item,index)=>{
 				let otherInfo=''
-				if(item.tenatStr){
-					otherInfo=item.tenatStr.split('-')
+				if(item.tenantStr){
+					otherInfo=item.tenantStr.split('-')
 				}				
 				let money=''
 				let sex=''
-				if(otherInfo[1] instanceof Number){
+				if(otherInfo[0].indexOf('未')!=-1){
 					money=otherInfo[1]
-				}else if(otherInfo[1] instanceof String){
+				}else if(otherInfo[0].indexOf('已')!=-1){
 					sex=otherInfo[1]
 				}
 				let obj={
 					house:item.name,
 					status:otherInfo[0],
-					sex:sex,
-					money:money,
+					sex:sex || '-',
+					money:money ||'-',
 					size:otherInfo[2]
 				}
 				this.zulinData.push(obj)
+				
 			})
+			console.log(this.zulinData)
 		},
 		showMap(){
 			let that=this
@@ -434,16 +553,10 @@
 			}
 		},
 		statistics(params){
-			uni.request({
-				method:'POST',
-				url:'http://81.70.163.240:11001/zf/v1/const/save/statistics',
-				data:params,
-				header: {
-					'content-type': 'application/json',
-					'Authorization': 'Bearer ' + that.$store.state.token
-				},
-				success(res){
-					console.log(res)
+			this.$H.post('/zf/v1/const/save/statistics',params,true).then(res=>{
+				if(res.status){
+					// 收藏成功
+					this.$u.toast('收藏成功')
 				}
 			})
 		},
@@ -460,6 +573,17 @@
 					}
 				})
 			}
+		},
+		radioGroupChange(e){
+			if(e=='其它'){
+				this.isOtherR=true
+			}else{
+				this.isOtherR=false
+			}
+		},
+		goReport(){
+			console.log('去举报')
+			this.report(1)
 		}
 	}
 }

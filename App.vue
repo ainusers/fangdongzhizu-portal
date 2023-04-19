@@ -4,15 +4,17 @@ export default {
 	onLaunch: function() {
 		console.log('App Launch');
 
-		setTimeout(() => {
-			uni.setTabBarBadge({
-				index: 1,
-				text: '31'
-			});
-			uni.showTabBarRedDot({
-				index: 3
-			});
-		}, 1000);
+		// setTimeout(() => {
+		// 显示消息多少
+		// 	uni.setTabBarBadge({
+		// 		index: 1,
+		// 		text: '31'
+		// 	});
+		//显示右上角的红点
+		// 	uni.showTabBarRedDot({
+		// 		index: 3
+		// 	});
+		// }, 1000);
 		initStorestate()
 	},
 	onShow: function() {

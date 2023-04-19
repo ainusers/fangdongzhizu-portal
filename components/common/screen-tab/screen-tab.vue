@@ -38,7 +38,9 @@
 							<scroll-view class="region_scroll_left" scroll-y>
 								<block v-for="(item, index) in regionLeftList" :key="index">
 									<view hover-class="none" form-type="submit" :class="{region_left_active: regionLeftIndex == index}"
-										@click="regionLeftBtn(item, index)" class="region_list_item">{{ item.text }}</view>
+										@click="regionLeftBtn(item, index)" class="region_list_item" v-if="index==0">{{ $store.state.currentCity}}</view>
+									<view hover-class="none" form-type="submit" :class="{region_left_active: regionLeftIndex == index}"
+										@click="regionLeftBtn(item, index)" class="region_list_item" v-if="index>0">{{ item.text }}</view>
 								</block>
 							</scroll-view>
 							<scroll-view class="region_scroll_right" scroll-y>
@@ -151,7 +153,6 @@
 				// 来源
 				sourceLsit: Const.sourceLsit,
 				sourceLsitIndex: -1,
-				
 				// 面积
 				areaLsit: Const.areaList,
 				areaLsitIndex: -1,

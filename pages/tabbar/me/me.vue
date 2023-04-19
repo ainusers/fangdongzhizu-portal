@@ -46,6 +46,11 @@
 			image {
 				display: initial;
 			}
+				
+			/deep/.avatar{
+				width: 140rpx;
+				height: 140rpx;
+			}
 	      }
 	    }
 	    .bottom {
@@ -153,9 +158,16 @@
 			.name {
 				color: #333;
 				line-height: 30upx;
+				margin-top: 20upx;
 			}
 		}
 	}
+	.renzheng_icon{
+		width:100upx;
+		height: 30upx;
+		position: relative;
+		bottom:70upx;
+		}
 </style>
 <template>
 	<!-- 个人信息区域 -->
@@ -167,8 +179,11 @@
 	    <view class="card" @click="goto('/pages/tabbar/me/user')">
 	      <view class="top">
 	        <view class="userImage">
-	          <image :src="this.userInfo.avatar" mode="aspectFit"></image>
+	          <!-- <image :src="this.userInfo.avatar" mode="aspectFit"></image> -->
+			  <u-avatar class="avatar" :src="this.userInfo.avatar" level-bg-color="#8072f3"></u-avatar>
+			
 			</view>
+			 <image mode="aspectFit" src="../../../static/me/renzheng.gif" class="renzheng_icon"></image>
 	      </view>
 	      <view class="bottom">
 	        <view class="left">
@@ -200,13 +215,13 @@
 	      </view>
 	      <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=1')">
 	      	<view class="icon">
-	      		<image src="../../../static/me/publish.svg" mode="aspectFit"></image>
+	      		<image src="../../../static/me/publish.gif" mode="aspectFit"></image>
 	      	</view>
 	      	<view class="name">已发布</view>
 	      </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=2')">
 		  	<view class="icon">
-		  		<image src="../../../static/me/xiajia.svg" mode="aspectFit"></image>
+		  		<image src="../../../static/me/xiajia.gif" mode="aspectFit"></image>
 		  	</view>
 		  	<view class="name">已下架</view>
 		  </view>
@@ -218,25 +233,25 @@
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=0')">
 		  	<view class="icon">
-		  		<image src="../../../static/me/quanzi.svg" mode="aspectFit"></image>
+		  		<image src="../../../static/me/quanzi.gif" mode="aspectFit"></image>
 		  	</view>
 		  	<view class="name">圈子</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=1')">
 		  	<view class="icon">
-		  		<image src="../../../static/me/hudong.svg" mode="aspectFit"></image>
+		  		<image src="../../../static/me/hudong.gif" mode="aspectFit"></image>
 		  	</view>
 		  	<view class="name">互动</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=2')">
 		  	<view class="icon">
-		  		<image src="../../../static/me/share.svg" mode="aspectFit"></image>
+		  		<image src="../../../static/me/share.gif" mode="aspectFit"></image>
 		  	</view>
 		  	<view class="name">转发</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=3')">
 		  	<view class="icon">
-		  		<image src="../../../static/me/look.svg" mode="aspectFit"></image>
+		  		<image src="../../../static/me/look.gif" mode="aspectFit"></image>
 		  	</view>
 		  	<view class="name">浏览</view>
 		  </view>
@@ -247,7 +262,7 @@
 	    <view class="card">
 	      <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/advise')">
 	        <view class="left flex-center">
-	          <image mode="aspectFit" src="../../../static/me/share.svg"></image>
+	          <image mode="aspectFit" src="../../../static/me/care.gif"></image>
 	        </view>
 	        <view class="center">
 	          <text>反馈建议</text>
