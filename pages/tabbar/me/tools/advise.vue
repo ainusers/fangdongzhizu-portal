@@ -1,7 +1,7 @@
 <template>
 	<form @submit="formSubmit">
 		<view class="flex-row">
-			<u-radio-group v-model="value" @change="checkTarget">
+			<u-radio-group v-model="value" >
 				<u-radio 
 							@change="checkTarget(index)" 
 							v-for="(item, index) in list" :key="index" 
@@ -88,6 +88,9 @@
 		onUnload() {},
 		methods: {
 			checkTarget(index) {
+				this.list.forEach(item=>{
+					item.check=false
+				})
 				// 判断当前是否之选中一个反馈建议
 				this.list[index].wordColor = this.list[index].wordColor == '#ffffff' ? '#a5acc0' : '#ffffff';
 				this.list[index].color = this.list[index].color == '#f8f9fd' ? '#5199ff' : '#f8f9fd';

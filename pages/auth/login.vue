@@ -78,6 +78,16 @@
 		},
 		onLoad() {
 			that = this;
+			uni.getStorage({
+				key:'token',
+				success(res) {
+					if(res.data){
+						uni.switchTab({
+							url: '/pages/tabbar/home/home'
+						})
+					}
+				}
+			})
 		},
 		onUnload() {
 			clearInterval(timer);
@@ -199,6 +209,7 @@
 				uni.login({
 					provider: 'weixin',
 					success(loginRes) {
+						console.log(loginRes.authResult)
 						uni.request({
 							method: 'post',
 							header: {
@@ -207,8 +218,14 @@
 							data: loginRes.authResult,
 							url: 'http://81.70.163.240:11001/users/wxlogin',
 							success(infoRes) {
+								console.log('登录成功回到')
 								// 查看需要保存的信息
 								console.log('返回信息：' + JSON.stringify(infoRes))
+								if(loginRes.authResult.openid){
+									uni.navigateTo({
+										url: '/pages/auth/binding'
+									})
+								}
 							}
 						})
 					}
@@ -223,7 +240,15 @@
 							provider: 'qq',
 							success: function(infoRes) {
 								// 查看需要保存的信息
-								console.log('用户信息为：' + JSON.stringify(infoRes));
+								console.log('用户信息为：' + JSON.stringify(infoRes))
+								let infoUser=JSON.stringify(infoRes)
+								console.log('userInfo',infoRes.userInfo)
+								if(infoRes.userInfo){
+									console.log('页面跳转')
+									uni.navigateTo({
+										url: '/pages/auth/binding'
+									})
+								}
 				 		}
 				 	});
 					}

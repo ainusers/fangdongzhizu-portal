@@ -205,11 +205,13 @@
 				isChatStatus:false,//当前聊天连接的状态
 				otherAvatar:'',//房主的头像
 				myAvatar:'',//自己的头像
+				socket_status:false,
 			};
 		},
 		onLoad(option) {
 			this.currentChatList=[]
-			console.log(option)
+			console.log('option',option)
+			this.houseId=''
 			this.houseId=option.houseId
 			this.currentName=this.$store.state.userInfo.username
 			this.myAvatar=this.$store.state.userInfo.avatar 
@@ -251,6 +253,16 @@
 				}
 			});
 		},
+		onHide(){
+			console.log('关闭连接1')
+			//关闭连接
+			this.closeSocket()
+		},
+		onUnload(){
+			console.log('关闭连接')
+			//关闭连接
+			this.closeSocket()
+		},
 		methods:{
 			//保存聊天记录到本地
 			chatSaveLocal(){
@@ -260,35 +272,41 @@
 						console.log(res)
 						if(res.data){
 							this.chatList=res.data?JSON.parse(res.data):[]
+								
+							if(this.chatList.length>0){
+								this.chatList.forEach(item=>{
+									if(item.houseId==this.houseId){
+										this.currentChatList=item.data
+										this.isChat=true
+									}
+								})
+							}
+							
+							//从来没有聊天过，
+							if(!this.isChat&&this.houseId){
+								console.log('push一条新的数据')
+								this.chatList.push({houseId:this.houseId,data:[]})
+								console.log('push的新的',JSON.stringify(this.chatList))
+							}
+							if(this.currentChatList.length<20){
+								this.isHistoryLoading=true
+							}
+							this.getMsgList(this.currentChatList)
+							uni.setStorage({
+								key:'chatList',
+								data:JSON.stringify(this.chatList)
+							})
 						}
 					}
 				})
-				this.chatList.forEach(item=>{
-					if(item.houseId==this.houseId){
-						this.currentChatList=item.data
-						this.isChat=true
-						console.log(this.currentChatList)
-					}
-				})
-				//从来没有聊天过，
-				if(!this.isChat&&this.houseId){
-					this.chatList.push({houseId:this.houseId,data:[]})
-				}
-				if(this.currentChatList.length<20){
-					this.isHistoryLoading=true
-				}
-				this.getMsgList(this.currentChatList)
-				uni.setStorage({
-					key:'chatList',
-					data:JSON.stringify(this.chatList)
-				})
+				
 			},
 			getHead(userId){
 				let data={
 					userId:userId
 				}
 				this.$H.get('v1/user/id',data,true).then(res=>{
-					console.log(res)
+					// console.log(res)
 					if(res.id){
 						this.otherAvatar=res.avatar
 					}	
@@ -307,7 +325,7 @@
 				});
 				// 打开socket链接
 				this.socketInstance.onOpen((res) => {
-					console.log("WebSocket连接正常打开中..." + JSON.stringify(res));
+					// console.log("WebSocket连接正常打开中..." + JSON.stringify(res));
 					this.socket_status = true;
 					// 发送认证消息
 					this.authSocket();
@@ -315,23 +333,31 @@
 				// 接受服务端消息
 				this.socketInstance.onMessage((res) => {
 					console.log("收到服务器内容：" + res.data);
+					console.log('当前房源id',this.houseId)
 					let data = eval("(" + res.data + ")");
 					data.avatar=this.$store.state.userInfo.avatar
 					data.otherAvatar=this.otherAvatar
+				
 					if(data.id){
+						
 						this.chatList.forEach(item=>{
+							console.log(item.houseId==this.houseId)
+							console.log(item.houseId,this.houseId)
 							if(item.houseId==this.houseId){
+								console.log('存储起来',data)
 								item.data.push(data)
 								let date=new Date(item.datetime)
 								console.log(date)
 								let y=date.getFullYear()
+								console.log(JSON.stringify(this.chatList)+'保存到本地')
+								uni.setStorage({
+									key:'chatList',
+									data:JSON.stringify(this.chatList)
+								})
 								console.log(y)
 							}
 						})
-						uni.setStorage({
-							key:'chatList',
-							data:JSON.stringify(this.chatList)
-						})
+						
 					}
 					
 					switch (data.type) {
@@ -349,7 +375,8 @@
 							break;
 					}
 					// 非自己的消息震动
-					if(data.id!=this.$store.state.userInfo.id){
+					// console.log(this.$store.state.userInfo.id)
+					if(data.id&&data.id!=this.$store.state.userInfo.id&&data.msg!='ping'&& data.type!='signal'){
 						console.log('振动');
 						uni.vibrateLong();
 					}
@@ -366,9 +393,10 @@
 			},
 			// 关闭socket
 			closeSocket() {
+				let that=this
 				this.socketInstance.close({
 					success(res) {
-						this.socket_status = false;
+						that.socket_status = false;
 						console.log("关闭通信服务成功", res)
 					},
 					fail(err) {

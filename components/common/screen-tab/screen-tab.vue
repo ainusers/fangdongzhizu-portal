@@ -12,19 +12,19 @@
 								class="screen_icon" :src="screenFormData.erHouse.region.show ? topIcon : downIcon"></image>
 						</view>
 						<view hover-class="none" form-type="submit" @click="screenBtn('price')" class="screen_item f_r_c">
-							<view :style="{color: screenFormData.erHouse.price.show || screenFormData.erHouse.price.text != priceApiDataMap[from].defaultText ? '#ff5a1f' : '#494949'}"
+							<view :style="{color: screenFormData.erHouse.price.show || screenFormData.erHouse.price.text != priceApiDataMap[from].defaultText ? '#5199ff' : '#494949'}"
 								class="screent_text f_c_c">{{ screenFormData.erHouse.price.text }}</view>
 							<image :class="{screen_icon_active: screenFormData.erHouse.price.show}"
 								class="screen_icon" :src="screenFormData.erHouse.price.show ? topIcon : downIcon"></image>
 						</view>
 						<view hover-class="none" form-type="submit" @click="screenBtn('room')" class="screen_item f_r_c">
-							<view :style="{color: screenFormData.erHouse.room.show || screenFormData.erHouse.room.text != '户型' ? '#ff5a1f' : '#494949'}"
+							<view :style="{color: screenFormData.erHouse.room.show || screenFormData.erHouse.room.text != '户型' ? '#5199ff' : '#494949'}"
 								class="screent_text f_c_c">{{ screenFormData.erHouse.room.text }}</view>
 							<image :class="{screen_icon_active: screenFormData.erHouse.room.show}"
 								class="screen_icon" :src="screenFormData.erHouse.room.show ? topIcon : downIcon"></image>
 						</view>
 						<view hover-class="none" form-type="submit" @click="screenBtn('more')" class="screen_item f_r_c">
-							<view :style="{color: screenFormData.erHouse.more.show || screenFormData.erHouse.more.text != '更多' ? '#ff5a1f' : '#494949'}"
+							<view :style="{color: screenFormData.erHouse.more.show || screenFormData.erHouse.more.text != '更多' ? '#5199ff' : '#494949'}"
 								class="screent_text f_c_c">{{ screenFormData.erHouse.more.text }}</view>
 							<image :class="{screen_icon_active: screenFormData.erHouse.more.show}"
 								class="screen_icon" :src="screenFormData.erHouse.more.show ? topIcon : downIcon"></image>
@@ -139,12 +139,12 @@
 				topIcon: "http://cdn.haofang.net/static/kdbweb/zdzfminiapp/zdzfPlatform/newUiStyle/down-active.png",
 				listTcShow:false,
 				fixedContHeight: "100%", // 弹窗的高度
-				fixedTcTop:  "128px",   // 筛选条件距离顶部高度43px
+				fixedTcTop:  "173upx",   // 筛选条件距离顶部高度43px
 				currentClickType:'',
 				contHeight: "50%",   // 筛选条件高度
 				regionLeftIndex: 0,
 				regionRightIndex: 0,
-				erHousePriceIndex: 0,
+				erHousePriceIndex: 99,
 				roomListIndex: 0,
 				// 价格输入
 				minPriceVal: "",
@@ -246,13 +246,15 @@
 			},
 			roomConfirm(item,index){
 				this.$emit('roomConfirm',item)
+			},
+			formSubmit(){
+				
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	
 	/* 弹窗 */
 	.screen_fixed_list{
 		position: fixed;
@@ -313,15 +315,15 @@
 	}
 	.screen_fixed_list .region_left_active{
 		background:#fff;
-		color:#ab7f2e;
+		color:#5199ff;
 	}
 	.price_scroll_list .screen_active{
-		color:#ab7f2e;
+		color:#5199ff;
 	}
 	.region_scroll_right .screen_active{
 		background: #F8F8F9;
-		border: none;
-		color:#ab7f2e;
+		// border: none;
+		color:#5199ff;
 	}
 	.region_new_cont .screen_active{
 		background: #ffd900;
@@ -458,7 +460,7 @@
 	line-height: 100upx;
 }
 .new_house_price_change_view>.new_price_tab_active{
-	color: #ab7f2e;
+	color: #5199ff;
 }
 
 
@@ -499,7 +501,7 @@
 .price_bottom_confirm{
 	width:200upx;
 	height:74upx;
-	background-image:linear-gradient(246deg, #ffd900 0%, #ff8400 100%), linear-gradient( #eeeff5, #eeeff5);
+	background-image:linear-gradient(246deg, #87d8f1 0%, #5199ff 100%), linear-gradient( #eeeff5, #eeeff5);
 	border-radius:37upx;
 	color:#ffffff;
 	font-size:28upx;

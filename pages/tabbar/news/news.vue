@@ -2,7 +2,7 @@
 	<view class="container" :class="{'active':active}">
 		<u-cell-group v-if="InfoList.length>0">
 			<block v-for="(item,index) in InfoList" :key="index">
-				<u-cell-item :icon="item.data[0].otherAvatar || '../../../../static/me/girl.png'" icon-size="100" :icon-style="iconStype" :title="item.data[0].from" :label='item.data[0].msg' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="timestampToTime(item.data[0].datetime)" @click="goInfo(item)" v-if="item.data[0]"></u-cell-item>
+				<u-cell-item :icon="item.data[0].otherAvatar || '../../../../static/me/girl.png'" icon-size="100" :icon-style="iconStype" :title="item.data[0].from" :label='item.data[item.data.length-1].msg' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="timestampToTime(item.data[0].datetime)" @click="goInfo(item)" v-if="item.data[0]"></u-cell-item>
 			</block>
 		</u-cell-group>
 		<view v-else class="noData">
@@ -35,7 +35,7 @@
 			};
 		},
 		onLoad() {
-			
+			console.log('news')
 			// uni.getStorage({
 			// 	key:'chatList',
 			// 	success(res){
@@ -45,18 +45,21 @@
 			// console.log(this.InfoList[0].data[0].msg)
 		},
 		onShow() {
+			console.log('newshow')
 			var that=this
 			this.active = true;
 			uni.getStorage({
 				key:'chatList',
 				success(res){
+					console.log('res',res)
 					that.InfoList=JSON.parse(res.data).reverse()
 				}
 			})
-			console.log(that.InfoList)
-			that.InfoList.forEach((item)=>{
-				item.data.reverse()
-			})
+			console.log('InfoList',that.InfoList)
+			// that.InfoList.forEach((item)=>{
+			// 	console.log(item)
+			// 	item.data.reverse()
+			// })
 		},
 			
 		onPullDownRefresh(){

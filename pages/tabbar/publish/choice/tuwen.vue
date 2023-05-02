@@ -58,7 +58,7 @@
 		opacity: 0;
 	}
 	.uni-uploader__file {
-	    margin: 4px 31upx;
+	    margin: 4px 20upx;
 	    width: 100px;
 	    height: 100px;
 		margin-left: 0;

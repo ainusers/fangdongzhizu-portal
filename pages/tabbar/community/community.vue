@@ -29,7 +29,7 @@
 <template>
 	<view>
 		<!-- 轮播图 -->
-		<u-swiper :list="swiperList" @click="click" radius="20rpx"></u-swiper>
+		<u-swiper :list="swiperList"  radius="20rpx"></u-swiper>
 		
 		<!-- 功能菜单 -->
 <!-- 		<view class="community">
@@ -172,6 +172,7 @@
 						}
 						console.log(res.data)
 						console.log(this.load_status_tuwen)
+						uni.stopPullDownRefresh();
 					}
 				})
 			}

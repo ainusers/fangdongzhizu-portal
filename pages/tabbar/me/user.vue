@@ -301,6 +301,12 @@
 						console.log('success');
 					}
 				});
+				uni.removeStorage({
+					key: 'houseInfo',
+					success: function (res) {
+						console.log('success');
+					}
+				});
 				
 					uni.navigateTo({
 						url: '/pages/auth/login'

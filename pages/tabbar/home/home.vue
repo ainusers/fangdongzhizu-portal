@@ -97,6 +97,7 @@ uni-swiper-item{
 		@areaBtn="areaBtn"
 		@sourceBtn="sourceBtn"
 		@roomConfirm="roomConfirm"
+		@confirmPrice="confirmPrice"
 		 >
 		</screenTab>
 		<!-- 换租的筛选 -->
@@ -393,7 +394,9 @@ export default {
 		},
 		// 获取选择城市返回的城市名称
 		getValue(cityNameLess){
-			this.cityName = cityNameLess+'市';
+			if(cityNameLess.length<=2){
+				this.cityName = cityNameLess+'市';
+			}
 			let regionLeftIndex=this.$refs.screenTab.regionLeftIndex
 			console.log(regionLeftIndex)
 			if(regionLeftIndex==0){
@@ -480,12 +483,13 @@ export default {
 		    if(!item.id) {
 		        screenFormData[enterType].price.text = this.priceApiDataMap[this.from].defaultText;
 		    }
-		    // this.$refs.screenTab.listTcShow=false
+		    
 		    this.erHousePriceIndex = index;
 		    this.screenFormData = screenFormData;
 		},
 		confirmPrice() {
-			if(!this.minPriceVal || !this.maxPriceVal) {
+			
+			if(!this.minPriceVal&&this.priceItem.text=='不限' || !this.maxPriceVal&&this.priceItem.text=='不限') {
 				uni.showToast({
 					title: "请输入价格",
 					icon: "none"
@@ -510,13 +514,21 @@ export default {
 				});
 				return;
 			}
+			console.log('显示价格')
 			if(this.enterType == "newHouse") {
 				this.newHousePriceBtn({text: `${this.minPriceVal}-${this.maxPriceVal}${priceUnit}`,
 					id: `${this.minPriceVal}:${this.maxPriceVal}`}, -1, true);
 			}else{
-				this.priceBtn({text: `${this.minPriceVal}-${this.maxPriceVal}${this.priceApiDataMap[this.from].unit}`,
-					id: `${this.minPriceVal}:${this.maxPriceVal}`}, -1, true);
+				if(this.minPriceVal&&this.maxPriceVal){
+					this.priceBtn({text: `${this.minPriceVal}-${this.maxPriceVal}`,
+						id: `${this.priceItem.text}`}, -1, true);
+				}else{
+					this.priceBtn({text: `${this.priceItem.text}`,
+						id: `${this.priceItem.text}`}, -1, true);
+				}
+				
 			}
+			this.$refs.screenTab.listTcShow=false
 		},
 		// 户型选项卡
 		roomBtn(item, index) {

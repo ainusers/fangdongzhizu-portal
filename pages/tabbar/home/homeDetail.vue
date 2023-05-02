@@ -10,6 +10,13 @@
 	  border-bottom: 10upx solid #F5F5F5;
 	  padding:30upx;
   }
+  /deep/.u-mode-center-box{
+	  z-index: 9999 !important;
+  }
+  /deep/.pei_tao_she_shi{
+	  position: relative;
+	  z-index: 1 !important;
+  }
   .modelName{
 	 font-size:28upx;
 	 font-weight:600;
@@ -242,7 +249,7 @@
 		<view class="model">
 		  <block v-if="diliData.length > 0">
 			 <view class="modelName">地理位置</view>
-			 <di-li-wei-zhi :list="diliData"></di-li-wei-zhi>
+			 <di-li-wei-zhi :list="diliData"  v-show="isMap"></di-li-wei-zhi>
 		   </block>
 		<!-- 详情页 - 配套设施 -->
 		</view>
@@ -254,7 +261,7 @@
 		   </block>
 		</view>
 		<!-- //举报模态框 -->
-		<u-modal v-model="reportShow" title="请选择举报类型" :show-cancel-button="true" confirm-text="提交举报" cancel-text="再想想" @confirm="goReport">
+		<u-modal v-model="reportShow" title="请选择举报类型" :show-cancel-button="true" confirm-text="提交举报" cancel-text="再想想" @confirm="goReport" @cancel="cancelReport">
 			<view class="report_con">
 				<u-radio-group v-model="reportValue" @change="radioGroupChange" width="50%">
 							<u-radio 
@@ -272,7 +279,7 @@
 		<!-- 详情页 - 立即沟通 -->
 		<view class="final">
 			<view class="left">
-				<view class="collect" @click="reportShow=true">
+				<view class="collect" @click="reportShowFn">
 					<u-icon name="bell" size="50"></u-icon>
 					<view class="target">举报</view>
 				</view>
@@ -336,6 +343,7 @@
 	},
     data() {
       return {
+		  isMap:true,
 		reportShow:false,
 		reportList:[
 			{
@@ -461,6 +469,10 @@
 			this.initzulinData()
 			
 		},
+		reportShowFn(){
+			this.isMap=false
+			this.reportShow=true
+		},
 		swiperImgInit(){
 			let obj={
 				url:'',
@@ -539,6 +551,7 @@
 				case 1:
 				params['complain']=1
 				this.statistics(params)
+				
 				break;
 				case 2:
 				params['collection']=1
@@ -564,6 +577,7 @@
 			console.log(this.detailData)
 			let support=this.detailData.support
 			if(support){
+				
 				support=support.split(',')
 				this.sheshiData.forEach(item=>{
 					if(support.indexOf(item.text)!=-1){
@@ -582,8 +596,12 @@
 			}
 		},
 		goReport(){
+			this.isMap=true
 			console.log('去举报')
 			this.report(1)
+		},
+		cancelReport(){
+			this.isMap=true
 		}
 	}
 }

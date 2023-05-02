@@ -8,8 +8,5 @@
         "直租",
         "在线",
         "聊天"
-    ],
-    "dependencies": {
-        "uni-simple-router": "^1.5.5"
-    }
+    ]
 }

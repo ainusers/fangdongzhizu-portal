@@ -90,11 +90,11 @@
 				class="choose_city_scroll" scroll-y>
 				<view class="choose_city_cont">
 					<view class="choose_title">当前定位城市</view>
-
 				   <button form-type="submit" hover-class="none" class="gps_city f_r_s" @click="cityBtn(gpsCityInfo)">
 					   <image class="gps_city_icon"
 							  v-if="gpsCityInfo.cityName != '定位中...'"
 							  src="https://zdzfapi.haofang.net/PublicC/images/icon_mylocation.png"></image>
+							  {{ gpsCityInfo.cityName }}
 					   <view class="gps_city_text">{{ gpsCityInfo.cityName }}</view>
 				   </button>
 
@@ -155,7 +155,8 @@
                     { cityId: "48", cityNameLess: "大连" }
                 ],
 
-                scrollAnimate: true
+                scrollAnimate: true,
+				bindList:{}
 			};
 		},
 
@@ -281,20 +282,20 @@
 
             // 城市点击事件
             cityBtn(item) {
-				console.log(item)
+				console.log('item',item)
 				let pages = getCurrentPages() 
-				console.log(pages)
+				console.log('pages',pages)
 				 // 2. 上一页面实例
 				// 注意是length长度，所以要想得到上一页面的实例需要 -2
 				// 若要返回上上页面的实例就 -3，以此类推
 				 let prevPage = pages[pages.length -2] 
+				 console.log('gps_city_text',prevPage)
 				 // 3. 给上一页面实例绑定getValue()方法和参数（注意是$vm）
-				 prevPage.$vm.getValue(item.cityNameLess)
+				 prevPage.$vm.getValue(item.cityNameLess ||item.cityName)
 				 // 4. 返回上一页
                 uni.navigateBack({
                     delta: 1
                 });
-				console.log(item.cityNameLess);
             },
 			// 定位授权
 			    getLocation() {
@@ -322,88 +323,49 @@
 				fnGetlocation() {
 				      let that = this;
 					  console.log('定位获取')
-				      uni.getLocation({
-				        type: "wgs84", //默认为 wgs84 返回 gps 坐标
-				        geocode: "true",
-				        isHighAccuracy: "true",
-				        accuracy: "best", // 精度值为20m
-				        success: function (res) {
-				          console.log("定位获取:", res);
-				          let platform = uni.getSystemInfoSync().platform;
-				          if (platform == "ios") {
-				          	//toFixed() 方法可把 Number 四舍五入为指定小数位数的数字。
-				            that.bindList.long = res.longitude.toFixed(6);
-				            that.bindList.lat = res.latitude.toFixed(6);
-				          } else {
-				            that.bindList.long = res.longitude;
-				            that.bindList.lat = res.latitude;
-				          }
-				          that.bindList.longlat =
-				            "经度" +
-				            that.changeTwoDecimal_f(that.bindList.long) +
-				            "/" +
-				            "纬度" +
-				            that.changeTwoDecimal_f(that.bindList.lat);
-				          that.getAreaCode(res.latitude, res.longitude);
-				        },
-				        fail(err) {
-				          if (
-				            err.errMsg ===
-				            "getLocation:fail 频繁调用会增加电量损耗，可考虑使用 wx.onLocationChange 监听地理位置变化"
-				          ) {
-				            uni.showToast({
-				              title: "请勿频繁定位",
-				              icon: "none",
-				            });
-				          }
-				          if (err.errMsg === "getLocation:fail auth deny") {
-				            // 未授权
-				            uni.showToast({
-				              title: "无法定位，请重新获取位置信息",
-				              icon: "none",
-				            });
-				            authDenyCb && authDenyCb();
-				            that.isLocated = false;
-				          }
-				          if (
-				            err.errMsg ===
-				            "getLocation:fail:ERROR_NOCELL&WIFI_LOCATIONSWITCHOFF"
-				          ) {
-				            uni.showModal({
-				              content: "请开启手机定位服务",
-				              showCancel: false,
-				            });
-				          }
-				        },
-				      });
+					  	uni.getLocation({
+					  		type: 'gcj02',
+					  		geocode: true,
+					  		success: function (res) {
+								let platform = uni.getSystemInfoSync().platform;
+					  			if (platform == "ios") {
+									
+					  			      	//toFixed() 方法可把 Number 四舍五入为指定小数位数的数字。
+					  			        that.bindList.long = res.longitude.toFixed(6);
+					  			        that.bindList.lat = res.latitude.toFixed(6);
+					  			      } else {
+					  			        that.bindList.long = res.longitude;
+					  			        that.bindList.lat = res.latitude;
+					  			      }
+									  console.log('res',res)
+									  that.gpsCityInfo.cityName=res.address.city
+									  that.gpsCityInfo.cityId=res.address.cityCode
+									  console.log(that.gpsCityInfo)
+									  that.bindList.areaCode = res.address.cityCode;
+									  // that.bindList.specificAddress = res.data.detailLocation;
+									  that.bindList.address = res.address.city;
+					  				  console.log('bindList',that.bindList)
+					  			      that.bindList.longlat =
+					  			        "经度" +
+					  			        that.changeTwoDecimal_f(that.bindList.long) +
+					  			        "/" +
+					  			        "纬度" +
+					  			        that.changeTwoDecimal_f(that.bindList.lat);
+					  			      // that.getAreaCode(res.latitude, res.longitude);
+					  		},
+					  		fail: (e) => {  
+					  			        uni.showModal({
+					  			          content: "请开启手机定位服务",
+					  			          showCancel: false,
+					  			        });
+					  		}
+					  		});
+				   
 				    },
-					// getAreaCode通过经纬度(wgs84)坐标获取区域码
-				getAreaCode(latitude, longitude) {
-						  this.$refs.uForm.resetFields();
-						  var that = this;
-						  that.$u.api
-							.getAreaCode({
-							  latitude: latitude,
-							  longitude: longitude,
-							})
-							.then((res) => {
-							  if (res.code == 100000000) {
-								console.log("通过经纬度坐标获取区域码:", res);
-								// console.log(res, 'areaCode');
-								that.bindList.areaCode = res.data.areaCode;
-								that.bindList.specificAddress = res.data.detailLocation;
-								that.bindList.address = res.data.areaLocation;
-							  } else {
-								uni.showToast({ title: res.msg, icon: "none" });
-							  }
-							})
-							.catch((err) => {
-							  this.loadState = "加载失败err";
-							  console.log("getDevList_err:", err); //--------------------
-							});
-						},
 				
-
+			changeTwoDecimal_f(num){
+				return num.toFixed(2)
+			}
         }
 	}
 </script>

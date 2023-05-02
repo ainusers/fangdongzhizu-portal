@@ -600,7 +600,21 @@ module.exports=()=>({
 				needLogin:true
 			}
             
-        }
+        },
+		{
+			"path": "pages/auth/binding",
+			"style": {
+		"navigationBarTitleText": "绑定手机号"
+				// "navigationBarTitleText": "注册",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa",
+				// "enablePullDownRefresh": false,
+				// "backgroundTextStyle":"light",
+				// "app-plus": {
+				// 	"scrollIndicator": "none"
+				// }
+			}
+		}
     ],
 	"tabBar": {
 		"color": "#7A7E83",

@@ -1,7 +1,7 @@
 <template>
 	<view class="main-style">
 		<block v-for="(item, index) in list" :key="index">
-			<view @click="toDetail(item)">
+			<view @click="toDetail(item,index)">
 				<view class="post-item">
 					<!-- 用户数据 -->
 					<view class="post-item-top-user">
@@ -147,6 +147,9 @@
 					url: "/pages/tabbar/community/comment"
 				})
 			},
+			toUcenter(){
+				console.log()
+			},
 			// 跳转评论区
 			toComment(url) {
 				uni.navigateTo({
@@ -198,7 +201,8 @@
 			},
 			// 分享至微信
 			shareWX(scene) {
-				let imgURL = (imgURL = this.postDetail.imgUrl[0]);
+				let imgURL = (imgURL = this.postDetail.imgUrl);
+				console.log(this.postDetail)
 				let that = this
 				let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
 				let curRoute = routes[routes.length - 1].$page.fullPath // 获取当前页面路由，也就是最后一个打开的页面路由
@@ -206,9 +210,9 @@
 					provider: "weixin", // 服务提供商（即weixin|qq|sinaweibo）
 					scene: scene, // 分享到哪儿
 					type: 0, // 图文
-					href: 'http://xy.tujingzg.com/api/post/detail?id=' + that.postId, //跳转链接
-					summary: that.postDetail.content, // 分享内容的摘要
-					title: that.postDetail.content,  // 分享内容的标题
+					href: 'http://uniapp.dcloud.io/', //跳转链接   图文连接
+					summary: that.postDetail.words, // 分享内容的摘要
+					title: that.postDetail.words,  // 分享内容的标题
 					imageUrl: imgURL, //图片地址
 					success: function(res) {
 						uni.showToast({
@@ -230,16 +234,16 @@
 			},
 			// 分享至qq
 			shareQQ() {
-				let imgURL = (imgURL = this.postDetail.imgUrl[0]);
+				let imgURL = (imgURL = this.postDetail.imgUrl);
 				let that = this
 				let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
 				let curRoute = routes[routes.length - 1].$page.fullPath // 获取当前页面路由，也就是最后一个打开的页面路由
 				uni.share({
 					provider: "qq", // 分享到哪儿（即weixin|qq|sinaweibo）
 					type: 0, // 图文
-					href: 'http://xy.tujingzg.com/api/post/detail?id=' + that.postId, // 跳转链接
-					summary: that.postDetail.content, // 分享内容的摘要
-					title: that.postDetail.content,  // 分享内容的标题
+					href: 'http://uniapp.dcloud.io/', // 跳转链接
+					summary: that.postDetail.words, // 分享内容的摘要
+					title: that.postDetail.words,  // 分享内容的标题
 					imageUrl: imgURL, //图片地址
 					success: function(res) {
 						uni.showToast({
