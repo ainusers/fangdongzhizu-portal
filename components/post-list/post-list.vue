@@ -122,7 +122,8 @@
 					 loadmore: '轻轻上拉加载更多...',
 					 loading: '努力加载中...',
 					 nomore: '没有更多了'
-				}
+				},
+				dyId:''
 			};
 		},
 		watch: {
@@ -143,8 +144,10 @@
 			// 跳转详情页
 			toDetail(data) {
 				this.$store.commit('communityInfo',data)
+				console.log('跳转详情页',data)
+				this.dyId=data.id
 				uni.navigateTo({
-					url: "/pages/tabbar/community/comment"
+					url: "/pages/tabbar/community/comment?id="+data.id
 				})
 			},
 			toUcenter(){
@@ -157,17 +160,17 @@
 				});
 			},
 			// 点赞
-			addCollection(id, index) {
-				this.list[index].follow = true;
-				this.list[index].followCount++;
+			addCollection(id, index,isLove) {
 				let data={
 					dynamicId:this.$store.state.communityInfo.id,
-					love:1
+					commentId:id?id:0,
+					type:isLove?'reduce':'plus',
 				}
 				this.$H.patch('/zf/v1/comment/love',data,true).then(res=>{
-					if(res.status){
-						this.list[index].is_collection = true;
-						this.list[index].collection_count++;
+					console.log(res)
+					if(res.status&&res.status!=500){
+						this.list[index].follow = true;
+						this.list[index].followCount=res.data[0].count;
 					}
 				})
 			},
@@ -175,17 +178,7 @@
 			cancelCollection(id, index) {
 				this.list[index].follow = false;
 				this.list[index].followCount--;
-				
-				// this.$H
-				// 	.post('post/cancelCollection', {
-				// 		id: id
-				// 	})
-				// 	.then(res => {
-				// 		if (res.code === 200) {
-				// 			this.list[index].is_collection = false;
-				// 			this.list[index].collection_count--;
-				// 		}
-				// 	});
+				this.$emit('clickLike',false,1)
 			},
 			// 预览图片
 			previewImage(url, urls, integral, post_id) {
@@ -210,7 +203,7 @@
 					provider: "weixin", // 服务提供商（即weixin|qq|sinaweibo）
 					scene: scene, // 分享到哪儿
 					type: 0, // 图文
-					href: 'http://uniapp.dcloud.io/', //跳转链接   图文连接
+					href: '/pages/tabbar/community/comment?id'+this.dyId, //跳转链接   图文连接
 					summary: that.postDetail.words, // 分享内容的摘要
 					title: that.postDetail.words,  // 分享内容的标题
 					imageUrl: imgURL, //图片地址

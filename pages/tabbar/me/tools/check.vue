@@ -306,14 +306,12 @@
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
 			<swiper-item v-for=" (item,index) in tabList" :key="index">
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
-					<view v-if="current == index">
-						<!-- 待审核 -->
+					<view v-show="current == index">
 						<view class="content">
-							<!-- 租房列表 -->
+							<!-- 列表 -->
 							<div v-if="houseList.length>0">
-							<!-- {{houseList}} -->
 								<block v-for="(item, index) in houseList" :key="index">
-									<house-list-item :item="item"></house-list-item>
+									<house-list-item ref="ListItem" :item="item" @updateHouseList="updateHouseList"></house-list-item>
 								</block>
 							</div>
 						   <div v-else>
@@ -332,6 +330,7 @@
 import houseListItem from '@/components/house-list/house-list-item.vue';
 import screenTab from '@/components/common/screen-tab/screen-tab.vue'
 import { Const } from "@/utils/const/Const.js";
+import {editTitleText} from '@/utils/utils.js'
 let privateData = {
 	room: {
 		height: ""
@@ -508,7 +507,8 @@ export default {
 				}
 			},
 			pageNum:1,//当前请求页码
-			loadStatus:'loadmore'
+			loadStatus:'loadmore',
+			isUpdate:false
 		};
 	},
 	props: {
@@ -533,9 +533,23 @@ export default {
 		current:{
 			handler(newVal,oldVal){
 				// console.log(newVal)
+				var webView = this.$mp.page.$getAppWebview();
 				if(newVal==3){
 					that.getCollect()
+					
+					webView.setTitleNViewButtonStyle(0,{  
+						width: '0'  
+					});
 				}else{
+					if(newVal==1){ //已发布
+						webView.setTitleNViewButtonStyle(0,{  
+							width: '100px'  
+						});
+					}else{
+						webView.setTitleNViewButtonStyle(0,{  
+							width: '100px'  
+						});
+					}
 					that.getstatusHouseList(Number(newVal)+1)
 				}
 			}
@@ -552,7 +566,27 @@ export default {
 		}
 		
 	},
+	onNavigationBarButtonTap(e){
+		console.log(e)
+		let txt=''
+		if(!this.isUpdate){
+			txt='退出管理'
+			this.isUpdate=true
+		}else{
+			txt='管理'
+			this.isUpdate=false
+		}
+			this.$refs.ListItem.forEach(item=>{
+				item.isUpdate=this.isUpdate
+			})
+			editTitleText(txt)
+	},
 	methods: {
+		updateHouseList(){
+			console.log('跟')
+			this.pageNum=1
+			this.getstatusHouseList(2)
+		},
 		//获取收藏的房源
 		getCollect(){
 			uni.request({
@@ -568,7 +602,7 @@ export default {
 				success(res){
 					console.log(res)
 					if(res.data.status){
-						that.houseList=res.data.data
+						that.houseList=[...that.houseList,...res.data.data]	
 					}else{
 						uni.showToast({
 							icon:'none',
@@ -591,7 +625,7 @@ export default {
 			this.current = index;
 		},
 		//获取不同状态的数据
-		getstatusHouseList(type){			
+		getstatusHouseList(type){	
 			let params={
 				"page":this.pageNum,
 				"size":"10",
@@ -608,13 +642,9 @@ export default {
 					'Authorization': 'Bearer ' + that.$store.state.token
 				},
 				success:(res)=>{
-					console.log(res)
-					console.log(res.data.data)
 					if(res.data&&res.data.status&&res.data.data.length>0){
-						console.log('12')
-						this.houseList=res.data.data
+						that.houseList=[...that.houseList,...res.data.data]
 					}else if(res.data.data.length==0){
-						console.log('123')
 						this.houseList=[]
 					}else{
 						uni.showToast({

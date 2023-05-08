@@ -130,29 +130,32 @@
 						<!-- @tap.stop="onReply(res, index)" -->
 					
 							<view class="comment_con">
-								<view @longpress="delComment(res, index)"  class="comment" v-for="(res, index) in commentList" :key="res.id">
+								<view   class="comment" v-for="(res, index1) in commentList" :key="res.id">
 									<view class="left">
 										<!-- <image :src="res.avatar" mode="aspectFill"></image> -->
 											<u-avatar class="avatar" :src="res.avatar" level-bg-color="#8072f3"></u-avatar>
 										</view>
 									<view class="right">
-										<view class="top" @tap.stop="onReply(res, index)">
-											<view class="desc">
-												<view class="name">{{ res.username }}</view>
-												<view class="date">{{ res.create_time }}</view>
+										<view @longpress="delComment(res, index1)">
+											<view class="top">
+												<view class="desc">
+													<view class="name"  @tap.stop="onReply(res, index1,1)">{{ res.username }}</view>
+													<view class="date"  @tap.stop="onReply(res, index1,1)">{{ res.create_time }}</view>
+												</view>
+												<view class="like" :class="{ highlight: res.love }"  @click="clickLike(res.comment_id,res.love,index1)">
+													<view class="num">{{ res.likeNum }}</view>
+													<u-icon v-if="!res.love" name="thumb-up" :size="30" color="#9a9a9a"></u-icon>
+													<u-icon v-if="res.love" name="thumb-up-fill" :size="30" ></u-icon>
+												</view>
 											</view>
-											<view class="like" :class="{ highlight: res.love }"  @click="clickLike">
-												<view class="num">{{ res.love }}</view>
-												<u-icon v-if="!res.isLike" name="thumb-up" :size="30" color="#9a9a9a" @click="getLike(index)"></u-icon>
-												<u-icon v-if="res.isLike" name="thumb-up-fill" :size="30" @click="getLike(index)"></u-icon>
-											</view>
+											<view class="content"  @tap.stop="onReply(res, index1,1)">{{ res.words }}</view>
 										</view>
-										<view class="content">{{ res.words }}</view>
+										
 										<view class="reply-box">
 											<view v-if="res.AllReply">
-												<view class="item" @tap.stop="onReply(item, index)" v-for="(item, index) in res.replyList" :key="item.index">
+												<view class="item" @tap.stop="onReply(item, index,2)" v-for="(item, index) in res.replyList" :key="item.index">
 													<view class="left"><image :src="res.avatar" mode="aspectFill"></image></view>
-													<view class="right">
+													<view class="right" @longpress="delComment(item, index,index1)">
 														<view class="desc">
 															<view class="username">{{ item.username }}</view>
 															<view class="date">{{ item.create_time?item.create_time.slice(0,10):"" }}</view>
@@ -161,7 +164,7 @@
 													</view>
 												</view>
 											</view>
-											<view :class="[res.commentText?'all-reply':'']" @tap="toAllReply(index)" v-show="res.replyList">
+											<view :class="[res.commentText?'all-reply':'']" @tap="toAllReply(index1,res.comment_id)" v-show="res.replyList&&res.replyList.length>0">
 												 {{res.commentText}}
 												<u-icon class="more" name="arrow-right" :size="26"v-if="res.commentText"></u-icon>
 											</view>
@@ -204,15 +207,23 @@ export default {
 			// tuwen_data:[{"id":4048,"cid":"1","uid":10623,"class_id":57,"topic_id":41,"discuss_id":0,"vote_id":null,"title":"","content":"远离城市的喧嚣与繁华，去乡村感受一下安静闲适，亲切温暖的泥土气息和生机勃勃的绿意也是令人神驰向往的。","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/c05a8c06-fe2f-432c-96cd-b86cb83280d0.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/a9c5949e-057d-4088-a2bd-4c63016b7ec4.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/b05f2e46-7070-41b0-986e-80892bded3c5.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/d5d05a9f-9fc8-46f4-9e2e-582fcf88bfe4.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/f308d488-c09d-46db-a995-9a5b729bfe75.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/02f60453-bfd9-418d-ba4f-a3ea0d4b668c.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/81042aa1-9921-447f-a1f4-4e15102b1e4b.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/53775f09-dcdd-4bc2-81f9-57a4b33ebe94.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/9affbe94-e9ec-47eb-98f3-d656151e9256.jpg"],"read_count":8,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":20,"create_time":1655597469,"share_count":0,"comment_count":0,"fabulous_count":0,"collection_count":0,"browse_count":1435,"topicInfo":{"id":41,"cid":"2","uid":10623,"cate_id":57,"topic_name":"一缕乡愁","description":"一缕乡愁，一份乡思","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/1f481af8-fe96-4686-9cf5-edbb97c22fee.jpeg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0f2745ed-6ae3-41b4-966b-9c10467a8574.png","top_type":0,"status":0,"index_recommend":1,"user_num":4,"create_time":1654529877},"is_collection":false,"userInfo":{"uid":10623,"mobile":null,"phone":null,"email":null,"username":"一缕","password":null,"group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220608\/165466151012972.jpg","gender":"男","province":"","city":"","openid":"oyApu6T5NLXT2JWdiEhWeCIowgiw","mp_openid":null,"apple_openid":null,"unionid":"oChEZ62J3XVxLCiVt_0kf_OCt0E8","status":0,"intro":"这个人很懒，没留下什么","integral":"101192.00","exp":1270,"last_login_ip":"115.216.18.223","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":1,"vip_expire_time":2147483647,"downtime":null,"downnum":50,"update_time":1655470280,"create_time":1643943443}},{"id":2714,"cid":"3","uid":10623,"class_id":57,"topic_id":41,"discuss_id":0,"vote_id":null,"title":"","content":"人只有离开了家乡，才会开始发现家乡的风景。\n破房子，老房子，乡愁","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/35845999-946f-4996-ae90-adbebf5e4d1b.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/cca295d2-1b14-4492-8077-b5836c9dfcff.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/5b426a4d-e213-40fa-840e-f20e34dd0c98.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0c3459f2-45b2-4e49-ad03-f59e307a3822.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/e6a36307-cc0e-4ab5-947a-b5a0a19596ae.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/691dd89a-a65d-42b2-8aa9-1d20d16ec0d1.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/fa09a7db-d4f3-40ac-95cd-6266904d7ee0.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/6ee85a6f-bca1-43e7-a212-d5c9d72ebb72.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/921b6bb3-4f83-40bc-af6f-aa9a0095cdda.jpg"],"read_count":3,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":20,"create_time":1655515147,"share_count":0,"comment_count":0,"fabulous_count":0,"collection_count":0,"browse_count":7775,"topicInfo":{"id":41,"cid":"1","uid":10623,"cate_id":57,"topic_name":"一缕乡愁","description":"一缕乡愁，一份乡思","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/1f481af8-fe96-4686-9cf5-edbb97c22fee.jpeg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0f2745ed-6ae3-41b4-966b-9c10467a8574.png","top_type":0,"status":0,"index_recommend":1,"user_num":4,"create_time":1654529877},"is_collection":false,"userInfo":{"uid":10623,"mobile":null,"phone":null,"email":null,"username":"一缕","password":null,"group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220608\/165466151012972.jpg","gender":"男","province":"","city":"","openid":"oyApu6T5NLXT2JWdiEhWeCIowgiw","mp_openid":null,"apple_openid":null,"unionid":"oChEZ62J3XVxLCiVt_0kf_OCt0E8","status":0,"intro":"这个人很懒，没留下什么","integral":"101192.00","exp":1270,"last_login_ip":"115.216.18.223","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":1,"vip_expire_time":2147483647,"downtime":null,"downnum":50,"update_time":1655470280,"create_time":1643943443}},{"id":2062,"uid":10623,"class_id":57,"topic_id":41,"discuss_id":0,"vote_id":null,"title":"","content":"若为化作身千亿，散向峰头望故乡。——柳宗元\n睡觉前的一波福利，赶快收藏，明天收费🤨\n老房子，乡愁，破房子","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/1899ddf3-de43-4d1b-b816-87f5740164c6.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/85882c55-f0b2-4d94-b13c-a36941bf864f.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/de1cd73a-078c-4cf9-af64-5b2bb89a1995.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/351f6338-319b-4daa-b4d9-23c464f4d54d.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/bbe5e6f2-a85f-4873-bacb-5f8d3d77bcba.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/183d7083-0142-4a3e-b92b-0185bca9483e.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/fb18290f-68f7-480b-a5b1-e4c2490017d9.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/c7ee36b1-08b5-4f67-82f2-66e153135b80.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/6958e7dc-1750-4c52-afda-26cec44737c2.jpg"],"read_count":9,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":20,"create_time":1655483867,"share_count":0,"comment_count":0,"fabulous_count":0,"collection_count":1,"browse_count":6795,"topicInfo":{"id":41,"uid":10623,"cate_id":57,"topic_name":"一缕乡愁","description":"一缕乡愁，一份乡思","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/1f481af8-fe96-4686-9cf5-edbb97c22fee.jpeg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0f2745ed-6ae3-41b4-966b-9c10467a8574.png","top_type":0,"status":0,"index_recommend":1,"user_num":4,"create_time":1654529877},"is_collection":false,"userInfo":{"uid":10623,"mobile":null,"phone":null,"email":null,"username":"一缕","password":null,"group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220608\/165466151012972.jpg","gender":"男","province":"","city":"","openid":"oyApu6T5NLXT2JWdiEhWeCIowgiw","mp_openid":null,"apple_openid":null,"unionid":"oChEZ62J3XVxLCiVt_0kf_OCt0E8","status":0,"intro":"这个人很懒，没留下什么","integral":"101192.00","exp":1270,"last_login_ip":"115.216.18.223","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":1,"vip_expire_time":2147483647,"downtime":null,"downnum":50,"update_time":1655470280,"create_time":1643943443}},{"id":2021,"uid":10623,"class_id":57,"topic_id":41,"discuss_id":0,"vote_id":null,"title":"","content":"悠悠天宇旷，浓浓故乡情。\n乡愁，老房子，破房子","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/71985df3-dce4-4a78-ae0c-82f8a4bcd778.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/cd812dc6-9d50-4ac7-84a6-7fed8d294def.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/c55fab14-8a84-4ca9-80aa-615aa22ed94c.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/f23e5fc6-c107-4a3e-b6da-40d8526f0e09.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/20bf4f01-bf09-421e-a4a6-d058f1e10f2d.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/99450d90-7b12-4322-b78d-355e5748ac5b.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/2c06a863-c280-47a1-8e64-c6fd88ba79ed.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/af1f18b1-fe4a-443e-8216-baa4fd7d790d.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/30ee9115-78c8-4ba5-885f-14d28b068726.jpg"],"read_count":9,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":20,"create_time":1655372364,"share_count":0,"comment_count":0,"fabulous_count":0,"collection_count":1,"browse_count":18353,"topicInfo":{"id":41,"uid":10623,"cate_id":57,"topic_name":"一缕乡愁","description":"一缕乡愁，一份乡思","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/1f481af8-fe96-4686-9cf5-edbb97c22fee.jpeg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0f2745ed-6ae3-41b4-966b-9c10467a8574.png","top_type":0,"status":0,"index_recommend":1,"user_num":4,"create_time":1654529877},"is_collection":false,"userInfo":{"uid":10623,"mobile":null,"phone":null,"email":null,"username":"一缕","password":null,"group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220608\/165466151012972.jpg","gender":"男","province":"","city":"","openid":"oyApu6T5NLXT2JWdiEhWeCIowgiw","mp_openid":null,"apple_openid":null,"unionid":"oChEZ62J3XVxLCiVt_0kf_OCt0E8","status":0,"intro":"这个人很懒，没留下什么","integral":"101192.00","exp":1270,"last_login_ip":"115.216.18.223","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":1,"vip_expire_time":2147483647,"downtime":null,"downnum":50,"update_time":1655470280,"create_time":1643943443}},{"id":2004,"uid":10623,"class_id":57,"topic_id":41,"discuss_id":0,"vote_id":null,"title":"","content":"给你棒棒糖","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/645c67bf-6b8c-4af3-ab2e-c91e8573ad60.jpg"],"read_count":2,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":0,"create_time":1655303573,"share_count":0,"comment_count":0,"fabulous_count":0,"collection_count":0,"browse_count":22580,"topicInfo":{"id":41,"uid":10623,"cate_id":57,"topic_name":"一缕乡愁","description":"一缕乡愁，一份乡思","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/1f481af8-fe96-4686-9cf5-edbb97c22fee.jpeg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0f2745ed-6ae3-41b4-966b-9c10467a8574.png","top_type":0,"status":0,"index_recommend":1,"user_num":4,"create_time":1654529877},"is_collection":false,"userInfo":{"uid":10623,"mobile":null,"phone":null,"email":null,"username":"一缕","password":null,"group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220608\/165466151012972.jpg","gender":"男","province":"","city":"","openid":"oyApu6T5NLXT2JWdiEhWeCIowgiw","mp_openid":null,"apple_openid":null,"unionid":"oChEZ62J3XVxLCiVt_0kf_OCt0E8","status":0,"intro":"这个人很懒，没留下什么","integral":"101192.00","exp":1270,"last_login_ip":"115.216.18.223","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":1,"vip_expire_time":2147483647,"downtime":null,"downnum":50,"update_time":1655470280,"create_time":1643943443}},{"id":1899,"uid":10623,"class_id":57,"topic_id":41,"discuss_id":0,"vote_id":null,"title":"","content":"故乡情，思乡愁。\n乡愁，老房子，破房子","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/fe5409a0-398b-4662-97a2-7e492b90e8ba.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/b1f870cb-0595-4351-8c40-fc3e3c653ff5.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/241562d8-88a0-478c-877d-bd202e8e7f9d.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/701d5c05-dac0-49e2-8768-8cc2909e7191.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/6460285e-7c16-4d9b-a89c-cc118081c60d.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/494ffbaf-5196-4e0f-b710-2b292b7e5b0e.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/a9742f60-f36d-4fc1-bb44-2b86a234016e.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/6d542165-8bf4-4b64-a145-fe1b2bbc909f.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/4924b099-a579-452e-937e-488125d5b6a2.jpg"],"read_count":8,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":20,"create_time":1655258881,"comment_count":0,"fabulous_count":0,"collection_count":0,"browse_count":12339,"topicInfo":{"id":41,"uid":10623,"cate_id":57,"topic_name":"一缕乡愁","description":"一缕乡愁，一份乡思","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/1f481af8-fe96-4686-9cf5-edbb97c22fee.jpeg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0f2745ed-6ae3-41b4-966b-9c10467a8574.png","top_type":0,"status":0,"index_recommend":1,"user_num":4,"create_time":1654529877},"is_collection":false,"userInfo":{"uid":10623,"mobile":null,"phone":null,"email":null,"username":"一缕","password":null,"group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220608\/165466151012972.jpg","gender":"男","province":"","city":"","openid":"oyApu6T5NLXT2JWdiEhWeCIowgiw","mp_openid":null,"apple_openid":null,"unionid":"oChEZ62J3XVxLCiVt_0kf_OCt0E8","status":0,"intro":"这个人很懒，没留下什么","integral":"101192.00","exp":1270,"last_login_ip":"115.216.18.223","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":1,"vip_expire_time":2147483647,"downtime":null,"downnum":50,"update_time":1655470280,"create_time":1643943443}},{"id":1647,"uid":10623,"class_id":57,"topic_id":41,"discuss_id":0,"vote_id":null,"title":"","content":" 故乡，总是给人无与伦比的亲切，那种感情是深入骨髓的。远了，思念，近了，怀念。\n乡愁，老房子，破房子","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/aacce549-b5d3-4d94-b1e7-4711e97cb4ed.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/38460e7b-337b-4bdf-98fe-52607f145833.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/15eeecb1-c6b9-45b1-8616-12e45f55e3d9.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/d69f69b0-07b9-429d-a3a1-e2afe409fbe7.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/2347bcb5-08c7-4acd-bfdb-9d89afb62493.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/2214087d-a42d-4b39-a2b3-881ac6df3c97.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/30648ec4-2e3e-4e50-9dc5-a5e784645d91.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/537d2473-a3d5-426e-8f52-78d4ac7013df.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0e72e8f8-a845-4456-8eb2-f093e487768e.jpg"],"read_count":8,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":20,"create_time":1655172133,"comment_count":0,"fabulous_count":0,"collection_count":1,"browse_count":10021,"topicInfo":{"id":41,"uid":10623,"cate_id":57,"topic_name":"一缕乡愁","description":"一缕乡愁，一份乡思","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/1f481af8-fe96-4686-9cf5-edbb97c22fee.jpeg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0f2745ed-6ae3-41b4-966b-9c10467a8574.png","top_type":0,"status":0,"index_recommend":1,"user_num":4,"create_time":1654529877},"is_collection":false,"userInfo":{"uid":10623,"mobile":null,"phone":null,"email":null,"username":"一缕","password":null,"group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220608\/165466151012972.jpg","gender":"男","province":"","city":"","openid":"oyApu6T5NLXT2JWdiEhWeCIowgiw","mp_openid":null,"apple_openid":null,"unionid":"oChEZ62J3XVxLCiVt_0kf_OCt0E8","status":0,"intro":"这个人很懒，没留下什么","integral":"101192.00","exp":1270,"last_login_ip":"115.216.18.223","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":1,"vip_expire_time":2147483647,"downtime":null,"downnum":50,"update_time":1655470280,"create_time":1643943443}},{"id":1622,"uid":10623,"class_id":57,"topic_id":41,"discuss_id":0,"vote_id":null,"title":"","content":"世界再美，家和家乡的味道，依旧是我们最难舍的牵挂。\n乡愁，老房子，破房子","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/95d8842a-5450-405e-aa46-ef92a4a52267.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/174dddb8-bd32-468a-8e24-0042e6878f59.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/2dee8189-2b69-46a7-8a28-b450f2ed325c.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/07cc45a6-1d59-4a93-b88b-ac6a96ce1261.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0de3629f-333b-41c0-986b-298d1ce59b21.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/d8ecf382-75bf-4fed-a0f9-94be3026bb8e.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/7b93f48b-82b9-4d99-80c7-a98a26a4b89c.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/2dfc4214-e57c-42d6-9118-66c074306b75.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/c9474729-f710-453d-a1f9-8ad07f4357e1.jpg"],"read_count":15,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":20,"create_time":1655126371,"comment_count":0,"fabulous_count":0,"collection_count":2,"browse_count":9822,"topicInfo":{"id":41,"uid":10623,"cate_id":57,"topic_name":"一缕乡愁","description":"一缕乡愁，一份乡思","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/1f481af8-fe96-4686-9cf5-edbb97c22fee.jpeg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0f2745ed-6ae3-41b4-966b-9c10467a8574.png","top_type":0,"status":0,"index_recommend":1,"user_num":4,"create_time":1654529877},"is_collection":false,"userInfo":{"uid":10623,"mobile":null,"phone":null,"email":null,"username":"一缕","password":null,"group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220608\/165466151012972.jpg","gender":"男","province":"","city":"","openid":"oyApu6T5NLXT2JWdiEhWeCIowgiw","mp_openid":null,"apple_openid":null,"unionid":"oChEZ62J3XVxLCiVt_0kf_OCt0E8","status":0,"intro":"这个人很懒，没留下什么","integral":"101192.00","exp":1270,"last_login_ip":"115.216.18.223","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":1,"vip_expire_time":2147483647,"downtime":null,"downnum":50,"update_time":1655470280,"create_time":1643943443}},{"id":1616,"uid":10507,"class_id":null,"topic_id":0,"discuss_id":0,"vote_id":null,"title":"","content":"美女","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/3e6ac414-c986-4c59-8877-6b1f359e0f26.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/8ddd7b23-4286-4896-8a85-056ad4bb950b.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/3ca9291c-c274-4c4f-9187-1aea679c9d0d.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/60a5bf52-903f-448a-9fb3-551454e07482.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/bc8fc4df-8a5c-4b44-b572-53e725f1fa23.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/f9dfee17-2eab-4a53-a141-9722fd568f24.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/7f20badd-e53f-40f4-8a51-df0c2ddaf474.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/70eb5f71-8b95-4cb1-9d05-8ec4958b621c.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/7156556f-ed1a-4102-be44-9481b18b08b1.jpg"],"read_count":0,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":0,"create_time":1655125913,"comment_count":0,"fabulous_count":0,"collection_count":0,"browse_count":5856,"is_collection":false,"userInfo":{"uid":10507,"mobile":null,"phone":"17620115709","email":null,"username":"途途","password":"95c10bd1689e11a28aea482025b953a6","group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220607\/165457483524871.jpg","gender":"未知","province":"","city":"","openid":null,"mp_openid":null,"apple_openid":null,"unionid":null,"status":0,"intro":"这个人很懒，没留下什么","integral":"0.10","exp":10559,"last_login_ip":"24.5.94.180","tag_str":"[\"\\u521b\\u4f5c\\u8005\",\"\\u5185\\u5bb9\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":2,"vip_expire_time":2147483647,"downtime":1654758996,"downnum":20,"update_time":1655580843,"create_time":1638289551}},{"id":1306,"uid":10623,"class_id":57,"topic_id":41,"discuss_id":0,"vote_id":null,"title":"","content":"故乡是什么？故乡是你儿时的一个梦，故乡是你在成长过程中的一块基石。\n乡愁，老房子，破房子","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/77b66fb4-c472-42b8-93c4-08f8e25e87a5.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/e7508fda-abb3-4e06-b27b-77ac725c69fc.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/2f26ed5f-edab-4e74-8bf2-f65843ae2247.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/ec9d558d-743c-4d2b-b42d-43bcd412f036.jpg"],"read_count":7,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":10,"create_time":1655091335,"comment_count":0,"fabulous_count":0,"collection_count":1,"browse_count":7376,"topicInfo":{"id":41,"uid":10623,"cate_id":57,"topic_name":"一缕乡愁","description":"一缕乡愁，一份乡思","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/1f481af8-fe96-4686-9cf5-edbb97c22fee.jpeg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0f2745ed-6ae3-41b4-966b-9c10467a8574.png","top_type":0,"status":0,"index_recommend":1,"user_num":4,"create_time":1654529877},"is_collection":false,"userInfo":{"uid":10623,"mobile":null,"phone":null,"email":null,"username":"一缕","password":null,"group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220608\/165466151012972.jpg","gender":"男","province":"","city":"","openid":"oyApu6T5NLXT2JWdiEhWeCIowgiw","mp_openid":null,"apple_openid":null,"unionid":"oChEZ62J3XVxLCiVt_0kf_OCt0E8","status":0,"intro":"这个人很懒，没留下什么","integral":"101192.00","exp":1270,"last_login_ip":"115.216.18.223","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":1,"vip_expire_time":2147483647,"downtime":null,"downnum":50,"update_time":1655470280,"create_time":1643943443}},{"id":1296,"uid":10623,"class_id":57,"topic_id":41,"discuss_id":0,"vote_id":null,"title":"","content":"14.16","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/43f22496-fb1a-4c70-a1d1-b3436e0c0214.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/3a9e81d6-06c7-463f-ab35-8c2c595ed899.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/8265d389-2a0f-4139-84d9-99300f0c2124.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/f5a75cab-11bc-44e7-b8ff-0ab8e0fca98a.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/b7351e14-c433-4e43-875a-539f0094ec81.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/af41db0a-9787-4efe-a482-1dc8a045d32b.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/38f21560-fc45-466b-bac0-06e61598ca90.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/77438616-1a69-4751-a917-8a71165ce75e.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/40fe3848-3c5d-4aec-bc77-160a3126e9cd.jpg"],"read_count":14,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":14,"create_time":1655056555,"comment_count":0,"fabulous_count":4,"collection_count":2,"browse_count":7015,"topicInfo":{"id":41,"uid":10623,"cate_id":57,"topic_name":"一缕乡愁","description":"一缕乡愁，一份乡思","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/1f481af8-fe96-4686-9cf5-edbb97c22fee.jpeg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0f2745ed-6ae3-41b4-966b-9c10467a8574.png","top_type":0,"status":0,"index_recommend":1,"user_num":4,"create_time":1654529877},"is_collection":false,"userInfo":{"uid":10623,"mobile":null,"phone":null,"email":null,"username":"一缕","password":null,"group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220608\/165466151012972.jpg","gender":"男","province":"","city":"","openid":"oyApu6T5NLXT2JWdiEhWeCIowgiw","mp_openid":null,"apple_openid":null,"unionid":"oChEZ62J3XVxLCiVt_0kf_OCt0E8","status":0,"intro":"这个人很懒，没留下什么","integral":"101192.00","exp":1270,"last_login_ip":"115.216.18.223","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":1,"vip_expire_time":2147483647,"downtime":null,"downnum":50,"update_time":1655470280,"create_time":1643943443}},{"id":1294,"uid":10623,"class_id":57,"topic_id":41,"discuss_id":0,"vote_id":null,"title":"","content":"长大后才明白平平无奇的小村里，藏着最惬意的生活，也藏着最踏实的幸福，人间烟火，最抚凡人心，离开城市的嘈杂，最接地气的就是农村。\n乡愁，老房子，破房子","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/09020b01-6d46-4ded-af24-4acb4c4b2b8b.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/4c1dd93e-26c2-49e6-95c1-6444312e6e51.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/6cebab7c-f1bd-4d54-ab9d-39fef6aa0e01.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/4b9c98c7-a33a-4c69-893a-7fd13800e5f3.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/9bd1e025-86b1-4002-bccb-625995dfaf35.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/8ebf0dd1-68ae-41aa-b821-3ffa90e68f48.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/d30ceb8c-0251-40cf-b5f0-f92065018082.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/93e1c23e-8669-48b6-9840-23837aa2032b.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/c7f1b168-f154-4fc8-b3e0-dd9d2823c16c.jpg"],"read_count":19,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":20,"create_time":1655054448,"comment_count":1,"fabulous_count":0,"collection_count":1,"browse_count":6931,"topicInfo":{"id":41,"uid":10623,"cate_id":57,"topic_name":"一缕乡愁","description":"一缕乡愁，一份乡思","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/1f481af8-fe96-4686-9cf5-edbb97c22fee.jpeg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0f2745ed-6ae3-41b4-966b-9c10467a8574.png","top_type":0,"status":0,"index_recommend":1,"user_num":4,"create_time":1654529877},"is_collection":false,"userInfo":{"uid":10623,"mobile":null,"phone":null,"email":null,"username":"一缕","password":null,"group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220608\/165466151012972.jpg","gender":"男","province":"","city":"","openid":"oyApu6T5NLXT2JWdiEhWeCIowgiw","mp_openid":null,"apple_openid":null,"unionid":"oChEZ62J3XVxLCiVt_0kf_OCt0E8","status":0,"intro":"这个人很懒，没留下什么","integral":"101192.00","exp":1270,"last_login_ip":"115.216.18.223","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":1,"vip_expire_time":2147483647,"downtime":null,"downnum":50,"update_time":1655470280,"create_time":1643943443}},{"id":1095,"uid":10723,"class_id":57,"topic_id":10,"discuss_id":0,"vote_id":null,"title":"","content":"风景旅行风光背景图","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/ebdb5026-928a-484e-9871-8663db32d0bb.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/e96a10af-6d19-4850-b927-7f099e34e5ba.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/996444cf-09b0-459e-a8a5-8bdc060c5207.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/938d738a-825c-4260-807a-6e0a1a720c21.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/f058f931-2722-44b4-9d8e-26c8c2fc2c59.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/9b038a57-49fb-4b17-bee2-d1384323790b.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/bb1d25be-86b5-4a88-8379-25974fa6a633.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/ab9aef1a-6504-4bdc-87d1-080efb006735.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/51321151-f70b-49fd-8795-f3356551ba37.jpg"],"read_count":4,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":0,"create_time":1655029922,"comment_count":0,"fabulous_count":0,"collection_count":1,"browse_count":3313,"topicInfo":{"id":10,"uid":10544,"cate_id":57,"topic_name":"山河班","description":"干就完了","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/b5c61ef7-c257-4635-95d6-37bfd5c0d7f0.jpg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/8697d44d-e0dc-4c13-b900-22054f3b7854.jpg","top_type":0,"status":0,"index_recommend":1,"user_num":36,"create_time":1639233349},"is_collection":false,"userInfo":{"uid":10723,"mobile":null,"phone":"18026422681","email":null,"username":"小法师","password":"3a16d90a2bca49144d4961e5f54389eb","group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220612\/165503076618117.jpg","gender":"未知","province":"","city":"","openid":null,"mp_openid":null,"apple_openid":null,"unionid":null,"status":0,"intro":"这个人很懒，没留下什么","integral":"0.00","exp":1260,"last_login_ip":"219.136.128.135","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":2,"vip_expire_time":2147483647,"downtime":null,"downnum":20,"update_time":1655030767,"create_time":1655026395}},{"id":1094,"uid":10723,"class_id":57,"topic_id":10,"discuss_id":0,"vote_id":null,"title":"","content":"风景旅行风光背景图","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/33e2a704-59eb-4f9b-b5a7-00ad99ce10ba.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/071eefeb-6442-48ef-85a6-a2a6926ea38c.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/06dc1ab1-8f12-4709-9803-3d969eec1b24.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/93450d2c-b752-4233-9d0a-2b8af5b0edd0.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/cc1505e2-545e-44d3-b1df-9269b1a661e0.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/b8b8a1bc-7869-4af6-b313-e2b462b15de6.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/2e092f08-a509-40db-a4d2-8a230aece9b0.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/fcd58d02-6464-44ef-808b-76e0b775ce3f.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/681330cf-e25c-4928-850f-4e37a6114079.jpg"],"read_count":2,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":0,"create_time":1655029851,"comment_count":0,"fabulous_count":0,"collection_count":0,"browse_count":3360,"topicInfo":{"id":10,"uid":10544,"cate_id":57,"topic_name":"山河班","description":"干就完了","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/b5c61ef7-c257-4635-95d6-37bfd5c0d7f0.jpg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/8697d44d-e0dc-4c13-b900-22054f3b7854.jpg","top_type":0,"status":0,"index_recommend":1,"user_num":36,"create_time":1639233349},"is_collection":false,"userInfo":{"uid":10723,"mobile":null,"phone":"18026422681","email":null,"username":"小法师","password":"3a16d90a2bca49144d4961e5f54389eb","group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220612\/165503076618117.jpg","gender":"未知","province":"","city":"","openid":null,"mp_openid":null,"apple_openid":null,"unionid":null,"status":0,"intro":"这个人很懒，没留下什么","integral":"0.00","exp":1260,"last_login_ip":"219.136.128.135","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":2,"vip_expire_time":2147483647,"downtime":null,"downnum":20,"update_time":1655030767,"create_time":1655026395}},{"id":1093,"uid":10723,"class_id":57,"topic_id":10,"discuss_id":0,"vote_id":null,"title":"","content":"风景旅行风光背景图","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/8691a636-52de-4091-84e4-ec4b8c946417.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/986a6e96-846a-4a93-a435-2f70aa54978d.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/5ef2e0cd-91a8-4dc9-8edf-8a0629a4dcfb.jpg"],"read_count":2,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":0,"create_time":1655029800,"comment_count":0,"fabulous_count":0,"collection_count":0,"browse_count":3263,"topicInfo":{"id":10,"uid":10544,"cate_id":57,"topic_name":"山河班","description":"干就完了","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/b5c61ef7-c257-4635-95d6-37bfd5c0d7f0.jpg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/8697d44d-e0dc-4c13-b900-22054f3b7854.jpg","top_type":0,"status":0,"index_recommend":1,"user_num":36,"create_time":1639233349},"is_collection":false,"userInfo":{"uid":10723,"mobile":null,"phone":"18026422681","email":null,"username":"小法师","password":"3a16d90a2bca49144d4961e5f54389eb","group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220612\/165503076618117.jpg","gender":"未知","province":"","city":"","openid":null,"mp_openid":null,"apple_openid":null,"unionid":null,"status":0,"intro":"这个人很懒，没留下什么","integral":"0.00","exp":1260,"last_login_ip":"219.136.128.135","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":2,"vip_expire_time":2147483647,"downtime":null,"downnum":20,"update_time":1655030767,"create_time":1655026395}},{"id":1092,"uid":10723,"class_id":57,"topic_id":10,"discuss_id":0,"vote_id":null,"title":"","content":"风景旅行风光背景图","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/707214c9-180b-48ef-9d4b-7a838a468548.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/37f78172-f904-4590-bc53-75309c44040a.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/fa77da1f-9e3e-4408-bff0-358a6865920c.jpg"],"read_count":1,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":0,"create_time":1655029728,"comment_count":0,"fabulous_count":0,"collection_count":0,"browse_count":3262,"topicInfo":{"id":10,"uid":10544,"cate_id":57,"topic_name":"山河班","description":"干就完了","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/b5c61ef7-c257-4635-95d6-37bfd5c0d7f0.jpg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/8697d44d-e0dc-4c13-b900-22054f3b7854.jpg","top_type":0,"status":0,"index_recommend":1,"user_num":36,"create_time":1639233349},"is_collection":false,"userInfo":{"uid":10723,"mobile":null,"phone":"18026422681","email":null,"username":"小法师","password":"3a16d90a2bca49144d4961e5f54389eb","group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220612\/165503076618117.jpg","gender":"未知","province":"","city":"","openid":null,"mp_openid":null,"apple_openid":null,"unionid":null,"status":0,"intro":"这个人很懒，没留下什么","integral":"0.00","exp":1260,"last_login_ip":"219.136.128.135","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":2,"vip_expire_time":2147483647,"downtime":null,"downnum":20,"update_time":1655030767,"create_time":1655026395}},{"id":1091,"uid":10723,"class_id":57,"topic_id":10,"discuss_id":0,"vote_id":null,"title":"","content":"风景旅行风光背景图","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/bdbb9e3e-7fb1-49d0-89d0-69455558121e.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/e0f4be5d-f896-4810-a822-a301299c4755.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/9679d176-b7f0-4ede-8d32-074190091535.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/57ce506e-878c-4d2c-bbf8-f9341b067fb2.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/db8bfe61-5bb4-4bb1-ab74-3ae4f6705d0c.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/e1244c56-fa5a-4ce1-a612-02bae11e632e.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/dfb4f33a-e9f5-4cea-b7b9-558df4e279c8.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/998a3771-d9c2-4a5a-ac72-3127946df1c5.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/bc7b2c2d-5587-48fb-b28d-d270c2e5a8ae.jpg"],"read_count":1,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":0,"create_time":1655029682,"comment_count":0,"fabulous_count":0,"collection_count":0,"browse_count":3320,"topicInfo":{"id":10,"uid":10544,"cate_id":57,"topic_name":"山河班","description":"干就完了","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/b5c61ef7-c257-4635-95d6-37bfd5c0d7f0.jpg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/8697d44d-e0dc-4c13-b900-22054f3b7854.jpg","top_type":0,"status":0,"index_recommend":1,"user_num":36,"create_time":1639233349},"is_collection":false,"userInfo":{"uid":10723,"mobile":null,"phone":"18026422681","email":null,"username":"小法师","password":"3a16d90a2bca49144d4961e5f54389eb","group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220612\/165503076618117.jpg","gender":"未知","province":"","city":"","openid":null,"mp_openid":null,"apple_openid":null,"unionid":null,"status":0,"intro":"这个人很懒，没留下什么","integral":"0.00","exp":1260,"last_login_ip":"219.136.128.135","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":2,"vip_expire_time":2147483647,"downtime":null,"downnum":20,"update_time":1655030767,"create_time":1655026395}},{"id":1090,"uid":10723,"class_id":57,"topic_id":10,"discuss_id":0,"vote_id":null,"title":"","content":"风景旅行风光背景图","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/0d7a5037-bac0-4088-86fd-08e20643e67e.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/9b67a41f-fac6-4c57-b59f-d530950154c3.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/25ca5890-cf84-4407-82d0-7563a71541ed.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/cd620e7d-583f-49a5-8d66-22af33d1d10a.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/56150038-ccd7-4390-9249-df93472d5bd3.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/a19e844d-cd33-4616-ada0-aaf842c601fc.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/817bed75-1f54-4b1f-a1b4-bda75eb310ba.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/43b420df-3fde-48c1-858c-115435809d35.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/ab837ff6-2eb7-4424-93ef-05385854f3a9.jpg"],"read_count":1,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":0,"create_time":1655029634,"comment_count":0,"fabulous_count":0,"collection_count":0,"browse_count":3309,"topicInfo":{"id":10,"uid":10544,"cate_id":57,"topic_name":"山河班","description":"干就完了","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/b5c61ef7-c257-4635-95d6-37bfd5c0d7f0.jpg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/8697d44d-e0dc-4c13-b900-22054f3b7854.jpg","top_type":0,"status":0,"index_recommend":1,"user_num":36,"create_time":1639233349},"is_collection":false,"userInfo":{"uid":10723,"mobile":null,"phone":"18026422681","email":null,"username":"小法师","password":"3a16d90a2bca49144d4961e5f54389eb","group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220612\/165503076618117.jpg","gender":"未知","province":"","city":"","openid":null,"mp_openid":null,"apple_openid":null,"unionid":null,"status":0,"intro":"这个人很懒，没留下什么","integral":"0.00","exp":1260,"last_login_ip":"219.136.128.135","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":2,"vip_expire_time":2147483647,"downtime":null,"downnum":20,"update_time":1655030767,"create_time":1655026395}},{"id":1089,"uid":10723,"class_id":57,"topic_id":10,"discuss_id":0,"vote_id":null,"title":"","content":"风景旅行风光背景图","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/c95a8d5e-75bc-42f6-a0e5-1677acba28e6.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/019764f9-3da5-4b4b-b4cc-a416ac9282f5.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/79cff86e-42b1-4ef2-be33-57d91ec580c9.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/b5e69f7f-4274-4722-bdcf-713da917c810.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/a09c8d52-a6c6-40ce-8301-64f38b4bdee8.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/006b6f80-9d49-41de-ba08-a8f411358cb3.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/3f14c737-363a-4729-a4af-dbfb8a3e04d9.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/34c77072-d841-4e2e-8e6d-72d599cbc0fd.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/a4e9987b-d9c8-4aa2-9b17-bb3a985624c0.jpg"],"read_count":1,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":0,"create_time":1655029584,"comment_count":0,"fabulous_count":0,"collection_count":0,"browse_count":3388,"topicInfo":{"id":10,"uid":10544,"cate_id":57,"topic_name":"山河班","description":"干就完了","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/b5c61ef7-c257-4635-95d6-37bfd5c0d7f0.jpg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/8697d44d-e0dc-4c13-b900-22054f3b7854.jpg","top_type":0,"status":0,"index_recommend":1,"user_num":36,"create_time":1639233349},"is_collection":false,"userInfo":{"uid":10723,"mobile":null,"phone":"18026422681","email":null,"username":"小法师","password":"3a16d90a2bca49144d4961e5f54389eb","group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220612\/165503076618117.jpg","gender":"未知","province":"","city":"","openid":null,"mp_openid":null,"apple_openid":null,"unionid":null,"status":0,"intro":"这个人很懒，没留下什么","integral":"0.00","exp":1260,"last_login_ip":"219.136.128.135","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":2,"vip_expire_time":2147483647,"downtime":null,"downnum":20,"update_time":1655030767,"create_time":1655026395}},{"id":1088,"uid":10723,"class_id":57,"topic_id":10,"discuss_id":0,"vote_id":null,"title":"","content":"风景旅行风光背景图","isys":0,"media":["https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/f3e1e329-1410-409b-aaf8-4a3a0ed1b2d4.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/e0d90254-8c28-4ecd-a1ae-6a6a1deca2dc.jpg","https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-202a1b86-90c8-405c-8fd7-6f817978bab6\/4a8b9108-6d5a-49f1-9b6c-b5078990ede5.jpg"],"read_count":1,"post_top":0,"type":1,"address":"","thumb_num":0,"longitude":0,"latitude":0,"integral":0,"create_time":1655029540,"comment_count":0,"fabulous_count":0,"collection_count":0,"browse_count":3379,"topicInfo":{"id":10,"uid":10544,"cate_id":57,"topic_name":"山河班","description":"干就完了","cover_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/b5c61ef7-c257-4635-95d6-37bfd5c0d7f0.jpg","bg_image":"https:\/\/vkceyugu.cdn.bspapp.com\/VKCEYUGU-8c7f8f57-a927-4a17-800a-d8f15d3e21b8\/8697d44d-e0dc-4c13-b900-22054f3b7854.jpg","top_type":0,"status":0,"index_recommend":1,"user_num":36,"create_time":1639233349},"is_collection":false,"userInfo":{"uid":10723,"mobile":null,"phone":"18026422681","email":null,"username":"小法师","password":"3a16d90a2bca49144d4961e5f54389eb","group_id":2,"avatar":"https:\/\/tujin-media.oss-cn-hangzhou.aliyuncs.com\/20220612\/165503076618117.jpg","gender":"未知","province":"","city":"","openid":null,"mp_openid":null,"apple_openid":null,"unionid":null,"status":0,"intro":"这个人很懒，没留下什么","integral":"0.00","exp":1260,"last_login_ip":"219.136.128.135","tag_str":"[\"\\u521b\\u4f5c\\u8005\"]","birthday":null,"type":0,"vip_id":2,"vip_expire_time":2147483647,"downtime":null,"downnum":20,"update_time":1655030767,"create_time":1655026395}}],
 			tuwen_data: [ ],
 			loadStatus: 'loadmore', //用于控制是否可以再继续加载
+			comment_id:'',//评论id
+			dyId:'',//动态id
 		};
 	},
 	props:{
 		index:String
 	},
 	onLoad(options) {
+			console.log(options)
+		if(options.id){
+			this.dyId=options.id
+		}
 		this.tuwen_data=[this.$store.state.communityInfo]
+		console.log('tuwen_data',this.tuwen_data)
 		// this.commentList = this.commentList.filter(item => item.cid == options.cid)
 		this.getOneList()
+		this.getdyDetail()
 	},
 	onReachBottom(){
 		if(this.loadStatus=='loadmore'){
@@ -223,9 +234,36 @@ export default {
 		
 	},
 	methods: {
+		getdyDetail(){
+			let data={
+					  "id": this.dyId,
+					  "page":1 ,
+					  "size": "10"
+				}
+			this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
+					if(res.status){
+						console.log('图文数据',res)
+					
+							this.tuwen_data = res.data[0]
+					
+						console.log(res.data)
+						console.log(this.load_status_tuwen)
+						uni.stopPullDownRefresh();
+					}
+				})
+			},
 		// 跳转到全部回复
-		toAllReply(index) {
+		toAllReply(index,id) {
 			this.AllReply=true
+			this.commentList.forEach((item)=>{
+				console.log(item)
+				item.AllReply=false
+				if(item.replyList&&item.replyList.length>0){
+					item.commentText='展开查看更多'
+				}
+			})
+			console.log(index)
+			console.log(this.commentList)
 			this.commentList[index].AllReply=true
 			if(Number(this.beforeIndex)!=Number(index)){
 				this.pageNum=1
@@ -233,13 +271,21 @@ export default {
 				this.pageNum++
 			}
 			this.beforeIndex=index
-			this.getTwoList(this.commentList[index].comment_user_id,index)
+			this.getTwoList(this.commentList[index].comment_user_id,index,id)
 		},
 		// 回复评论
-		onReply(e,index) {
-			this.beforeIndex=index
+		onReply(e,index,type) {
+			if(type==1){
+				this.beforeIndex=index
+			}
 			this.placeholder = '回复' + e.username + '：';
-			this.beCommentUserId=e.comment_user_id
+			if(e.comment_user_id){
+				this.beCommentUserId= e.comment_user_id
+			}else{
+				this.beCommentUserId=e.commentUserId
+			}
+			console.log(this.beCommentUserId)
+			this.comment_id=e.comment_id ||e.id
 			this.focus = true;
 			
 		},
@@ -251,35 +297,56 @@ export default {
 				this.isSubmitD = false;
 				return;
 			}
-			 
+			console.log('1234',this.tuwen_data.id)
 			let addComment={
 				words:this.content,
+				comment_user_id:this.$store.state.userInfo.id,
 				commentUserId:this.$store.state.userInfo.id,//回复用户id，也就是用户本人
 				beCommentUserId:this.beCommentUserId,//被回复id也就别人id
 				dynamicId:this.$store.state.communityInfo.id,//动态id
 				avatar:this.$store.state.userInfo.avatar,
-				username:this.$store.state.userInfo.username
+				username:this.$store.state.userInfo.username,
+				beCommentId:this.beCommentUserId?this.comment_id:0
 			}
+			console.log(this.beforeIndex)
 			let that=this
-			this.$H.post('/zf/v1/comment/increase',addComment,true).then(res=>{
-				if(res.status&&this.beCommentUserId){
-					console.log('回复二级评论')
-					//回复二级评论
-					this.commentList[this.beforeIndex].replyList.unshift(addComment)
+			this.$H.post('/zf/v1/comment/increase',addComment,true).then(res=>{	
+				if(res.status&&res.status!=500){
+					if(res.status&&this.beCommentUserId){
+						console.log('回复二级评论')
+						//回复二级评论
+						
+						this.commentList[this.beforeIndex].replyList.unshift(addComment)
+						console.log(this.commentList)
+						// this.commentList[this.beforeIndex].AllReply=true
+						let time=new Date()
+						let y=time.getFullYear()
+						let m=time.getMonth()+1
+						let d=time.getDate()
+						let h=time.getHours()
+						let mm=time.getMinutes()
+						let s=time.getSeconds()
+						let create_time=y+'-'+m+'-'+d +'  '+h+':'+mm+':'+s
+						this.commentList[this.beforeIndex].create_time=create_time
+					}
+					if(res.status&&!this.beCommentUserId){
+						this.commentList.unshift(addComment);
+					}
+					this.pageNum=1
+					this.content = '';
+					this.$u.toast('评论成功');
+					this.isSubmitD = false;
+				}else{
+					this.isSubmitD = false;
 				}
-				if(res.status&&!this.beCommentUserId){
-					this.commentList.unshift(addComment);
-				}
-			})
-			this.content = '';
-			this.$u.toast('评论成功');
-			this.isSubmitD = false;
+				
+			})	
 		},
 		// 删除评论
-		delComment(e, index) {
+		delComment(e, index,index1) {
 			let user = uni.getStorageSync('userInfo');
 			// 判断用户id
-			if (e.uid != user.uid) {
+			if (e.username != user.username) {
 				return;
 			}
 			uni.showModal({
@@ -287,23 +354,31 @@ export default {
 				content: '确定删除该评论？',
 				success: function(res) {
 					if (res.confirm) {
-						this.commentList = this.commentList.filter(item => {
-							return item.id != e.id
+						let data={
+							id:e.comment_id||e.id,
+							status:0
+						}
+						this.$H.patch('/zf/v1/comment/status',data,true).then(res=>{
+							console.log(res)
+							if(res.status&&res.status!=500){
+								// 一级评论
+								if(e.comment_id){
+									this.commentList = this.commentList.filter(item => {
+										return item.comment_id != e.comment_id 
+									})
+								}else if(e.id&&!e.comment_id){
+									this.commentList[index1].replyList = this.commentList[index1].replyList.filter(item => {
+										return item.id != e.id 
+									})
+								}
+							}
 						})
+						
 					} else if (res.cancel) {
 						// 用户取消删除操作
 					}
 				}.bind(this)
 			});
-		},
-		// 点赞
-		getLike(index) {
-			this.commentList[index].isLike = !this.commentList[index].isLike;
-			if (this.commentList[index].isLike == true) {
-				this.commentList[index].likeNum++;
-			} else {
-				this.commentList[index].likeNum--;
-			}
 		},
 		//获取一级评论的
 		getOneList(){
@@ -311,15 +386,18 @@ export default {
 			let data={
 				dynamicId:this.$store.state.communityInfo.id,
 				pageNum:this.pageNumOne,
-				pageSize:10
+				pageSize:10,
+				status:1
 			}
 			this.$H.post('/zf/v1/comment/list',data,true).then(res=>{
+				console.log('一级评论',res)
 						if(res.status){
 							let commentList=res.data
 							if(commentList.length<10){
 								this.loadStatus='state'
 							}
 							commentList.forEach((item,index)=>{
+								console.log(item)
 								this.$set(item,'replyList',[])
 								// item.replyList=[]
 								item.AllReply=false
@@ -333,22 +411,26 @@ export default {
 								let s=time.getSeconds()
 								item.create_time=y+'-'+m+'-'+d +'  '+h+':'+mm+':'+s
 								that.commentList.push(item)
-								that.getTwoList(item.comment_user_id,index)
+								item.likeNum=0
+								that.getTwoList(item.comment_user_id,index,item.comment_id)
 							})
 						}
 			})
 
 		},
-		getTwoList(beCommentUserId,index){
+		getTwoList(beCommentUserId,index,id){
+			console.log(index)
 			let that=this
 			let data={
-				beCommentUserId:beCommentUserId,
+				// beCommentUserId:beCommentUserId,
 				pageNum:this.pageNum,
-			    pageSize:10
+			    pageSize:10,
+				status:1,
+				beCommentId:id
 			}
 			this.$H.post('/zf/v1/comment/second/list',data,true).then(res=>{
 				if(res.status){
-					if(this.commentList[index].AllReply&&res.data.length<10){
+					if(this.commentList[index].AllReply &&res.data.length<10){
 						this.commentList[index].commentText=''
 					}
 					console.log(this.commentText)
@@ -357,18 +439,33 @@ export default {
 					}else{
 						this.commentList[index].replyList=res.data
 					}
+					console.log(this.commentList)
 				}
 			})
 		},
-		clickLike(){
+		//一级评论和动态评论的点赞
+		clickLike(id,isLove,index){
+			console.log(index)
 			let data={
 				dynamicId:this.$store.state.communityInfo.id,
-				love:1
+				commentId:id?id:0,
+				type:isLove?'reduce':'plus',
 			}
+			console.log(data)
 			this.$H.patch('/zf/v1/comment/love',data,true).then(res=>{
-				console.log(res)
+				console.log('点赞结果',res)
+				if(res.status&&res.status!=500)
+				if (isLove == 1) {
+					console.log(this.commentList[index])
+					this.commentList[index].love=0;
+					this.commentList[index].likeNum=res.data[0].count;
+				} else {
+					console.log('点赞')
+					this.commentList[index].love=1;
+					this.commentList[index].likeNum=res.data[0].count;
+				}
 			})
 		}
 	}
-};
+}
 </script>

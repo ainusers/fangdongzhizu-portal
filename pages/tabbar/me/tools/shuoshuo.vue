@@ -29,11 +29,11 @@
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
 		
 			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content">
+				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
 					<view v-if="current === 0">
 						<!-- 内容区域 -->
 						<view class="content">
-							<!-- 待审核 -->
+							<!-- 圈子 -->
 						    <post-list :list="tuwen_data" :loadStatus="load_status_tuwen"></post-list>
 						</view>
 					</view>
@@ -77,6 +77,7 @@
 import screenTab from '@/components/common/screen-tab/screen-tab.vue'
 import { Const } from "@/utils/const/Const.js";
 import postList from '@/components/post-list/post-list.vue';
+import tuwenVue from '../../publish/choice/tuwen.vue';
 let privateData = {
 	room: {
 		height: ""
@@ -140,6 +141,7 @@ export default {
 			// 		}
 				],
 		load_status_tuwen: 'loadmore',
+		currPage:1,
 		};
 	},
 	props: {
@@ -153,6 +155,14 @@ export default {
 		 this.current=Number(routes[routes.length - 1].options.id) ;
 	},
 	methods: {
+		scrolltolower(){
+			console.log('加载更多')
+			if(this.load_status_tuwen=='nomore'){
+				return;
+			}
+			this.currPage++
+			this.getShowData()
+		},
 		// 获得swiper切换后的current索引
 		swipeIndex(index) {
 			this.current = index.detail.current
@@ -163,11 +173,13 @@ export default {
 		},
 		getShowData(){
 			let data={
-				userId:that.$store.state.userInfo.id
+				userId:that.$store.state.userInfo.id,
+				page:this.currPage,
+				size:10
 			}
 			this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
 						if(res.status){
-							that.tuwen_data=res.data
+							that.tuwen_data=[...that.tuwen_data,...res.data]
 								if(that.tuwen_data.length==0){
 									that.load_status_tuwen='nomore'
 								}

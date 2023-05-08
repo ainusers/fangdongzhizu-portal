@@ -42,9 +42,47 @@
 			});
 		})
 	}
+	//编辑右上角按钮文字
+	const editTitleText=function(txt) {
+					let pages = getCurrentPages();
+					let page = pages[pages.length - 1];
 	
+					// #ifdef APP-PLUS
+					let currentWebview = page.$getAppWebview();
+					let titleObj = currentWebview.getStyle().titleNView;
+					if (!titleObj.buttons) {
+						return;
+					}
+	
+					titleObj.buttons[0].text = txt;//修改文字
+					currentWebview.setStyle({
+						titleNView: titleObj
+					});
+					// #endif
+				}
+					
+				const getPlatform=function(){
+					let platform = uni.getSystemInfoSync().platform
+					return platform
+								// switch (platform) {
+								// 	case "ios":
+								// 		console.log('你已经进入苹果平台，你需要执行的代码是！！！！')
+								// 		break;
+								// 	case "devtools":
+								// 		console.log('你已经进入微信小程序，你需要执行的代码是！！！！')
+								// 		break;
+								// 	case "android":
+								// 		console.log('你已经进入安卓平台！！！，你需要执行的代码是！！！！')
+								// 		break;
+								// 	default:
+								// 		break;
+								// }
+				}
+				
 	export {
 	getStoreData,
 	initStorestate,
-	attachUpload
+	attachUpload,
+	editTitleText,
+	getPlatform
 	}

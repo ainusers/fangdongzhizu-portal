@@ -143,6 +143,7 @@
 </template>
 
 <script>
+	import {getPlatform} from '../../../../utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -206,11 +207,13 @@
 				otherAvatar:'',//房主的头像
 				myAvatar:'',//自己的头像
 				socket_status:false,
+				Platform:''
 			};
 		},
 		onLoad(option) {
+			this.Platform=getPlatform()
 			this.currentChatList=[]
-			console.log('option',option)
+			// console.log('option',option)
 			this.houseId=''
 			this.houseId=option.houseId
 			this.currentName=this.$store.state.userInfo.username
@@ -243,7 +246,7 @@
 			uni.getStorage({
 				key: 'redEnvelopeData',
 				success:  (res)=>{
-					console.log(res.data);
+					// console.log(res.data);
 					let nowDate = new Date();
 					let lastid = this.msgList[this.msgList.length-1].id;
 					lastid++;
@@ -254,14 +257,12 @@
 			});
 		},
 		onHide(){
-			console.log('关闭连接1')
 			//关闭连接
-			this.closeSocket()
+			// this.closeSocket()
 		},
 		onUnload(){
-			console.log('关闭连接')
 			//关闭连接
-			this.closeSocket()
+			// this.closeSocket()
 		},
 		methods:{
 			//保存聊天记录到本地
@@ -269,44 +270,64 @@
 				uni.getStorage({
 					key:'chatList',
 					success:(res)=>{
-						console.log(res)
+						console.log('获取当前聊天记录',res)
 						if(res.data){
 							this.chatList=res.data?JSON.parse(res.data):[]
-								
 							if(this.chatList.length>0){
 								this.chatList.forEach(item=>{
+									// console.log(item.houseId)
+									// console.log('当前房源id',this.houseId)
 									if(item.houseId==this.houseId){
+										// console
 										this.currentChatList=item.data
 										this.isChat=true
 									}
 								})
 							}
-							
-							//从来没有聊天过，
-							if(!this.isChat&&this.houseId){
-								console.log('push一条新的数据')
-								this.chatList.push({houseId:this.houseId,data:[]})
-								console.log('push的新的',JSON.stringify(this.chatList))
+							if(this.Platform=='android' || this.Platform=='ios'){
+								//从来没有聊天过，
+								// console.log(this.isChat)
+								if(!this.isChat&&this.houseId){
+									// console.log('push一条新的数据')
+									this.chatList.push({houseId:this.houseId,data:[]})
+									// console.log('push的新的',JSON.stringify(this.chatList))
+								}
+								if(this.currentChatList.length<20){
+									this.isHistoryLoading=true
+								}
+								this.getMsgList(this.currentChatList)
+								uni.setStorage({
+									key:'chatList',
+									data:JSON.stringify(this.chatList)
+								})
 							}
-							if(this.currentChatList.length<20){
-								this.isHistoryLoading=true
-							}
-							this.getMsgList(this.currentChatList)
-							uni.setStorage({
-								key:'chatList',
-								data:JSON.stringify(this.chatList)
-							})
 						}
 					}
 				})
+				if(this.Platform!='android' &&this.Platform!='ios'){
+					//从来没有聊天过，
+					// console.log(this.isChat)
+					if(!this.isChat&&this.houseId){
+						// console.log('push一条新的数据')
+						this.chatList.push({houseId:this.houseId,data:[]})
+						// console.log('push的新的',JSON.stringify(this.chatList))
+					}
+					if(this.currentChatList.length<20){
+						this.isHistoryLoading=true
+					}
+					this.getMsgList(this.currentChatList)
+					uni.setStorage({
+						key:'chatList',
+						data:JSON.stringify(this.chatList)
+					})
+				}
 				
 			},
 			getHead(userId){
 				let data={
 					userId:userId
 				}
-				this.$H.get('v1/user/id',data,true).then(res=>{
-					// console.log(res)
+				this.$H.get('/zf/v1/user/id',data,true).then(res=>{
 					if(res.id){
 						this.otherAvatar=res.avatar
 					}	
@@ -332,34 +353,11 @@
 				});
 				// 接受服务端消息
 				this.socketInstance.onMessage((res) => {
-					console.log("收到服务器内容：" + res.data);
-					console.log('当前房源id',this.houseId)
+					// console.log("收到服务器内容：" + res.data);
+					// console.log('当前房源id',this.houseId)
 					let data = eval("(" + res.data + ")");
 					data.avatar=this.$store.state.userInfo.avatar
 					data.otherAvatar=this.otherAvatar
-				
-					if(data.id){
-						
-						this.chatList.forEach(item=>{
-							console.log(item.houseId==this.houseId)
-							console.log(item.houseId,this.houseId)
-							if(item.houseId==this.houseId){
-								console.log('存储起来',data)
-								item.data.push(data)
-								let date=new Date(item.datetime)
-								console.log(date)
-								let y=date.getFullYear()
-								console.log(JSON.stringify(this.chatList)+'保存到本地')
-								uni.setStorage({
-									key:'chatList',
-									data:JSON.stringify(this.chatList)
-								})
-								console.log(y)
-							}
-						})
-						
-					}
-					
 					switch (data.type) {
 						case 'system':
 							this.addSystemTextMsg(data);
@@ -376,8 +374,8 @@
 					}
 					// 非自己的消息震动
 					// console.log(this.$store.state.userInfo.id)
-					if(data.id&&data.id!=this.$store.state.userInfo.id&&data.msg!='ping'&& data.type!='signal'){
-						console.log('振动');
+				
+					if(data.id&&data.from!=this.$store.state.userInfo.username&&data.msg!='ping'&& data.type!='signal'){
 						uni.vibrateLong();
 					}
 					// 滚动到底
@@ -408,10 +406,11 @@
 			sendGenernalMsg() {
 				if (this.socket_status) {
 					// target   变成房源id
+					console.log("发送对象{'type':'text','msg':'" + this.textMsg + "','target'"+this.houseId+"}")
 					this.socketInstance.send({
 						data: "{'type':'text','msg':'" + this.textMsg + "','target'"+this.houseId+"}",
 						async success() {
-							console.log("普通消息发送成功");
+							// console.log("普通消息发送成功");
 						},
 					});
 				}
@@ -425,7 +424,7 @@
 						data: "{'type':'signal','from':"+that.$store.state.userInfo.username+"}",
 						async success() {
 							that.isChatStatus=true
-							console.log("认证消息发送成功");
+							// console.log("认证消息发送成功");
 						},
 					});
 				}
@@ -477,7 +476,7 @@
 			// 加载初始页面消息
 			getMsgList(list){
 				// 消息列表
-			console.log(list)
+			// console.log('消息列表',list)
 				// 获取消息中的图片,并处理显示尺寸
 				for(let i=0;i<list.length;i++){
 					if(list[i].type=='user' && list[i].type=="img"){
@@ -485,7 +484,9 @@
 						this.msgImgList.push(list[i].msg.content.url);
 					}
 				}
+				
 				this.msgList = list;
+				// console.log('当前聊天记录',this.msgList)
 				// 滚动到底部
 				this.$nextTick(function() {
 					//进入页面滚动到底部
@@ -546,16 +547,31 @@
 					sourceType:[type],
 					sizeType: ['original', 'compressed'],
 					success: (res)=>{
+						console.log('res发送图片',res)
 						for(let i=0;i<res.tempFilePaths.length;i++){
 							uni.uploadFile({
 								name: 'multipartFile',
-								url: 'http://81.70.163.240:15329/uploadFile?buketName=asiatrip',
-								buketName: 'asiatrip',
+								url: 'http://81.70.163.240:11001/zf/v1/file/uploads',
+								// buketName: 'asiatrip',
 								filePath: res.tempFilePaths[i],
+									name:'file',
+									header: {
+															// 'content-type': 'multipart/form-data',
+												'Authorization': 'Bearer ' + this.$store.state.token
+											},
 								success: uploadFileRes => {
-									let image = JSON.parse(uploadFileRes.data).data.originUrl;
-									let msg = {url:image,w:200,h:200};
-									this.sendMsg(msg,'img');
+									console.log('发送图片',uploadFileRes)
+									
+									let image = JSON.parse(uploadFileRes.data).data;
+									// let msg = {url:image,w:200,h:200};
+									// this.sendMsg(msg,'img');
+									uni.getImageInfo({
+										src: res.tempFilePaths[i],
+										success: (res1)=>{
+											let msg = {url:res.tempFilePaths[i],w:res1.width,h:res1.height,image};
+											this.sendMsg(msg,'img');
+										}
+									});
 								},
 								fail(err) {
 									console.log(err);
@@ -565,7 +581,7 @@
 							// 	src: res.tempFilePaths[i],
 							// 	success: (image)=>{
 							// 		let msg = {url:res.tempFilePaths[i],w:image.width,h:image.height};
-							// 		this.sendMsg(msg,'img');
+							// 		// this.sendMsg(msg,'img');
 							// 	}
 							// });
 						}
@@ -602,6 +618,7 @@
 					}
 					let content = this.replaceEmoji(this.textMsg);
 					let msg = {text:content}
+					console.log('发送的内容',msg)
 					this.sendMsg(msg,'text');
 					this.textMsg = ''; // 清空输入框
 				}else{
@@ -613,7 +630,7 @@
 			// 替换表情符号为图片
 			replaceEmoji(str){
 				let replacedStr = str.replace(/\[([^(\]|\[)]*)\]/g,(item, index)=>{
-					console.log("item: " + item);
+			
 					for(let i=0;i<this.emojiList.length;i++){
 						let row = this.emojiList[i];
 						for(let j=0;j<row.length;j++){
@@ -623,7 +640,6 @@
 								//比如你上传服务器后，你的100.gif路径为https://www.xxx.com/emoji/100.gif 则替换onlinePath填写为https://www.xxx.com/emoji/
 								let onlinePath = 'https://s2.ax1x.com/2019/04/12/'
 								let imgstr = '<img src="'+onlinePath+this.onlineEmoji[EM.url]+'">';
-								console.log("imgstr: " + imgstr);
 								return imgstr;
 							}
 						}
@@ -632,17 +648,15 @@
 				return '<div style="display: flex;align-items: center;word-wrap:break-word;">'+replacedStr+'</div>';
 			},
 			// 发送消息
-			sendMsg(content,type){
+			sendMsg(content,type,imgurl){
 				// 如果socket状态正常连接，则可以发送消息
-				console.log(this.socket_status)
-				console.log(content)
 				if (this.socket_status) {
 					switch (type) {
 						case 'text':
 						let data={
 							'type': type,
 							'msg':this.textMsg,
-							'target':'all',
+							'target':this.houseId,
 							'face':this.$store.state.userInfo.avatar
 							}
 							this.socketInstance.send({
@@ -653,9 +667,9 @@
 							});
 							break;
 						case 'voice':
-							let voice = JSON.stringify(content);
+							let voice = JSON.stringify(imgurl);
 							this.socketInstance.send({
-								data: "{'type':'" + type + "','msg':'" + voice + "','target':'all'}",
+								data: "{'type':'" + type + "','msg':'" + voice + "','target':"+this.houseId+"}",
 								async success() {
 									console.log("语音发送成功");
 								},
@@ -664,19 +678,38 @@
 						case 'img':
 							let img = JSON.stringify(content);
 							this.socketInstance.send({
-								data: "{'type':'" + type + "','msg':'" + img + "','target':'all'}",
+								data: "{'type':'" + type + "','msg':'" + img + "','target':"+this.houseId+"}",
 								async success() {
 									console.log("图片发送成功");
 								},
 							});
+							console.log(this.msgList)
+							console.log(this.chatList)
 							break;
 					}
 				}
 			},
 			// 添加文字消息到列表
-			addTextMsg(msg){
-				console.log(msg)
-				this.msgList.push(msg);
+			addTextMsg(data){
+				console.log('消息',data)
+				if(data.id){
+					this.chatList.forEach(item=>{
+					
+						if(item.houseId==data.target){
+							let date=new Date(item.datetime)
+							let y=date.getFullYear()
+							item.data.push(data)
+						}
+					})
+					uni.setStorage({
+						key:'chatList',
+						data:JSON.stringify(this.chatList)
+					})
+				}
+				//从来没有聊过天
+				if(!this.isChat){
+					 this.msgList.push(data);
+				}
 			},
 			// 添加语音消息到列表
 			addVoiceMsg(msg){
@@ -684,9 +717,29 @@
 			},
 			// 添加图片消息到列表
 			addImgMsg(msg){
+				console.log('添加图片',msg)
 				msg.msg = this.setPicSize(msg.msg);
 				this.msgImgList.push(JSON.parse(msg.msg).url);
-				this.msgList.push(msg);
+				// this.msgList.push(msg);
+				if(msg.id){
+					this.chatList.forEach(item=>{
+						if(item.houseId==msg.target){
+							let date=new Date(item.datetime)
+							let y=date.getFullYear()
+							item.data.push(msg)
+							item.otherAvatar=this.otherAvatar	
+						}	
+					})
+					uni.setStorage({
+						key:'chatList',
+						data:JSON.stringify(this.chatList)
+					})
+				}
+				//从来没有聊过天
+				if(!this.isChat){
+					data.otherAvatar=this.otherAvatar
+					 this.msgList.push(msg);
+				}
 			},
 			// 添加系统文字消息到列表
 			addSystemTextMsg(msg){
@@ -775,6 +828,7 @@
 						buketName: 'zufang-chat',
 						filePath: res.tempFilePath,
 						success: uploadFileRes => {
+							console.log('录音结束',uploadFileRes)
 							let voice = JSON.parse(uploadFileRes.data).data.originUrl;
 							let msg = {url:voice, length:8};
 							this.sendMsg(msg,'voice');

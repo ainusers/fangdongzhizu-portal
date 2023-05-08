@@ -158,7 +158,7 @@
 					}
 				this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
 					if(res.status){
-						
+						console.log('图文数据',res)
 						if(this.tuwen_default_page==1){
 							this.tuwen_data = res.data
 						}else{

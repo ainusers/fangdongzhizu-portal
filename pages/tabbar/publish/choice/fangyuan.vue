@@ -267,7 +267,7 @@
 					<u-input :border="border" placeholder="请输入小区名称" type="text" v-model="houseModel.communityName"></u-input>
 				</u-form-item>
 				<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="200" :label-position="labelPosition" label="具体房间号 :" prop="communityName" ref="item1" required>
-					<u-input :border="border" placeholder="请输入具体房间号" type="text" v-model="houseModel.communityName"></u-input>
+					<u-input :border="border" placeholder="请输入具体房间号" type="text" v-model="houseModel.roomName"></u-input>
 				</u-form-item>
 			</view>
 			
@@ -285,7 +285,7 @@
 				
 				  <!-- 月度租金 -->
 				  <u-form-item :label-position="labelPosition" label="房屋租金 :" prop="money" label-width="150" required>
-				  	<u-input :border="border" :type="Number" placeholder="请输入月度租金" type="text" v-model="houseModel.money"></u-input>
+				  	<u-input :border="border" :type="Number" placeholder="请输入房屋租金" type="text" v-model="houseModel.money"></u-input>
 				  </u-form-item>
 				  <!-- 房屋押金 -->
 				  <u-form-item :label-position="labelPosition" label="房屋押金 :" prop="mortgageMoney" label-width="150">
@@ -441,10 +441,10 @@
 						</view>
 			</u-modal>
 			<view class="footer">
-				<button type="default" class="feedback-next" @click="nextStep" v-show="stepNum==1 || stepNum<3">下一步</button>
-				<button type="default" class="feedback-pre" @click="preStep" v-show="stepNum>1&!setpAll">上一步</button>
+				<button type="default" class="feedback-pre" @click="preStep" v-show="stepNum>1||setpAll">上一步</button>
+				<button type="default" class="feedback-next" @click="nextStep" v-show="stepNum==1 || stepNum<3 ">下一步</button>
 				<button type="default" class="feedback-pre" @click="showHouseInfo" v-show="stepNum==3&!setpAll">预览</button>
-				<button type="default" class="feedback-next" @click="publish" v-show="setpAll || stepNum==3">发布</button>
+				<button type="default" class="feedback-next" @click="publish" v-show="setpAll">发布</button>
 			</view>
 		</u-form>
 	</view>
@@ -477,6 +477,7 @@ import { attachUpload } from '../../../../utils/utils';
 					city:'',//市
 					area:'',//区，县城
 					communityName:'', //小区名称
+					roomName:'',//房间号
 					heatType:'集体供暖',//供暖方式
 					homeArr:[
 						{name:'A室',tenantStr:''},
@@ -529,6 +530,12 @@ import { attachUpload } from '../../../../utils/utils';
 						required: true,
 						message: '请填写小区名称',
 						trigger: ['change', 'blur']
+					},
+					roomName:{
+						type:'string',
+						required:true,
+						message:'请填写房间号',
+						trigger:['change','blur']
 					},
 					layout:{
 						type: 'string',
@@ -1118,33 +1125,56 @@ import { attachUpload } from '../../../../utils/utils';
 				stepNum:1, //当前是第几步
 				isDone:false, //当点击预览的时候才显示发布
 				setpAll:false,//所有步骤都展示
-				isPublish:false
+				isPublish:false,
+				isEdit:false,//当前是否为编辑房源
 			}
 		},
-		onLoad(){
+		onLoad(options){
+			console.log(options)
+			this.isEdit=options.isUpdate
+			console.log(',isEdit',this.isEdit)
 			that=this
+			// 其他选项值
 			uni.getStorage({
 				key:'houseModel',
 				success:function(data){
 					that.houseModel=JSON.parse(data.data)
+					if(that.houseModel.roomType=='整租'){
+						that.houseModel.homeArr=[]
+					}
+					console.log('渲染数据',data.data)
+					let newArr=that.houseModel.houseConfigStr.split(',')
+					that.houseConfigList.forEach((item,index)=>{
+						if(newArr.indexOf(item.name)!=-1){
+							that.$nextTick(()=>{
+								that.$set(that.houseConfigList[index],'checked',true)
+							})
+						}
+					})
 				}
 			})
+			//下拉选择值
 			uni.getStorage({
 				key:'currentObj',
 				success:function(data){
 					that.currentObj=data.data
+					console.log('下拉选择',that.currentObj)
 				}
 			})
+			//供暖方式
 			uni.getStorage({
 				key:'heatActiveVar',
 				success:function(data){
 					that.heatActiveVar=data.data
+					console.log('供暖方式')
 				}
 			})
+			//房源配置
 			uni.getStorage({
 				key:'houseConfigList',
 				success:function(data){
 					that.houseConfigList=data.data
+					console.log('房源配置')
 				}
 			})
 			this.userInfo=this.$store.state.userInfo
@@ -1439,6 +1469,7 @@ import { attachUpload } from '../../../../utils/utils';
 					key:'houseModel',
 					data:JSON.stringify(this.houseModel)
 				})
+				console.log('发布校验',this.houseModel)
 				return new Promise((resolve,reject)=>{
 					this.$refs.form1.validate().then(res => {
 							if(res){
@@ -1455,25 +1486,20 @@ import { attachUpload } from '../../../../utils/utils';
 
 			async publish(){
 			 this.validateParam().then( async (res)=>{
-				 
 									this.isPublish=true
 									this.homeArrIndex=this.houseModel.chekcNum
-									console.log(this.homeArrIndex)
 									if(!this.isCheck){
 										return
 									}
-									let imagesNatureArr=await  attachUpload(this.houseModel.naturalImageList)
-									let imagesHouseArr=await attachUpload(this.houseModel.houseImageList)
-									var imagesnatura = [];
-									var imagesHouse=[]
-									for(var i = 0,len = this.houseModel.naturalImageList.length; i < len; i++){
-										var image_obj = {name:'image-'+i,uri:this.houseModel.naturalImageList[i]};
-										imagesnatura.push(image_obj);
+									let imagesNatureArr=''
+									let imagesHouseArr=''
+									if(this.isEdit){
+										 imagesNatureArr=this.houseModel.naturalImageList
+										 imagesHouseArr=this.houseModel.houseImageList
+									}else{
+										 imagesNatureArr=await  attachUpload(this.houseModel.naturalImageList)
+										 imagesHouseArr=await attachUpload(this.houseModel.houseImageList)
 									}
-									for(var i = 0,len = this.houseModel.houseImageList.length; i < len; i++){
-										var image_obj = {name:'image-'+i,uri:this.houseModel.houseImageList[i]};
-										imagesHouse.push(image_obj);
-									}   
 
 									uni.showLoading({title:'发布中'});
 									// var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
@@ -1486,6 +1512,7 @@ import { attachUpload } from '../../../../utils/utils';
 									 city:this.houseModel.city,
 									 area:this.houseModel.area,
 									 communityName:this.houseModel.communityName,
+									 roomName:this.houseModel.roomName,
 									layout:this.houseModel.layout, //房屋布局
 									 orientation:this.houseModel.orientation,
 									 size:this.houseModel.homesize, //房屋面积
@@ -1522,12 +1549,17 @@ import { attachUpload } from '../../../../utils/utils';
 							params['roommate']=roommate
 						
 					}
-					let data=params
-					this.$H.post('/zf/v1/room/increase',data,true).then(res=>{
+					let url='/zf/v1/room/increase'
+					if(this.isEdit){
+						url='/zf/v1/room/status'
+						params['id']=this.houseModel.id
+						params['status']=1
+					}
+					console.log('参数',params)
+					this.$H.post(url,params,true).then(res=>{
 						uni.hideLoading();
 						if(res.data&&res.status){
 							uni.$u.toast('发布成功')
-								
 							setTimeout(()=>{
 								uni.switchTab({
 								        url: '/pages/tabbar/home/home'

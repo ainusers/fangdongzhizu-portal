@@ -338,13 +338,30 @@ export default {
 	        type: String,
 	        default: ""
 	    },
+		isLogin:false //是否登录
 	},
 	onLoad() {
-		that=this
-		this.cityName=this.$store.state.currentCity
-		this.regionLeftList[0].text=this.cityName
-		this.getArea()
-		this.getHouseList()
+			that=this
+			// uni.getStorage({
+			// 	key:'token',
+			// 	success(res) {
+			// 		console.log(res,'有没有token')
+			// 		that.isLogin=true
+			// 	}
+			// })
+			// console.log(that.isLogin)
+			// if(!this.isLogin){
+			// 	uni.navigateTo({
+			// 		url: '/pages/auth/login'
+			// 	})
+			// 	return
+			// }
+			this.cityName=this.$store.state.currentCity
+			this.regionLeftList[0].text=this.cityName
+			this.getArea()
+			this.getHouseList()
+	
+
 	},
 	onShow(){
 		console.log('又展示了')

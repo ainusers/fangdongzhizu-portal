@@ -1,4 +1,4 @@
-<style>
+<style scoped lang="scss">
 	.isTopHouse_view{
 		position: absolute;
 		bottom: 30upx;
@@ -8,6 +8,7 @@
 		text-align: right;
 	}
     .er_house_item{
+		display: flex;
         padding: 10upx 10upx 10upx 10upx;
         box-sizing: border-box;
         background: #FFFFFF;
@@ -184,48 +185,80 @@
 	.place {
 		color: #A6A6A6;
 	}
+	.detail_btn{
+		width:100%;
+		height:80upx;
+		display: flex;
+		// margin-bottom: 20upx;
+		justify-content: end;
+		.btn_item{
+			display: flex;
+			align-items: center;
+			padding: 10upx 20px;
+			border:1px solid #18acf0;
+			border-radius: 50upx;
+			margin: 10upx;
+			color: #18acf0;
+		}
+	}
 </style>
 <template>
-	<view @click="homeDetail(item,index)" class="er_house_item f_r_s">
-		<view class="er_house_img_view">
-			<image mode="aspectFill" class="er_house_img" :src="item.imgUrl" lazy-load></image>
+	<view>
+		<view @click="homeDetail(item,index)" class="er_house_item f_r_s">
+			<view class="er_house_img_view">
+				<image mode="aspectFill" class="er_house_img" :src="item.imgUrl" lazy-load></image>
+			</view>
+			<view class="er_house_cont">
+				<!-- 兰亭新苑 三区 朝向 主卧-->
+				<view class="er_house_title">
+					<text v-if="item.rentalHouse">{{ item.rentalHouse.split('-')[0] }}</text>
+					<text v-if=" item.communityName">{{ item.communityName }}</text>
+					<text v-if="item.orientation">{{ item.orientation }}</text>
+				</view>
+				<!-- 租房类型，两室一厅（配比），大小，楼层 -->
+				<view class="er_house_des">
+					<text v-if="item.layout">{{ item.roomType }}|</text>
+					<text v-if="item.layout">{{ item.size }}m² |</text>
+					<text v-if="item.layout">{{ item.floor }}层</text>
+				</view>
+				<!-- 地理位置：距离昌平线沙河地铁站1020米 -->
+				<view class="er_house_tag_info f_r_s">
+					<text> 距离{{item.area}}{{item.subway }}地铁站{{item.distanceSubway}}米</text>
+				</view>
+		
+				<!-- 房屋价格，朝阳区，酒仙桥 -->
+				<view class="er_house_price_view f_r_s">
+					<view class="er_house_price main_color f_r_s">
+						<text v-if="item.money" class="price">{{ item.money }}</text>
+						<text>元/月</text>
+					</view>
+					<view class="place">
+						<text v-if="item.area">{{item.area}}</text>
+						<text v-if="item.subway">{{ item.subway }}</text>
+					</view>
+				</view>
+			</view>
 		</view>
-		<view class="er_house_cont">
-			<!-- 兰亭新苑 三区 朝向 主卧-->
-			<view class="er_house_title">
-				<text v-if="item.rentalHouse">{{ item.rentalHouse.split('-')[0] }}</text>
-				<text v-if=" item.communityName">{{ item.communityName }}</text>
-				<text v-if="item.orientation">{{ item.orientation }}</text>
+		<view class="detail_btn" v-show="isUpdate">
+			<view class="btn_item" @click="updateHouse(item)">
+				编辑
 			</view>
-			<!-- 租房类型，两室一厅（配比），大小，楼层 -->
-			<view class="er_house_des">
-				<text v-if="item.layout">{{ item.roomType }}|</text>
-				<text v-if="item.layout">{{ item.size }}m² |</text>
-				<text v-if="item.layout">{{ item.floor }}层</text>
-			</view>
-			<!-- 地理位置：距离昌平线沙河地铁站1020米 -->
-			<view class="er_house_tag_info f_r_s">
-				<text> 距离{{item.area}}{{item.subway }}地铁站{{item.distanceSubway}}米</text>
-			</view>
-
-			<!-- 房屋价格，朝阳区，酒仙桥 -->
-			<view class="er_house_price_view f_r_s">
-				<view class="er_house_price main_color f_r_s">
-					<text v-if="item.money" class="price">{{ item.money }}</text>
-					<text>元/月</text>
-				</view>
-				<view class="place">
-					<text v-if="item.area">{{item.area}}</text>
-					<text v-if="item.subway">{{ item.subway }}</text>
-				</view>
+			<view class="btn_item" @click="offShelf(item)">
+				下架
 			</view>
 		</view>
 	</view>
+	
 </template>
 
 <script>
 	export default {
 		name: 'house-list-item',
+		data(){
+			return{
+				isUpdate:false
+			}
+		},
         computed:{},
         props: ["item","index"],
 		onLoad() {
@@ -233,11 +266,107 @@
 		},
 		
         methods: {
+			updateHouse(item){
+				console.log('房源信息',item)
+				let city=''
+				if(item.city==item.province){
+					city='市辖区'
+				}
+				let houseModel={
+					id:item.id,
+					publishType:item.publishType,				
+					province:item.province, //省
+					city:item.city,//市
+					area:item.area,//区，县城
+					communityName:item.communityName, //小区名称
+					roomName:item.roomName,//房间号
+					heatType:item.heatType,//供暖方式
+					homeArr:item.roommate,
+					homesize:item.size,
+					money:item.money.toString(),//月度租金
+					mortgageMoney:item.mortgageMoney.toString(),//押金
+					serviceMoney:item.serviceMoney.toString(),//服务费用
+					proxyMoney:item.proxyMoney.toString(),//中介费用
+					houseImageList:item.imgUrl.split(','),
+					naturalImageList:item.condition.split(','),
+					houseConfig: item.support,
+					hasElevatorStr:item.hasElevator,
+					roomType:item.roomType,//房屋类型
+					lease:item.roomType,//房屋类型
+					region1:item.province+'-'+city+'-'+item.area ,//所属区域
+					payType:item.payType,//付款方式
+					warmType:item.heatMoney,//取暖费用
+					wirelessType:item.wifiMoney,//无线费用
+					propertyType:item.manageMoney,//物业费用
+					hydropowerType:item.waterElectricMoney,//水电费用
+					houseConfigStr:item.support,//房屋配置
+					chekcNum:item.roommate.length+1,//当前入住的有几位
+					layout:item.layout, //房屋布局
+					orientation:item.orientation ,//房屋朝向
+					floor:item.floor //楼层位置
+				}
+				console.log('编辑房源',houseModel)
+				uni.setStorage({
+					key:'houseModel',
+					data:JSON.stringify(houseModel)
+				})
+				let currentObj={
+					 //所有picker选中的内容
+						warm:{
+							valueName:item.heatMoney,
+							valueCode:''
+						},
+						wireless:{
+							valueName:item.wifiMoney,
+							valueCode:''
+						},
+						property:{
+							valueName:item.manageMoney,
+							valueCode:''
+						},
+						hydropower:{
+							valueName:item.waterElectricMoney,
+							valueCode:''
+						},
+						pay:{
+							valueName:item.payType,
+							valueCode:''
+						},
+						hire:{
+							valueName:'',
+							valueCode:''
+						},
+						sex:{
+							valueName:'请选择性别',
+							valueCode:''
+						}
+				}
+				uni.setStorage({
+					key:'currentObj',
+					data:currentObj
+				})
+			
+				uni.navigateTo({
+					url:'/pages/tabbar/publish/choice/fangyuan?isUpdate=true'
+				})
+			},
+			offShelf(item){
+				console.log(item)
+				let data={
+					id:item.id,
+					status:3
+				}
+				this.$H.patch('/zf/v1/room/status',data,true).then(res=>{
+					if(res.status){
+						this.$emit('updateHouseList')
+					}
+				})
+			},
         	homeDetail(item,index) {
 					console.log(index)
 				console.log("----> " + JSON.stringify(item))
                 uni.navigateTo({
-                    url: `./homeDetail?index=${index}`
+                    url: `/pages/tabbar/home/homeDetail?index=${index}`
                 });
         	}
         },

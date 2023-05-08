@@ -2,7 +2,7 @@
 	<view class="container" :class="{'active':active}">
 		<u-cell-group v-if="InfoList.length>0">
 			<block v-for="(item,index) in InfoList" :key="index">
-				<u-cell-item :icon="item.data[0].otherAvatar || '../../../../static/me/girl.png'" icon-size="100" :icon-style="iconStype" :title="item.data[0].from" :label='item.data[item.data.length-1].msg' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="timestampToTime(item.data[0].datetime)" @click="goInfo(item)" v-if="item.data[0]"></u-cell-item>
+				<u-cell-item :icon="item.data[item.data.length-1].otherAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.data[0].from" :label='(item.data[item.data.length-1].msg.indexOf("url")!=-1)?"图片":item.data[item.data.length-1].msg' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="timestampToTime(item.data[0].datetime)" @click="goInfo(item)" v-if="item.data[0]" ></u-cell-item>
 			</block>
 		</u-cell-group>
 		<view v-else class="noData">
@@ -18,7 +18,11 @@
 				active: false,
 				avatar: "https://web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png",
 				iconStype:{
-					"margin-right":"15px"
+					"margin-right":"15px",
+					"border-radius":"50px",
+					"width":'50px',
+					"height":'50px',
+					"overflow":"hidden"
 				},
 				titStyle:{
 					"font-weight":"bold",
@@ -74,10 +78,9 @@
 		methods: {
 			goInfo(info){
 				console.log(info)
-				console.log('点击跳转到消息页面')
 				 uni.navigateTo({
 				            //保留当前页面，跳转到应用内的某个页面
-				            url: '/pages/tabbar/community/tools/news?houseId='+info.houseId+'&userId='+this.$store.state.userInfo.userId
+				            url: '/pages/tabbar/community/tools/news?houseId='+info.houseId
 				        })
 			},
 			 timestampToTime(timestamp) {
@@ -104,10 +107,14 @@
 		>>>.u-cell__value{
 			margin-top: -31px;
 		}
+		>>>.u-icon__img{
+			border-radius: 50%;
+		}
 	}
 	.noData{
 		text-align: center;
 		padding: 20upx 0;
 		color: #aaa;
 	}
+	
 </style>

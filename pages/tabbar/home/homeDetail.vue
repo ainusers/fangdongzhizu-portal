@@ -209,7 +209,7 @@
 				
 				<view class="info_con">
 					<view  class="value">{{detailData.layout}}</view>
-					<view  class="key">  {{detailData.roomType}}</view>
+					<view  class="key">  {{detailData.roomType}}-{{detailData.roomName}}</view>
 				</view>
 				
 				<view class="info_con">
@@ -267,6 +267,7 @@
 							<u-radio 
 								v-for="(item, index) in reportList" :key="index" 
 								:name="item.name"
+								v-model="item.checked"
 								:disabled="item.disabled"
 							>
 								{{item.name}}
@@ -284,7 +285,7 @@
 					<view class="target">举报</view>
 				</view>
 				
-				<view class="report report_active" @click="report(2)">
+				<view class="report " :class="[collection==1?'report_active':'']" @click="report(2)">
 					<u-icon name="heart" size="50"></u-icon>
 					<view class="target" >收藏</view>
 				</view>
@@ -343,32 +344,41 @@
 	},
     data() {
       return {
+		  collection:'',//是否收藏了
 		  isMap:true,
 		reportShow:false,
 		reportList:[
 			{
-				name:'涉政有害'
+				name:'涉政有害',
+				checked:false
 			},
 			{
-				name:'违规违法'
+				name:'违规违法',
+				checked:false
 			},
 			{
-				name:'垃圾广告'
+				name:'垃圾广告',
+				checked:false
 			},
 			{
-				name:'色情低俗'
+				name:'色情低俗',
+				checked:false
 			},
 			{
-				name:'虚假房源'
+				name:'虚假房源',
+				checked:false
 			},
 			{
-				name:'涉嫌抄袭'
+				name:'涉嫌抄袭',
+				checked:false
 			},
 			{
-				name:'网络暴力'
+				name:'网络暴力',
+				checked:false
 			},
 			{
-				name:'其它'
+				name:'其它',
+				checked:false
 			}
 		],
 		type:'textarea',
@@ -451,6 +461,7 @@
           archiveId: "",
           show: false
         },
+		tipcontent:''
       };
     },
 	methods:{
@@ -467,7 +478,7 @@
 			this.showSupport()
 			//租赁信息
 			this.initzulinData()
-			
+			this.getCollect()
 		},
 		reportShowFn(){
 			this.isMap=false
@@ -548,11 +559,6 @@
 			}
 			// 1 举报  2 收藏  3立即沟通
 			switch (index){
-				case 1:
-				params['complain']=1
-				this.statistics(params)
-				
-				break;
 				case 2:
 				params['collection']=1
 				this.statistics(params)
@@ -589,6 +595,7 @@
 			}
 		},
 		radioGroupChange(e){
+			this.tipcontent=e
 			if(e=='其它'){
 				this.isOtherR=true
 			}else{
@@ -597,11 +604,34 @@
 		},
 		goReport(){
 			this.isMap=true
-			console.log('去举报')
-			this.report(1)
+			let data={
+				userId:this.detailData.userId,
+				type:'房源',
+				typeId:this.detailData.id,
+				content:this.tipcontent
+			}
+			this.$H.post('/zf/v1/tip/tips',data,true).then(res=>{
+				if(res.status){
+					this.$u.toast('举报成功')
+				}
+			})
 		},
 		cancelReport(){
 			this.isMap=true
+		},
+		getCollect(){
+			let data={
+				userId:this.detailData.userId,
+				roomId:this.detailData.id
+			}
+			this.$H.get('/zf/v1/room/collect',data,true).then(res=>{
+				console.log(res)
+				// collection   1  收藏 0 没有收藏
+				if(res.status){
+					this.collection=res.data[0].collection
+					console.log(this.collection)
+				}
+			})
 		}
 	}
 }
