@@ -230,7 +230,7 @@
 			<view class="step_1" v-show="stepNum==1||setpAll">
 				<!-- 资质上传 -->
 				<view class="region_new_title">资质上传</view>
-				<u-form-item prop="naturalImageList" required  :border-bottom="false">
+				<u-form-item prop="naturalImageList" required  :border-bottom="false" >
 				<view class="uni-list list-pd">
 					<view class="uni-list-cell cell-pd">
 						<view class="uni-uploader">
@@ -259,61 +259,66 @@
 				<!-- 房屋位置 -->
 				<view class="region_new_title">您的房屋位置</view>
 				<u-form-item :label-position="labelPosition"  prop="region1" label-width="150"  borderBottom required>
-					<u-input :border="border" type="select" v-model="houseModel.region1" placeholder="请选择所属区域"   @click="pickerShow = true"></u-input>
+					<u-input :border="border" type="select" v-model="houseModel.region1" placeholder="请选择所属区域"   @click="showPickerArea" ></u-input>
 				</u-form-item>
 				<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
 				<!-- 小区名称 -->
 				<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" :label-position="labelPosition" label="小区名称 :" prop="communityName" ref="item1" required>
-					<u-input :border="border" placeholder="请输入小区名称" type="text" v-model="houseModel.communityName"></u-input>
+					<u-input :border="border" placeholder="请输入小区名称" type="text" v-model="houseModel.communityName" :disabled="setpAll"></u-input>
 				</u-form-item>
 				<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="200" :label-position="labelPosition" label="具体房间号 :" prop="communityName" ref="item1" required>
-					<u-input :border="border" placeholder="请输入具体房间号" type="text" v-model="houseModel.roomName"></u-input>
+					<u-input :border="border" placeholder="请输入具体房间号" type="text" v-model="houseModel.roomName" :disabled="setpAll"></u-input>
 				</u-form-item>
 			</view>
-			
+			</u-form>
+			<u-form
+			labelPosition="left"
+			:model="houseModel"
+			ref="form2"
+			>
 			<view class="step_2" v-show="stepNum==2 ||setpAll">
 				<!-- 费用信息 -->
 				<view class="region_new_title">您的房屋费用信息</view>
 				<u-form-item :label-position="labelPosition" label="房屋布局 :" prop="layout" label-width="150">
-					<u-input :border="border" placeholder="请选择房屋结构" v-model="houseModel.layout" type="select" @click="layoutShow = true"></u-input>
+					<u-input :border="border" placeholder="请选择房屋结构" v-model="houseModel.layout" type="select" @click="layoutShowFn" :disabled="setpAll"></u-input>
 					<u-select :mode="mode" v-model="layoutShow" :list="layoutList" @confirm="layoutConfirm" @cancel="layoutCancel"></u-select>
 				</u-form-item>
 				<!-- 付款方式 -->
 				<u-form-item :label-position="labelPosition" label="付款方式 :"  label-width="150" prop="payType" required>
-					<view @click="showPicker('pay')" :class="[{'select_btn':currentObj['pay'].valueName.indexOf('请选择')!=-1}]">{{currentObj['pay'].valueName}}</view>
+					<view @click="showPicker('pay')" :class="[{'select_btn':!houseModel.payType}]">{{houseModel.payType || '请选择付款方式'}}</view>
 				</u-form-item>
 				
 				  <!-- 月度租金 -->
 				  <u-form-item :label-position="labelPosition" label="房屋租金 :" prop="money" label-width="150" required>
-				  	<u-input :border="border" :type="Number" placeholder="请输入房屋租金" type="text" v-model="houseModel.money"></u-input>
+				  	<u-input :border="border" :type="Number" placeholder="请输入房屋租金" type="text" v-model="houseModel.money" :disabled="setpAll"></u-input>
 				  </u-form-item>
 				  <!-- 房屋押金 -->
 				  <u-form-item :label-position="labelPosition" label="房屋押金 :" prop="mortgageMoney" label-width="150">
-				  	<u-input :border="border" :type="Number" placeholder="请输入房屋押金" type="text" v-model="houseModel.mortgageMoney"></u-input>
+				  	<u-input :border="border" :type="Number" placeholder="请输入房屋押金" type="text" v-model="houseModel.mortgageMoney" :disabled="setpAll"></u-input>
 				  </u-form-item>
 				  <!-- 服务费用 -->
 				  <u-form-item :label-position="labelPosition" label="服务费用 :" prop="serviceMoney" label-width="150">
-				  	<u-input :border="border" :type="Number" placeholder="请输入服务费用" type="text" v-model="houseModel.serviceMoney"></u-input>
+				  	<u-input :border="border" :type="Number" placeholder="请输入服务费用" type="text" v-model="houseModel.serviceMoney" :disabled="setpAll"></u-input>
 				  </u-form-item>
 				  <!-- 中介费用 -->
 				  <u-form-item :label-position="labelPosition" label="中介费用 :" prop="proxyMoney" label-width="150">
-				  	<u-input :border="border" :type="Number" placeholder="请输入中介费用" type="text" v-model="houseModel.proxyMoney"></u-input>
+				  	<u-input :border="border" :type="Number" placeholder="请输入中介费用" type="text" v-model="houseModel.proxyMoney" :disabled="setpAll"></u-input>
 				  </u-form-item>
 				  <!-- 取暖费用 -->
 				  <u-form-item :label-position="labelPosition" label="取暖费用 :"  label-width="150" prop="warmType">
-				  	<view @click="showPicker('warm')" :class="[{'select_btn':currentObj['warm'].valueName.indexOf('请选择')!=-1}]">{{currentObj['warm'].valueName}}</view>
+				  	<view @click="showPicker('warm')" :class="[{'select_btn':!houseModel.warmType}]">{{houseModel.warmType || '请选择取暖费用'}}</view>
 				  </u-form-item>
 				  <!-- 无线费用 -->
 				  <u-form-item :label-position="labelPosition" label="无线费用 :"  label-width="150" prop="wirelessType">
-				  <view @click="showPicker('wireless')" :class="[{'select_btn':currentObj['wireless'].valueName.indexOf('请选择')!=-1}]">{{currentObj['wireless'].valueName}}</view>
+				  <view @click="showPicker('wireless')" :class="[{'select_btn':!houseModel.wirelessType}]">{{houseModel.wirelessType || '请选择无线费用'}}</view>
 				  </u-form-item>
 				  <!-- 物业费用 -->
 				  <u-form-item :label-position="labelPosition" label="物业费用 :"  label-width="150" prop="propertyType">
-				  <view @click="showPicker('property')" :class="[{'select_btn':currentObj['property'].valueName.indexOf('请选择')!=-1}]">{{currentObj['property'].valueName}}</view>
+				  <view @click="showPicker('property')" :class="[{'select_btn':!houseModel.propertyType}]">{{houseModel.propertyType ||'请选择无线费用'}}</view>
 				  </u-form-item>
 				  <!-- 水电费用 -->
 				  <u-form-item :label-position="labelPosition" label="水电费用 :"  label-width="150" prop="hydropowerType">
-				  	<view @click="showPicker('hydropower')" :class="[{'select_btn':currentObj['hydropower'].valueName.indexOf('请选择')!=-1}]">{{currentObj['hydropower'].valueName}}</view>
+				  	<view @click="showPicker('hydropower')" :class="[{'select_btn':!houseModel.hydropowerType}]">{{houseModel.hydropowerType || '请选择水电费用'}}</view>
 				  </u-form-item>
 				  <!-- 供暖方式 -->
 				  <u-form-item :label-position="labelPosition" label="供暖方式 :"  label-width="150">
@@ -323,29 +328,34 @@
 				  		</view>
 				  </u-form-item>
 			</view>
-			
+			</u-form>
+			<u-form
+			labelPosition="left"
+			:model="houseModel"
+			ref="form3"
+			>
 			<view class="step_3" v-show="stepNum==3 || setpAll">
 				<!-- 费用信息 -->
 				<view class="region_new_title">您的房屋信息（必填项）</view>
 				<!-- 出租房屋 -->
 				<u-form-item :label-position="labelPosition" label="出租房屋 :" prop="lease" label-width="150">
-					<u-input :border="border" placeholder="请选择房屋结构" v-model="houseModel.lease" type="select" @click="leaseShow = true"></u-input>
+					<u-input :border="border" placeholder="请选择房屋结构" v-model="houseModel.lease" type="select" @click="leaseShowFn" :disabled="setpAll"></u-input>
 					<u-select mode="mutil-column-auto" v-model="leaseShow" :list="leaseList" @confirm="leaseConfirm" @cancel="leaseCancel"></u-select>
 				</u-form-item>
 				<!-- 几室 -->
 				<view class="" v-for="(item,index) in houseModel.homeArr">
 					<u-form-item :label-position="labelPosition" :label="item.name" prop="homeArr" label-width="150" v-if="houseModel.chekcNum!=0&&index<houseModel.chekcNum" >
-						<u-input :border="border" placeholder="请填写房屋信息" v-model="item.tenantStr"  type="select"  @click="popUpShowFn('tenant',index)"></u-input>
+						<u-input :border="border" placeholder="请填写房屋信息" v-model="item.tenantStr"  type="select"  @click="popUpShowFn('tenant',index)" :disabled="setpAll"></u-input>
 					</u-form-item>
 				</view>   
 				<!-- 房屋朝向 -->
 				<u-form-item :label-position="labelPosition" label="房屋朝向 :" prop="orientation" label-width="150">
-					<u-input :border="border" placeholder="请选择房屋朝向" v-model="houseModel.orientation" type="select" @click="orientationShow = true"></u-input>
+					<u-input :border="border" placeholder="请选择房屋朝向" v-model="houseModel.orientation" type="select" @click="orientationShowFn" :disabled="setpAll"></u-input>
 					<u-select :mode="mode" v-model="orientationShow" :list="orientationList" @confirm="orientationConfirm" @cancel="orientationCancel"></u-select>
 				</u-form-item>
 				<!-- 房屋面积 -->
 				<u-form-item :label-position="labelPosition" label="房屋面积 :" prop="homesize" label-width="150">
-						<u-input :border="border" placeholder="请输入平方数" type="text" v-model="houseModel.homesize"></u-input>m²
+						<u-input :border="border" placeholder="请输入平方数" type="number" v-model="houseModel.homesize" :disabled="setpAll"></u-input>m²
 				</u-form-item>
 				<!-- 有无电梯 -->
 				<u-form-item :label-position="labelPosition" label="有无电梯 :"  label-width="150">
@@ -356,7 +366,7 @@
 				</u-form-item>
 				<!-- 楼层位置 -->
 				<u-form-item :label-position="labelPosition" label="楼层位置 :" prop="floor" label-width="150">
-					<u-input :border="border" placeholder="请输入楼层" type="text" @click="popUpShowFn('floor')" v-model="houseModel.floor"></u-input>层
+					<u-input :border="border" placeholder="请输入楼层" type="number" @click="popUpShowFn('floor')" v-model="houseModel.floor" :disabled="setpAll" ></u-input>层
 				</u-form-item>
 				<!-- 房源照片 -->
 				<view class="region_new_title">房源照片</view>
@@ -389,7 +399,7 @@
 				<!-- 房源配置 -->
 				<u-form-item :label-position="labelPosition"  label-width="150" prop="houseConfigStr">
 					<u-checkbox-group @change="houseConfig" :width="radioCheckWidth" :wrap="false">
-						<u-checkbox v-model="item.checked" v-for="(item, index) in houseConfigList" :key="index" :name="item.name">
+						<u-checkbox v-model="item.checked" v-for="(item, index) in houseConfigList" :key="index" :name="item.name" :disabled="setpAll">
 							{{ item.name }}
 						</u-checkbox>
 					</u-checkbox-group>
@@ -422,11 +432,11 @@
 						</u-form-item>
 						<!-- 价钱 -->
 						<u-form-item :label-position="labelPosition" label="价钱 :" label-width="150" v-if='currentObj["hire"].valueName=="未出租"'>
-							<u-input :border="border" :type="Number" placeholder="请输入出租价钱" type="text" v-model="tenantPrice"></u-input>元/月
+							<u-input :border="border" :type="Number" placeholder="请输入出租价钱" type="text" v-model="tenantPrice" :disabled="setpAll"></u-input>元/月
 						</u-form-item>
 						<!-- 面积 -->
 						<u-form-item :label-position="labelPosition" label="面积 :"  label-width="150" >
-							<u-input :border="border" :type="Number" placeholder="请输入房屋面积" type="text" v-model="tenantArea"></u-input>m²
+							<u-input :border="border" :type="Number" placeholder="请输入房屋面积" type="text" v-model="tenantArea" :disabled="setpAll"></u-input>m²
 						</u-form-item>
 						
 					</view>
@@ -443,7 +453,7 @@
 			<view class="footer">
 				<button type="default" class="feedback-pre" @click="preStep" v-show="stepNum>1||setpAll">上一步</button>
 				<button type="default" class="feedback-next" @click="nextStep" v-show="stepNum==1 || stepNum<3 ">下一步</button>
-				<button type="default" class="feedback-pre" @click="showHouseInfo" v-show="stepNum==3&!setpAll">预览</button>
+				<button type="default" class="feedback-pre" @click="nextStep" v-show="stepNum==3&!setpAll">预览</button>
 				<button type="default" class="feedback-next" @click="publish" v-show="setpAll">发布</button>
 			</view>
 		</u-form>
@@ -452,7 +462,7 @@
 
 <script>
 import image from '@/store/image.js';
-import { attachUpload } from '../../../../utils/utils';
+import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 	
 	var sourceType = [
 		['camera'],
@@ -497,14 +507,14 @@ import { attachUpload } from '../../../../utils/utils';
 					hasElevatorStr:'有电梯',
 					roomType:'',//房屋类型
 					region1:'' ,//所属区域
-					payType:'',//付款方式
+					payType:'请选择付款方式',//付款方式
 					warmType:'',//取暖费用
 					wirelessType:'',//无线费用
 					propertyType:'',//物业费用
 					hydropowerType:'',//水电费用
 					houseConfigStr:'',//房屋配置
 					chekcNum:0,//当前入住的有几位
-					
+					lease:''
 				},
 				//表单规则
 				rules:{
@@ -514,12 +524,7 @@ import { attachUpload } from '../../../../utils/utils';
 						message: '请上传资质证明',
 						trigger: ['change', 'blur']
 					},
-					houseImageList:{
-						type:'array',
-						required: true,
-						message: '请上传房源证明',
-						trigger: ['change', 'blur']
-					},
+
 					region1:[{
 						required: true,
 						message: '请选择所属区域',
@@ -536,58 +541,13 @@ import { attachUpload } from '../../../../utils/utils';
 						required:true,
 						message:'请填写房间号',
 						trigger:['change','blur']
-					},
+					}
+				},
+				rules1:{
 					layout:{
 						type: 'string',
 						required: true,
 						message: '请选择房屋布局',
-						trigger: ['change', 'blur']
-					},
-					lease:{
-						type:'string',
-						required:true,
-						message:'请选择出租房屋',
-						trigger: ['change', 'blur']
-					},
-					homesize:{
-						type:'string',
-						required:true,
-						message:'请填写房屋面积',
-						trigger: ['change', 'blur']
-					},
-					homeArr:[
-					    {
-								type:'array',
-								required: true, 
-								message: '请输入手机号',
-								trigger: ['change','blur'],
-						},
-						{
-							validator: (rule, value, callback) => {
-								let isT=true
-									value.forEach((item,index)=>{
-										if(index<this.houseModel.chekcNum&&item.tenantStr==""&&this.houseModel.chekcNum==this.homeArrIndex){
-											isT=false
-										}
-									})
-								
-									return isT;
-							},
-							message: '请填写房屋信息',
-										// 触发器可以同时用blur和change
-							trigger: ['change','blur'],
-						}
-					],
-					orientation:{
-						type:'string',
-						required:true,
-						message:'请选择房屋朝向',
-						trigger: ['change', 'blur']
-					},
-					floor:{
-						type:'string',
-						required:true,
-						message:'请选择楼层位置',
 						trigger: ['change', 'blur']
 					},
 					payType: [
@@ -606,7 +566,7 @@ import { attachUpload } from '../../../../utils/utils';
 					],
 					mortgageMoney:{
 						required: true,
-						message: '请填写房屋租金',
+						message: '请填写房屋押金',
 						trigger: ['change', 'blur']
 					},
 					serviceMoney:{
@@ -639,6 +599,62 @@ import { attachUpload } from '../../../../utils/utils';
 						message: '请选择水电费用',
 						trigger: ['change', 'blur']
 					},
+				},
+				rules2:{
+					lease:{
+						type:'string',
+						required:true,
+						message:'请选择出租房屋',
+						trigger: ['change', 'blur']
+					},
+					homeArr:[
+					    {
+								type:'array',
+								required: true, 
+								message: '请填写房屋信息',
+								trigger: ['change','blur'],
+						},
+						{
+							validator: (rule, value, callback) => {
+								let isT=true
+									value.forEach((item,index)=>{
+										if(index<this.houseModel.chekcNum&&item.tenantStr==""){
+											isT=false
+										}
+									})
+								
+									return isT;
+							},
+							message: '请填写房屋信息',
+										// 触发器可以同时用blur和change
+							trigger: ['change','blur'],
+						}
+					],
+					orientation:{
+						type:'string',
+						required:true,
+						message:'请选择房屋朝向',
+						trigger: ['change', 'blur']
+					},
+					homesize:{
+						type:'string',
+						required:true,
+						message:'请填写房屋面积',
+						trigger: ['change', 'blur']
+					},
+					floor:{
+						type:'string',
+						required:true,
+						message:'请选择楼层位置',
+						trigger: ['change', 'blur']
+					},
+					houseImageList:{
+						type:'array',
+						required: true,
+						message: '请上传房源证明',
+						trigger: ['change', 'blur']
+					},
+					
 					houseConfigStr:{
 						required: true,
 						message: '请选择房屋配置',
@@ -646,9 +662,10 @@ import { attachUpload } from '../../../../utils/utils';
 					},
 					
 				},
+				
 				userInfo:'',
 				homeNum:'', //当前一共有几间房
-				rentNum:'',//当前出租几间
+				rentNum:1,//当前出租几间
 				
 				currentType:'',
 				tenantObj:[],//每个租户的信息
@@ -1127,6 +1144,8 @@ import { attachUpload } from '../../../../utils/utils';
 				setpAll:false,//所有步骤都展示
 				isPublish:false,
 				isEdit:false,//当前是否为编辑房源
+				isPublish1:false,
+				isPublish2:false
 			}
 		},
 		onLoad(options){
@@ -1139,10 +1158,29 @@ import { attachUpload } from '../../../../utils/utils';
 				key:'houseModel',
 				success:function(data){
 					that.houseModel=JSON.parse(data.data)
+					console.log('房源信息',that.houseModel)
 					if(that.houseModel.roomType=='整租'){
 						that.houseModel.homeArr=[]
 					}
-					console.log('渲染数据',data.data)
+					let loacalData=JSON.parse(data.data)
+					let Numstr=loacalData.layout?loacalData.layout.slice(0,1):''
+					switch(Numstr){
+						case "一":
+							that.homeNum=1
+						break;
+						case "二":
+							that.homeNum=2
+						break;
+						case "三":
+							that.homeNum=3
+						break;
+						case "四":
+							that.homeNum=4
+						break;
+						case "五":
+							that.homeNum=5
+						break;
+					}
 					let newArr=that.houseModel.houseConfigStr.split(',')
 					that.houseConfigList.forEach((item,index)=>{
 						if(newArr.indexOf(item.name)!=-1){
@@ -1161,6 +1199,7 @@ import { attachUpload } from '../../../../utils/utils';
 					console.log('下拉选择',that.currentObj)
 				}
 			})
+			console.log(this.houseModel)
 			//供暖方式
 			uni.getStorage({
 				key:'heatActiveVar',
@@ -1200,6 +1239,19 @@ import { attachUpload } from '../../../../utils/utils';
 					 console.log(this.houseModel)
 				},
 				deep:true
+			},
+			"houseModel.lease":{
+				handler(newVal,oldVal){
+					console.log(newVal)
+					if(newVal&&newVal.indexOf('合租')!=-1){
+						this.isJoint=true
+						console.log(this.rentNum)
+						console.log(this.homeNum)
+						this.isJoint?this.houseModel.chekcNum=Number(this.homeNum)-Number(this.rentNum):this.houseModel.chekcNum=0
+					}
+					
+				},
+				deep:true
 			}
 		},
 		onBackPress(e){
@@ -1210,24 +1262,46 @@ import { attachUpload } from '../../../../utils/utils';
 		},
 		methods: {
 			nextStep(){
-				console.log('下一步')
-				// if(this.houseModel.naturalImageList.length==0){
-				// 	uni.$u.toast('请上传资质图片')
-				// 	return
-				// }
-					
-				// if(!this.houseModel.region1){
-				// 	uni.$u.toast('请选择所属区域')
-				// 	return
-				// }
-				// if(!this.houseModel.communityName){
-				// 	uni.$u.toast('请填写小区名称')
-				// 	return
-				// }
-				this.saveLocal()
-				this.stepNum++
+				if(this.stepNum==1){
+					this.validateParam().then(res=>{
+						this.isPublish=true
+						console.log(this.isCheck)
+						if(this.isCheck){
+							this.stepNum++
+						}
+					})
+				}else if(this.stepNum==2){
+					this.validateParam2().then(res=>{
+						this.isPublish1=true
+						console.log(this.isCheck)
+						if(this.isCheck){
+							this.stepNum++
+						}
+					})
+				}else if(this.stepNum==3){
+					this.validateParam3().then(res=>{
+						console.log(this.isCheck)
+						this.isPublish2=true
+						if(this.isCheck){
+							this.saveLocal()
+							this.setpAll=true
+						}
+					})
+				}
+					this.saveLocal()
 				this.setpAll=false
-				console.log(this.stepNum)
+			},
+			leaseShowFn(){
+				if(this.setpAll){
+					return
+				}
+				this.leaseShow=true
+			},
+			orientationShowFn(){
+				if(this.setpAll){
+					return
+				}
+				this.orientationShow=true
 			},
 			saveLocal(){
 				//保存信息到本地
@@ -1249,14 +1323,16 @@ import { attachUpload } from '../../../../utils/utils';
 				})
 			},
 			preStep(){
-				this.stepNum--
-				this.setpAll=false
-				this.saveLocal()
+				if(this.setpAll){
+					this.setpAll=false
+				}else{
+					this.stepNum--
+					this.setpAll=false
+					this.saveLocal()
+				}
+				
 			},
-			showHouseInfo(){
-				this.saveLocal()
-				this.setpAll=true
-			},
+
 			deleteHouseInfo(){
 				console.log('不保存草稿')
 				uni.removeStorage({
@@ -1283,8 +1359,23 @@ import { attachUpload } from '../../../../utils/utils';
 				        url: '/pages/tabbar/home/home'
 				       })
 			},
+			layoutShowFn(){
+				if(this.setpAll){
+					return
+				}
+				this.layoutShow=true
+			},
+			showPickerArea(){
+				if(this.setpAll){
+					return
+				}
+				this.pickerShow=true
+			},
 				//展示picker
 			showPicker(type){
+				if(this.setpAll){
+					return
+				}
 				this.selectShow=true
 				this.currentType=type
 				switch(type){ //费用支付方式
@@ -1316,14 +1407,19 @@ import { attachUpload } from '../../../../utils/utils';
 				this.currentObj[name].valueName=this.selectList[val[0]].value
 				this.currentObj[name].valueCode=this.selectList[val[0]].label	
 				console.log(this.houseModel)
-				if(this.isPublish){
-					this.validateParam()
+				if(this.isPublish1){
+					this.validateParam2()
 				}
 				
 			},
 			popUpShowFn(type,index){
+				if(this.setpAll){
+					return
+				}
 				this.popUpType=type
 				this.popUpShow=true
+				this.tenantShow=false
+				this.floorShow=false
 				if(type=='tenant'){  //仅针对房屋情况
 					this.tenantInit()
 					this.homeArrIndex=index
@@ -1344,7 +1440,7 @@ import { attachUpload } from '../../../../utils/utils';
 			
 			// 发布类型选择发生变化
 			radioGroupChange(index) {
-				console.log(index)
+				if(this.setpAll) return
 				this.radioList.forEach((item,key)=>{
 					item.checked=false
 					if(index==key){
@@ -1370,6 +1466,7 @@ import { attachUpload } from '../../../../utils/utils';
 					}
 					result += result == '' ? val.label : '-' + val.label;
 				})
+				
 				this.isJoint?this.houseModel.chekcNum=Number(this.homeNum)-1:this.houseModel.chekcNum=0
 				this.houseModel.layout = result;
 			},
@@ -1381,6 +1478,7 @@ import { attachUpload } from '../../../../utils/utils';
 				let result = '';
 				console.log(e)
 				e.map((val, index) => {
+					console.log(index)
 					//当前为合租
 					if(index==0&&val.value==8){
 						this.isJoint=true
@@ -1401,13 +1499,17 @@ import { attachUpload } from '../../../../utils/utils';
 			},
 			// 供暖方式
 			heatTypeFn(item,index){
-				console.log(item)
+				if(this.setpAll){
+					return
+				}
 				this.heatType=item
 				this.heatActiveVar=index
 		    },
 			// 有无电梯
 			hasElevator(item,index){
-				console.log(item)
+				if(this.setpAll){
+					return
+				}
 				this.houseModel.hasElevatorStr=item
 				this.elevatorActiveVar=index
 		    },
@@ -1459,19 +1561,23 @@ import { attachUpload } from '../../../../utils/utils';
 						let tenantStr=obj.hirecircum + '-'+(obj.sex.indexOf('请选择')==-1?obj.sex:obj.price+'元/月')+'-'+obj.area+'m²'
 						this.tenantObj.push(obj)
 						this.houseModel.homeArr[this.homeArrIndex].tenantStr=tenantStr
+						
 					break;
 				}
-				
+				if(this.isPublish2){
+					this.validateParam3()
+				}
 				this.popupinit()
 			},
 			async validateParam(){
+				console.log(this.houseModel)
 				uni.setStorage({
 					key:'houseModel',
 					data:JSON.stringify(this.houseModel)
 				})
-				console.log('发布校验',this.houseModel)
 				return new Promise((resolve,reject)=>{
 					this.$refs.form1.validate().then(res => {
+						console.log('校验是否通过',res)
 							if(res){
 								resolve(true)
 									this.isCheck=true
@@ -1483,10 +1589,45 @@ import { attachUpload } from '../../../../utils/utils';
 				})
 				
 			},
-
+			async validateParam2(){
+				uni.setStorage({
+					key:'houseModel',
+					data:JSON.stringify(this.houseModel)
+				})
+				return new Promise((resolve,reject)=>{
+					this.$refs.form2.validate().then(res => {
+							if(res){
+								resolve(true)
+									this.isCheck=true
+							}else{
+								resolve(false)
+								this.isCheck=false
+							}
+						})
+				})
+				
+			},
+			async validateParam3(){
+				uni.setStorage({
+					key:'houseModel',
+					data:JSON.stringify(this.houseModel)
+				})
+				return new Promise((resolve,reject)=>{
+					this.$refs.form3.validate().then(res => {
+							if(res){
+								resolve(true)
+									this.isCheck=true
+							}else{
+								resolve(false)
+								this.isCheck=false
+							}
+						})
+				})
+				
+			},
 			async publish(){
 			 this.validateParam().then( async (res)=>{
-									this.isPublish=true
+									
 									this.homeArrIndex=this.houseModel.chekcNum
 									if(!this.isCheck){
 										return
@@ -1511,26 +1652,26 @@ import { attachUpload } from '../../../../utils/utils';
 									 province:this.houseModel.province,
 									 city:this.houseModel.city,
 									 area:this.houseModel.area,
-									 communityName:this.houseModel.communityName,
-									 roomName:this.houseModel.roomName,
+									 communityName:htmlEncode(this.houseModel.communityName),
+									 roomName:htmlEncode(this.houseModel.roomName),
 									layout:this.houseModel.layout, //房屋布局
 									 orientation:this.houseModel.orientation,
-									 size:this.houseModel.homesize, //房屋面积
+									 size:htmlEncode(this.houseModel.homesize), //房屋面积
 									 floor:this.houseModel.floor,
 									 distanceSubway:'距离西二旗地铁站600米',
 									 subway:'西二旗',
 									 rentalHouse:this.houseModel.roomType,
-									 payType:this.currentObj['pay'].valueName,
+									 payType:this.houseModel.payType,
 									 heatType:this.houseModel.heatType, //供暖方式
 									 hasElevator:this.houseModel.hasElevatorStr,
-									 money:this.houseModel.money, //月度租金
-									 mortgageMoney:this.houseModel.mortgageMoney,//押金
-									 serviceMoney:this.houseModel.serviceMoney,
+									 money:htmlEncode(this.houseModel.money), //月度租金
+									 mortgageMoney:htmlEncode(this.houseModel.mortgageMoney),//押金
+									 serviceMoney:htmlEncode(this.houseModel.serviceMoney),
 									 proxyMoney:this.houseModel.proxyMoney,//代理
-									 heatMoney:this.currentObj['warm'].valueName,//取暖费用
-									 wifiMoney:this.currentObj['wireless'].valueName,//无线费用
-									 manageMoney:this.currentObj['property'].valueName, //物业费用
-									 waterElectricMoney:this.currentObj['hydropower'].valueName,
+									 heatMoney:this.houseModel.warmType,//取暖费用
+									 wifiMoney:this.houseModel.wirelessType,//无线费用
+									 manageMoney:this.houseModel.propertyType, //物业费用
+									 waterElectricMoney:this.houseModel.hydropowerType,
 									 longitude:'1.1',
 									 latitude:'1.3',
 									 position:'北京动物园',
@@ -1560,6 +1701,18 @@ import { attachUpload } from '../../../../utils/utils';
 						uni.hideLoading();
 						if(res.data&&res.status){
 							uni.$u.toast('发布成功')
+							uni.removeStorage({
+								key:'houseModel'
+							})
+							uni.removeStorage({
+								key:'currentObj'
+							})
+							uni.removeStorage({
+								key:'houseConfigList'
+							})
+							uni.removeStorage({
+								key:'heatActiveVar'
+							})
 							setTimeout(()=>{
 								uni.switchTab({
 								        url: '/pages/tabbar/home/home'
@@ -1587,6 +1740,9 @@ import { attachUpload } from '../../../../utils/utils';
 				} )
 			},
 			deletImg(e,type){
+				if(this.setpAll){
+					return
+				}
 				if(type=='natural'){
 					this.houseModel.naturalImageList.splice(e,1);
 				}else{
@@ -1595,6 +1751,9 @@ import { attachUpload } from '../../../../utils/utils';
 			   
 			},
 			chooseImage: async function(type) {
+				if(this.setpAll){
+					return
+				}
 				this.chooseImageFn(type)
 			},
 			chooseImageFn:async function(type){
@@ -1636,14 +1795,16 @@ import { attachUpload } from '../../../../utils/utils';
 						
 						if(type=='natural'){
 							this.houseModel.naturalImageList = this.houseModel.naturalImageList.concat(res.tempFilePaths)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
-						}else{
-							this.houseModel.houseImageList = this.houseModel.houseImageList.concat(res.tempFilePaths)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
-						}
-						// #endif
 						if(this.isPublish){
 							this.validateParam()
 						}
-						
+						}else{
+							this.houseModel.houseImageList = this.houseModel.houseImageList.concat(res.tempFilePaths)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
+						if(this.isPublish2){
+							this.validateParam3()
+						}
+						}
+						// #endif
 					}
 				})
 			},
@@ -1695,6 +1856,8 @@ import { attachUpload } from '../../../../utils/utils';
 		},
 	onReady() {
 			this.$refs.form1.setRules(this.rules);
+			this.$refs.form2.setRules(this.rules1);
+			this.$refs.form3.setRules(this.rules2);
 		},
 	}
 </script>

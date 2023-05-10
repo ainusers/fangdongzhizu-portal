@@ -180,8 +180,7 @@
 	      <view class="top">
 	        <view class="userImage">
 	          <!-- <image :src="this.userInfo.avatar" mode="aspectFit"></image> -->
-			  <u-avatar class="avatar" :src="this.userInfo.avatar" level-bg-color="#8072f3"></u-avatar>
-			
+			  <u-avatar class="avatar" :src="this.userInfo.avatar" level-bg-color="#8072f3" size="140rpx" ></u-avatar>
 			</view>
 			 <image mode="aspectFit" src="../../../static/me/renzheng.gif" class="renzheng_icon"></image>
 	      </view>
@@ -235,13 +234,13 @@
 		  	<view class="icon">
 		  		<image src="../../../static/me/quanzi.gif" mode="aspectFit"></image>
 		  	</view>
-		  	<view class="name">圈子</view>
+		  	<view class="name">动态</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=1')">
 		  	<view class="icon">
 		  		<image src="../../../static/me/hudong.gif" mode="aspectFit"></image>
 		  	</view>
-		  	<view class="name">互动</view>
+		  	<view class="name">点赞</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=2')">
 		  	<view class="icon">
@@ -290,15 +289,19 @@
 </template>
 
 <script>
+	import {isLoginCheck} from '../../../utils/utils.js'
 	export default {
 		data() {
 			return {
-				userInfo: ''
+				userInfo: '',
+				token:''
 			}
 		},
 		
 		onLoad() {
+			// isLoginCheck()
 			this.userInfo=this.$store.state.userInfo
+			
 		},
 		methods: {
 		

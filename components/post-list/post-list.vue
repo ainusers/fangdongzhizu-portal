@@ -203,7 +203,7 @@
 					provider: "weixin", // 服务提供商（即weixin|qq|sinaweibo）
 					scene: scene, // 分享到哪儿
 					type: 0, // 图文
-					href: '/pages/tabbar/community/comment?id'+this.dyId, //跳转链接   图文连接
+					// href: '../../pages/tabbar/community/comment?id'+this.dyId, //跳转链接   图文连接
 					summary: that.postDetail.words, // 分享内容的摘要
 					title: that.postDetail.words,  // 分享内容的标题
 					imageUrl: imgURL, //图片地址

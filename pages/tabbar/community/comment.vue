@@ -124,8 +124,6 @@
 		
 		<!-- 评论区 -->
 		<view class="comment_main">
-			
-		
 					<block v-show="commentList.length > 0&&commentListShow" >
 						<!-- @tap.stop="onReply(res, index)" -->
 					
@@ -187,6 +185,7 @@
 </template>
 
 <script>
+	import {htmlEncode} from '../../../utils/utils.js'
 export default {
 	data() {
 		return {
@@ -215,12 +214,11 @@ export default {
 		index:String
 	},
 	onLoad(options) {
-			console.log(options)
 		if(options.id){
 			this.dyId=options.id
 		}
 		this.tuwen_data=[this.$store.state.communityInfo]
-		console.log('tuwen_data',this.tuwen_data)
+
 		// this.commentList = this.commentList.filter(item => item.cid == options.cid)
 		this.getOneList()
 		this.getdyDetail()
@@ -228,7 +226,6 @@ export default {
 	onReachBottom(){
 		if(this.loadStatus=='loadmore'){
 			this.pageNumOne++
-			console.log(this.pageNumOne)
 			this.getOneList()
 		}
 		
@@ -241,13 +238,8 @@ export default {
 					  "size": "10"
 				}
 			this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
-					if(res.status){
-						console.log('图文数据',res)
-					
+					if(res.status){	
 							this.tuwen_data = res.data[0]
-					
-						console.log(res.data)
-						console.log(this.load_status_tuwen)
 						uni.stopPullDownRefresh();
 					}
 				})
@@ -256,14 +248,11 @@ export default {
 		toAllReply(index,id) {
 			this.AllReply=true
 			this.commentList.forEach((item)=>{
-				console.log(item)
 				item.AllReply=false
 				if(item.replyList&&item.replyList.length>0){
 					item.commentText='展开查看更多'
 				}
 			})
-			console.log(index)
-			console.log(this.commentList)
 			this.commentList[index].AllReply=true
 			if(Number(this.beforeIndex)!=Number(index)){
 				this.pageNum=1
@@ -284,7 +273,6 @@ export default {
 			}else{
 				this.beCommentUserId=e.commentUserId
 			}
-			console.log(this.beCommentUserId)
 			this.comment_id=e.comment_id ||e.id
 			this.focus = true;
 			
@@ -297,9 +285,8 @@ export default {
 				this.isSubmitD = false;
 				return;
 			}
-			console.log('1234',this.tuwen_data.id)
 			let addComment={
-				words:this.content,
+				words:htmlEncode(this.content),
 				comment_user_id:this.$store.state.userInfo.id,
 				commentUserId:this.$store.state.userInfo.id,//回复用户id，也就是用户本人
 				beCommentUserId:this.beCommentUserId,//被回复id也就别人id
@@ -308,17 +295,12 @@ export default {
 				username:this.$store.state.userInfo.username,
 				beCommentId:this.beCommentUserId?this.comment_id:0
 			}
-			console.log(this.beforeIndex)
 			let that=this
 			this.$H.post('/zf/v1/comment/increase',addComment,true).then(res=>{	
 				if(res.status&&res.status!=500){
 					if(res.status&&this.beCommentUserId){
-						console.log('回复二级评论')
 						//回复二级评论
-						
 						this.commentList[this.beforeIndex].replyList.unshift(addComment)
-						console.log(this.commentList)
-						// this.commentList[this.beforeIndex].AllReply=true
 						let time=new Date()
 						let y=time.getFullYear()
 						let m=time.getMonth()+1
@@ -359,7 +341,6 @@ export default {
 							status:0
 						}
 						this.$H.patch('/zf/v1/comment/status',data,true).then(res=>{
-							console.log(res)
 							if(res.status&&res.status!=500){
 								// 一级评论
 								if(e.comment_id){
@@ -390,14 +371,12 @@ export default {
 				status:1
 			}
 			this.$H.post('/zf/v1/comment/list',data,true).then(res=>{
-				console.log('一级评论',res)
 						if(res.status){
 							let commentList=res.data
 							if(commentList.length<10){
 								this.loadStatus='state'
 							}
 							commentList.forEach((item,index)=>{
-								console.log(item)
 								this.$set(item,'replyList',[])
 								// item.replyList=[]
 								item.AllReply=false
@@ -419,7 +398,6 @@ export default {
 
 		},
 		getTwoList(beCommentUserId,index,id){
-			console.log(index)
 			let that=this
 			let data={
 				// beCommentUserId:beCommentUserId,
@@ -433,34 +411,28 @@ export default {
 					if(this.commentList[index].AllReply &&res.data.length<10){
 						this.commentList[index].commentText=''
 					}
-					console.log(this.commentText)
+
 					if(this.pageNum>1){
 						this.commentList[index].replyList=[...this.commentList[index].replyList,...res.data]
 					}else{
 						this.commentList[index].replyList=res.data
 					}
-					console.log(this.commentList)
 				}
 			})
 		},
 		//一级评论和动态评论的点赞
 		clickLike(id,isLove,index){
-			console.log(index)
 			let data={
 				dynamicId:this.$store.state.communityInfo.id,
 				commentId:id?id:0,
 				type:isLove?'reduce':'plus',
 			}
-			console.log(data)
 			this.$H.patch('/zf/v1/comment/love',data,true).then(res=>{
-				console.log('点赞结果',res)
 				if(res.status&&res.status!=500)
 				if (isLove == 1) {
-					console.log(this.commentList[index])
 					this.commentList[index].love=0;
 					this.commentList[index].likeNum=res.data[0].count;
 				} else {
-					console.log('点赞')
 					this.commentList[index].love=1;
 					this.commentList[index].likeNum=res.data[0].count;
 				}

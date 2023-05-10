@@ -1,4 +1,4 @@
-<style scope lang="scss">
+<style scope lang="scss" scoped>
 .main {
 	background-color: #f2f2f2;
 	 // height: var(--status-bar-height);
@@ -161,6 +161,7 @@ import houseListItem from '@/components/house-list/house-list-item.vue';
 import screenTab from '@/components/common/screen-tab/screen-tab.vue'
 import screenHuan from '@/components/common/screen-tab/screen_huan.vue'
 import { Const } from "@/utils/const/Const.js";
+import {isLoginCheck} from '../../../utils/utils.js'
 
 let privateData = {
 	room: {
@@ -342,20 +343,7 @@ export default {
 	},
 	onLoad() {
 			that=this
-			// uni.getStorage({
-			// 	key:'token',
-			// 	success(res) {
-			// 		console.log(res,'有没有token')
-			// 		that.isLogin=true
-			// 	}
-			// })
-			// console.log(that.isLogin)
-			// if(!this.isLogin){
-			// 	uni.navigateTo({
-			// 		url: '/pages/auth/login'
-			// 	})
-			// 	return
-			// }
+			// isLoginCheck()
 			this.cityName=this.$store.state.currentCity
 			this.regionLeftList[0].text=this.cityName
 			this.getArea()

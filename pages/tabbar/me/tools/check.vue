@@ -547,7 +547,7 @@ export default {
 						});
 					}else{
 						webView.setTitleNViewButtonStyle(0,{  
-							width: '100px'  
+							width: '0px'  
 						});
 					}
 					that.getstatusHouseList(Number(newVal)+1)

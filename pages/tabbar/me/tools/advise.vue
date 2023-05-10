@@ -30,6 +30,7 @@
 </template>
 
 <script>
+	import {htmlEncode} from '../../../../utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -118,14 +119,43 @@
 			},
 			// 用户反馈内容提交
 			formSubmit(e) {
+				let contact=e.detail.value.contact
 				let words = this.list.filter(item => item.check == true).map(n => {
 					let {word} = {...n};
 					return {word}.word;
 				});
+				var regQQ = /^[1-9]\d{4,9}$/ //qq号
+				var regPhone = /^1[358497]\d{9}$/;  //手机号
+				var regWx = /^[a-zA-Z][-_a-zA-Z0-9]{5,19}$/;  //微信号
+				var regEmail=/^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(\.[0-9A-Za-z]+)+$/
+				console.log(words.toString())
+				if(!words.toString()){
+					uni.showToast({
+						title: '请选择反馈建议',
+						icon: 'none',
+						duration: 2000
+					})
+					return
+				}
+				if(contact&&!regQQ.test(contact)&&!regPhone.test(contact)&&!regWx.test(contact)&&!regEmail.test(regPhone)){
+					uni.showToast({
+						title: '请正确填写联系方式',
+						icon: 'none',
+						duration: 2000
+					})
+					return
+				}else if(!contact){
+					uni.showToast({
+						title: '请添加联系方式',
+						icon: 'none',
+						duration: 2000
+					})
+					return
+				}
 				let data={
 					type: words.toString(),
-					content: e.detail.value.content,
-					contact: e.detail.value.contact
+					content: htmlEncode(e.detail.value.content),
+					contact: htmlEncode(e.detail.value.contact)
 				}
 				this.$H.post('/zf/v1/advise/advises',data,true).then(res=>{
 					if(res.status){

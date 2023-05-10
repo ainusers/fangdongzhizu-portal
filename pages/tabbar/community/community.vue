@@ -1,4 +1,4 @@
-<style lang="scss">
+<style lang="scss" scoped>
 	.community {
 		display: flex;
 		width: 100%;
@@ -92,6 +92,7 @@
 
 <script>
 	import postList from '../../../components/post-list/post-list.vue';
+	import {isLoginCheck} from '../../../utils/utils.js'
 	export default {
 		components: {
 			postList
@@ -112,6 +113,7 @@
 			
 		},
 		onLoad() {
+			// isLoginCheck()
 			// 进入页面就加载推荐数据
 			this.getMomentPost();
 		},

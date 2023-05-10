@@ -174,7 +174,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .cell-pd {
 		padding: 20upx 30upx;
 	}

@@ -15,6 +15,7 @@
 	</view>
 </template>
 <script>
+	import {htmlEncode} from '../../../../utils/utils.js'
     export default {
         data() {
 			return {
@@ -42,7 +43,7 @@
 						method: 'patch',
 						data: {
 							id: that.userInfo.id,
-							signature: that.value
+							signature: htmlEncode(that.value)
 						},
 						header: {
 							'content-type': 'application/json',

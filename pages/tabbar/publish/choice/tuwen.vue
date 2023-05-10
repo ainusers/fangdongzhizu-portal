@@ -156,7 +156,7 @@
 
 <script>
 	import image from '@/store/image.js';
-	import {attachUpload} from '@/utils/utils.js'
+	import {attachUpload,htmlEncode} from '@/utils/utils.js'
 	var sourceType = [
 		['camera'],
 		['album'],
@@ -223,7 +223,7 @@
 						'username': this.$store.state.userInfo.username,
 						'avatar': this.$store.state.userInfo.avatar,
 						'userId': this.$store.state.userInfo.id,
-						'words': this.input_content,
+						'words': htmlEncode(this.input_content),
 						'longitude': location.longitude, // 经度
 						'latitude': location.latitude, // 纬度
 						// 'country': location.address.country,

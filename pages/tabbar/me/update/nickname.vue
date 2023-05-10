@@ -16,6 +16,7 @@
 </template>
 <script>
 	var that;
+	import {htmlEncode} from '../../../../utils/utils.js'
     export default {
         data() {
 			return {
@@ -44,7 +45,7 @@
 						method: 'patch',
 						data: {
 							id: that.userInfo.id,
-							nickname: that.value
+							nickname: htmlEncode(that.value)
 						},
 						header: {
 							'content-type': 'application/json',

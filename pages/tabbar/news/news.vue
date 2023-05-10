@@ -2,7 +2,7 @@
 	<view class="container" :class="{'active':active}">
 		<u-cell-group v-if="InfoList.length>0">
 			<block v-for="(item,index) in InfoList" :key="index">
-				<u-cell-item :icon="item.data[item.data.length-1].otherAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.data[0].from" :label='(item.data[item.data.length-1].msg.indexOf("url")!=-1)?"图片":item.data[item.data.length-1].msg' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="timestampToTime(item.data[0].datetime)" @click="goInfo(item)" v-if="item.data[0]" ></u-cell-item>
+				<u-cell-item :icon="item.data[item.data.length-1].otherAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.data[0].from" :label='item.data[item.data.length-1].msg' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="timestampToTime(item.data[0].datetime)" @click="goInfo(item)" v-if="item.data[0]" ></u-cell-item>
 			</block>
 		</u-cell-group>
 		<view v-else class="noData">
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+	import {isLoginCheck} from '../../../utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -40,6 +41,7 @@
 		},
 		onLoad() {
 			console.log('news')
+			
 			// uni.getStorage({
 			// 	key:'chatList',
 			// 	success(res){
@@ -49,21 +51,27 @@
 			// console.log(this.InfoList[0].data[0].msg)
 		},
 		onShow() {
+			// isLoginCheck()
 			console.log('newshow')
 			var that=this
 			this.active = true;
 			uni.getStorage({
 				key:'chatList',
 				success(res){
-					console.log('res',res)
 					that.InfoList=JSON.parse(res.data).reverse()
+					that.InfoList.forEach(item=>{
+						item.data.forEach(res=>{	
+							if(res.msg.indexOf("url")!=-1&&res.msg.indexOf('length')==-1){
+								res.msg='[图片]'
+							}else if(res.msg.indexOf("url")!=-1&&res.msg.indexOf('length')!=-1){
+								res.msg='[语音]'
+							}else if(res.msg.indexOf('alt')!=-1){
+								res.msg='[表情]'
+							}
+						})
+					})
 				}
 			})
-			console.log('InfoList',that.InfoList)
-			// that.InfoList.forEach((item)=>{
-			// 	console.log(item)
-			// 	item.data.reverse()
-			// })
 		},
 			
 		onPullDownRefresh(){

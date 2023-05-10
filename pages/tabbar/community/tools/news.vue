@@ -35,10 +35,10 @@
 							<view class="left">
 								<!-- 文字消息 -->
 								<view v-if="row.type=='text'" class="bubble">
-									<rich-text :nodes="row.msg"></rich-text>
+									<rich-text :nodes="row.msg" ></rich-text>
 								</view>
 								<!-- 语言消息 -->
-								<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg)" :class="playMsgid == row.id?'play':''">
+								<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
 									<view class="length">{{JSON.parse(row.msg).length}}</view>
 									<view class="icon my-voice"></view>
 								</view>
@@ -68,7 +68,7 @@
 									<rich-text :nodes="row.msg"></rich-text>
 								</view>
 								<!-- 语音消息 -->
-								<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg)" :class="playMsgid == row.id?'play':''">
+								<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
 									<view class="icon other-voice"></view>
 									<view class="length">{{JSON.parse(row.msg).length}}</view>
 								</view>
@@ -479,9 +479,11 @@
 			// console.log('消息列表',list)
 				// 获取消息中的图片,并处理显示尺寸
 				for(let i=0;i<list.length;i++){
-					if(list[i].type=='user' && list[i].type=="img"){
-						list[i].msg.content = this.setPicSize(list[i].msg.content);
-						this.msgImgList.push(list[i].msg.content.url);
+					console.log('看类型',list[i])
+					if(list[i].type=='user' || list[i].type=="img"){
+						// list[i].msg.content = this.setPicSize(JSON.parse(list[i].msg));
+						console.log('消息列表',list[i].msg)
+						this.msgImgList.push(JSON.parse(list[i].msg).url);
 					}
 				}
 				
@@ -503,7 +505,7 @@
 				let maxW = uni.upx2px(350);//350是定义消息图片最大宽度
 				let maxH = uni.upx2px(350);//350是定义消息图片最大高度
 				if(content.w>maxW||content.h>maxH){
-					let scale = content.w/content.h;
+					let scale = Number(content.w)/Number(content.h);
 					content.w = scale>1?maxW:maxH*scale;
 					content.h = scale>1?maxW/scale:maxH;
 				}
@@ -562,13 +564,11 @@
 								success: uploadFileRes => {
 									console.log('发送图片',uploadFileRes)
 									
-									let image = JSON.parse(uploadFileRes.data).data;
-									// let msg = {url:image,w:200,h:200};
-									// this.sendMsg(msg,'img');
+									let image = JSON.parse(uploadFileRes.data).data[0];
 									uni.getImageInfo({
-										src: res.tempFilePaths[i],
+										src: image,
 										success: (res1)=>{
-											let msg = {url:res.tempFilePaths[i],w:res1.width,h:res1.height,image};
+											let msg = {url:image,w:res1.width,h:res1.height};
 											this.sendMsg(msg,'img');
 										}
 									});
@@ -600,7 +600,8 @@
 			},
 			// 添加表情
 			addEmoji(em){
-				this.textMsg+=em.alt;
+				console.log(em)
+				this.textMsg=em.alt;
 			},
 			// 获取焦点，如果不是选表情ing,则关闭抽屉
 			textareaFocus(){
@@ -629,6 +630,7 @@
 			},
 			// 替换表情符号为图片
 			replaceEmoji(str){
+				console.log(str)
 				let replacedStr = str.replace(/\[([^(\]|\[)]*)\]/g,(item, index)=>{
 			
 					for(let i=0;i<this.emojiList.length;i++){
@@ -639,7 +641,7 @@
 								//在线表情路径，图文混排必须使用网络路径，请上传一份表情到你的服务器后再替换此路径 
 								//比如你上传服务器后，你的100.gif路径为https://www.xxx.com/emoji/100.gif 则替换onlinePath填写为https://www.xxx.com/emoji/
 								let onlinePath = 'https://s2.ax1x.com/2019/04/12/'
-								let imgstr = '<img src="'+onlinePath+this.onlineEmoji[EM.url]+'">';
+								let imgstr = '<img src="'+onlinePath+this.onlineEmoji[EM.url]+'" alt="'+str+'">';
 								return imgstr;
 							}
 						}
@@ -648,14 +650,14 @@
 				return '<div style="display: flex;align-items: center;word-wrap:break-word;">'+replacedStr+'</div>';
 			},
 			// 发送消息
-			sendMsg(content,type,imgurl){
+			sendMsg(content,type){
 				// 如果socket状态正常连接，则可以发送消息
 				if (this.socket_status) {
 					switch (type) {
 						case 'text':
 						let data={
 							'type': type,
-							'msg':this.textMsg,
+							'msg':content.text,
 							'target':this.houseId,
 							'face':this.$store.state.userInfo.avatar
 							}
@@ -667,7 +669,7 @@
 							});
 							break;
 						case 'voice':
-							let voice = JSON.stringify(imgurl);
+							let voice = JSON.stringify(content);
 							this.socketInstance.send({
 								data: "{'type':'" + type + "','msg':'" + voice + "','target':"+this.houseId+"}",
 								async success() {
@@ -712,8 +714,24 @@
 				}
 			},
 			// 添加语音消息到列表
-			addVoiceMsg(msg){
-				this.msgList.push(msg);
+			addVoiceMsg(data){
+				if(data.id){
+					this.chatList.forEach(item=>{
+						if(item.houseId==data.target){
+							let date=new Date(item.datetime)
+							let y=date.getFullYear()
+							item.data.push(data)
+						}
+					})
+					uni.setStorage({
+						key:'chatList',
+						data:JSON.stringify(this.chatList)
+					})
+				}
+				//从来没有聊过天
+				if(!this.isChat){
+					 this.msgList.push(data);
+				}
 			},
 			// 添加图片消息到列表
 			addImgMsg(msg){
@@ -753,15 +771,17 @@
 			},
 			// 预览图片
 			showPic(msg){
+				console.log('图片预览',msg)
 				uni.previewImage({
 					indicator:"none",
 					current:JSON.parse(msg).url,
-					urls: this.msgImgList
+					urls: this.msgImgList[0]
 				});
+				console.log(this.msgImgList)
 			},
 			// 播放语音
-			playVoice(msg){
-				this.playMsgid=JSON.parse(msg).id;
+			playVoice(msg,id){
+				this.playMsgid=id;
 				this.AUDIO.src=JSON.parse(msg).url;
 				this.$nextTick(function() {
 					this.AUDIO.play();
@@ -824,13 +844,25 @@
 				if(!this.willStop){
 					uni.uploadFile({
 						name: 'multipartFile',
-						url: 'http://81.70.163.240:11001/uploadFile?buketName=asiatrip',
+						url: 'http://81.70.163.240:11001/zf/v1/file/uploads',
 						buketName: 'zufang-chat',
 						filePath: res.tempFilePath,
+						header: {
+									// 'content-type': 'multipart/form-data',
+									'Authorization': 'Bearer ' + this.$store.state.token
+								},
 						success: uploadFileRes => {
 							console.log('录音结束',uploadFileRes)
-							let voice = JSON.parse(uploadFileRes.data).data.originUrl;
-							let msg = {url:voice, length:8};
+							let voice = JSON.parse(uploadFileRes.data).data[0];
+							let msg = {
+								length:0,
+								url:voice
+							}
+							let min = parseInt(this.recordLength/60);
+							let sec = this.recordLength%60;
+							min = min<10?'0'+min:min;
+							sec = sec<10?'0'+sec:sec;
+							msg.length = min+':'+sec;
 							this.sendMsg(msg,'voice');
 						},
 						fail(err) {
@@ -838,16 +870,7 @@
 						}
 					});
 					// console.log("e: " + JSON.stringify(e));
-					// let msg = {
-					// 	length:0,
-					// 	url:e.tempFilePath
-					// }
-					// let min = parseInt(this.recordLength/60);
-					// let sec = this.recordLength%60;
-					// min = min<10?'0'+min:min;
-					// sec = sec<10?'0'+sec:sec;
-					// msg.length = min+':'+sec;
-					// this.sendMsg(msg,'voice');
+					
 				}else{
 					console.log('取消发送录音');
 				}
