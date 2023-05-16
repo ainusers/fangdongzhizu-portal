@@ -626,12 +626,15 @@ export default {
 		},
 		//获取不同状态的数据
 		getstatusHouseList(type){	
+			console.log('当前的状态',type)
 			let params={
 				"page":this.pageNum,
 				"size":"10",
 				"status":type, //(1:待审核,2:已发布,3:已下架)
-				"user_id": that.$store.state.userInfo.id
+				"user_id": that.$store.state.userInfo.id,
+				city:'北京市'
 			}
+			console.log('参数是什么',params)
 			//1 待审核 2 已发布  3已下架
 			uni.request({
 				method:'POST',

@@ -366,7 +366,7 @@
 				</u-form-item>
 				<!-- 楼层位置 -->
 				<u-form-item :label-position="labelPosition" label="楼层位置 :" prop="floor" label-width="150">
-					<u-input :border="border" placeholder="请输入楼层" type="number" @click="popUpShowFn('floor')" v-model="houseModel.floor" :disabled="setpAll" ></u-input>层
+					<u-input :border="border" placeholder="请输入楼层" type="text" @click="popUpShowFn('floor')" v-model="houseModel.floor" :disabled="setpAll" ></u-input>层
 				</u-form-item>
 				<!-- 房源照片 -->
 				<view class="region_new_title">房源照片</view>
@@ -507,7 +507,7 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					hasElevatorStr:'有电梯',
 					roomType:'',//房屋类型
 					region1:'' ,//所属区域
-					payType:'请选择付款方式',//付款方式
+					payType:'',//付款方式
 					warmType:'',//取暖费用
 					wirelessType:'',//无线费用
 					propertyType:'',//物业费用
@@ -1626,18 +1626,20 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				
 			},
 			async publish(){
-			 this.validateParam().then( async (res)=>{
-									
+						console.log(this.isCheck)
 									this.homeArrIndex=this.houseModel.chekcNum
 									if(!this.isCheck){
 										return
 									}
 									let imagesNatureArr=''
 									let imagesHouseArr=''
+									
 									if(this.isEdit){
 										 imagesNatureArr=this.houseModel.naturalImageList
 										 imagesHouseArr=this.houseModel.houseImageList
 									}else{
+									console.log('这里')
+									console.log(this.houseModel.naturalImageList)
 										 imagesNatureArr=await  attachUpload(this.houseModel.naturalImageList)
 										 imagesHouseArr=await attachUpload(this.houseModel.houseImageList)
 									}
@@ -1722,7 +1724,7 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 							uni.$u.toast('发布失败')
 						}
 					})
-				})
+			
 		
 			
 			},

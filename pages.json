@@ -109,7 +109,8 @@
    			// "transparentTitle":  "always",
    			"enablePullDownRefresh": true,
    			"navigationBarTitleText": "图文正文",
-   			"navigationBarTextStyle": "black"
+   			"navigationBarTextStyle": "black",
+			"backgroundTextStyle":"light"
    			// "navigationBarBackgroundColor": "#fafafa",
    			// "enablePullDownRefresh": false,
    			// "backgroundTextStyle":"light",
@@ -121,10 +122,10 @@
    	{
    		"path": "pages/tabbar/community/commentDetail",
    		"style": {
-   			"transparentTitle":  "always",
-   			"navigationBarTitleText": "评论详情页",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa"
+   			"transparentTitle":  "always"
+   			// "navigationBarTitleText": "评论详情页",
+   			// "navigationBarTextStyle": "black",
+   			// "navigationBarBackgroundColor": "#fafafa"
    			// "enablePullDownRefresh": false,
    			// "backgroundTextStyle":"light",
    			// "app-plus": {

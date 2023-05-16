@@ -1,4 +1,4 @@
-<style scoped lang="scss">
+<style scoped lang="scss" scoped>
 	.isTopHouse_view{
 		position: absolute;
 		bottom: 30upx;

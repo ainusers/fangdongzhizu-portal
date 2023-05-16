@@ -142,11 +142,14 @@ export default {
 				],
 		load_status_tuwen: 'loadmore',
 		currPage:1,
+		typeIndex:'',//0 圈子 1 互动 2 转发  3 浏览
 		};
 	},
 	props: {
 	},
-	onLoad() {
+	onLoad(options) {
+		console.log(options)
+		this.typeIndex=options.id
 		// console.log('进入页面')
 		that=this
 		 let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
@@ -161,7 +164,9 @@ export default {
 				return;
 			}
 			this.currPage++
-			this.getShowData()
+			if(this.typeIndex==0){
+				this.getShowData()
+			}			
 		},
 		// 获得swiper切换后的current索引
 		swipeIndex(index) {
@@ -170,23 +175,54 @@ export default {
 		// 切换选项卡
 		tabChange(index) {
 			this.current = index;
+			this.typeIndex=index
+			this.getShowData()
+			
 		},
 		getShowData(){
-			let data={
-				userId:that.$store.state.userInfo.id,
-				page:this.currPage,
-				size:10
+			console.log(this.typeIndex)
+			let data={}
+			let url=''
+			that.tuwen_data=[]
+			if(this.typeIndex==0){
+				data={
+					userId:'1606969810415775700', //that.$store.state.userInfo.id,
+					page:this.currPage,
+					size:10
+				}
+				url='/zf/v1/dynamic/list'
+				this.$H.post(url,data,true).then(res=>{
+							that.getRestus(res)
+				})
+			}else if(this.typeIndex==1 || this.typeIndex==2 ||this.typeIndex==3){
+				let type=''
+				if(this.typeIndex==1) type='likes'
+				if(this.typeIndex==2) type='transfer'
+				if(this.typeIndex==3) type="look" 
+				data={
+					userId:'1606969810415775700',//that.$store.state.userInfo.id,
+					pageNum:this.currPage,
+					pageSize:10,
+					type:type
+				}
+				url='/zf/v1/dynamic/statistics'
+				this.$H.get(url,data,true).then(res=>{
+							that.getRestus(res)
+				})
 			}
-			this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
-						if(res.status){
-							that.tuwen_data=[...that.tuwen_data,...res.data]
-								if(that.tuwen_data.length==0){
-									that.load_status_tuwen='nomore'
-								}
-						}
-			})
+			
+			
+		},
+			
+		getRestus(res){
+			if(res.status){
+				console.log('shuju',res.data)
+				that.tuwen_data=[...that.tuwen_data,...res.data[0]]
+					if(that.tuwen_data.length==0){
+						that.load_status_tuwen='nomore'
+					}
+			}
 		}
-
 	}
 }
 </script>

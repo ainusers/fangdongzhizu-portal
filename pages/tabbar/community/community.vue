@@ -154,7 +154,7 @@
 				this.load_status_tuwen = 'loading';
 
 				let data={
-						  "userId": this.$store.state.userInfo.id,
+						  // "userId": this.$store.state.userInfo.id,
 						  "page":this.tuwen_default_page ,
 						  "size": "10"
 					}

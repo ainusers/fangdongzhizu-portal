@@ -1,5 +1,9 @@
+
 <style lang="scss">
 	@import "@/style/chat/style.scss"; 
+	.send .btn{
+		background: linear-gradient(to right, #129ef1, #2c93eb) !important;
+	}
 </style>
 <template>
 	<view class="news">
@@ -150,7 +154,7 @@
 				//文字消息
 				textMsg:'',
 				//消息列表
-				isHistoryLoading:false,
+				isHistoryLoading:true, // 当为false的时候，加载历史记录
 				scrollAnimation:false,
 				scrollTop:0,
 				scrollToView:'',
@@ -259,14 +263,21 @@
 		onHide(){
 			//关闭连接
 			// this.closeSocket()
+			// this.currentChatList=[]//当前人的聊天记录
+			// this.chatList=[]//所有聊天记录的数据
+			// this.houseId=''//当前房源id
 		},
 		onUnload(){
+			this.currentChatList=[]//当前人的聊天记录
+			this.chatList=[]//所有聊天记录的数据
+			this.houseId=''//当前房源id
 			//关闭连接
 			// this.closeSocket()
 		},
 		methods:{
 			//保存聊天记录到本地
 			chatSaveLocal(){
+				console.log('获取本地聊天')
 				uni.getStorage({
 					key:'chatList',
 					success:(res)=>{
@@ -289,9 +300,11 @@
 								// console.log(this.isChat)
 								if(!this.isChat&&this.houseId){
 									// console.log('push一条新的数据')
-									this.chatList.push({houseId:this.houseId,data:[]})
+									this.$set(this.chatList,this.chatList.length-1,{houseId:this.houseId,data:[]})
+									// this.chatList.push({houseId:this.houseId,data:[]})
 									// console.log('push的新的',JSON.stringify(this.chatList))
 								}
+								// console.log('当前聊天的内容',this.currentChatList)
 								if(this.currentChatList.length<20){
 									this.isHistoryLoading=true
 								}
@@ -304,9 +317,10 @@
 						}
 					}
 				})
+				// console.log('当前平台是什么',this.Platform)
 				if(this.Platform!='android' &&this.Platform!='ios'){
 					//从来没有聊天过，
-					// console.log(this.isChat)
+					// console.log('有没有聊天过',this.isChat)
 					if(!this.isChat&&this.houseId){
 						// console.log('push一条新的数据')
 						this.chatList.push({houseId:this.houseId,data:[]})
@@ -647,7 +661,8 @@
 						}
 					}
 				});
-				return '<div style="display: flex;align-items: center;word-wrap:break-word;">'+replacedStr+'</div>';
+				// return '<div style="display: flex;align-items: center;word-wrap:break-word;">'+replacedStr+'</div>';
+				return replacedStr
 			},
 			// 发送消息
 			sendMsg(content,type){
@@ -694,23 +709,35 @@
 			// 添加文字消息到列表
 			addTextMsg(data){
 				console.log('消息',data)
+				let hasCur=false
 				if(data.id){
+					console.log(this.chatList.length)
 					this.chatList.forEach(item=>{
-					
+						console.log(item)
+						console.log(data.target)
 						if(item.houseId==data.target){
+							hasCur=true
 							let date=new Date(item.datetime)
 							let y=date.getFullYear()
 							item.data.push(data)
 						}
 					})
-					uni.setStorage({
-						key:'chatList',
-						data:JSON.stringify(this.chatList)
-					})
+					console.log(this.chatList)
+					
 				}
 				//从来没有聊过天
 				if(!this.isChat){
 					 this.msgList.push(data);
+				}
+				setTimeout(()=>{
+					uni.setStorage({
+						key:'chatList',
+						data:JSON.stringify(this.chatList)
+					})
+				},0)
+				console.log('当前的状态是什么',hasCur)
+				if(!hasCur){
+					this.chatList.push({houseId:this.houseId,data:this.msgList})
 				}
 			},
 			// 添加语音消息到列表
@@ -735,7 +762,7 @@
 			},
 			// 添加图片消息到列表
 			addImgMsg(msg){
-				console.log('添加图片',msg)
+				// console.log('添加图片',msg)
 				msg.msg = this.setPicSize(msg.msg);
 				this.msgImgList.push(JSON.parse(msg.msg).url);
 				// this.msgList.push(msg);
@@ -852,7 +879,7 @@
 									'Authorization': 'Bearer ' + this.$store.state.token
 								},
 						success: uploadFileRes => {
-							console.log('录音结束',uploadFileRes)
+							// console.log('录音结束',uploadFileRes)
 							let voice = JSON.parse(uploadFileRes.data).data[0];
 							let msg = {
 								length:0,

@@ -343,7 +343,7 @@ export default {
 	},
 	onLoad() {
 			that=this
-			// isLoginCheck()
+			isLoginCheck()
 			this.cityName=this.$store.state.currentCity
 			this.regionLeftList[0].text=this.cityName
 			this.getArea()
@@ -384,7 +384,8 @@ export default {
 							page:that.currPage,
 							size:that.size,
 							city:that.cityName,
-							user_id:that.$store.state.userInfo.id
+							user_id:that.$store.state.userInfo.id,
+							status:2
 						}
 					this.$H.post('/zf/v1/room/list',data,true).then(res=>{
 							if(res.status){

@@ -123,7 +123,8 @@
 					 loading: '努力加载中...',
 					 nomore: '没有更多了'
 				},
-				dyId:''
+				dyId:'',
+				isDetail:false
 			};
 		},
 		watch: {
@@ -137,12 +138,18 @@
 		created() {
 			console.log(this.list)
 		},
-		onLoad(){
+		onLoad(options){
+			this.isDetail=options.isDetail
+			console.log('当前的状态',this.isDetail)
 			that=this
 		},
 		methods: {
 			// 跳转详情页
 			toDetail(data) {
+				console.log('当前状态',this.isDetail)
+				if(this.isDetail) {
+					return
+				}
 				this.$store.commit('communityInfo',data)
 				console.log('跳转详情页',data)
 				this.dyId=data.id

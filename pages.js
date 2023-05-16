@@ -126,13 +126,12 @@ module.exports=()=>({
 		{
 			"path": "pages/tabbar/community/comment",
 			"style": {
-				"transparentTitle":  "always",
-				"enablePullDownRefresh": true
-				// "navigationBarTitleText": "聊天",
-				// "navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#fafafa",
-				// "enablePullDownRefresh": false,
-				// "backgroundTextStyle":"light",
+				// "transparentTitle":  "always",
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "图文正文",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
+				"backgroundTextStyle":"light"
 				// "app-plus": {
 				// 	"scrollIndicator": "none"
 				// }
@@ -144,10 +143,10 @@ module.exports=()=>({
 		{
 			"path": "pages/tabbar/community/commentDetail",
 			"style": {
-				"transparentTitle":  "always",
-				"navigationBarTitleText": "评论详情页",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#fafafa"
+				"transparentTitle":  "always"
+				// "navigationBarTitleText": "评论详情页",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa"
 				// "enablePullDownRefresh": false,
 				// "backgroundTextStyle":"light",
 				// "app-plus": {

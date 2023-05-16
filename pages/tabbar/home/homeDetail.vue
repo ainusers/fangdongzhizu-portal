@@ -628,7 +628,7 @@
 				console.log(res)
 				// collection   1  收藏 0 没有收藏
 				if(res.status){
-					this.collection=res.data[0].collection
+					this.collection=res.data[0]?res.data[0].collection:''
 					console.log(this.collection)
 				}
 			})

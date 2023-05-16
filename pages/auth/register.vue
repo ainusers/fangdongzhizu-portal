@@ -127,7 +127,7 @@
 					});
 					return;
 				}
-				this.$H.post('v1/user/register',{
+				this.$H.post('/zf/v1/user/register',{
 					username: this.phone,
 					code: this.code,
 					password: this.password,

@@ -210,7 +210,7 @@
 				}
 				uni.showLoading({title:'发布中'});
 				// 获取位置信息
-				// let location = await this.getLocation();
+				let location = await this.getLocation();
 				// 获取上传图片地址
 				let images;
 				if(this.imageList.length == 0) {
@@ -226,11 +226,11 @@
 						'words': htmlEncode(this.input_content),
 						'longitude': location.longitude, // 经度
 						'latitude': location.latitude, // 纬度
-						// 'country': location.address.country,
-						// 'province': location.address.province,
-						// 'city': location.address.city,
-						// 'address': location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName,
-						// 'type': location.type
+						'country': location.address.country,
+						'province': location.address.province,
+						'city': location.address.city,
+						'address': location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName,
+						'type': location.type
 					}
 				// 上传动态信息
 				this.$H.post('/zf/v1/dynamic/dynamics',data,true).then(res=>{
