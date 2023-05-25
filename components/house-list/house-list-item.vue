@@ -223,7 +223,7 @@
 				</view>
 				<!-- 地理位置：距离昌平线沙河地铁站1020米 -->
 				<view class="er_house_tag_info f_r_s">
-					<text> 距离{{item.area}}{{item.subway }}地铁站{{item.distanceSubway}}米</text>
+					<text> {{item.distanceSubway}}</text>
 				</view>
 		
 				<!-- 房屋价格，朝阳区，酒仙桥 -->

@@ -367,10 +367,12 @@
 				});
 				// 接受服务端消息
 				this.socketInstance.onMessage((res) => {
-					// console.log("收到服务器内容：" + res.data);
+					console.log("收到服务器内容：" + res.data);
 					// console.log('当前房源id',this.houseId)
 					let data = eval("(" + res.data + ")");
+					console.log(this.$store.state.userInfo)
 					data.avatar=this.$store.state.userInfo.avatar
+					
 					data.otherAvatar=this.otherAvatar
 					switch (data.type) {
 						case 'system':
@@ -762,7 +764,7 @@
 			},
 			// 添加图片消息到列表
 			addImgMsg(msg){
-				// console.log('添加图片',msg)
+				console.log('添加图片',msg)
 				msg.msg = this.setPicSize(msg.msg);
 				this.msgImgList.push(JSON.parse(msg.msg).url);
 				// this.msgList.push(msg);
@@ -781,6 +783,7 @@
 					})
 				}
 				//从来没有聊过天
+				console.log(this.isChat)
 				if(!this.isChat){
 					data.otherAvatar=this.otherAvatar
 					 this.msgList.push(msg);

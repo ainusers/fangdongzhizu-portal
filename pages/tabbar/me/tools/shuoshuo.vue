@@ -215,9 +215,11 @@ export default {
 		},
 			
 		getRestus(res){
+			
 			if(res.status){
 				console.log('shuju',res.data)
-				that.tuwen_data=[...that.tuwen_data,...res.data[0]]
+				that.tuwen_data=[...that.tuwen_data,...res.data]
+				console.log(that.tuwen_data)
 					if(that.tuwen_data.length==0){
 						that.load_status_tuwen='nomore'
 					}

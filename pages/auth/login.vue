@@ -68,7 +68,8 @@
 				password: '',
 				phone: '',
 				code: '',
-				codeDuration: 0
+				codeDuration: 0,
+				phoneInfo:''
 			}
 		},
 		components:{
@@ -86,6 +87,16 @@
 							url: '/pages/tabbar/home/home'
 						})
 					}
+				}
+			})
+			uni.getSystemInfo({
+				success(res){
+					console.log('QQ',res)
+					uni.setStorage({
+						key:'phoneInfo',
+						data:res
+					})
+					
 				}
 			})
 		},
@@ -108,7 +119,6 @@
 				}
 			},
 			loginByMsg() {
-				console.log(this.$refs.phone.username)
 				if (!/^1\d{10}$/.test(this.$refs.phone.username)) {
 					uni.showToast({
 						icon: 'none',
@@ -168,7 +178,6 @@
 			},
 			getUserInfo() {
 				this.$H.get('/zf/v1/user/attr/token',{},true).then(res=>{
-					console.log(res)
 					if(res.status){
 						that.userInfo = res.data[0].user;
 						that.$store.commit('userInfo',that.userInfo)
@@ -178,60 +187,25 @@
 						})
 					}
 				})
-			
 			},
-			useWX() {
-				// uni.login({
-				//   provider: 'weixin',
-				//   success: function (loginRes) {
-				//     console.log(loginRes.authResult);
-				//     // 获取用户信息
-				//     uni.getUserInfo({
-				//       provider: 'weixin',
-				//       success: function (infoRes) {
-				//         console.log('用户信息为：' + JSON.stringify(infoRes));
-				//       }
-				//     });
-				//   }
-				// })
-				uni.getSystemInfo({
-					success: function(res) {
-						// （设备品牌）brand：Xiaomi
-						// （设备型号）model：Redmi Note 8
-						// （屏幕宽度）screenWidth：851
-						// （屏幕高度）screenHeight：393
-						// （应用设置的语言）language：zh-CN
-						// （操作系统名称及版本）system：Android 9
-						// （引擎版本号）version：1.9.9.81308
-						// （客户端平台）platform：android
-					}
-				});
+		useWX() {
 				uni.login({
 					provider: 'weixin',
 					success(loginRes) {
-						console.log(loginRes.authResult)
-						uni.request({
-							method: 'post',
-							header: {
-								'cotent-type': 'application/json',
-							},
-							data: loginRes.authResult,
-							url: 'http://81.70.163.240:11001/users/wxlogin',
-							success(infoRes) {
-								console.log('登录成功回到')
-								// 查看需要保存的信息
-								console.log('返回信息：' + JSON.stringify(infoRes))
-								if(loginRes.authResult.openid){
-									uni.navigateTo({
-										url: '/pages/auth/binding'
-									})
-								}
-							}
-						})
+						let obj=loginRes.authResult
+						uni.getUserInfo({
+						      provider: 'weixin',
+						      success: function (infoRes) {
+								  that.$store.commit('ThreeInfo',infoRes.userInfo)
+								  that.checkUser(infoRes.userInfo)
+						      }
+						    });
 					}
 				});
+				
 			},
 			useQQ() {
+				
 				uni.login({
 					provider: 'qq',
 					success: function(loginRes) {
@@ -240,20 +214,35 @@
 							provider: 'qq',
 							success: function(infoRes) {
 								// 查看需要保存的信息
-								console.log('用户信息为：' + JSON.stringify(infoRes))
-								let infoUser=JSON.stringify(infoRes)
-								console.log('userInfo',infoRes.userInfo)
-								if(infoRes.userInfo){
-									console.log('页面跳转')
-									uni.navigateTo({
-										url: '/pages/auth/binding'
-									})
-								}
+								that.$store.commit('ThreeInfo',infoRes.userInfo)
+								that.checkUser(infoRes.userInfo)
+								
 				 		}
 				 	});
 					}
 				})
 			},
+			//判断当前元素是否注册过
+		async checkUser(obj,phoneInfo){
+			console.log({openid:obj.openId})
+				this.$H.get('/zf/v1/user/third/check',{openid:obj.openId},false).then(res=>{
+					if(res.status){
+						let token=res.data[0].token
+						if(token){
+							this.$store.commit('token',token)
+						 this.getUserInfo()
+							uni.switchTab({
+								url: '/pages/tabbar/home/home'
+							})
+						}else{
+							uni.navigateTo({
+								url: '/pages/auth/binding'
+							})
+						}
+					}
+				})			
+			},
+
 			tab(index) {
 				this.tabIndex = index;
 			},
@@ -263,7 +252,6 @@
 				})
 			},
 			goRegister() {
-				console.log('注册')
 				uni.navigateTo({
 					url: '/pages/auth/register'
 				})

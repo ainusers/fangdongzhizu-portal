@@ -1,7 +1,8 @@
 
-	import store from '@/store/index.js';  
+	import store from '@/store/index.js'; 
+	import {get,post} from '@/utils/request/request.js'
 	//获取本地存储中的数据
-	const initKey=['token','userInfo','houseInfo','communityInfo'] //防止刷新vuex丢失数据 
+	const initKey=['token','userInfo','houseInfo','communityInfo','ThreeInfo'] //防止刷新vuex丢失数据 
 	const getStoreData= function (key){
 		uni.getStorage({
 			key:key,
@@ -96,7 +97,6 @@
 					uni.getStorage({
 						key:'token',
 						success(res) {
-							console.log('当',res)
 							if(res.data){
 								token=res.data
 							}
@@ -116,5 +116,5 @@
 	editTitleText,
 	htmlEncode,
 	getPlatform,
-	isLoginCheck
+	isLoginCheck,
 	}

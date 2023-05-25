@@ -16,28 +16,46 @@
 			return {
 				id:0, // 使用 marker点击事件 需要填写id
 				title: 'map',
-				latitude: 39.909,
-				longitude: 116.39742,
-				markers: [{
-					latitude: 39.909,
-					longitude: 116.39742,
-					iconPath: '../../../static/location.png'
-				}]
+				// latitude: 39.909,
+				// longitude: 116.39742,
+				// markers: [{
+				// 	latitude: "",
+				// 	longitude:"",
+				// 	title:'乃东村',
+				// 	iconPath: require('../../static/logo.png')
+				// }]
 			}
 		},
 		onLoad() {
-			this.init();
+			// this.init();
+			console.log('titu')
+			this.markers[0].latitude=this.latitude
+			this.markers[0].longitude=this.longitude
+			console.log(this.markers)
 		},
 		props: {
 			list: {
 				type: Array,
 				default: []
+			},
+			latitude: {
+				type: String,
+				default: []
+			},
+			longitude: {
+				type: String,
+				default: []
+			},
+			markers:{
+				type:Array,
+				default:[]
 			}
 		},
 		methods: {
 			init(){
 				uni.getLocation({
 					type: 'wgs84',
+					isHighAccuracy:true,
 					success:(res) => {
 						if(res.errMsg=="getLocation:ok"){
 							this.setMap(res)
@@ -48,6 +66,7 @@
 			click() {
 				uni.getLocation({
 					type: 'gcj02',
+					isHighAccuracy:true,
 					success: function (res) {
 						const latitude = res.latitude;
 						const longitude = res.longitude;

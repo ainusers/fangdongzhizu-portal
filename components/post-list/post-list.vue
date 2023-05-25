@@ -12,11 +12,15 @@
 						<!-- 用户名称 -->
 						<view class="center">
 							<view style="align-items: center;">
-								<text class="username">{{ item.username.substring(0, 12) }}</text>
-								<view style="float: right;padding-right: 10px;"><u-icon name="more-dot-fill" color="rgb(203,203,203)"></u-icon></view>
+								<text class="username">{{ item.username?item.username.substring(0, 12):'' }}</text>
+								<view style="float: right;padding-right: 10px;"><u-icon name="more-dot-fill" color="rgb(203,203,203)" @click="goReport(index)"></u-icon>
+									<view class="reportText" v-show="item.isReport" @click="report">
+										举报
+									</view>
+								</view>
 							</view>
 							<view>
-								<text class="time">{{ item.createTime.split('T')[0]  }}</text>
+								<text class="time">{{tranfTime(item.createTime)}}</text>
 							</view>
 						</view>
 					</view>
@@ -104,19 +108,29 @@
 				</view>
 			</view>
 		</u-popup>
+		<!-- //举报模态框 -->
+		<view v-show="reportShow">
+			<zhizuReport @cancelReport="cancelReport" @goReport="goReportText" :typeStr="reportType" :userId="reportUserId" :reportId="reportId"/>
+		</view>
 	</view>
 </template>
 
 <script>
 	let that=null;
+	import zhizuReport from '@/components/common/modal/report.vue'
 	export default {
 		name: 'post-list',
 		props: {
 			list: Array,
-			loadStatus: String
+			loadStatus: String,
+			isDetail:Boolean
+		},
+		components:{
+				zhizuReport
 		},
 		data() {
 			return {
+				reportShow:false,
 				showShare: false,
 				loadText:{
 					 loadmore: '轻轻上拉加载更多...',
@@ -124,7 +138,11 @@
 					 nomore: '没有更多了'
 				},
 				dyId:'',
-				isDetail:false
+				isReport:false,
+				reportType:'动态',
+				reportUserId:'',
+				reportId:'',
+				currentIndex:''
 			};
 		},
 		watch: {
@@ -133,17 +151,59 @@
 		computed: {
 			timestamp() {
 				return Date.parse(new Date()) / 1000;
-			}
+			},
+			
 		},
 		created() {
-			console.log(this.list)
+
 		},
 		onLoad(options){
 			this.isDetail=options.isDetail
 			console.log('当前的状态',this.isDetail)
 			that=this
+			
+			console.log('list',list)
 		},
 		methods: {
+			goReport(index){
+				console.log('想去')
+				this.currentIndex=index
+				this.isReport?this.isReport=false:this.isReport=true
+				this.$emit('changeStatus',index,this.isReport)
+				this.reportUserId=this.list[index].userId
+				this.reportId=this.list[index].id
+				event.stopPropagation()
+			},
+			cancelReport(){
+				
+			},
+			report(){
+				this.reportShow=true
+				this.$emit('changeStatus',this.currentIndex,false)
+				event.stopPropagation()
+			},
+			goReportText(){
+				this.reportShow=false
+			},
+			//时间转换
+			tranfTime(autoTime){
+				 //var autoTime='2022-05-05 21:58:59'   //尽量让服务端传时间戳，能够有效避免时区问题
+				    var date1 = (Date.parse(new Date()))/1000;//计算当前时间戳 
+				    var date2 = (Date.parse(new Date(autoTime)))/1000;; //自动收货的时间戳 （字符串转时间戳）
+				    var date3 =  (date1 -date2)*1000; //时间差的毫秒数
+				    //计算出相差天数
+				    var days = Math.floor(date3 / (24 * 3600 * 1000));
+					if(days>=1){
+						return autoTime
+					}
+				    //计算出小时数
+				    var leave1 = date3 % (24 * 3600 * 1000); //计算天数后剩余的毫秒数
+				    var hours = Math.floor(leave1 / (3600 * 1000));
+				    //计算相差分钟数
+				    var leave2 = leave1 % (3600 * 1000); //计算小时数后剩余的毫秒数
+				    var minutes = Math.floor(leave2 / (60 * 1000));
+				    return   "前"+minutes + " 分钟"
+			},
 			// 跳转详情页
 			toDetail(data) {
 				console.log('当前状态',this.isDetail)
@@ -162,6 +222,7 @@
 			},
 			// 跳转评论区
 			toComment(url) {
+				if(this.isDetail) return
 				uni.navigateTo({
 					url: url
 				});
@@ -316,6 +377,14 @@
 		align-items: center;
 		.avatar-img {
 			padding: 5px;
+		}
+		.reportText{
+			width:200rpx;
+			padding:10rpx 20rpx;
+			position: absolute;
+			right:10rpx;
+			text-align: center;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 		}
 		.avatar {
 			width: 85rpx;

@@ -83,6 +83,14 @@ export class Const {
 		{ text: '业主房源', id: '0' },
 		{ text: '经纪人', id: '1' }
 	];
+	static leaseType=[
+		{ text: '整租', id: '0' },
+		{ text: '合租', id: '1' }
+	]
+	static houseType=[
+		{ text: '主卧', id: '0' },
+		{ text: '次卧', id: '1' }
+	]
 	// 面积筛选
 	static areaList = [
 		{ text: '50以下', id: '0:50' },
@@ -139,7 +147,10 @@ export class Const {
 		{ text: '整租', id: 1 },
 		{ text: '合租', id: 2 }
 	];
-	
+	static heatingType=[
+		{ text: '集体供暖', id: 1 },
+		{ text: '自供暖', id: 2 }
+	]
 	// 入住时间
 	static aparmentRuZhuTimeList = [
 		{ text: '立即入住', id: '1' },
@@ -261,6 +272,15 @@ export class Const {
 		{ id: 1, text: "毛坯" },
 		{ id: 7, text: "不限" },
 	];
+	static noHas=[
+		{
+			id:1,text:'有电梯'
+		},
+		{
+			id:2,text:'无电梯'
+		}
+	];
+	
 	
 }
 

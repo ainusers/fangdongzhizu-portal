@@ -98,7 +98,7 @@
 					   <view class="gps_city_text">{{ gpsCityInfo.cityName }}</view>
 				   </button>
 
-				   <view class="choose_title">热门城市</view>
+				   <view class="choose_title">开通城市</view>
 
 				   <view class="hot_city_list f_r_s">
 					   <block v-for="(item, hotIndex) in hotCityList" :index="hotIndex" :key="hotIndex">
@@ -196,6 +196,7 @@
 				console.log('获取定位信息')
 				uni.getLocation({
 					type: 'wgs84',
+					isHighAccuracy:true,
 					success: function (res) {
 						console.log(JSON.stringify(res))
 						console.log('当前位置的经度：' + res.longitude);
@@ -325,6 +326,7 @@
 					  console.log('定位获取')
 					  	uni.getLocation({
 					  		type: 'gcj02',
+							isHighAccuracy:true,
 					  		geocode: true,
 					  		success: function (res) {
 								let platform = uni.getSystemInfoSync().platform;

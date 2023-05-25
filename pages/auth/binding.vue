@@ -59,19 +59,66 @@
 
 <script>
 	var that=''
+	import {getUserInfo} from '../../utils/utils.js'
 	export default {
 		data() {
 			return {
 				phone: '',
 				code: '', //验证码
 				password: '',
-				codeDuration: 0
+				codeDuration: 0,
+				ThreeInfo:{},
+				phoneInfo:''
 			}
 		},
 		onLoad(){
 			that=this
+			this.ThreeInfo=this.$store.state.ThreeInfo
+			
 		},
 		methods: {
+			
+			//三方登录 没有绑定过调用
+			threeLogin(userInfo){
+				let params={
+					  "openid": this.ThreeInfo.openId,
+					  "username": userInfo.username,
+					  "nickname": this.ThreeInfo.nickName,
+					  "sex": this.ThreeInfo.gender=='男'?this.ThreeInfo.gender=1:this.ThreeInfo.gender=0,
+					  "headimgurl":this.ThreeInfo.avatarUrl,
+					  "city": this.ThreeInfo.avatarUrl,
+					  "province": this.ThreeInfo.province,
+					  "country": this.ThreeInfo.country,
+					  "password": userInfo.password,
+					  "code": userInfo.code
+				}
+				this.$H.post('/zf/v1/user/third/login',params,false).then(res=>{
+					if(res.status&&res.code==200){
+						let token=res.data[0].token	
+						if(token){
+							that.$store.commit('token',token)	
+							this.getUserInfo()
+							console.log('获取userINfo')
+							uni.switchTab({
+								url: '/pages/tabbar/home/home'
+							})
+						}
+					}
+				})			
+			},
+			getUserInfo() {
+				this.$H.get('/zf/v1/user/attr/token',{},true).then(res=>{
+					console.log(res)
+					if(res.status){
+						that.userInfo = res.data[0].user;
+						that.$store.commit('userInfo',that.userInfo)
+						uni.setStorage({
+							key:'userInfo',
+							data:that.userInfo
+						})
+					}
+				})
+			},
 			sendCode() {
 				if (this.phone.length < 1) {
 				  uni.showToast({
@@ -100,6 +147,7 @@
 					}
 				});
 			},
+
 			bindRegister() {
 				if (!/^1\d{10}$/.test(this.phone)) {
 					uni.showToast({
@@ -122,33 +170,13 @@
 					});
 					return;
 				}
-				this.$H.post('v1/user/register',{
+				let userInfo={
 					username: this.phone,
-					code: this.code,
 					password: this.password,
-					rememberMe: 'true'
-				}).then(res => {
-					console.log(res)
-					if (res.code === 200) {
-						this.$u.toast(res.message);
-						uni.switchTab({
-							url: '/pages/tabbar/home/home'
-						})
-					}else if(res.code!=200){
-						this.$u.toast(res.message);
-					}
-				});
+					code: this.code,
+				}
+				this.threeLogin(userInfo)
 			},
-			goRegister() {
-				uni.navigateTo({
-					url: '/pages/auth/register'
-				})
-			},
-			goForget() {
-				uni.navigateTo({
-					url: '/pages/auth/forget'
-				})
-			}
 		}
 	}
 </script>

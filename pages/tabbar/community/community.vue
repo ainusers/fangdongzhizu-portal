@@ -85,7 +85,7 @@
 		</view>
  -->
 		<!-- 朋友圈 -->
-		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen"></post-list>
+		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus"></post-list>
 		
 	</view>
 </template>
@@ -132,6 +132,9 @@
 				this.tuwen_default_page++;
 				this.getMomentPost();
 				this.tuwen_data = this.tuwen_data.concat(this.tuwen_data.slice(1,2));
+				this.tuwen_data.forEach(item=>{
+					this.$set(item,'isReport',false)
+				})
 			}else{
 				uni.showToast({
 					icon:'none',
@@ -141,6 +144,10 @@
 			
 		},
 		methods: {
+			changeStatus(index,statu){
+				this.tuwen_data[index].isReport=statu
+				console.log(this.tuwen_data)
+			},
 			// 跳转页面
 			goto(url) {
 				if (!url) return;
@@ -166,7 +173,9 @@
 						}else{
 							this.tuwen_data.concat(this.tuwen_data,res.data)
 						}
-						
+						this.tuwen_data.forEach(item=>{
+							this.$set(item,'isReport',false)
+						})
 						if(res.data.length>10){
 							this.load_status_tuwen = 'loadmore';
 						}else{

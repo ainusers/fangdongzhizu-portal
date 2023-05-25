@@ -64,22 +64,21 @@
 	          width: 100%;
 	          font-size: 30rpx;
 			  text-align: center;
-			  .sex_con{
-				  img{
+				  .sex_con{
+					  display: inline-block;
 					  width:25rpx;
-					  height:33rpx
+					  height:33rpx;
 				  }
-			  }
-			  .userNickName {
-				  padding-top: 10px;
-				  display: inline-block;
-			  }
-			  image {
-				  height: 25px;
-				  width: 25px;
-				  padding-left: 5px;
-				  line-height: 200%;
-			  }
+				  .userNickName {
+					  display: inline-flex;
+					  align-items: center;
+				  }
+				  image {
+					  height: 30px;
+					  width: 30px;
+					  padding-left: 5px;
+					  line-height: 200%;
+				  }
 	        }
 	        .user-phone {
 			  width: 300px;
@@ -166,7 +165,7 @@
 		width:100upx;
 		height: 30upx;
 		position: relative;
-		bottom:70upx;
+		bottom:110rpx;
 		}
 </style>
 <template>
@@ -187,13 +186,10 @@
 	      <view class="bottom">
 	        <view class="left">
 	          <view class="user-text">
-	            <view class="userNickName">{{ this.userInfo.nickname }}</view>
-				<block v-if="this.userInfo.sex == 0" class="sex_con">
-					<image mode="aspectFit" src="../../../static/me/girl.svg"></image>
-				</block>
-				<block v-else>
-					<image mode="aspectFit" src="../../../static/me/boy.svg"></image>
-				</block>
+	            <view class="userNickName">{{ this.userInfo.nickname }}
+						<image mode="aspectFit" src="../../../static/me/girl.svg" class="sex_con" v-if="this.userInfo.sex == 0"></image>
+						<image mode="aspectFit" src="../../../static/me/boy.svg" class="sex_con" v-else></image>
+				</view>
 				<view class="option" >
 					<u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
 				</view>
@@ -301,7 +297,7 @@
 		onLoad() {
 			// isLoginCheck()
 			this.userInfo=this.$store.state.userInfo
-			
+			console.log(this.userInfo)
 		},
 		methods: {
 		

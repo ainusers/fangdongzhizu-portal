@@ -120,7 +120,7 @@
 <template>
 	<view>
 		<!-- 展示区 -->
-		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" :isDetail="true"></post-list>
+		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" :isDetail="true" @changeStatus="changeStatus"></post-list>
 		
 		<!-- 评论区 -->
 		<view class="comment_main">
@@ -217,7 +217,7 @@ export default {
 		if(options.id){
 			this.dyId=options.id
 		}
-		this.tuwen_data=[this.$store.state.communityInfo]
+		// this.tuwen_data=[this.$store.state.communityInfo]
 		console.log('图文数据',this.tuwen_data)
 		// this.commentList = this.commentList.filter(item => item.cid == options.cid)
 		this.getOneList()
@@ -231,6 +231,9 @@ export default {
 		
 	},
 	methods: {
+		changeStatus(index,status){
+			this.tuwen_data[index].isReport=status
+		},
 		getdyDetail(){
 			let data={
 					  "id": this.dyId,
@@ -240,6 +243,9 @@ export default {
 			this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
 					if(res.status){	
 							this.tuwen_data = res.data
+							this.tuwen_data.forEach(item=>{
+								this.$set(item,'isReport',false)
+							})
 							console.log('图文data1',this.tuwen_data)
 						uni.stopPullDownRefresh();
 					}

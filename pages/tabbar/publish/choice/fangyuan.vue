@@ -213,6 +213,27 @@
 	.select_btn{
 		color: #ddd;
 	}
+	ul,li{
+		list-style: none;
+		padding: 0;
+	}
+	.quarList{
+		width:95%;
+		border:1px solid #e4e7ed;
+		border-top: none;
+		height:200rpx;
+		overflow: auto;
+		position: absolute;
+		z-index: 10;
+		// margin-top: -25rpx;
+		background: #fff;
+		border-radius: 0 0 20rpx 20rpx;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		li{
+			padding: 15rpx 0 15rpx 30rpx;
+			border-bottom: 1px solid #e4e7ed;
+		}
+	}
 </style>
 <template>
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
@@ -264,8 +285,13 @@
 				<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
 				<!-- 小区名称 -->
 				<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" :label-position="labelPosition" label="小区名称 :" prop="communityName" ref="item1" required>
-					<u-input :border="border" placeholder="请输入小区名称" type="text" v-model="houseModel.communityName" :disabled="setpAll"></u-input>
+					<u-input :border="border" placeholder="请输入小区名称" type="text" v-model="houseModel.communityName" :disabled="setpAll" @input="communitInput" @blur="BlurComm"></u-input>
 				</u-form-item>
+				<view class="quarList" v-if="quarList.length>0">
+					<ul>
+						<li v-for="(item,index) in quarList" :key="index" @click="checkComm(item)">{{item}}</li>
+					</ul>
+				</view>
 				<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="200" :label-position="labelPosition" label="具体房间号 :" prop="communityName" ref="item1" required>
 					<u-input :border="border" placeholder="请输入具体房间号" type="text" v-model="houseModel.roomName" :disabled="setpAll"></u-input>
 				</u-form-item>
@@ -290,36 +316,47 @@
 				
 				  <!-- 月度租金 -->
 				  <u-form-item :label-position="labelPosition" label="房屋租金 :" prop="money" label-width="150" required>
-				  	<u-input :border="border" :type="Number" placeholder="请输入房屋租金" type="text" v-model="houseModel.money" :disabled="setpAll"></u-input>
+				  	<u-input :border="border" :type="Number" placeholder="请输入房屋租金" type="text" v-model="houseModel.money" :disabled="setpAll" @blur="rentMoney"></u-input>
+					<span>元</span>
 				  </u-form-item>
 				  <!-- 房屋押金 -->
 				  <u-form-item :label-position="labelPosition" label="房屋押金 :" prop="mortgageMoney" label-width="150">
 				  	<u-input :border="border" :type="Number" placeholder="请输入房屋押金" type="text" v-model="houseModel.mortgageMoney" :disabled="setpAll"></u-input>
+					<span>元</span>
 				  </u-form-item>
 				  <!-- 服务费用 -->
-				  <u-form-item :label-position="labelPosition" label="服务费用 :" prop="serviceMoney" label-width="150">
-				  	<u-input :border="border" :type="Number" placeholder="请输入服务费用" type="text" v-model="houseModel.serviceMoney" :disabled="setpAll"></u-input>
+				  <u-form-item :label-position="labelPosition" label="维修费用 :" prop="serviceMoney" label-width="150">
+				  	<u-input :border="border" :type="Number" placeholder="请输入维修费用" type="text" v-model="houseModel.serviceMoney" :disabled="setpAll"></u-input>
+					<span>元</span>
 				  </u-form-item>
 				  <!-- 中介费用 -->
 				  <u-form-item :label-position="labelPosition" label="中介费用 :" prop="proxyMoney" label-width="150">
 				  	<u-input :border="border" :type="Number" placeholder="请输入中介费用" type="text" v-model="houseModel.proxyMoney" :disabled="setpAll"></u-input>
+					<span>元</span>
 				  </u-form-item>
 				  <!-- 取暖费用 -->
 				  <u-form-item :label-position="labelPosition" label="取暖费用 :"  label-width="150" prop="warmType">
-				  	<view @click="showPicker('warm')" :class="[{'select_btn':!houseModel.warmType}]">{{houseModel.warmType || '请选择取暖费用'}}</view>
+				  	<!-- <view @click="showPicker('warm')" :class="[{'select_btn':!houseModel.warmType}]">{{houseModel.warmType || '请选择取暖费用'}}</view> -->
+				  	<u-input :border="border" :type="Number" placeholder="请输入取暖费用" type="number" v-model="houseModel.warmType" :disabled="setpAll"></u-input>
+					<span>元</span>
 				  </u-form-item>
 				  <!-- 无线费用 -->
 				  <u-form-item :label-position="labelPosition" label="无线费用 :"  label-width="150" prop="wirelessType">
-				  <view @click="showPicker('wireless')" :class="[{'select_btn':!houseModel.wirelessType}]">{{houseModel.wirelessType || '请选择无线费用'}}</view>
+				  <!-- <view @click="showPicker('wireless')" :class="[{'select_btn':!houseModel.wirelessType}]">{{houseModel.wirelessType || '请选择无线费用'}}</view> -->
+				 	<u-input :border="border" :type="Number" placeholder="请输入无线费用" type="number" v-model="houseModel.wirelessType" :disabled="setpAll"></u-input>
+					<span>元</span>
 				  </u-form-item>
 				  <!-- 物业费用 -->
 				  <u-form-item :label-position="labelPosition" label="物业费用 :"  label-width="150" prop="propertyType">
-				  <view @click="showPicker('property')" :class="[{'select_btn':!houseModel.propertyType}]">{{houseModel.propertyType ||'请选择无线费用'}}</view>
+				  <!-- <view @click="showPicker('property')" :class="[{'select_btn':!houseModel.propertyType}]">{{houseModel.propertyType ||'请选择无线费用'}}</view> -->
+					<u-input :border="border" :type="Number" placeholder="请输入物业费用" type="number" v-model="houseModel.propertyType" :disabled="setpAll"></u-input>
+					<span>元</span>
 				  </u-form-item>
 				  <!-- 水电费用 -->
 				  <u-form-item :label-position="labelPosition" label="水电费用 :"  label-width="150" prop="hydropowerType">
 				  	<view @click="showPicker('hydropower')" :class="[{'select_btn':!houseModel.hydropowerType}]">{{houseModel.hydropowerType || '请选择水电费用'}}</view>
 				  </u-form-item>
+
 				  <!-- 供暖方式 -->
 				  <u-form-item :label-position="labelPosition" label="供暖方式 :"  label-width="150">
 				  		<view v-for="(item, index) in heatList" :key="index" 
@@ -343,11 +380,14 @@
 					<u-select mode="mutil-column-auto" v-model="leaseShow" :list="leaseList" @confirm="leaseConfirm" @cancel="leaseCancel"></u-select>
 				</u-form-item>
 				<!-- 几室 -->
-				<view class="" v-for="(item,index) in houseModel.homeArr">
-					<u-form-item :label-position="labelPosition" :label="item.name" prop="homeArr" label-width="150" v-if="houseModel.chekcNum!=0&&index<houseModel.chekcNum" >
-						<u-input :border="border" placeholder="请填写房屋信息" v-model="item.tenantStr"  type="select"  @click="popUpShowFn('tenant',index)" :disabled="setpAll"></u-input>
-					</u-form-item>
-				</view>   
+				<view v-if="isHomeArr">
+					<view class="" v-for="(item,index) in houseModel.homeArr">
+						<u-form-item :label-position="labelPosition" :label="item.name" prop="homeArr" label-width="150" v-if="houseModel.chekcNum!=0&&index<houseModel.chekcNum" >
+							<u-input :border="border" placeholder="请填写房屋信息" v-model="item.tenantStr"  type="select"  @click="popUpShowFn('tenant',index)" :disabled="setpAll"></u-input>
+						</u-form-item>
+					</view>   
+				</view>
+				
 				<!-- 房屋朝向 -->
 				<u-form-item :label-position="labelPosition" label="房屋朝向 :" prop="orientation" label-width="150">
 					<u-input :border="border" placeholder="请选择房屋朝向" v-model="houseModel.orientation" type="select" @click="orientationShowFn" :disabled="setpAll"></u-input>
@@ -367,6 +407,10 @@
 				<!-- 楼层位置 -->
 				<u-form-item :label-position="labelPosition" label="楼层位置 :" prop="floor" label-width="150">
 					<u-input :border="border" placeholder="请输入楼层" type="text" @click="popUpShowFn('floor')" v-model="houseModel.floor" :disabled="setpAll" ></u-input>层
+				</u-form-item>
+				<!-- 入住时间 -->
+				<u-form-item :label-position="labelPosition" label="入住时间 :" prop="live_time" label-width="150">
+					<view @click="showTime = true" :class="[{'select_btn':houseModel.live_time.indexOf('请选择')!=-1}]">{{houseModel.live_time}}</view>
 				</u-form-item>
 				<!-- 房源照片 -->
 				<view class="region_new_title">房源照片</view>
@@ -445,6 +489,7 @@
 					</view>
 					
 			</u-popup>
+				<u-picker v-model="showTime" mode="time" @confirm="confirmTime" start-year="2023"></u-picker>
 			<u-modal v-model="modalShow" :show-cancel-button="true" cancel-text="不保存" confirm-text="保存" @cancel="deleteHouseInfo" @confirm="saveBack">
 						<view class="slot-content">
 							{{content}}
@@ -478,9 +523,14 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 	export default {
 		data() {
 			return {
+				quarList:[],
+				communityArr:[],
 				modalShow:false,
 				content:'是否保存为草稿',
 				//from表单 model
+				showTime:false,
+				mode: 'date',
+				isHomeArr:false, //是合租
 				houseModel:{
 					publishType:'1',				
 					province:'', //省
@@ -511,10 +561,11 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					warmType:'',//取暖费用
 					wirelessType:'',//无线费用
 					propertyType:'',//物业费用
-					hydropowerType:'',//水电费用
+					hydropowerType:'',//水费用
 					houseConfigStr:'',//房屋配置
 					chekcNum:0,//当前入住的有几位
-					lease:''
+					lease:'',
+					live_time:'请选择入住时间'//请选择入住时间
 				},
 				//表单规则
 				rules:{
@@ -581,22 +632,22 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					},
 					warmType:{
 						required: true,
-						message: '请选择取暖费用',
+						message: '请填写取暖费用',
 						trigger: ['change', 'blur']
 					},
 					wirelessType:{
 						required: true,
-						message: '请选择无线费用',
+						message: '请填写无线费用',
 						trigger: ['change', 'blur']
 					},
 					propertyType:{
 						required: true,
-						message: '请选择物业费用',
+						message: '请填写物业费用',
 						trigger: ['change', 'blur']
 					},
 					hydropowerType:{
 						required: true,
-						message: '请选择水电费用',
+						message: '请填写供水费用',
 						trigger: ['change', 'blur']
 					},
 				},
@@ -1022,6 +1073,20 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				],
 				// 房屋朝向
 				orientationShow: false,
+				waterEleCList:[
+					{
+						value: '民水民电',
+						label: '民水民电'
+					},
+					{
+						value: '商水商电',
+						label: '商水商电'
+					},
+					{
+						value: '民水商电',
+						label: '民水商电'
+					},
+				],
 				orientationList: [
 					[
 						{
@@ -1145,7 +1210,7 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				isPublish:false,
 				isEdit:false,//当前是否为编辑房源
 				isPublish1:false,
-				isPublish2:false
+				isPublish2:false,
 			}
 		},
 		onLoad(options){
@@ -1160,7 +1225,9 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					that.houseModel=JSON.parse(data.data)
 					console.log('房源信息',that.houseModel)
 					if(that.houseModel.roomType=='整租'){
-						that.houseModel.homeArr=[]
+						this.isHomeArr=false
+					}else if(that.houseModel.roomType=='合租'){
+							this.isHomeArr=true
 					}
 					let loacalData=JSON.parse(data.data)
 					let Numstr=loacalData.layout?loacalData.layout.slice(0,1):''
@@ -1242,14 +1309,16 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 			},
 			"houseModel.lease":{
 				handler(newVal,oldVal){
-					console.log(newVal)
 					if(newVal&&newVal.indexOf('合租')!=-1){
 						this.isJoint=true
-						console.log(this.rentNum)
-						console.log(this.homeNum)
+						this.isHomeArr=true
 						this.isJoint?this.houseModel.chekcNum=Number(this.homeNum)-Number(this.rentNum):this.houseModel.chekcNum=0
+					}else{
+						this.houseModel.homeArr.forEach(item=>{
+							item.tenantStr=''
+						})
+						this.isHomeArr=false
 					}
-					
 				},
 				deep:true
 			}
@@ -1261,6 +1330,25 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 			return true
 		},
 		methods: {
+			rentMoney(){
+				this.houseModel.mortgageMoney=this.houseModel.money
+			},
+			confirmTime(e){
+				let currentTime=new Date()
+				let m=currentTime.getMonth()+1
+				let d=currentTime.getDay()
+				if(e.month<m || e.day<d){
+					this.$u.toast('请选择正确入住时间')
+					return
+				}
+				this.houseModel.live_time=e.year+'-'+e.month+'-'+e.day
+			},
+			opencaendar(){
+				this.$refs.calendar.open();
+			},
+			confirm(e){
+				console.log(e)
+			},
 			nextStep(){
 				if(this.stepNum==1){
 					this.validateParam().then(res=>{
@@ -1382,13 +1470,15 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					case "warm":
 					case "wireless":
 					case "property":
-					case "hydropower":
 						this.selectList=this.payTypeList
 					break;
 					case "hire":
 					case "sex":
-					this.popUpShow=false
-					this.selectList=this.listPickerConfig[type]
+						this.popUpShow=false
+						this.selectList=this.listPickerConfig[type]
+					break;
+					case "hydropower":
+						this.selectList=this.waterEleCList
 					break;
 					default:
 					this.selectList=this.listPickerConfig[type]
@@ -1451,6 +1541,7 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 			},
 			// 选择地区回调
 			regionConfirm(e) {
+				this.getCommunit(e.province.label)
 				this.houseModel.region1 = e.province.label + '-' + e.city.label + '-' + e.area.label;
 				this.houseModel.province=e.province.label
 				this.houseModel.city=e.city.label=='市辖区'?this.houseModel.province:e.city.label
@@ -1645,7 +1736,9 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 									}
 
 									uni.showLoading({title:'发布中'});
-									// var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
+									var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
+									console.log('当前定位',location)
+									// return
 						let params={
 									 userId:this.userInfo.id,
 									 imgUrl:imagesHouseArr.toString(), //房源图片
@@ -1660,8 +1753,8 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 									 orientation:this.houseModel.orientation,
 									 size:htmlEncode(this.houseModel.homesize), //房屋面积
 									 floor:this.houseModel.floor,
-									 distanceSubway:'距离西二旗地铁站600米',
-									 subway:'西二旗',
+									 // distanceSubway:'距离西二旗地铁站600米',
+									 // subway:'西二旗',
 									 rentalHouse:this.houseModel.roomType,
 									 payType:this.houseModel.payType,
 									 heatType:this.houseModel.heatType, //供暖方式
@@ -1674,11 +1767,12 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 									 wifiMoney:this.houseModel.wirelessType,//无线费用
 									 manageMoney:this.houseModel.propertyType, //物业费用
 									 waterElectricMoney:this.houseModel.hydropowerType,
-									 longitude:'1.1',
-									 latitude:'1.3',
-									 position:'北京动物园',
+									'longitude': location.longitude, // 经度
+									'latitude': location.latitude, // 纬度
+									 // position:'北京动物园',
 									 support:this.houseModel.houseConfigStr,
 									 status:1,
+									 live_time:this.houseModel.live_time
 									
 					}
 					 let roommate=[]
@@ -1690,8 +1784,8 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					if( this.houseModel.lease ){//出租房屋
 							params['roomType'] =this.houseModel.lease
 							params['roommate']=roommate
-						
 					}
+					console.log(params)
 					let url='/zf/v1/room/increase'
 					if(this.isEdit){
 						url='/zf/v1/room/status'
@@ -1724,14 +1818,12 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 							uni.$u.toast('发布失败')
 						}
 					})
-			
-		
-			
 			},
 			getLocation(){//h5中可能不支持,自己选择
 				return new Promise((resolve, reject) => {
 					uni.getLocation({
 						type: 'wgs84',
+						isHighAccuracy:true,
 						success: function (res) {
 							resolve(res);
 						},
@@ -1854,6 +1946,37 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				if (this.endX - this.startX > 200) {
 					uni.navigateBack();
 				}
+			},
+			BlurComm(e){
+				setTimeout(()=>{
+					this.quarList=[]
+				})
+				
+			},
+			checkComm(val){
+				this.quarList=[]
+				this.houseModel.communityName=val
+			},
+			communitInput(e){
+				this.quarList=[]
+				if(e){
+					this.communityArr.forEach(item=>{
+						if(item.indexOf(e)!=-1){
+							this.quarList.push(item)
+						}
+					})
+				}else{
+					this.quarList=[]
+				}
+			},
+			//获取小区
+			getCommunit(city){
+				this.$H.get('/zf/v1/const/community/name',{city:city},true).then(res=>{
+					console.log(res)
+					if(res.code==200){
+						this.communityArr=res.data
+					}
+				})
 			}
 		},
 	onReady() {

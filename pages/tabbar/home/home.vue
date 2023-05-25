@@ -1,6 +1,7 @@
 <style scope lang="scss" scoped>
 .main {
 	background-color: #f2f2f2;
+	padding-top: 50rpx;
 	 // height: var(--status-bar-height);
 }
 .home_top {
@@ -51,10 +52,13 @@
 	height: calc(100vh - var(--status-bar-height) - 88rpx);
 }
 .list-swiper{
-	height:79vh;
+	height: calc(100vh - var(--status-bar-height) - 260rpx);
 }
 uni-swiper-item{
 	overflow: scroll;
+}
+.screen_fixed_list{
+	z-index: 100 !important;
 }
 </style>
 <template>
@@ -81,21 +85,16 @@ uni-swiper-item{
 		v-if="current == 0 || current == 1"
 		:screenFormData="screenFormData" 
 		:roomList="roomList"
-		:priceApiDataMap="priceApiDataMap" 
-		:from="from" @screenBtn="screenBtn"  
+		:from="from"
 		:regionLeftList="regionLeftList" 
 		:regionRightMap="regionRightMap" 
 		:enterType="enterType"  
 		:erHousePriceList="erHousePriceList"
 		:key="updateSearch"
+		@screenBtn="screenBtn"  
 		@regionLeftBtn="regionLeftBtn"
 		@regionRightBtn="regionRightBtn" 
-		@roomBtn="roomBtn"
-		@priceBtn="priceBtn"
 		@confirmBtn="confirmBtn"
-		@resetBtn="resetBtn"
-		@areaBtn="areaBtn"
-		@sourceBtn="sourceBtn"
 		@roomConfirm="roomConfirm"
 		@confirmPrice="confirmPrice"
 		 >
@@ -188,7 +187,7 @@ export default {
 			updateSearch:0,
 			houseList: [],
 			cityName: '',
-			current: 0,
+			current: 0, //当前tab的下标
 			tabList: [
 				{
 					name: '转租'
@@ -200,7 +199,6 @@ export default {
 				// 	name: '换租'
 				// }
 			],
-			isRequestIng: false,
 			screenFormData: {
 			    erHouse: {
 			        region: {
@@ -230,16 +228,6 @@ export default {
 			            show: false,
 			            key: "more"
 			        },
-			        source: {
-			            text: "来源",
-			            id: "",
-			            key: "reSource"
-			        },
-			        area: {
-			            text: "面积",
-			            id: "",
-			            key: "area"
-			        }
 			    }
 			},
 			// 区域筛选
@@ -256,11 +244,11 @@ export default {
 			},
 			// 二手房价格
 			erHousePriceList: [
-				{text:'1000元以下'},
-				{text:'2000-4000元'},
-				{text:'4000-60000元'},
-				{text:'6000-80000元'},
-				{text:'8000-100000元'},
+				{text:'1000元以下',id:1},
+				{text:'2000-4000元',id:2},
+				{text:'4000-60000元',id:3},
+				{text:'6000-80000元',id:4},
+				{text:'8000-100000元',id:5},
 			],
 			// 户型筛选
 			roomList: Const.roomList,
@@ -290,40 +278,24 @@ export default {
 					index: -1
 				}
 			},
-			listTcShow: false,
-			currentClickType: "region",
 			priceItem: {text:"不限", id: ""},
-			newHouseTypeItem: {text:"不限", id: ""},
-			aparmentChuZuTypeItem: {text:"不限", id: ""},	
 			cityId: "1",
-			// 价格列表的map
-			priceApiDataMap: {
-				"erHouse": {
-					apiKey: "SALE_PRICE_DATA",
-					unit: "万",
-					defaultText: "价格"
-				},
-				"lease": {
-					apiKey: "LEASE_PRICE_DATA",
-					unit: "元",
-					defaultText: "租金"
-				},
-				"newHouse": {
-					apiKey: "NEW_HOUSE_PRICE",
-					unit: "万",
-					defaultText: "价格"
-				},
-				"apartment": {
-					apiKey: "APARTMENT_PRICE_DATA",
-					unit: "元",
-					defaultText: "租金"
-				}
-			},
 			enterType:'erHouse',
 			publish_type:1, //(1：转租，2：直租，3：换租)
 			currPage:1,
 			size:10,
 			isLoad:false,
+			fulling:false,//防止点击和滑动swiper同时执行，只执行一个就行
+			isScreen:true, //当前是否为筛选查询
+			subway:'',//地铁站
+			screenArea:'',//筛选区域
+			screenMoney:'',//筛选价格
+			has_elevator:'',//筛选是否有电梯
+			screenHeat_type:'',//筛选供暖方式
+			rental_house:'',//筛选主卧，次卧
+			home_type:'',//筛选三居室
+			moreChooseStr:[],//更多选中的筛选
+			moreSubKey:['room_type','has_elevator','heat_type','rental_house'],//更多提交接口的key 与screen-tab组件中moreType顺序相同
 		};
 	},
 	props: {
@@ -339,17 +311,26 @@ export default {
 	        type: String,
 	        default: ""
 	    },
-		isLogin:false //是否登录
+		isLogin:false ,//是否登录
+		phoneInfo:''
 	},
 	onLoad() {
 			that=this
-			isLoginCheck()
+			// isLoginCheck()
 			this.cityName=this.$store.state.currentCity
 			this.regionLeftList[0].text=this.cityName
+			console.log('zhixing')
+			uni.getStorage({
+				key:'phoneInfo',
+				success(res){
+					console.log(res)
+					this.phoneInfo=res.data
+					that.savePhoneInfo(res.data)
+				}
+			})
 			this.getArea()
 			this.getHouseList()
-	
-
+			
 	},
 	onShow(){
 		console.log('又展示了')
@@ -370,8 +351,48 @@ export default {
 		uni.stopPullDownRefresh();
 	},
 	methods: {	
+//保存登录人的设备
+			async savePhoneInfo(phoneInfo){
+				console.log('shangbao ')
+					var location = await this.getLocation();
+					console.log('上报')
+					console.log(phoneInfo)
+				let params={
+					  "userId": this.$store.state.userInfo.id,
+					  "appName": phoneInfo.appName,
+					  "appVersion": phoneInfo.appVersion,
+					  "appLanguage":phoneInfo.appLanguage,
+					  "deviceId": phoneInfo.deviceId,
+					  "deviceBrand":phoneInfo.deviceBrand,
+					  "deviceModel":phoneInfo.deviceModel,
+					  "deviceType": phoneInfo.deviceType,
+					  "osName": phoneInfo.osName,
+					  "osVersion": phoneInfo.osVersion,
+					  "osLanguage": phoneInfo.osLanguage,
+					  "osTheme":phoneInfo.osTheme,
+					  "position": location.address.province
+				}
+				console.log('上报系统',params)
+				this.$H.post('/zf/v1/const/user/device',params,true).then(res=>{
+					console.log('传送手机信息',res)
+				})
+			},
+			getLocation(){//h5中可能不支持,自己选择
+				return new Promise((resolve, reject) => {
+					uni.getLocation({
+						type: 'gcj02',
+						geocode:true,
+						isHighAccuracy:true,
+						success: function (res) {
+							resolve(res);
+						},
+						fail: (e) => {  
+							reject(e);
+						}
+					});
+				} )
+			},
 		scrolltolower(){
-			console.log('加载更多')
 			if(this.isLoad){
 				return;
 			}
@@ -384,11 +405,21 @@ export default {
 							page:that.currPage,
 							size:that.size,
 							city:that.cityName,
-							user_id:that.$store.state.userInfo.id,
 							status:2
+						}
+						if(this.isScreen){
+								data['subway']=this.subway?this.subway:null
+								data['area']=this.screenArea?this.screenArea:null
+								data['money']=this.screenMoney?this.screenMoney:null
+								data['home_type']=this.home_type?this.home_type:null
+								//更多筛选赋值
+								this.moreChooseStr.forEach((item,index)=>{
+									data[this.moreSubKey[index]]=item?item:null
+								})
 						}
 					this.$H.post('/zf/v1/room/list',data,true).then(res=>{
 							if(res.status){
+								this.fulling=false
 								that.houseList=that.houseList.concat(res.data)
 								if(res.data.length<10){
 									this.isLoad=true
@@ -404,7 +435,6 @@ export default {
 				this.cityName = cityNameLess+'市';
 			}
 			let regionLeftIndex=this.$refs.screenTab.regionLeftIndex
-			console.log(regionLeftIndex)
 			if(regionLeftIndex==0){
 				this.getArea()
 			}else if(regionLeftIndex==1){
@@ -416,28 +446,32 @@ export default {
 		},
 		// 获得swiper切换后的current索引
 		swipeIndex(index) {
-			if(index==this.current) return
-			this.currPage=1
-			this.current = index.detail.current
-			this.init()
+			if(!this.fulling){
+				this.fulling=true
+				if(index==this.current) return
+				this.currPage=1
+				this.current = index.detail.current
+				this.init()
+			}
 		},
 		// 切换选项卡
 		tabChange(index) {
-			console.log(index)
-			if(index==this.current) return
-			this.current = index;
-			this.init()
-			
+			if(!this.fulling){
+				this.fulling=true
+				if(index==this.current) return
+				this.current = index;
+				this.init()
+			}
 		},
 		init(){
 			this.currPage=1
 			this.houseList=[]
 			this.publish_type=this.current+1
 			this.getHouseList()
+			this.$refs.screenTab.listTcShow=false
 		},
 		// 搜索
 		searchBtn() {
-		  console.log("搜索房源ing")
 		  uni.navigateTo({
 		    url: "/pagesHouse/search/search?from=index"
 		  });
@@ -451,171 +485,31 @@ export default {
 	
 		// 选项卡点击 - 弹出div
 		screenBtn(type) {
-			console.log(type)
 			// this.setTabNodeInfo();
-		    this.currentClickType = type;
 			let screenFormData = this.screenFormData;
 		    let enterType = this.enterType;
 		    if(!screenFormData[enterType][type]) {
 		        throw new Error("参数配置错误，请检查screenFormData中是否有对应的key");
 		    }
-		
-		    // this.setContHeight();
 		    screenFormData[enterType][type].show = !screenFormData[enterType][type].show;
 		    for(let key in screenFormData[enterType]) {
 		        if(screenFormData[enterType][key].show !== undefined && key !== type) {
 		            screenFormData[enterType][key].show = false;
 		        }
 		    }
-		    this.listTcShow = screenFormData[enterType][type].show;
 		    // new Notification().postNotification(Notify.ScreenShowChanged.Name
 		    //     , this.listTcShow);
 		    // this.screenFormData = screenFormData;
 		},
+		confirmPrice(val) {
+			this.screenMoney=val
+			this.init()
+		},
 		
-		// 价格选择
-		priceBtn(item, index, isInput = false) {
-			console.log(item)
-			if(!isInput) {
-				this.minPriceVal = "";
-				this.maxPriceVal = "";
-			}
-			this.priceItem = item;
-		    let screenFormData = this.screenFormData;
-		    let enterType = this.enterType;
-		    screenFormData[enterType].price.id = item.id;
-		    screenFormData[enterType].price.show = false;
-		    screenFormData[enterType].price.text = item.text;
-		    if(!item.id) {
-		        screenFormData[enterType].price.text = this.priceApiDataMap[this.from].defaultText;
-		    }
-		    
-		    this.erHousePriceIndex = index;
-		    this.screenFormData = screenFormData;
-		},
-		confirmPrice() {
-			
-			if(!this.minPriceVal&&this.priceItem.text=='不限' || !this.maxPriceVal&&this.priceItem.text=='不限') {
-				uni.showToast({
-					title: "请输入价格",
-					icon: "none"
-				});
-				return;
-			}
-		
-			let unitText = "价格";
-			let priceUnit = "";
-			if(this.enterType == "newHouse" && this.newHousePriceTabIndex == 1) {
-				unitText = "总价";
-				priceUnit = "万";
-			}
-			if(this.enterType == "newHouse" && this.newHousePriceTabIndex == 0) {
-				unitText = "均价";
-				priceUnit = "元";
-			}
-			if(Number(this.minPriceVal) > Number(this.maxPriceVal)) {
-				uni.showToast({
-					title: `最高${unitText}应该大于最低${unitText}`,
-					icon: "none"
-				});
-				return;
-			}
-			console.log('显示价格')
-			if(this.enterType == "newHouse") {
-				this.newHousePriceBtn({text: `${this.minPriceVal}-${this.maxPriceVal}${priceUnit}`,
-					id: `${this.minPriceVal}:${this.maxPriceVal}`}, -1, true);
-			}else{
-				if(this.minPriceVal&&this.maxPriceVal){
-					this.priceBtn({text: `${this.minPriceVal}-${this.maxPriceVal}`,
-						id: `${this.priceItem.text}`}, -1, true);
-				}else{
-					this.priceBtn({text: `${this.priceItem.text}`,
-						id: `${this.priceItem.text}`}, -1, true);
-				}
-				
-			}
-			this.$refs.screenTab.listTcShow=false
-		},
-		// 户型选项卡
-		roomBtn(item, index) {
-			this.roomItem = item;
-		    let screenFormData = this.screenFormData;
-		    let enterType = this.enterType;
-		    screenFormData[enterType].room.id = item.id;
-		    screenFormData[enterType].room.show = false;
-		    screenFormData[enterType].room.text = item.text;
-		    if(!item.id) {
-		        screenFormData[enterType].room.text = "户型";
-		    }
-		    this.roomListIndex = index;
-		    this.screenFormData = screenFormData;
-		},
-		// 更多选项卡 - 选中来源
-		sourceBtn(item, index) {
-		    let screenFormData = this.screenFormData;
-		    let enterType = this.enterType;
-		    if (this.sourceLsitIndex === index) {
-		        this.sourceLsitIndex = -1;
-		        screenFormData[enterType].source.id = "";
-		        screenFormData[enterType].source.text = "来源";
-		        return;
-		    }
-		    this.sourceLsitIndex = index;
-		    screenFormData[enterType].source.id = item.id;
-		    screenFormData[enterType].source.text = item.text;
-		},
-		// 更多选项卡 - 选中面积
-		areaBtn(item, index) {
-		    let screenFormData = this.screenFormData;
-		    let enterType = this.enterType;
-		    if (this.areaLsitIndex === index) {
-		        this.areaLsitIndex = -1;
-		        screenFormData[enterType].area.id = "";
-		        screenFormData[enterType].area.text = "面积";
-		        return;
-		    }
-		    this.areaLsitIndex = index;
-		    screenFormData[enterType].area.id = item.id;
-		    screenFormData[enterType].area.text = item.text;
-		},
 		// 更多选项卡 - 确定按钮
-		confirmBtn() {
-		    let screenFormData = this.screenFormData;
-		    let enterType = this.enterType;
-		    screenFormData[enterType].more.text = "更多 ";
-		    screenFormData[enterType].more.show = false;
-		    let ids = ["source", "area"];
-			if(enterType == 'apartment') {
-				ids = ["ruZhuTime","room","area","sex","specail"];
-			}
-		    let emptyNum = 0;
-		    for(let i = 0;i<ids.length;i++) {
-		        if(!screenFormData[enterType][ids[i]].id) {
-		            emptyNum++;
-		        }
-		    }
-		    if(ids.length === emptyNum) {
-		        screenFormData[enterType].more.text = "更多";
-		    }
-		    this.screenFormData = screenFormData;
-		    this.$refs.screenTab.listTcShow=false
-		},
-		// 更多选项卡 - 重置按钮
-		resetBtn() {
-		    let screenFormData = this.screenFormData;
-		    let enterType = this.enterType;
-		
-		    screenFormData[enterType].more.text = "更多";
-		    screenFormData[enterType].more.show = true;
-		
-		     this.$refs.screenTab.areaLsitIndex = -1;
-		    screenFormData[enterType].area.id = "";
-		    screenFormData[enterType].area.text = "面积";
-		
-		     this.$refs.screenTab.sourceLsitIndex = -1;
-		    screenFormData[enterType].source.id = "";
-		    screenFormData[enterType].source.text = "来源";
-		    this.screenFormData = screenFormData;
+		confirmBtn(arr) {
+			this.moreChooseStr=arr
+			this.init()
 		},
 		//获取该城市的所有区
 		getArea(){
@@ -625,6 +519,7 @@ export default {
 			this.$H.get('/zf/v1/const/area',data,true).then(res=>{
 				if(res.status){
 					that.regionRightMap['region']=res.data
+					that.regionRightMap['region'].unshift({name:'不限',id:0})
 				}
 			})
 		},
@@ -636,13 +531,11 @@ export default {
 			this.$H.get('/zf/v1/const/station',data,true).then(res=>{
 				if(res.status){
 					that.regionRightMap['region']=res.data
-					console.log(res.data)
+					that.regionRightMap['region'].unshift({line:'不限',station:[]})
 				}			
 			})
 		},
 		regionLeftBtn(item,index){
-			console.log(item)
-			console.log(index)
 			switch(index){
 				case 0:
 					this.getArea()
@@ -651,15 +544,34 @@ export default {
 				this.getStation()
 				break
 			}
-			console.log(index)
 		},
 		// 区域筛选
-		regionRightBtn(item,index){
-			console.log(item,index)
-			this.$refs.screenTab.listTcShow=false
+		regionRightBtn(item){
+			if(item.name){
+				this.screenArea=item.name
+			}else{
+				this.subway=item
+			}
+			this.init()
 		},
+		//户型的确认
 		roomConfirm(item,index){
-			this.$refs.screenTab.listTcShow=false
+			let screenFormData = this.screenFormData;
+			let enterType = this.enterType;
+			if(!item.id) {
+				this.home_type=''
+				this.init()
+				 return
+			} 
+			 this.home_type=item.text
+			screenFormData[enterType].room.id = item.id;
+			screenFormData[enterType].room.show = false;
+			screenFormData[enterType].room.text = item.text;
+			if(!item.id) {
+			    screenFormData[enterType].room.text = "户型";
+			}	  
+			this.screenFormData = screenFormData;
+			this.init()
 		}
 	}
 }

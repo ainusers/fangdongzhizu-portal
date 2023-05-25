@@ -163,14 +163,7 @@
   .pei_tao_she_shi{
 	  padding:20upx;
   }
-  .report_con{
-	  width:100%;
-	  padding: 35upx 60upx;
-	  /deep/.u-radio{
-		  width: 50%;
-		  margin-bottom: 30upx;
-	  }
-  }
+ 
 </style>
 <template>
     <view class="er_house_detail">
@@ -249,7 +242,7 @@
 		<view class="model">
 		  <block v-if="diliData.length > 0">
 			 <view class="modelName">地理位置</view>
-			 <di-li-wei-zhi :list="diliData"  v-show="isMap"></di-li-wei-zhi>
+			 <di-li-wei-zhi :list="diliData"  v-show="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi>
 		   </block>
 		<!-- 详情页 - 配套设施 -->
 		</view>
@@ -261,21 +254,9 @@
 		   </block>
 		</view>
 		<!-- //举报模态框 -->
-		<u-modal v-model="reportShow" title="请选择举报类型" :show-cancel-button="true" confirm-text="提交举报" cancel-text="再想想" @confirm="goReport" @cancel="cancelReport">
-			<view class="report_con">
-				<u-radio-group v-model="reportValue" @change="radioGroupChange" width="50%">
-							<u-radio 
-								v-for="(item, index) in reportList" :key="index" 
-								:name="item.name"
-								v-model="item.checked"
-								:disabled="item.disabled"
-							>
-								{{item.name}}
-							</u-radio>
-				</u-radio-group>
-				<u-input v-model="otherReport" :type="type" :border="border" :height="height" :auto-height="autoHeight" v-show="isOtherR"/>
-			</view>
-		</u-modal>
+		<view v-show="reportShow">
+			<zhizuReport @cancelReport="cancelReport" @goReport="goReport" :typeStr="reportType" :userId="detailData.userId" :reportId="detailData.id"/>
+		</view>
 	
 		<!-- 详情页 - 立即沟通 -->
 		<view class="final">
@@ -304,7 +285,7 @@
   import feiYongXiangQing from "@/components/house-detail/house-feiyong.vue";
   import zuLinXinXi from "@/components/house-detail/house-zulin.vue";
   import diLiWeiZhi from "@/components/house-detail/house-dili.vue";
-
+  import zhizuReport from '@/components/common/modal/report.vue'
   // 页面带过来的参数
   let detailData = {
     houseImg: '',
@@ -321,7 +302,9 @@
     region: '',  
     subway: '',
 	way: '',
-	datetime: ''
+	datetime: '',
+	
+	
   }
   let that;
   export default {
@@ -330,68 +313,42 @@
 		peiTaoSheShi,
 		feiYongXiangQing,
 		zuLinXinXi,
-		diLiWeiZhi
+		diLiWeiZhi,
+		zhizuReport
 	},
 	// 页面传值
 	onLoad(options) {
 		that=this
+		console.log(options)
+		console.log(this.$store.state.houseInfo)
 		this.detailData =this.$store.state.houseInfo[options.index]
 		console.log(this.detailData)
 		this.initData()
+		this.markers.push(
+				{latitude: this.detailData.latitude,
+				longitude:this.detailData.longitude,
+				title:this.detailData.communityName,
+				iconPath: require('../../../static/address.png'),
+				width:30,
+				height:30
+				}
+				)
 	},
 	onShow() {
 		
 	},
     data() {
       return {
+		  markers:[],
 		  collection:'',//是否收藏了
 		  isMap:true,
 		reportShow:false,
-		reportList:[
-			{
-				name:'涉政有害',
-				checked:false
-			},
-			{
-				name:'违规违法',
-				checked:false
-			},
-			{
-				name:'垃圾广告',
-				checked:false
-			},
-			{
-				name:'色情低俗',
-				checked:false
-			},
-			{
-				name:'虚假房源',
-				checked:false
-			},
-			{
-				name:'涉嫌抄袭',
-				checked:false
-			},
-			{
-				name:'网络暴力',
-				checked:false
-			},
-			{
-				name:'其它',
-				checked:false
-			}
-		],
-		type:'textarea',
-		otherReport:'',
-		border: true,
-		reportValue:'',
-		height: 100,
-		autoHeight: true,
 		isOtherR:false,
         sourceTypeId: 2201, // 数据采集 - lh
         shareOption: {},
         haveVillageExpert: false,// 是否有小区专家
         loadingReqeust: true,
+		reportType:'房源',
         swiperList: [
 			// {
 			// 	'url':'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwh.28life.com%2Fupload_img%2F2017%2F12%2F28%2Fu_13247643007%2F151447815522.jpg&refer=http%3A%2F%2Fwh.28life.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1664629331&t=ebfd7014b06a3b28c2dd7c4290093271',
@@ -521,9 +478,9 @@
 				}				
 				let money=''
 				let sex=''
-				if(otherInfo[0].indexOf('未')!=-1){
+				if(otherInfo[0]&&otherInfo[0].indexOf('未')!=-1){
 					money=otherInfo[1]
-				}else if(otherInfo[0].indexOf('已')!=-1){
+				}else if(otherInfo[0]&&otherInfo[0].indexOf('已')!=-1){
 					sex=otherInfo[1]
 				}
 				let obj={
@@ -594,27 +551,10 @@
 				})
 			}
 		},
-		radioGroupChange(e){
-			this.tipcontent=e
-			if(e=='其它'){
-				this.isOtherR=true
-			}else{
-				this.isOtherR=false
-			}
-		},
+		
 		goReport(){
 			this.isMap=true
-			let data={
-				userId:this.detailData.userId,
-				type:'房源',
-				typeId:this.detailData.id,
-				content:this.tipcontent
-			}
-			this.$H.post('/zf/v1/tip/tips',data,true).then(res=>{
-				if(res.status){
-					this.$u.toast('举报成功')
-				}
-			})
+			
 		},
 		cancelReport(){
 			this.isMap=true

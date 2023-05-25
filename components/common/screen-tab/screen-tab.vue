@@ -6,8 +6,8 @@
 					<!-- 租房用这个 -->
 					<view class="screen_list f_r_b">
 						<view hover-class="none" form-type="submit" @click="screenBtn('region')" class="screen_item f_r_c">
-							<view :style="{color: screenFormData.erHouse.region.show || screenFormData.erHouse.region.text != '区域' ? '#ff5a1f' : '#494949'}"
-								class="screent_text f_c_c">{{ screenFormData.erHouse.region.text }}</view>
+							<view :style="{color: screenFormData.erHouse.region.show || screenFormData.erHouse.region.text != '区域' ? '#5199ff' : '#494949'}"
+								class="screent_text f_c_c">区域</view>
 							<image :class="{screen_icon_active : screenFormData.erHouse.region.show}"
 								class="screen_icon" :src="screenFormData.erHouse.region.show ? topIcon : downIcon"></image>
 						</view>
@@ -25,7 +25,7 @@
 						</view>
 						<view hover-class="none" form-type="submit" @click="screenBtn('more')" class="screen_item f_r_c">
 							<view :style="{color: screenFormData.erHouse.more.show || screenFormData.erHouse.more.text != '更多' ? '#5199ff' : '#494949'}"
-								class="screent_text f_c_c">{{ screenFormData.erHouse.more.text }}</view>
+								class="screent_text f_c_c">更多</view>
 							<image :class="{screen_icon_active: screenFormData.erHouse.more.show}"
 								class="screen_icon" :src="screenFormData.erHouse.more.show ? topIcon : downIcon"></image>
 						</view>
@@ -46,7 +46,20 @@
 							<scroll-view class="region_scroll_right" scroll-y>
 								<block v-for="(item, index) in regionRightMap['region']" :key="index">
 									<view hover-class="none" form-type="submit" :class="{screen_active: regionRightIndex == index}"
-										@click="regionRightBtn(item, index)" class="region_list_item">{{ item.name ||item.line }}</view>
+										@click="regionRightBtn(item, index,1)" class="region_list_item">{{ item.name ||item.line }}</view>
+								</block>
+							</scroll-view>
+							<!-- 地铁站名称 -->
+							<scroll-view class="region_scroll_right" scroll-y v-show="stationData.length>0">
+								<block v-for="(item, index) in stationData" :key="index">
+									<view hover-class="none" form-type="submit" :class="{screen_active: regionRightIndex1 == index}"
+										@click="regionRightBtn(item, index,2)" class="region_list_item">{{ item }}</view>
+								</block>
+							</scroll-view>
+							<scroll-view class="region_scroll_right" scroll-y v-show="stationData.length==0">
+								<block v-for="(item, index) in stationData" :key="index">
+									<view hover-class="none" form-type="submit" 
+										class="region_list_item">{{ item }}</view>
 								</block>
 							</scroll-view>
 						</view>
@@ -82,7 +95,7 @@
 								</view>
 							</scroll-view>
 							<view class="room_new_btn_view">
-								<view hover-class="none" form-type="submit" @click='roomBtn({text:"不限", id: ""}, 0)'>重置</view>
+								<view hover-class="none" form-type="submit" @click='roomReset()'>重置</view>
 								<view hover-class="none" form-type="submit" @click='roomConfirm(roomItem, 0)' class="room_new_btn_confirm">确认</view>
 							</view>
 						</view>
@@ -91,27 +104,17 @@
 							v-if="currentClickType == 'more'" class="region_list_view f_r_b">
 							<scroll-view class="scroll_view_list" scroll-y>
 								<view class="more_list_cont">
-									<!-- 来源 -->
-									<view class="more_list">
-										<view class="more_title">来源</view>
-										<view class="more_cont f_r_s">
-											<block v-for="(item, index) in sourceLsit" :key="index">
-												<view hover-class="none" form-type="submit" :class="{ more_item_active: index == sourceLsitIndex }"
-													@click="sourceBtn(item, index)"
-													class="more_item">{{ item.text }}</view>
-											</block>
-										</view>
-									</view>
-									<!-- 面积 -->
-									<view class="more_list">
-										<view class="more_title">面积</view>
-		
-										<view class="more_cont f_r_s">
-											<block v-for="(item, index) in areaLsit" :key="index">
-												<view hover-class="none" form-type="submit" :class="{ more_item_active: index == areaLsitIndex }"
-													@click="areaBtn(item, index)"
-													class="more_item">{{ item.text }}</view>
-											</block>
+									<!-- 更多选项 -->
+									<view v-for="(item,index) in moreType" :key="index">
+										<view class="more_list">
+											<view class="more_title">{{item.name}}</view>
+											<view class="more_cont f_r_s">
+												<block v-for="(item1, index1) in item.type" :key="index1">
+													<view hover-class="none" form-type="submit" :class="{ more_item_active: index1 == item.currentIndex }"
+														@click="sourceBtn(index,item1, index1)"
+														class="more_item">{{ item1.text }}</view>
+												</block>
+											</view>
 										</view>
 									</view>
 								</view>
@@ -132,7 +135,7 @@
 <script>
 	import { Const } from "@/utils/const/Const.js";
 	export default {
-		props:["screenFormData","priceApiDataMap","from","regionLeftList","regionRightMap","enterType","erHousePriceList","roomList"],
+		props:["screenFormData","from","regionLeftList","regionRightMap","enterType","erHousePriceList","roomList"],
 		data() {
 			return {
 				downIcon: "http://cdn.haofang.net/static/uuminiapp/pageNewUi/list/filter_btn_nomal.png",
@@ -144,18 +147,69 @@
 				contHeight: "50%",   // 筛选条件高度
 				regionLeftIndex: 0,
 				regionRightIndex: 0,
+				regionRightIndex1:0,
 				erHousePriceIndex: 99,
 				roomListIndex: 0,
 				// 价格输入
 				minPriceVal: "",
 				maxPriceVal: "",
 				roomItem: {text:"不限", id: ""},
-				// 来源
-				sourceLsit: Const.sourceLsit,
-				sourceLsitIndex: -1,
+				//更多type数组
+				moreType:[
+					{
+						name:'租赁方式',
+						type: Const.leaseType,
+						currentIndex:-1,
+						currentStr:''
+					},
+					{
+						name:'有无电梯',
+						type: Const.noHas,
+						currentIndex:-1,
+						currentStr:''
+					},
+					{
+						name:'供暖方式',
+						type: Const.heatingType,
+						currentIndex:-1,
+						currentStr:''
+					},
+					{
+						name:'房屋类型',
+						type: Const.houseType,
+						currentIndex:-1,
+						currentStr:''
+					},
+				],
+				moreChooseStr:[],//更多选项中选中的值
 				// 面积
 				areaLsit: Const.areaList,
 				areaLsitIndex: -1,
+				stationData:[],//地铁站数据
+				stationStr:'',//地铁站线
+				// 价格列表的map
+				priceApiDataMap: {
+					"erHouse": {
+						apiKey: "SALE_PRICE_DATA",
+						unit: "万",
+						defaultText: "价格"
+					},
+					"lease": {
+						apiKey: "LEASE_PRICE_DATA",
+						unit: "元",
+						defaultText: "租金"
+					},
+					"newHouse": {
+						apiKey: "NEW_HOUSE_PRICE",
+						unit: "万",
+						defaultText: "价格"
+					},
+					"apartment": {
+						apiKey: "APARTMENT_PRICE_DATA",
+						unit: "元",
+						defaultText: "租金"
+					}
+				},
 			}
 		},
 		onShow(){
@@ -177,72 +231,191 @@
 			    let enterType = this.enterType;
 			    let moreIds = ["source", "area"];
 			    for(let key in (screenFormData[enterType] || {})) {
+					console.log(key)
 			        let item = screenFormData[enterType][key];
+					console.log(item)
 			        if(key === "region" && !item.rightId) {
 			            screenFormData[enterType][key].show = false;
 			            continue;
 			        }
 			        if(key === "more") {
-			            let moreNotIdNum = 0;
-			            for(let i = 0;i<moreIds.length;i++) {
-			                if(!screenFormData[enterType][moreIds[i]].id) {
-			                    moreNotIdNum++;
-			                }
-			            }
-			            if(moreNotIdNum === moreIds.length) {
-			                screenFormData[enterType][key].show = false;
-			                screenFormData[enterType][key].text = "更多";
-			            }
+			    //         let moreNotIdNum = 0;
+			    //         for(let i = 0;i<moreIds.length;i++) {
+							// console.log(enterType)
+							// console.log(screenFormData)
+							// console.log(screenFormData[enterType][moreIds[i]])
+			    //             if(!screenFormData[enterType][moreIds[i]].id) {
+			    //                 moreNotIdNum++;
+			    //             }
+			    //         }
+			    //         if(moreNotIdNum === moreIds.length) {
+			    //             screenFormData[enterType][key].show = false;
+							// if(screenFormData[enterType][key].text =='更多'){
+								this.moreScreenInit()
+							// }
+			    //         }
 			            continue;
 			        }
+					if(key == 'price'){
+						if(screenFormData['erHouse'].price.text=='价格'){
+							this.erHousePriceIndex=-1
+						}
+					}
+					if(key == 'room'){
+						if(screenFormData['erHouse'].room.text=='户型'){
+							this.roomListIndex=-1
+						}
+					}
 			        if(!item.rightId) {
 			            screenFormData[enterType][key].show = false;
 			        }
 			    }
 			    this.screenFormData = screenFormData;
 			},
+			moreScreenInit(){
+				this.moreType.forEach(item=>{
+					item.currentIndex=-1
+				})
+			},
 			// 选项卡点击事件
 			screenContBtn() {},
 			regionLeftBtn(item,index){
 				this.regionLeftIndex=index
 				this.$emit('regionLeftBtn',item,index)
+				setTimeout(()=>{
+					if(this.regionLeftIndex==1){
+						this.$nextTick(()=>{
+							this.stationData=this.regionRightMap['region'][0].station?this.regionRightMap['region'][0].station:[]
+						})
+					}else{
+						this.stationData=[]
+					}
+				},100)
 			},
-			regionRightBtn(item,index){
+			regionRightBtn(item,index,type){
+			// type  1区域  2 地铁站
 				this.regionRightIndex=index
-				this.$emit('regionRightBtn',item,index)
+				if(item.line=='不限' || item.name =='不限'){
+					this.$emit('regionRightBtn','')
+					return
+				}
+				if(this.regionLeftIndex!=1 || type==2){
+					this.regionRightIndex1=index
+					this.$emit('regionRightBtn',item)
+				}else if(this.regionLeftIndex==1){ //当前点击的是地铁
+					this.stationData=this.regionRightMap['region'][index].station
+					this.regionRightIndex1=0
+				}
+				let screenFormData=this.screenFormData
+				screenFormData['erHouse'].region.text = '选中了'
 			},
 			roomBtn(item,index){
 				this.roomListIndex=index
-				this.$emit('roomBtn',item,index)
+				this.roomItem=this.roomList[index]
 			},
 			// 价格选项卡
 			minPriceBlur(e) {
+				this.screenFormData[this.enterType].price.text='不限'
+				this.erHousePriceIndex='99'
 				this.minPriceVal = e.detail.value;
 			},
 			maxPriceBlur(e) {
+				this.screenFormData[this.enterType].price.text='不限'
+				this.erHousePriceIndex='99'
 				this.maxPriceVal = e.detail.value;
 			},
 			//选择价格
-			priceBtn(item,index){
-				this.erHousePriceIndex=index
-				this.$emit('priceBtn',item,index)
+			// 价格选择
+			priceBtn(item, index, isInput = false) {
+				if(!isInput) {
+					this.minPriceVal = "";
+					this.maxPriceVal = "";
+				}
+				this.priceItem = item;
+				this.erHousePriceIndex = index;
 			},
 			confirmPrice(){
-				this.$emit('confirmPrice',1)
+				if(!this.minPriceVal&&this.priceItem.text=='不限' || !this.maxPriceVal&&this.priceItem.text=='不限') {
+					uni.showToast({
+						title: '请输入价格',
+						duration: 2000,
+						icon:'none'
+					});
+					return;
+				}
+				if(Number(this.minPriceVal) > Number(this.maxPriceVal)) {
+					uni.$u.toast('最低价格不能大于最高价格')
+					return;
+				}
+				let screenFormData = this.screenFormData;
+					let val=this.priceItem.text
+					switch(this.priceItem.id){
+						case 1:
+							val='0-1000'
+						break;
+						case 2:
+							val='2000-4000'
+						break;
+						case 3:
+							val='4000-6000'
+						break;
+						case 4:
+							val="6000-8000"
+						break;
+						case 5:
+							val="8000-10000"
+						break;
+					}
+					let enterType = this.enterType;
+					screenFormData[enterType].price.id = this.priceItem.id;
+					screenFormData[enterType].price.show = false;
+					screenFormData[enterType].price.text = this.priceItem.text;
+					if(!this.priceItem.id) {
+					    screenFormData[enterType].price.text = this.priceApiDataMap[this.from].defaultText;
+					}		   
+					this.screenFormData = screenFormData
+				if(screenFormData[this.enterType].price.text =='不限'){
+					val = this.minPriceVal+'-'+this.maxPriceVal
+					screenFormData[this.enterType].price.text=this.minPriceVal+'-'+this.maxPriceVal
+				}
+				this.$emit('confirmPrice',val)
 			},
+			//更多提交
 			confirmBtn(){
-				this.$emit('confirmBtn',1)
+				let screenFormData = this.screenFormData;
+				let enterType = this.enterType;
+				screenFormData[enterType].more.show = false;
+				let arr=[]
+				this.moreType.forEach((item,index)=>{
+					arr.push(item.currentStr)
+				})
+				let emArr=arr.filter(item=> {return item==''})
+				if(arr.length!=emArr.length){
+					screenFormData[enterType].more.text = "选中了 ";
+				}
+				this.$emit('confirmBtn',arr)
 			},
+			//更多重置
 			resetBtn(){
-				this.$emit('resetBtn',1)
+				let screenFormData = this.screenFormData;
+				let enterType = this.enterType;
+				screenFormData['erHouse'].more.text='更多'
+				this.moreType.forEach(item=>{
+					item.currentIndex=-1
+					item.currentStr=''
+				})	
 			},
-			areaBtn(item, index){
-				this.areaLsitIndex=index
-				this.$emit('areaBtn',1)
+			sourceBtn(fIndex,item,index){
+				let currentObj=this.moreType[fIndex]
+				currentObj.currentIndex=index
+				currentObj.currentStr=item.text
 			},
-			sourceBtn(item,index){
-				this.sourceLsitIndex=index
-				this.$emit('sourceBtn',item,index)
+			//户型重置
+			roomReset(){
+				let screenFormData=this.screenFormData
+				screenFormData['erHouse'].room.text='户型'
+				this.roomListIndex=-1
+				this.roomItem={text:"不限", id: ""}
 			},
 			roomConfirm(item,index){
 				this.$emit('roomConfirm',item)
@@ -281,13 +454,13 @@
 		position: relative;
 	}
 	.region_scroll_left{
-		width: 35%;
+		width: 300rpx;
 		height: 100%;
 		background: #FFFFFF;
 		box-sizing: border-box;
 	}
 	.region_scroll_right{
-		width: 65%;
+		width: 36%;
 		height: 100%;
 		background: #F8F8F9;
 		padding-left: 30upx;
@@ -326,7 +499,8 @@
 		color:#5199ff;
 	}
 	.region_new_cont .screen_active{
-		background: #ffd900;
+		background: #5199ff;
+		color: #FFFFFF;
 	}
 	.room_list_view{
 		width: 100%;
@@ -369,7 +543,8 @@
 		box-sizing:border-box;
 	}
 	.more_list .more_item_active{
-		background:#ffd900;
+		background:#5199ff;
+		color: #fff;
 	}
 	.more_btn_view{
 		width:100%;
@@ -394,7 +569,7 @@
 		border-radius:40upx;
 	}
 	.more_btn_view .confirmBtn{
-		background:-webkit-linear-gradient(left, #ffd900 , rgb(255,84,0));
+		background-image:linear-gradient(246deg, #87d8f1 0%, #5199ff 100%), linear-gradient( #eeeff5, #eeeff5);
 		color:#fff;
 	}
 .screen_view {
@@ -561,7 +736,7 @@
 	font-size:30upx;
 }
 .room_new_btn_view .room_new_btn_confirm{
-	background:-webkit-linear-gradient(left, #ffd900 , rgb(255,84,0));
+	background-image:linear-gradient(246deg, #87d8f1 0%, #5199ff 100%), linear-gradient( #eeeff5, #eeeff5);
 	color:#fff;
 }
 </style>

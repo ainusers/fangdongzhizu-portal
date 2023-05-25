@@ -91,9 +91,10 @@ module.exports=()=>({
 		{
 			"path": "pages/tabbar/home/home",
 			"style": {
-				"navigationBarTitleText": "",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#f2f2f2",
+				"transparentTitle":  "always",
+				// "navigationBarTitleText": "",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#f2f2f2",
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light",
 				"backgroundColor":"#fff",
@@ -262,9 +263,10 @@ module.exports=()=>({
 				"navigationBarTitleText": "我的动态",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
-				"enablePullDownRefresh": false,
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light",
+				"backgroundColor":"#fff",
+				"onReachBottomDistance":200,
 				"app-plus": {
 					"scrollIndicator": "none",
 					"bounce": "none",

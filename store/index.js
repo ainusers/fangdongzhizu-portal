@@ -11,6 +11,7 @@ const store = new Vuex.Store({
 		houseInfo:{},
 		communityInfo:{},
 		currentCity:'北京市',//当前城市
+		ThreeInfo:{}
 	},
 	mutations: {
 		userInfo(state,obj){
@@ -29,6 +30,13 @@ const store = new Vuex.Store({
 					key:'token',
 					data:token
 				})	
+		},
+		ThreeInfo(state,ThreeInfo){
+			state.ThreeInfo=ThreeInfo
+			uni.setStorage({
+				key:'ThreeInfo',
+				data:ThreeInfo
+			})		
 		},
 		houseInfo(state,houseInfo){
 			if(houseInfo){
@@ -73,6 +81,9 @@ const store = new Vuex.Store({
 	getters:{
 		token:state=>{
 			return state.token
+		},
+		WXInfo:state=>{
+			return state.WXInfo
 		}
 	}
 })
