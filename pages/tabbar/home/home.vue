@@ -1,15 +1,29 @@
 <style scope lang="scss" scoped>
 .main {
-	background-color: #f2f2f2;
+	// background-color: #f2f2f2;
 	padding-top: 50rpx;
 	 // height: var(--status-bar-height);
 }
 .home_top {
+	position: relative;
 	width: 100%;
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
+	padding: 30rpx;
+	padding-bottom: 0;
+	align-items: center;
+	background: #ffffff;
+	.type{
+		width:100%;
+		display: flex;
+		justify-content: center;
+		/deep/.u-scroll-box{
+			background: #ffffff;
+		}
+	}
 }
 .city {
+	position: absolute;
 	align-items: center;
 	color: #272727;
 	display: inline-flex;
@@ -52,7 +66,7 @@
 	height: calc(100vh - var(--status-bar-height) - 88rpx);
 }
 .list-swiper{
-	height: calc(100vh - var(--status-bar-height) - 260rpx);
+	height: calc(100vh - var(--status-bar-height) - 180rpx);
 }
 uni-swiper-item{
 	overflow: scroll;
@@ -60,6 +74,7 @@ uni-swiper-item{
 .screen_fixed_list{
 	z-index: 100 !important;
 }
+
 </style>
 <template>
 	<view class="main">
@@ -75,7 +90,7 @@ uni-swiper-item{
 			  <!-- tabs -->
 			  <u-tabs :list="tabList" barWidth="50" gutter="10" font-size="30" bg-color="#f2f2f2" :current="current" @change="tabChange"></u-tabs>
 		  </view>
-		  <view></view>
+		  <!-- <view></view> -->
 		  <!-- 搜索按钮 -->
 		  <!-- <view class="search" @click.stop="searchBtn"></view> -->
 		</view>
@@ -244,11 +259,13 @@ export default {
 			},
 			// 二手房价格
 			erHousePriceList: [
-				{text:'1000元以下',id:1},
-				{text:'2000-4000元',id:2},
-				{text:'4000-60000元',id:3},
-				{text:'6000-80000元',id:4},
-				{text:'8000-100000元',id:5},
+				{text:'1500元以下',id:1},
+				{text:'1500-2500元',id:2},
+				{text:'2500-3500元',id:3},
+				{text:'3000-5000元',id:4},
+				{text:'5000-8000元',id:5},
+				{text:'8000-10000元',id:6},
+				{text:'10000元以上',id:7},
 			],
 			// 户型筛选
 			roomList: Const.roomList,
@@ -315,7 +332,7 @@ export default {
 		phoneInfo:''
 	},
 	onLoad() {
-			that=this
+		that=this
 			// isLoginCheck()
 			this.cityName=this.$store.state.currentCity
 			this.regionLeftList[0].text=this.cityName
@@ -323,18 +340,18 @@ export default {
 			uni.getStorage({
 				key:'phoneInfo',
 				success(res){
-					console.log(res)
+					console.log('手机信息',res)
 					this.phoneInfo=res.data
 					that.savePhoneInfo(res.data)
 				}
 			})
 			this.getArea()
 			this.getHouseList()
-			
 	},
 	onShow(){
 		console.log('又展示了')
 		// this.getHouseList()
+		
 	},
 	onReady(){
 		
@@ -353,11 +370,10 @@ export default {
 	methods: {	
 //保存登录人的设备
 			async savePhoneInfo(phoneInfo){
-				console.log('shangbao ')
 					var location = await this.getLocation();
-					console.log('上报')
-					console.log(phoneInfo)
-				let params={
+					let address=location.address
+					let position=address.province+'-'+address.city+'-'+address.district+'-'+address.street+'-'+address.streetNum+'-'+address.poiName+'-'+address.cityCode
+					let params={
 					  "userId": this.$store.state.userInfo.id,
 					  "appName": phoneInfo.appName,
 					  "appVersion": phoneInfo.appVersion,
@@ -370,7 +386,7 @@ export default {
 					  "osVersion": phoneInfo.osVersion,
 					  "osLanguage": phoneInfo.osLanguage,
 					  "osTheme":phoneInfo.osTheme,
-					  "position": location.address.province
+					  "position":position
 				}
 				console.log('上报系统',params)
 				this.$H.post('/zf/v1/const/user/device',params,true).then(res=>{
@@ -417,6 +433,7 @@ export default {
 									data[this.moreSubKey[index]]=item?item:null
 								})
 						}
+						console.log('查询的参数',data)
 					this.$H.post('/zf/v1/room/list',data,true).then(res=>{
 							if(res.status){
 								this.fulling=false
@@ -551,6 +568,7 @@ export default {
 				this.screenArea=item.name
 			}else{
 				this.subway=item
+				this.screenArea=''
 			}
 			this.init()
 		},
@@ -565,10 +583,11 @@ export default {
 			} 
 			 this.home_type=item.text
 			screenFormData[enterType].room.id = item.id;
-			screenFormData[enterType].room.show = false;
+			screenFormData[enterType].room.show = true;
 			screenFormData[enterType].room.text = item.text;
 			if(!item.id) {
 			    screenFormData[enterType].room.text = "户型";
+				screenFormData[enterType].room.show = false
 			}	  
 			this.screenFormData = screenFormData;
 			this.init()

@@ -1,4 +1,4 @@
-<style>
+<style lang="scss" scoped>
     /* 城市列表 */
     .choose_city{
         width: 100%;
@@ -20,11 +20,22 @@
     }
     /* #endif */
     .choose_title{
-        height:60upx;
-        line-height:60upx;
+		display: flex;
+		align-items: center;
+        height:80upx;
+        line-height:80upx;
         font-size:27upx;
         margin-left: 32upx;
         box-sizing: border-box;
+		.resetBtn{
+			display: inline-block;
+			width:200rpx;
+			height: 60rpx;
+			 line-height:60rpx;
+			margin: 0;
+			margin-left: 20rpx;
+			font-size: 20upx;
+		}
     }
     .gps_city{
         margin-left: 30upx;
@@ -67,10 +78,16 @@
 
     /* 热门城市 */
     .hot_city_list{
-        flex-wrap: wrap;
+       
         box-sizing: border-box;
 		display: flex;
+		 flex-wrap: wrap;
+		 padding: 0 20rpx;
+		 // justify-content: space-between
     }
+	/deep/uni-button{
+		margin: 0;
+	}
     .hot_city_item{
         width:186upx;
         height:60upx;
@@ -81,7 +98,10 @@
         border-radius:6upx;
         margin-right:30upx;
         margin-bottom:20upx;
+		marign-left:20upx !important;
     }
+
+
 </style>
 <template>
 	<form report-submit>
@@ -89,10 +109,11 @@
 			<scroll-view :scroll-with-animation="scrollAnimate" enable-back-to-top :scroll-into-view="scrollIntoId"
 				class="choose_city_scroll" scroll-y>
 				<view class="choose_city_cont">
-					<view class="choose_title">当前定位城市</view>
+					<view class="choose_title">当前定位城市 :<button class="resetBtn" v-show="gpsCityInfo.cityName != '定位中..'" @click="resetAddress">重新定位</button>
+					</view>
 				   <button form-type="submit" hover-class="none" class="gps_city f_r_s" @click="cityBtn(gpsCityInfo)">
 					   <image class="gps_city_icon"
-							  v-if="gpsCityInfo.cityName != '定位中...'"
+							  v-if="gpsCityInfo.cityName != '定位中..'"
 							  src="https://zdzfapi.haofang.net/PublicC/images/icon_mylocation.png"></image>
 							  {{ gpsCityInfo.cityName }}
 					   <view class="gps_city_text">{{ gpsCityInfo.cityName }}</view>
@@ -142,17 +163,17 @@
                 pageHeight: "100%",
                 hotCityList: [
                     { cityId: "7", cityNameLess: "北京" },
-                    { cityId: "8", cityNameLess: "上海" },
-                    { cityId: "12", cityNameLess: "广州" },
-                    { cityId: "11", cityNameLess: "深圳" },
-                    { cityId: "1", cityNameLess: "成都" },
-                    { cityId: "10", cityNameLess: "杭州" },
-                    { cityId: "83", cityNameLess: "南京" },
-                    { cityId: "369", cityNameLess: "天津" },
-                    { cityId: "176", cityNameLess: "武汉" },
-                    { cityId: "307", cityNameLess: "西安" },
-                    { cityId: "9", cityNameLess: "重庆" },
-                    { cityId: "48", cityNameLess: "大连" }
+                    // { cityId: "8", cityNameLess: "上海" },
+                    // { cityId: "12", cityNameLess: "广州" },
+                    // { cityId: "11", cityNameLess: "深圳" },
+                    // { cityId: "1", cityNameLess: "成都" },
+                    // { cityId: "10", cityNameLess: "杭州" },
+                    // { cityId: "83", cityNameLess: "南京" },
+                    // { cityId: "369", cityNameLess: "天津" },
+                    // { cityId: "176", cityNameLess: "武汉" },
+                    // { cityId: "307", cityNameLess: "西安" },
+                    // { cityId: "9", cityNameLess: "重庆" },
+                    // { cityId: "48", cityNameLess: "大连" }
                 ],
 
                 scrollAnimate: true,
@@ -191,6 +212,11 @@
         },
 
         methods: {
+			resetAddress(){
+				this.gpsCityInfo.cityName='定位中..'
+				this.gpsCityInfo.cityId="1"
+				this.getLocation()
+			},
 			// 获取定位信息
 			getGeo(){
 				console.log('获取定位信息')

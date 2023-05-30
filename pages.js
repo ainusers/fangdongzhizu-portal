@@ -630,8 +630,8 @@ module.exports=()=>({
     ],
 	"tabBar": {
 		"color": "#7A7E83",
-		"backgroundColor": "#eee",
-		"borderStyle": "#ffffff",
+		"backgroundColor": "#fff",
+		"borderStyle": "#eee",
 		"selectedColor": "#000000",
 		"list": [
 			{

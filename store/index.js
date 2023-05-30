@@ -11,7 +11,8 @@ const store = new Vuex.Store({
 		houseInfo:{},
 		communityInfo:{},
 		currentCity:'北京市',//当前城市
-		ThreeInfo:{}
+		ThreeInfo:{},
+		isWx:false, //是否是微信授权
 	},
 	mutations: {
 		userInfo(state,obj){
@@ -75,6 +76,13 @@ const store = new Vuex.Store({
 			uni.setStorage({
 				key:'currentCity',
 				data:city
+			})
+		},
+		isWx(state,isWx){
+			state.isWx=isWx
+			uni.setStorage({
+				key:'isWx',
+				data:isWx
 			})
 		}
 	},

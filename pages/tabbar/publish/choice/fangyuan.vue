@@ -262,7 +262,7 @@
 									</view>
 									<block v-for="(image,index) in houseModel.naturalImageList" :key="index">
 										<view class="uni-uploader__file" style="position: relative;">
-											<image class="uni-uploader__img" mode="aspectFill" :src="image" :data-src="image" @tap="previewImage"></image>
+											<image class="uni-uploader__img" mode="aspectFill" :src="image" :data-src="image" @tap="previewImage(image,'natural')"></image>
 											<view class="close-view" @click="deletImg(index,'natural')">×</view>
 										</view>
 									</block>
@@ -410,7 +410,8 @@
 				</u-form-item>
 				<!-- 入住时间 -->
 				<u-form-item :label-position="labelPosition" label="入住时间 :" prop="live_time" label-width="150">
-					<view @click="showTime = true" :class="[{'select_btn':houseModel.live_time.indexOf('请选择')!=-1}]">{{houseModel.live_time}}</view>
+					<u-input :border="border" placeholder="请选择入住时间" v-model="houseModel.live_time" type="select" @click="showTimeFn" :disabled="setpAll"></u-input>
+					<!-- <view @click="showTimeFn" :class="[{'select_btn':houseModel.live_time?houseModel.live_time.indexOf('请选择')!=-1:''}]">{{houseModel.live_time}}</view> -->
 				</u-form-item>
 				<!-- 房源照片 -->
 				<view class="region_new_title">房源照片</view>
@@ -425,7 +426,7 @@
 									</view>
 									<block v-for="(image,index) in houseModel.houseImageList" :key="index">
 										<view class="uni-uploader__file" style="position: relative;">
-											<image class="uni-uploader__img" mode="aspectFill" :src="image" :data-src="image" @tap="previewImage"></image>
+											<image class="uni-uploader__img" mode="aspectFill" :src="image" :data-src="image" @tap="previewImage(image,'house')"></image>
 											<view class="close-view" @click="deletImg(index,'house')">×</view>
 										</view>
 									</block>
@@ -565,7 +566,7 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					houseConfigStr:'',//房屋配置
 					chekcNum:0,//当前入住的有几位
 					lease:'',
-					live_time:'请选择入住时间'//请选择入住时间
+					live_time:''//请选择入住时间
 				},
 				//表单规则
 				rules:{
@@ -699,6 +700,13 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 						message:'请选择楼层位置',
 						trigger: ['change', 'blur']
 					},
+					live_time:
+						{
+							type:'string',
+							required:true,
+							message:'请选择入住时间',
+							trigger: ['change', 'blur']
+						},
 					houseImageList:{
 						type:'array',
 						required: true,
@@ -1224,6 +1232,10 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				success:function(data){
 					that.houseModel=JSON.parse(data.data)
 					console.log('房源信息',that.houseModel)
+					console.log('供暖方式',that.houseModel.heatType)
+					if(that.houseModel.heatType=='自供暖'){
+						that.heatActiveVar=1
+					}
 					if(that.houseModel.roomType=='整租'){
 						this.isHomeArr=false
 					}else if(that.houseModel.roomType=='合租'){
@@ -1231,11 +1243,25 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					}
 					let loacalData=JSON.parse(data.data)
 					let Numstr=loacalData.layout?loacalData.layout.slice(0,1):''
+					console.log(Numstr)
+					if(that.houseModel.homeArr.length==0){
+						that.houseModel.homeArr=[{name:'A室',tenantStr:''},
+						{name:'B室',tenantStr:''},
+						{name:'C室',tenantStr:''},
+						{name:'D室',tenantStr:''},
+						{name:'E室',tenantStr:''}]
+					}
+					that.radioList.forEach((item,index)=>{
+						item.checked=false
+						if(that.houseModel.publishType-1==index){
+							item.checked=true
+						}
+					})
 					switch(Numstr){
 						case "一":
 							that.homeNum=1
 						break;
-						case "二":
+						case "两":
 							that.homeNum=2
 						break;
 						case "三":
@@ -1267,14 +1293,7 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				}
 			})
 			console.log(this.houseModel)
-			//供暖方式
-			uni.getStorage({
-				key:'heatActiveVar',
-				success:function(data){
-					that.heatActiveVar=data.data
-					console.log('供暖方式')
-				}
-			})
+			
 			//房源配置
 			uni.getStorage({
 				key:'houseConfigList',
@@ -1324,12 +1343,19 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 			}
 		},
 		onBackPress(e){
-			console.log(e)
-			console.log('监听页面返回')
-			this.modalShow=true
-			return true
+			if(!this.isEdit){
+				this.modalShow=true
+				return true
+			}
+			
 		},
 		methods: {
+			showTimeFn(){
+				if(this.setpAll){
+					return
+				}
+				this.showTime=true
+			},
 			rentMoney(){
 				this.houseModel.mortgageMoney=this.houseModel.money
 			},
@@ -1402,10 +1428,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					data:this.currentObj
 				})
 				uni.setStorage({
-					key:'heatActiveVar',
-					data:this.heatActiveVar
-				})
-				uni.setStorage({
 					key:'houseConfigList',
 					data:this.houseConfigList
 				})
@@ -1431,9 +1453,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				})
 				uni.removeStorage({
 					key:'houseConfigList'
-				})
-				uni.removeStorage({
-					key:'heatActiveVar'
 				})
 				//返回首页
 				uni.switchTab({
@@ -1543,6 +1562,7 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 			regionConfirm(e) {
 				this.getCommunit(e.province.label)
 				this.houseModel.region1 = e.province.label + '-' + e.city.label + '-' + e.area.label;
+				console.log(this.houseModel)
 				this.houseModel.province=e.province.label
 				this.houseModel.city=e.city.label=='市辖区'?this.houseModel.province:e.city.label
 				this.houseModel.area=e.area.label
@@ -1570,9 +1590,12 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				console.log(e)
 				e.map((val, index) => {
 					console.log(index)
+					console.log(val)
 					//当前为合租
 					if(index==0&&val.value==8){
 						this.isJoint=true
+						this.isHomeArr=true
+						console.log('合租，显示')
 					}
 					if(index==1){
 						this.rentNum=val.value
@@ -1582,7 +1605,10 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					}
 					if(val.label) result += result == '' ? val.label : '-' + val.label;	
 				})
+				console.log(result)
+				console.log(this.homeNum)
 				this.isJoint?this.houseModel.chekcNum=Number(this.homeNum)-Number(this.rentNum):this.houseModel.chekcNum=0
+				console.log(this.houseModel)
 				this.houseModel.lease = result;
 			},
 			leaseCancel(e) {
@@ -1593,7 +1619,7 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				if(this.setpAll){
 					return
 				}
-				this.heatType=item
+				this.houseModel.heatType=item
 				this.heatActiveVar=index
 		    },
 			// 有无电梯
@@ -1722,23 +1748,12 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 									if(!this.isCheck){
 										return
 									}
+									uni.showLoading({title:'发布中'});
 									let imagesNatureArr=''
 									let imagesHouseArr=''
-									
-									if(this.isEdit){
-										 imagesNatureArr=this.houseModel.naturalImageList
-										 imagesHouseArr=this.houseModel.houseImageList
-									}else{
-									console.log('这里')
-									console.log(this.houseModel.naturalImageList)
-										 imagesNatureArr=await  attachUpload(this.houseModel.naturalImageList)
-										 imagesHouseArr=await attachUpload(this.houseModel.houseImageList)
-									}
-
-									uni.showLoading({title:'发布中'});
-									var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
-									console.log('当前定位',location)
-									// return
+									// var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
+									imagesNatureArr=this.houseModel.naturalImageList
+									imagesHouseArr=	this.houseModel.houseImageList
 						let params={
 									 userId:this.userInfo.id,
 									 imgUrl:imagesHouseArr.toString(), //房源图片
@@ -1767,14 +1782,14 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 									 wifiMoney:this.houseModel.wirelessType,//无线费用
 									 manageMoney:this.houseModel.propertyType, //物业费用
 									 waterElectricMoney:this.houseModel.hydropowerType,
-									'longitude': location.longitude, // 经度
-									'latitude': location.latitude, // 纬度
+									// 'longitude': location.longitude, // 经度
+									// 'latitude': location.latitude, // 纬度
 									 // position:'北京动物园',
 									 support:this.houseModel.houseConfigStr,
 									 status:1,
-									 live_time:this.houseModel.live_time
-									
+									 live_time:this.houseModel.live_time		
 					}
+					
 					 let roommate=[]
 					 this.houseModel.homeArr.forEach(item=>{
 						 if(item.tenantStr){
@@ -1785,7 +1800,7 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 							params['roomType'] =this.houseModel.lease
 							params['roommate']=roommate
 					}
-					console.log(params)
+					console.log('保存编辑参数',params)
 					let url='/zf/v1/room/increase'
 					if(this.isEdit){
 						url='/zf/v1/room/status'
@@ -1805,9 +1820,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 							})
 							uni.removeStorage({
 								key:'houseConfigList'
-							})
-							uni.removeStorage({
-								key:'heatActiveVar'
 							})
 							setTimeout(()=>{
 								uni.switchTab({
@@ -1875,11 +1887,19 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 						// #ifdef APP-PLUS
 						//提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
 						var compressd = cp_images=> {
-							if(type=='natural'){
-								this.houseModel.naturalImageList = this.houseModel.naturalImageList.concat(cp_images)//压缩后的图片路径
-							}else{
-								this.houseModel.houseImageList = this.houseModel.houseImageList.concat(cp_images)//压缩后的图片路径
-							}
+							attachUpload(cp_images).then(res=>{
+									if(type=='natural'){
+										this.houseModel.naturalImageList = this.houseModel.naturalImageList.concat(res)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
+										if(this.isPublish){
+											this.validateParam()
+										}
+									}else{
+										this.houseModel.houseImageList = this.houseModel.houseImageList.concat(res)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
+										if(this.isPublish2){
+											this.validateParam3()
+										}
+									}
+							})
 							
 						}
 						image.compress(res.tempFilePaths,compressd);
@@ -1887,17 +1907,20 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 						
 						// #ifndef APP-PLUS
 						
-						if(type=='natural'){
-							this.houseModel.naturalImageList = this.houseModel.naturalImageList.concat(res.tempFilePaths)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
-						if(this.isPublish){
-							this.validateParam()
-						}
-						}else{
-							this.houseModel.houseImageList = this.houseModel.houseImageList.concat(res.tempFilePaths)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
-						if(this.isPublish2){
-							this.validateParam3()
-						}
-						}
+						attachUpload(res.tempFilePaths).then(res=>{
+								if(type=='natural'){
+									this.houseModel.naturalImageList = this.houseModel.naturalImageList.concat(res)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
+									if(this.isPublish){
+										this.validateParam()
+									}
+								}else{
+									this.houseModel.houseImageList = this.houseModel.houseImageList.concat(res)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
+									if(this.isPublish2){
+										this.validateParam3()
+									}
+								}
+						})
+						
 						// #endif
 					}
 				})
@@ -1920,10 +1943,8 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					})
 				})
 			},
-			previewImage: function(e,type) {
-				var current = e.target.dataset.src
-				console.log(current)
-				console.log(this.houseModel.naturalImageList)
+			previewImage: function(src,type) {
+				var current = src
 				if(type=='natural'){
 					uni.previewImage({
 						current: current,
@@ -1935,7 +1956,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 						urls: this.houseModel.houseImageList
 					})
 				}
-				
 			},
 			touchStart: function(e) {
 				this.startX = e.mp.changedTouches[0].pageX;

@@ -91,7 +91,6 @@
 			})
 			uni.getSystemInfo({
 				success(res){
-					console.log('QQ',res)
 					uni.setStorage({
 						key:'phoneInfo',
 						data:res
@@ -196,6 +195,7 @@
 						uni.getUserInfo({
 						      provider: 'weixin',
 						      success: function (infoRes) {
+								  that.$store.commit('isWx',true)
 								  that.$store.commit('ThreeInfo',infoRes.userInfo)
 								  that.checkUser(infoRes.userInfo)
 						      }
@@ -210,10 +210,13 @@
 					provider: 'qq',
 					success: function(loginRes) {
 						// 获取用户信息
+						console.log(loginRes)
 						uni.getUserInfo({
 							provider: 'qq',
 							success: function(infoRes) {
 								// 查看需要保存的信息
+								that.$store.commit('isWx',false)
+								console.log('infoRes.userInfo',infoRes.userInfo)
 								that.$store.commit('ThreeInfo',infoRes.userInfo)
 								that.checkUser(infoRes.userInfo)
 								

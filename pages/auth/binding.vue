@@ -81,7 +81,7 @@
 			//三方登录 没有绑定过调用
 			threeLogin(userInfo){
 				let params={
-					  "openid": this.ThreeInfo.openId,
+					  // "openid": this.ThreeInfo.openId,
 					  "username": userInfo.username,
 					  "nickname": this.ThreeInfo.nickName,
 					  "sex": this.ThreeInfo.gender=='男'?this.ThreeInfo.gender=1:this.ThreeInfo.gender=0,
@@ -92,6 +92,15 @@
 					  "password": userInfo.password,
 					  "code": userInfo.code
 				}
+				console.log(this.$store.state)
+				let isWx=this.$store.state.isWx
+				console.log(isWx)
+				if(isWx){
+					params["wxid"]=this.ThreeInfo.openId
+				}else{
+					params["qqid"]=this.ThreeInfo.openId
+				}
+				console.log(params)
 				this.$H.post('/zf/v1/user/third/login',params,false).then(res=>{
 					if(res.status&&res.code==200){
 						let token=res.data[0].token	

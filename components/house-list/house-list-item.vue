@@ -9,10 +9,14 @@
 	}
     .er_house_item{
 		display: flex;
-        padding: 10upx 10upx 10upx 10upx;
+        padding: 20rpx 30rpx;
         box-sizing: border-box;
         background: #FFFFFF;
-        border: 2upx solid #F5F5F5;
+        // border: 2upx solid #F5F5F5;
+		border-bottom: 20rpx solid #f2f2f2;
+		margin: 3px 0px 10px 0px;
+		padding-top: 0;
+		// border-radius: 10px;
     }
     .er_house_img_view{
         position: relative;
@@ -203,7 +207,7 @@
 	}
 </style>
 <template>
-	<view>
+	<view >
 		<view @click="homeDetail(item,index)" class="er_house_item f_r_s">
 			<view class="er_house_img_view">
 				<image mode="aspectFill" class="er_house_img" :src="item.imgUrl" lazy-load></image>
@@ -267,6 +271,7 @@
 		
         methods: {
 			updateHouse(item){
+				
 				console.log('房源信息',item)
 				let city=''
 				if(item.city==item.province){
@@ -293,7 +298,7 @@
 					hasElevatorStr:item.hasElevator,
 					roomType:item.roomType,//房屋类型
 					lease:item.roomType,//房屋类型
-					region1:item.province+'-'+city+'-'+item.area ,//所属区域
+					region1:item.province+'-'+item.city+'-'+item.area ,//所属区域
 					payType:item.payType,//付款方式
 					warmType:item.heatMoney,//取暖费用
 					wirelessType:item.wifiMoney,//无线费用
@@ -303,7 +308,8 @@
 					chekcNum:item.roommate.length+1,//当前入住的有几位
 					layout:item.layout, //房屋布局
 					orientation:item.orientation ,//房屋朝向
-					floor:item.floor //楼层位置
+					floor:item.floor, //楼层位置
+					live_time:item.live_time|| ''
 				}
 				console.log('编辑房源',houseModel)
 				uni.setStorage({
