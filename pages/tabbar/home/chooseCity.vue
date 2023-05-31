@@ -118,33 +118,15 @@
 							  {{ gpsCityInfo.cityName }}
 					   <view class="gps_city_text">{{ gpsCityInfo.cityName }}</view>
 				   </button>
-
 				   <view class="choose_title">开通城市</view>
-
 				   <view class="hot_city_list f_r_s">
 					   <block v-for="(item, hotIndex) in hotCityList" :index="hotIndex" :key="hotIndex">
 						   <button form-type="submit" hover-class="none" @click="cityBtn(item)" 
 								class="hot_city_item">{{ item.cityNameLess }}</button>
 					   </block>
 				   </view>
-
-				  <!-- <block v-for="(item, cityIndex) in cityList" :index="cityIndex" :key="cityIndex">
-					   <view class="choose_title" :id="item.title.id">{{ item.title.text }}</view>
-
-					   <block v-for="(info, cityInfoIndex) in item.list" :index="cityInfoIndex" :key="info.cityName">
-						   <button form-type="submit" hover-class="none" @click="cityBtn(info)"
-								class="city_item">{{ info.cityName }}</button>
-					   </block>
-				   </block> -->
 				</view>
 			</scroll-view>
-
-			<!-- <view class="letter_list f_c_c">
-				<block v-for="(item, letterIndex) in letterList" :index="letterIndex" :key="letterIndex">
-					<view form-type="submit" hover-class="none" @click="letterBtn(item)"
-						class="f_r_c letter_item" :id="item.id">{{ item.text }}</view>
-				</block>
-			</view> -->
 		</view>
 	</form>
 </template>
@@ -163,72 +145,23 @@
                 pageHeight: "100%",
                 hotCityList: [
                     { cityId: "7", cityNameLess: "北京" },
-                    // { cityId: "8", cityNameLess: "上海" },
-                    // { cityId: "12", cityNameLess: "广州" },
-                    // { cityId: "11", cityNameLess: "深圳" },
-                    // { cityId: "1", cityNameLess: "成都" },
-                    // { cityId: "10", cityNameLess: "杭州" },
-                    // { cityId: "83", cityNameLess: "南京" },
-                    // { cityId: "369", cityNameLess: "天津" },
-                    // { cityId: "176", cityNameLess: "武汉" },
-                    // { cityId: "307", cityNameLess: "西安" },
-                    // { cityId: "9", cityNameLess: "重庆" },
-                    // { cityId: "48", cityNameLess: "大连" }
                 ],
-
                 scrollAnimate: true,
 				bindList:{}
 			};
 		},
-
         onLoad() {
-			// 获取定位信息
-			// this.getGeo();
 			this.getLocation()
         	this.initCityList();
         },
-
-		onShow() {
-			// 监听gps变化
-			// new Notification().addObserver(this, "GpsChanged", Notify.GpsChanged.Name);
-		},
-
-        onHide() {
-            // 反注册通知
-            // new Notification().removeObserverAllNotification(this);
-        },
-
         onReady() {
         	this.getPhoneInfo();
-
-            // 支付宝小程序由于设置滚动条动画移动太慢,故取消动画
-            // #ifdef MP-ALIPAY
-            this.scrollAnimate = false;
-            // #endif
         },
-
-        onShow() {
-        	
-        },
-
         methods: {
 			resetAddress(){
 				this.gpsCityInfo.cityName='定位中..'
 				this.gpsCityInfo.cityId="1"
 				this.getLocation()
-			},
-			// 获取定位信息
-			getGeo(){
-				console.log('获取定位信息')
-				uni.getLocation({
-					type: 'wgs84',
-					isHighAccuracy:true,
-					success: function (res) {
-						console.log(JSON.stringify(res))
-						console.log('当前位置的经度：' + res.longitude);
-						console.log('当前位置的纬度：' + res.latitude);
-					}
-				});
 			},
             // 获取设备信息
             getPhoneInfo() {
@@ -239,23 +172,6 @@
             // 城市列表初始化
         	initCityList() {
         		return new Promise((resolve, reject) => {
-                    // if (new CityListModel().getModel("cityList") && new CityListModel().getModel("letterList")) {
-                    //     this.cityList = JSON.parse(new CityListModel().getModel("cityList"));
-                    //     this.letterList = JSON.parse(new CityListModel().getModel("letterList"));
-                    // }
-
-                    // new GetAllCityList({}).send()
-                    //    .then(res => {
-                    //        this.drawCityList(res.DATA || {});
-                    //        resolve("");
-                    //    })
-                    //    .catch(err => {
-                    //        uni.showModal({
-                    //             title: "请求失败",
-                    //             content: "获取城市列表失败啦!请稍后重试"
-                    //        });
-                    //        reject("");
-                    //    });
 					// 发送请求所有城市请求
 					this.drawCityList(this.cityList || {});
                 });
