@@ -85,8 +85,7 @@
 		</view>
  -->
 		<!-- 朋友圈 -->
-		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus"></post-list>
-		
+		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus" @clickLike="clickLike"></post-list>
 	</view>
 </template>
 
@@ -113,25 +112,19 @@
 			
 		},
 		onLoad() {
-			// isLoginCheck()
-			// 进入页面就加载推荐数据
-			this.getMomentPost();
 		},
 		onShow() {
 			this.getMomentPost();
 		},
 		onPullDownRefresh() {
 			this.tuwen_default_page = 1;
-			// this.tuwen_data = this.tuwen_data.reverse();
 			this.getMomentPost();
 			uni.stopPullDownRefresh();
 		},
 		onReachBottom() {
-			
 			if(this.load_status_tuwen!='nomore'){
 				this.tuwen_default_page++;
 				this.getMomentPost();
-				this.tuwen_data = this.tuwen_data.concat(this.tuwen_data.slice(1,2));
 				this.tuwen_data.forEach(item=>{
 					this.$set(item,'isReport',false)
 				})
@@ -140,8 +133,7 @@
 					icon:'none',
 					title:"已加载完成"
 				})
-			}
-			
+			}	
 		},
 		methods: {
 			changeStatus(index,statu){
@@ -161,31 +153,30 @@
 				this.load_status_tuwen = 'loading';
 
 				let data={
-						  // "userId": this.$store.state.userInfo.id,
 						  "page":this.tuwen_default_page ,
 						  "size": "10"
 					}
 				this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
 					if(res.status){
-						console.log('图文数据',res)
 						if(this.tuwen_default_page==1){
 							this.tuwen_data = res.data
 						}else{
-							this.tuwen_data.concat(this.tuwen_data,res.data)
+							this.tuwen_data=[...this.tuwen_data,...res.data]
 						}
 						this.tuwen_data.forEach(item=>{
 							this.$set(item,'isReport',false)
 						})
-						if(res.data.length>10){
+						if(res.data.length>=10){
 							this.load_status_tuwen = 'loadmore';
 						}else{
 							this.load_status_tuwen = 'nomore';
 						}
-						console.log(res.data)
-						console.log(this.load_status_tuwen)
 						uni.stopPullDownRefresh();
 					}
 				})
+			},
+			clickLike(type){
+				console.log('取消点赞')
 			}
 		}
 	}

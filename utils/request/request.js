@@ -80,5 +80,31 @@ export default {
 		}
 
 		return this.request(options);
+	},
+	fileUpload(url,files={},header={}){
+			header={
+					'Authorization': 'Bearer ' + store.state.token
+			}
+		let options = {
+			url: config.domain+url,
+			files: files,
+			header: header,
+		}
+		return new Promise((resolve,reject)=>{
+			uni.uploadFile({
+					url: config.domain+url,
+					files: files,
+					header: header,
+					success:(res)=>{
+						resolve(JSON.parse(res.data).data);
+					},
+					fail: (e) => {
+						uni.hideLoading();
+						reject(e);
+					}
+			}	
+			);
+		})
+		
 	}
 };

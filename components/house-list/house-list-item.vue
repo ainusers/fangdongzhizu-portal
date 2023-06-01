@@ -1,4 +1,8 @@
 <style scoped lang="scss" scoped>
+	.er_house_main{
+		position: relative;
+		border-bottom: 20rpx solid #f2f2f2;
+	}
 	.isTopHouse_view{
 		position: absolute;
 		bottom: 30upx;
@@ -8,12 +12,13 @@
 		text-align: right;
 	}
     .er_house_item{
+		position: relative;
 		display: flex;
         padding: 20rpx 30rpx;
         box-sizing: border-box;
         background: #FFFFFF;
         // border: 2upx solid #F5F5F5;
-		border-bottom: 20rpx solid #f2f2f2;
+		
 		margin: 3px 0px 10px 0px;
 		padding-top: 0;
 		// border-radius: 10px;
@@ -207,7 +212,7 @@
 	}
 </style>
 <template>
-	<view >
+	<view class="er_house_main">
 		<view @click="homeDetail(item,index)" class="er_house_item f_r_s">
 			<view class="er_house_img_view">
 				<image mode="aspectFill" class="er_house_img" :src="item.imgUrl" lazy-load></image>
@@ -242,12 +247,13 @@
 					</view>
 				</view>
 			</view>
+			
 		</view>
 		<view class="detail_btn" v-show="isUpdate">
-			<view class="btn_item" @click="updateHouse(item)">
+			<view class="btn_item" @click="updateHouse(item)" v-show="current==0">
 				编辑
 			</view>
-			<view class="btn_item" @click="offShelf(item)">
+			<view class="btn_item" @click="offShelf(item)" v-show="current==1">
 				下架
 			</view>
 		</view>
@@ -264,7 +270,7 @@
 			}
 		},
         computed:{},
-        props: ["item","index"],
+        props: ["item","index","current"],
 		onLoad() {
 			console.log(this.item)
 		},

@@ -37,6 +37,7 @@
 				align-items: center;
 				color: #9a9a9a;
 				font-size: 26rpx;
+				padding:20rpx;
 				.num {
 					margin-right: 4rpx;
 					color: #9a9a9a;
@@ -138,10 +139,10 @@
 											<view class="top">
 												<view class="desc">
 													<view class="name"  @tap.stop="onReply(res, index1,1)">{{ res.username }}</view>
-													<view class="date"  @tap.stop="onReply(res, index1,1)">{{ res.create_time }}</view>
+													<view class="date"  @tap.stop="onReply(res, index1,1)">{{res.create_time  }}</view>
 												</view>
 												<view class="like" :class="{ highlight: res.love }"  @click="clickLike(res.comment_id,res.love,index1)">
-													<view class="num">{{ res.likeNum }}</view>
+													<view class="num">{{ res.love }}</view>
 													<u-icon v-if="!res.love" name="thumb-up" :size="30" color="#9a9a9a"></u-icon>
 													<u-icon v-if="res.love" name="thumb-up-fill" :size="30" ></u-icon>
 												</view>
@@ -185,7 +186,7 @@
 </template>
 
 <script>
-	import {htmlEncode} from '../../../utils/utils.js'
+	import {htmlEncode ,tranfTime} from '../../../utils/utils.js'
 export default {
 	data() {
 		return {
@@ -281,6 +282,7 @@ export default {
 				this.beCommentUserId=e.commentUserId
 			}
 			this.comment_id=e.comment_id ||e.id
+			console.log('回复评论id'+this.comment_id)
 			this.focus = true;
 			
 		},
@@ -300,13 +302,18 @@ export default {
 				dynamicId:this.$store.state.communityInfo.id,//动态id
 				avatar:this.$store.state.userInfo.avatar,
 				username:this.$store.state.userInfo.username,
-				beCommentId:this.beCommentUserId?this.comment_id:0
+				beCommentId:this.beCommentUserId?this.comment_id:0,
+				create_time:'刚刚',
+				love:0
 			}
 			let that=this
 			this.$H.post('/zf/v1/comment/increase',addComment,true).then(res=>{	
+				console.log(res)
 				if(res.status&&res.status!=500){
 					if(res.status&&this.beCommentUserId){
 						//回复二级评论
+						console.log(this.beCommentUserId)
+						console.log(this.commentList[this.beforeIndex])
 						this.commentList[this.beforeIndex].replyList.unshift(addComment)
 						let time=new Date()
 						let y=time.getFullYear()
@@ -316,7 +323,8 @@ export default {
 						let mm=time.getMinutes()
 						let s=time.getSeconds()
 						let create_time=y+'-'+m+'-'+d +'  '+h+':'+mm+':'+s
-						this.commentList[this.beforeIndex].create_time=create_time
+						console.log(tranfTime(create_time))
+						// this.commentList[this.beforeIndex].create_time=tranfTime(create_time)
 					}
 					if(res.status&&!this.beCommentUserId){
 						this.commentList.unshift(addComment);
@@ -395,7 +403,8 @@ export default {
 								let h=time.getHours()
 								let mm=time.getMinutes()
 								let s=time.getSeconds()
-								item.create_time=y+'-'+m+'-'+d +'  '+h+':'+mm+':'+s
+								console.log(y+'-'+m+'-'+d +'  '+h+':'+mm+':'+s)
+								item.create_time=tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm+':'+s)
 								that.commentList.push(item)
 								item.likeNum=0
 								that.getTwoList(item.comment_user_id,index,item.comment_id)

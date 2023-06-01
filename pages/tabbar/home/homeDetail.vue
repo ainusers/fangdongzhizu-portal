@@ -242,6 +242,7 @@
 		<view class="model">
 		  <block v-if="diliData.length > 0">
 			 <view class="modelName">地理位置</view>
+			 <view>{{detailData.distanceSubway}}</view>
 			 <di-li-wei-zhi :list="diliData"  v-show="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi>
 		   </block>
 		<!-- 详情页 - 配套设施 -->
@@ -394,7 +395,7 @@
 				{'title':'付款方式','value':'-'},
 				{'title':'租金','value':'-'},
 				{'title':'押金','value':'-'},
-				{'title':'服务费','value':'-'},
+				{'title':'维修费用','value':'-'},
 				{'title':'中介费','value':'-'},
 				{'title':'','value':'-'},
 				{'title':'取暖费','value':'-'},
@@ -460,10 +461,10 @@
 		},
 		coseDataInit(){
 			this.feiyongData[0].value=this.detailData.payType//支付方式
-			this.feiyongData[1].value=this.detailData.money+'元'//租金
+			this.feiyongData[1].value=this.detailData.money+'元/月'//租金
 			this.feiyongData[2].value=this.detailData.mortgageMoney//押金
-			this.feiyongData[3].value=this.detailData.serviceMoney+'元'//服务费
-			this.feiyongData[4].value=this.detailData.proxyMoney+'元'//中介费
+			this.feiyongData[3].value=this.detailData.serviceMoney+'元/月'//维修费
+			this.feiyongData[4].value=this.detailData.proxyMoney+'元/月'//中介费
 			this.feiyongData[6].value=this.detailData.heatMoney //取暖费
 			this.feiyongData[7].value=this.detailData.wifiMoney //无线费用
 			this.feiyongData[8].value=this.detailData.manageMoney //物业费
@@ -517,7 +518,12 @@
 			// 1 举报  2 收藏  3立即沟通
 			switch (index){
 				case 2:
-				params['collection']=1
+				if(this.collection==1){
+					params['collection']=0
+				}else{
+					params['collection']=1
+				}
+				
 				this.statistics(params)
 				break;
 				case 3:
@@ -532,7 +538,7 @@
 			this.$H.post('/zf/v1/const/save/statistics',params,true).then(res=>{
 				if(res.status){
 					// 收藏成功
-					this.$u.toast('收藏成功')
+					this.collection=1? this.$u.toast('取消收藏'):this.$u.toast('收藏成功')
 				}
 			})
 		},

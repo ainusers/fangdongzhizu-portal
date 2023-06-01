@@ -116,30 +116,7 @@ export default {
 				}
 			],
 			// 价格列表的map
-		tuwen_data: [ 
-			// {
-			// 			"id": 4048,
-			// 			"cid": 1,
-			// 			"userId": 1606522650501607400,
-			// 			"username": "俊哥",
-			// 			"follow": false,
-			// 			"followCount": 0,
-			// 			"comment_count": 0,
-			// 			"share_count": 0,
-			// 			"avatar": "http://192.168.3.101:9090/asiatrip/63de0f9551b4bbd2cf765c361675497360154_mmexport1579505430486.jpg",
-			// 			"words": "今天是周一，我来上班了，手里的任务好多呀，安排好优先级，一件一件的做！！！",
-			// 			"imgUrl": ["https://img0.baidu.com/it/u=1705694933,4002952892&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=281","https://img.tukuppt.com/photo-big/00/00/94/6152bc0ce6e5d805.jpg","https://img0.baidu.com/it/u=2028084904,3939052004&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500","https://img0.baidu.com/it/u=1472391233,99561733&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500"],
-			// 			"longitude": "116.34125",
-			// 			"latitude": "39.936784",
-			// 			"country": "中国",
-			// 			"province": "北京市",
-			// 			"city": "北京市",
-			// 			"address": "西城区-西直门外南路-26号院-北京建筑大学(西城校区)",
-			// 			"type": "gcj02",
-			// 			"updateTime": "2022-12-26T02:52:23.018+00:00",
-			// 			"createTime": "2022-12-26T02:52:23.018+00:00"
-			// 		}
-				],
+		tuwen_data: [],
 		load_status_tuwen: 'loadmore',
 		currPage:1,
 		typeIndex:'',//0 圈子 1 互动 2 转发  3 浏览
@@ -159,8 +136,11 @@ export default {
 	},
 	methods: {
 		scrolltolower(){
-			console.log('加载更多')
 			if(this.load_status_tuwen=='nomore'){
+				uni.showToast({
+					icon: 'none',
+					title: '已加载完成'
+				});
 				return;
 			}
 			this.currPage++
@@ -171,11 +151,13 @@ export default {
 		// 获得swiper切换后的current索引
 		swipeIndex(index) {
 			this.current = index.detail.current
+			that.tuwen_data=[]
 		},
 		// 切换选项卡
 		tabChange(index) {
 			this.current = index;
 			this.typeIndex=index
+			that.tuwen_data=[]
 			this.getShowData()
 			
 		},
@@ -183,10 +165,10 @@ export default {
 			console.log(this.typeIndex)
 			let data={}
 			let url=''
-			that.tuwen_data=[]
+			
 			if(this.typeIndex==0){
 				data={
-					userId:'1606969810415775700', //that.$store.state.userInfo.id,
+					userId:that.$store.state.userInfo.id, 
 					page:this.currPage,
 					size:10
 				}
@@ -200,7 +182,7 @@ export default {
 				if(this.typeIndex==2) type='transfer'
 				if(this.typeIndex==3) type="look" 
 				data={
-					userId:'1606969810415775700',//that.$store.state.userInfo.id,
+					userId:that.$store.state.userInfo.id,
 					pageNum:this.currPage,
 					pageSize:10,
 					type:type
@@ -215,12 +197,11 @@ export default {
 		},
 			
 		getRestus(res){
-			
+			console.log('请求的数据',res)
 			if(res.status){
-				console.log('shuju',res.data)
 				that.tuwen_data=[...that.tuwen_data,...res.data]
 				console.log(that.tuwen_data)
-					if(that.tuwen_data.length==0){
+					if(res.data.length==0){
 						that.load_status_tuwen='nomore'
 					}
 			}

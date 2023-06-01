@@ -311,7 +311,7 @@
 							<!-- 列表 -->
 							<div v-if="houseList.length>0">
 								<block v-for="(item, index) in houseList" :key="index">
-									<house-list-item ref="ListItem" :item="item" :index="index" @updateHouseList="updateHouseList"></house-list-item>
+									<house-list-item ref="ListItem" :item="item" :index="index" @updateHouseList="updateHouseList" :current="current"></house-list-item>
 								</block>
 							</div>
 						   <div v-else>
@@ -379,25 +379,32 @@ export default {
 		current:{
 			handler(newVal,oldVal){
 				that.houseList=[]
-				// var webView = this.$mp.page.$getAppWebview();
+				var webView = this.$mp.page.$getAppWebview();
 				if(newVal==3){
 					that.getCollect()
 					
-					// webView.setTitleNViewButtonStyle(0,{  
-					// 	width: '0'  
-					// });
+					webView.setTitleNViewButtonStyle(0,{  
+						width: '0'  
+					});
 				}else{
 					if(newVal==1){ //已发布
-						// webView.setTitleNViewButtonStyle(0,{  
-						// 	width: '100px'  
-						// });
-					}else{
-						// webView.setTitleNViewButtonStyle(0,{  
-						// 	width: '0px'  
-						// });
+						webView.setTitleNViewButtonStyle(0,{  
+							width: '100px'  
+						});
+					}else if(newVal==0){ //待审核
+						webView.setTitleNViewButtonStyle(0,{
+							width: '100px'  
+						});
+					}
+					else{
+						webView.setTitleNViewButtonStyle(0,{  
+							width: '0px'  
+						});
 					}
 					that.getstatusHouseList(Number(newVal)+1)
 				}
+				editTitleText('管理')
+				this.isUpdate=false
 			}
 		}
 	},
@@ -463,30 +470,21 @@ export default {
 				"user_id": that.$store.state.userInfo.id,
 			}
 			//1 待审核 2 已发布  3已下架
-			uni.request({
-				method:'POST',
-				url:'http://81.70.163.240:11001/zf/v1/room/list',
-				data:params,
-				header: {
-					'content-type': 'application/json',
-					'Authorization': 'Bearer ' + that.$store.state.token
-				},
-				success:(res)=>{
-					if(res.data&&res.data.status&&res.data.data.length>0){
-						that.houseList=[...that.houseList,...res.data.data]
-						console.log(that.houseList)
-					}else if(res.data.data.length==0&&that.houseList.length==0){
-						this.houseList=[]
-					}else{
-						this.loadStatus='end'
-						uni.showToast({
-							icon: 'none',
-							title: '已加载完成'
-						});
-					}
-					that.$store.commit('houseInfo',that.houseList)
-				}
-			})
+				this.$H.post('/zf/v1/room/list',params,true).then(res=>{
+							if(res.data&&res.status&&res.data.length>0){
+								that.houseList=[...that.houseList,...res.data]
+								console.log(that.houseList)
+							}else if(res.data.length==0&&that.houseList.length==0){
+								this.houseList=[]
+							}else{
+								this.loadStatus='end'
+								uni.showToast({
+									icon: 'none',
+									title: '已加载完成'
+								});
+							}
+							that.$store.commit('houseInfo',that.houseList)
+				})
 		},
 	}
 }

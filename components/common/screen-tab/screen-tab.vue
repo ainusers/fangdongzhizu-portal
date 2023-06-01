@@ -308,7 +308,10 @@
 					this.areaName=item.name || item
 					this.$emit('regionRightBtn',item)
 				}else if(this.regionLeftIndex==1){ //当前点击的是地铁
-					this.stationData=this.regionRightMap[this.enterType][index].station
+				console.log('地铁')
+				console.log(this.enterType)
+				console.log(this.regionRightMap)
+					this.stationData=this.regionRightMap['region'][index].station
 					this.regionRightIndex1=0
 				}
 				

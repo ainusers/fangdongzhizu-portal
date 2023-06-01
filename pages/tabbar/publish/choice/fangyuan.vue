@@ -19,7 +19,8 @@
 			justify-content: center;
 			width:100%;
 			height:135rpx;
-			background: #f2f2f2;
+			background: url('../../../../static/publish/default.gif')no-repeat;
+			background-size: 100% 135rpx;
 			color: #333;
 			margin-right: 34rpx;
 			border-radius: 10rpx;
@@ -29,7 +30,8 @@
 			}
 		}
 		.active{
-			background: #5199ff;
+			background: url('../../../../static/publish/active.gif') no-repeat ;
+			background-size: 100% 135rpx;
 			color: #fff;
 		}
 	}
@@ -1362,8 +1364,8 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 			confirmTime(e){
 				let currentTime=new Date()
 				let m=currentTime.getMonth()+1
-				let d=currentTime.getDay()
-				if(e.month<m || e.day<d){
+				let d=currentTime.getDate()
+				if(Number(e.month)<m || Number(e.day)<d){
 					this.$u.toast('请选择正确入住时间')
 					return
 				}
@@ -1751,7 +1753,9 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 									uni.showLoading({title:'发布中'});
 									let imagesNatureArr=''
 									let imagesHouseArr=''
-									// var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
+									var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
+									let address=location.address
+									let position=address.province+'-'+address.city+'-'+address.district+'-'+address.street+'-'+address.streetNum+'-'+address.poiName+'-'+address.cityCode
 									imagesNatureArr=this.houseModel.naturalImageList
 									imagesHouseArr=	this.houseModel.houseImageList
 						let params={
@@ -1782,14 +1786,14 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 									 wifiMoney:this.houseModel.wirelessType,//无线费用
 									 manageMoney:this.houseModel.propertyType, //物业费用
 									 waterElectricMoney:this.houseModel.hydropowerType,
-									// 'longitude': location.longitude, // 经度
-									// 'latitude': location.latitude, // 纬度
-									 // position:'北京动物园',
+									 longitude: location.longitude, // 经度
+									 latitude: location.latitude, // 纬度
+									 position:position,
 									 support:this.houseModel.houseConfigStr,
 									 status:1,
 									 live_time:this.houseModel.live_time		
 					}
-					
+					console.log('发布房源参数'+params)
 					 let roommate=[]
 					 this.houseModel.homeArr.forEach(item=>{
 						 if(item.tenantStr){
@@ -1834,7 +1838,8 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 			getLocation(){//h5中可能不支持,自己选择
 				return new Promise((resolve, reject) => {
 					uni.getLocation({
-						type: 'wgs84',
+						type: 'gcj02',
+						geocode:true,
 						isHighAccuracy:true,
 						success: function (res) {
 							resolve(res);

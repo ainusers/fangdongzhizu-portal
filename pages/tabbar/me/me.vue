@@ -33,6 +33,7 @@
 	    .top {
 	      height: 30%;
 	      position: relative;
+		  margin-bottom: 18px;
 	      .userImage {
 			background-color: white;
 	        position: relative;
@@ -66,8 +67,9 @@
 			  text-align: center;
 				  .sex_con{
 					  display: inline-block;
-					  width:25rpx;
+					  width:50rpx;
 					  height:33rpx;
+					  padding-left:0;
 				  }
 				  .userNickName {
 					  display: inline-flex;
@@ -165,7 +167,7 @@
 		width:100upx;
 		height: 30upx;
 		position: relative;
-		bottom:110rpx;
+		bottom:70rpx;
 		}
 </style>
 <template>
@@ -254,6 +256,19 @@
 	  
 	  <!-- 横条区域 -->
 	  <view class="list-card">
+		  <view class="card">
+		    <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/reward')">
+		      <view class="left flex-center">
+		        <image mode="aspectFit" src="../../../static/me/money.png"></image>
+		      </view>
+		      <view class="center">
+		        <text>去打赏</text>
+		      </view>
+		      <view class="right flex-center">
+		        <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
+		      </view>
+		    </view>
+		  </view>
 	    <view class="card">
 	      <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/advise')">
 	        <view class="left flex-center">
@@ -302,6 +317,7 @@
 		methods: {
 		
 			goto(uri){
+				console.log(uri)
 				uni.navigateTo({
 					url: uri
 				})

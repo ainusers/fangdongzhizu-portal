@@ -616,7 +616,7 @@ module.exports=()=>({
 		{
 			"path": "pages/auth/binding",
 			"style": {
-		"navigationBarTitleText": "绑定手机号"
+				"navigationBarTitleText": "绑定手机号"
 				// "navigationBarTitleText": "注册",
 				// "navigationBarTextStyle": "black",
 				// "navigationBarBackgroundColor": "#fafafa",
@@ -625,6 +625,30 @@ module.exports=()=>({
 				// "app-plus": {
 				// 	"scrollIndicator": "none"
 				// }
+			}
+		},{
+			"path": "pages/tabbar/me/personal",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
+				
+				// "navigationBarTitleText": "注册",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa",
+				// "enablePullDownRefresh": false,
+				// "backgroundTextStyle":"light",
+				// "app-plus": {
+				// 	"scrollIndicator": "none"
+				// }
+			}
+		},
+		{
+			"path": "pages/tabbar/me/reward",
+			"style": {
+				"navigationBarTitleText": "打赏",
+				"navigationBarTextStyle": "#ffffff",
+				"navigationBarBackgroundColor": "#5199ffe",
 			}
 		}
     ],

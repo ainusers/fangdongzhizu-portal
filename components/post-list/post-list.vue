@@ -11,9 +11,10 @@
 						</view>
 						<!-- 用户名称 -->
 						<view class="center">
-							<view style="align-items: center;">
+							<view style="display:flex;align-items: center;justify-content: space-between;">
 								<text class="username">{{ item.username?item.username.substring(0, 12):'' }}</text>
-								<view style="float: right;padding-right: 10px;"><u-icon name="more-dot-fill" color="rgb(203,203,203)" @click="goReport(index)"></u-icon>
+								<view style="float: right;padding-right: 10px;font-size: 24px;">
+									<u-icon name="more-dot-fill" color="rgb(203,203,203)" @click="goReport(index)"></u-icon>
 									<view class="reportText" v-show="item.isReport" @click="report">
 										举报
 									</view>
@@ -61,7 +62,7 @@
 							</button>
 						</view>
 						<!-- 评论 -->
-						<view class="p-item margin50" @click="toComment('/pages/tabbar/community/comment?info='+JSON.stringify(item))">
+						<view class="p-item margin50">
 							<u-icon name="chat" size="38"></u-icon>
 							<text class="count">{{ item.comment_count }}</text>
 						</view>
@@ -70,7 +71,7 @@
 							<u-icon name="heart-fill" color="#cc0000" size="38"></u-icon>
 							<text class="count">{{ item.followCount }}</text>
 						</view>
-						<view v-show="!item.follow" class="p-item" @click.stop="addCollection(item.id, index)">
+						<view v-show="!item.follow" class="p-item" @click.stop="addCollection(item.id, index,item.follow)">
 							<u-icon name="heart" size="38"></u-icon>
 							<text class="count">{{ item.followCount }}</text>
 						</view>
@@ -161,10 +162,33 @@
 			this.isDetail=options.isDetail
 			console.log('当前的状态',this.isDetail)
 			that=this
-			
 			console.log('list',list)
 		},
 		methods: {
+			tranfTime(autoTime){
+							 //var autoTime='2022-05-05 21:58:59'   //尽量让服务端传时间戳，能够有效避免时区问题
+							    var date1 = (Date.parse(new Date()))/1000;//计算当前时间戳 
+							    var date2 = (Date.parse(new Date(autoTime)))/1000;; //自动收货的时间戳 （字符串转时间戳）
+							    var date3 =  (date1 -date2)*1000; //时间差的毫秒数
+							    //计算出相差天数
+							    var days = Math.floor(date3 / (24 * 3600 * 1000));
+								if(days>=1){
+									return autoTime
+								}
+							    //计算出小时数
+							    var leave1 = date3 % (24 * 3600 * 1000); //计算天数后剩余的毫秒数
+							    var hours = Math.floor(leave1 / (3600 * 1000));
+							    //计算相差分钟数
+							    var leave2 = leave1 % (3600 * 1000); //计算小时数后剩余的毫秒数
+							    var minutes = Math.floor(leave2 / (60 * 1000));
+							    if(hours==0&&minutes==0){
+							    	return   "刚刚"
+							    }else if(!hours){
+							    	return   "前"+minutes + " 分钟"
+							    }else{
+							    	 return   "前"+hours+'小时'+minutes + " 分钟"
+							    }   
+						},
 			goReport(index){
 				console.log('想去')
 				this.currentIndex=index
@@ -185,25 +209,7 @@
 			goReportText(){
 				this.reportShow=false
 			},
-			//时间转换
-			tranfTime(autoTime){
-				 //var autoTime='2022-05-05 21:58:59'   //尽量让服务端传时间戳，能够有效避免时区问题
-				    var date1 = (Date.parse(new Date()))/1000;//计算当前时间戳 
-				    var date2 = (Date.parse(new Date(autoTime)))/1000;; //自动收货的时间戳 （字符串转时间戳）
-				    var date3 =  (date1 -date2)*1000; //时间差的毫秒数
-				    //计算出相差天数
-				    var days = Math.floor(date3 / (24 * 3600 * 1000));
-					if(days>=1){
-						return autoTime
-					}
-				    //计算出小时数
-				    var leave1 = date3 % (24 * 3600 * 1000); //计算天数后剩余的毫秒数
-				    var hours = Math.floor(leave1 / (3600 * 1000));
-				    //计算相差分钟数
-				    var leave2 = leave1 % (3600 * 1000); //计算小时数后剩余的毫秒数
-				    var minutes = Math.floor(leave2 / (60 * 1000));
-				    return   "前"+minutes + " 分钟"
-			},
+
 			// 跳转详情页
 			toDetail(data) {
 				console.log('当前状态',this.isDetail)
@@ -217,8 +223,10 @@
 					url: "/pages/tabbar/community/comment?id="+data.id
 				})
 			},
-			toUcenter(){
-				console.log()
+			toUcenter(userId){
+				uni.navigateTo({
+					url:'/pages/tabbar/me/personal?userId='+userId
+				})
 			},
 			// 跳转评论区
 			toComment(url) {
@@ -234,6 +242,7 @@
 					commentId:id?id:0,
 					type:isLove?'reduce':'plus',
 				}
+				console.log(data)
 				this.$H.patch('/zf/v1/comment/love',data,true).then(res=>{
 					console.log(res)
 					if(res.status&&res.status!=500){
@@ -271,7 +280,7 @@
 					provider: "weixin", // 服务提供商（即weixin|qq|sinaweibo）
 					scene: scene, // 分享到哪儿
 					type: 0, // 图文
-					// href: '../../pages/tabbar/community/comment?id'+this.dyId, //跳转链接   图文连接
+					href: 'https://uniapp.dcloud.net.cn/api/plugins/share.html#share',//'../../pages/tabbar/community/comment?id'+this.dyId, //跳转链接   图文连接
 					summary: that.postDetail.words, // 分享内容的摘要
 					title: that.postDetail.words,  // 分享内容的标题
 					imageUrl: imgURL, //图片地址
@@ -385,6 +394,7 @@
 			right:10rpx;
 			text-align: center;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			font-size: 28rpx;
 		}
 		.avatar {
 			width: 85rpx;
@@ -398,6 +408,7 @@
 			flex-direction: column;
 			font-size: 24rpx;
 			color: #999;
+			margin-top: -16rpx;
 			.username {
 				font-size: 32rpx;
 				font-weight: 600;

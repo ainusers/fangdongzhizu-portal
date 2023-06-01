@@ -147,7 +147,7 @@
 </template>
 
 <script>
-	import {getPlatform} from '../../../../utils/utils.js'
+	import {getPlatform,getuserInfo} from '../../../../utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -338,13 +338,10 @@
 				
 			},
 			getHead(userId){
-				let data={
-					userId:userId
-				}
-				this.$H.get('/zf/v1/user/id',data,true).then(res=>{
-					if(res.id){
-						this.otherAvatar=res.avatar
-					}	
+				getuserInfo(userId).then(res=>{
+						if(res.id){
+							this.otherAvatar=res.avatar
+						}
 				})
 			},
 			// 创建websocket连接方法
