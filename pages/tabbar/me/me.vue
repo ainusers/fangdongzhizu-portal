@@ -33,14 +33,14 @@
 	    .top {
 	      height: 30%;
 	      position: relative;
-		  margin-bottom: 18px;
+		  margin-bottom: 34px;
 	      .userImage {
 			background-color: white;
 	        position: relative;
 	        bottom: 40px;
 			margin: 0 auto;
-	        width: 140rpx;
-	        height: 140rpx;
+	        width: 180rpx;
+	        height: 180rpx;
 	        overflow: hidden;
 	        border-radius: 50%;
 	        border: 1px solid #eee;
@@ -49,14 +49,15 @@
 			}
 				
 			/deep/.avatar{
-				width: 140rpx;
-				height: 140rpx;
+				width: 180rpx;
+				height: 180rpx;
 			}
 	      }
 	    }
 	    .bottom {
 	      display: flex;
 	      height: 70%;
+		  margin-top: 40rpx;
 	      .left {
 	        width: 100%;
 	        height: 100%;
@@ -164,10 +165,10 @@
 		}
 	}
 	.renzheng_icon{
-		width:100upx;
-		height: 30upx;
+		width:140upx;
+		height: 50upx;
 		position: relative;
-		bottom:70rpx;
+		bottom:110rpx;
 		}
 </style>
 <template>
@@ -180,17 +181,18 @@
 	    <view class="card" @click="goto('/pages/tabbar/me/user')">
 	      <view class="top">
 	        <view class="userImage">
-	          <!-- <image :src="this.userInfo.avatar" mode="aspectFit"></image> -->
 			  <u-avatar class="avatar" :src="this.userInfo.avatar" level-bg-color="#8072f3" size="140rpx" ></u-avatar>
 			</view>
-			 <image mode="aspectFit" src="../../../static/me/renzheng.png" class="renzheng_icon"></image>
+			 <image mode="aspectFit" src="../../../static/me/renzheng.png" class="renzheng_icon" v-if="this.userInfo.auth==1"></image>
+			 <image mode="aspectFit" src="../../../static/me/weirenzheng.png" class="renzheng_icon" v-else></image>
 	      </view>
 	      <view class="bottom">
 	        <view class="left">
 	          <view class="user-text">
 	            <view class="userNickName">{{ this.userInfo.nickname }}
-						<image mode="aspectFit" src="../../../static/me/girl.svg" class="sex_con" v-if="this.userInfo.sex == 0"></image>
-						<image mode="aspectFit" src="../../../static/me/boy.svg" class="sex_con" v-else></image>
+						<image mode="aspectFit" src="../../../static/me/boy_icon.png" class="sex_con" v-if="this.userInfo.sex == 1"></image>
+						<image mode="aspectFit" src="../../../static/me/girl.svg" class="sex_con" v-else></image>
+						
 				</view>
 				<view class="option" >
 					<u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
@@ -309,13 +311,10 @@
 			}
 		},
 		
-		onLoad() {
-			// isLoginCheck()
+		onShow() {
 			this.userInfo=this.$store.state.userInfo
-			console.log(this.userInfo)
 		},
 		methods: {
-		
 			goto(uri){
 				console.log(uri)
 				uni.navigateTo({

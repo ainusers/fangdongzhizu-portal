@@ -23,8 +23,17 @@
 					￥<view class="num">{{item}}</view>
 				</view>
 			</block>
-			
-			<u-button type="primary"  class="custom-style"  @click="show = true">立即打赏</u-button>
+			<view class="pay_type">
+				<view class="item_pay" @click="pay('wx')" :class="{pay_ative:payType=='wx'}">
+					<image src="../../../static/me/wx.png" mode=""></image>
+					微信
+				</view>
+				<view class="item_pay" @click="pay('zfb')" :class="{pay_ative:payType=='zfb'}">
+						<image src="../../../static/me/zwb.png" mode=""></image>
+					支付宝
+				</view>
+			</view>
+			<u-button type="primary"  class="custom-style"  @click="goPay">立即打赏</u-button>
 		</view>
 		<view class="reward_text">
 			<view>
@@ -44,19 +53,6 @@
 			</view>
 		</view>
 		<view>
-				<u-popup v-model="show" mode="bottom">
-					<view class="pay_type">
-						<view class="item" @click="pay('wx')">
-							<image src="../../../static/me/wx.png" mode=""></image>
-							微信
-						</view>
-						<view class="item" @click="pay('zfb')">
-								<image src="../../../static/me/zwb.png" mode=""></image>
-							支付宝
-						</view>
-					</view>
-					
-				</u-popup>
 		</view>
 	</view>
 </template>
@@ -68,7 +64,8 @@
 				src: 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg',
 				currentIndex:0,
 				moneyList:[1,5,10,15,20,50],
-				show:false
+				show:false,
+				payType:'wx'
 			}
 		},
 		methods:{
@@ -76,13 +73,34 @@
 				this.currentIndex=index
 			},
 			pay(type){
-				
+				this.payType=type
+			},
+			goPay(){
+				uni.getProvider({
+					service:'payment',
+					success:(res)=>{
+						console.log(res)
+					}
+				})
+				uni.requestPayment({
+				    provider: 'alipay',
+				    orderInfo: 'orderInfo', //微信、支付宝订单数据 【注意微信的订单信息，键值应该全部是小写，不能采用驼峰命名】
+				    success: function (res) {
+				        console.log('success:' + JSON.stringify(res));
+				    },
+				    fail: function (err) {
+				        console.log('fail:' + JSON.stringify(err));
+				    }
+				});
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.pay_ative{
+		box-shadow: 0 0px 5px 0 #5199ff;
+	}
 	.reward_bg{
 		height:200rpx;
 		background-image:linear-gradient( #5199ff 0%, #ffffff 100%);
@@ -165,6 +183,7 @@
 		padding: 50rpx 30rpx;
 	}
 	.pay_type{
+		width:100%;
 		display: flex;
 		justify-content: space-around;
 		image{
@@ -173,10 +192,11 @@
 			display: block;
 			margin-bottom: 20rpx;
 		}
-		.item{
+		.item_pay{
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			padding: 20px;
 		}
 	}
 </style>

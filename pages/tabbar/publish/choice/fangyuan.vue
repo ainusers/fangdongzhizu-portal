@@ -344,15 +344,13 @@
 				  </u-form-item>
 				  <!-- 无线费用 -->
 				  <u-form-item :label-position="labelPosition" label="无线费用 :"  label-width="150" prop="wirelessType">
-				  <!-- <view @click="showPicker('wireless')" :class="[{'select_btn':!houseModel.wirelessType}]">{{houseModel.wirelessType || '请选择无线费用'}}</view> -->
-				 	<u-input :border="border" :type="Number" placeholder="请输入无线费用" type="number" v-model="houseModel.wirelessType" :disabled="setpAll"></u-input>
-					<span>元</span>
+				  <view @click="showPicker('wireless')" :class="[{'select_btn':!houseModel.wirelessType}]">{{houseModel.wirelessType || '请选择无线费用'}}</view>
+				 	<!-- <u-input :border="border" :type="Number" placeholder="请输入无线费用" type="number" v-model="houseModel.wirelessType" :disabled="setpAll"></u-input> -->
 				  </u-form-item>
 				  <!-- 物业费用 -->
 				  <u-form-item :label-position="labelPosition" label="物业费用 :"  label-width="150" prop="propertyType">
-				  <!-- <view @click="showPicker('property')" :class="[{'select_btn':!houseModel.propertyType}]">{{houseModel.propertyType ||'请选择无线费用'}}</view> -->
-					<u-input :border="border" :type="Number" placeholder="请输入物业费用" type="number" v-model="houseModel.propertyType" :disabled="setpAll"></u-input>
-					<span>元</span>
+				  <view @click="showPicker('property')" :class="[{'select_btn':!houseModel.propertyType}]">{{houseModel.propertyType ||'请选择无线费用'}}</view>
+					<!-- <u-input :border="border" :type="Number" placeholder="请输入物业费用" type="number" v-model="houseModel.propertyType" :disabled="setpAll"></u-input> -->
 				  </u-form-item>
 				  <!-- 水电费用 -->
 				  <u-form-item :label-position="labelPosition" label="水电费用 :"  label-width="150" prop="hydropowerType">
@@ -382,7 +380,7 @@
 					<u-select mode="mutil-column-auto" v-model="leaseShow" :list="leaseList" @confirm="leaseConfirm" @cancel="leaseCancel"></u-select>
 				</u-form-item>
 				<!-- 几室 -->
-				<view v-if="isHomeArr">
+				<view v-show="isHomeArr">
 					<view class="" v-for="(item,index) in houseModel.homeArr">
 						<u-form-item :label-position="labelPosition" :label="item.name" prop="homeArr" label-width="150" v-if="houseModel.chekcNum!=0&&index<houseModel.chekcNum" >
 							<u-input :border="border" placeholder="请填写房屋信息" v-model="item.tenantStr"  type="select"  @click="popUpShowFn('tenant',index)" :disabled="setpAll"></u-input>
@@ -671,12 +669,14 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 						{
 							validator: (rule, value, callback) => {
 								let isT=true
+								console.log(this.homeArrIndex)
+								if(this.homeArrIndex==this.houseModel.chekcNum-1){
 									value.forEach((item,index)=>{
 										if(index<this.houseModel.chekcNum&&item.tenantStr==""){
 											isT=false
 										}
 									})
-								
+								}
 									return isT;
 							},
 							message: '请填写房屋信息',
@@ -1753,9 +1753,11 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 									uni.showLoading({title:'发布中'});
 									let imagesNatureArr=''
 									let imagesHouseArr=''
-									var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
-									let address=location.address
-									let position=address.province+'-'+address.city+'-'+address.district+'-'+address.street+'-'+address.streetNum+'-'+address.poiName+'-'+address.cityCode
+									// #ifdef APP-PLUS
+										var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
+										let address=location.address
+										let position=address.province+'-'+address.city+'-'+address.district+'-'+address.street+'-'+address.streetNum+'-'+address.poiName+'-'+address.cityCode
+									// #endif
 									imagesNatureArr=this.houseModel.naturalImageList
 									imagesHouseArr=	this.houseModel.houseImageList
 						let params={
@@ -1786,13 +1788,15 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 									 wifiMoney:this.houseModel.wirelessType,//无线费用
 									 manageMoney:this.houseModel.propertyType, //物业费用
 									 waterElectricMoney:this.houseModel.hydropowerType,
-									 longitude: location.longitude, // 经度
-									 latitude: location.latitude, // 纬度
-									 position:position,
 									 support:this.houseModel.houseConfigStr,
 									 status:1,
 									 live_time:this.houseModel.live_time		
 					}
+					// #ifdef APP-PLUS
+						params['longitude']=location.longitude
+						params['latitude']=location.latitude
+						params['position']=location.position
+					// #endif
 					console.log('发布房源参数'+params)
 					 let roommate=[]
 					 this.houseModel.homeArr.forEach(item=>{

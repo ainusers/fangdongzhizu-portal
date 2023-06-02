@@ -14,14 +14,12 @@
     .er_house_item{
 		position: relative;
 		display: flex;
+		align-items: center;
         padding: 20rpx 30rpx;
         box-sizing: border-box;
         background: #FFFFFF;
-        // border: 2upx solid #F5F5F5;
-		
 		margin: 3px 0px 10px 0px;
 		padding-top: 0;
-		// border-radius: 10px;
     }
     .er_house_img_view{
         position: relative;
@@ -215,12 +213,11 @@
 	<view class="er_house_main">
 		<view @click="homeDetail(item,index)" class="er_house_item f_r_s">
 			<view class="er_house_img_view">
-				<image mode="aspectFill" class="er_house_img" :src="item.imgUrl" lazy-load></image>
+				<image mode="aspectFill" class="er_house_img" :src="item.imgUrl.split(',')[0]" lazy-load></image>
 			</view>
 			<view class="er_house_cont">
 				<!-- 兰亭新苑 三区 朝向 主卧-->
 				<view class="er_house_title">
-					<text v-if="item.rentalHouse">{{ item.rentalHouse.split('-')[0] }}</text>
 					<text v-if=" item.communityName">{{ item.communityName }}</text>
 					<text v-if="item.orientation">{{ item.orientation }}</text>
 				</view>
@@ -272,13 +269,10 @@
         computed:{},
         props: ["item","index","current"],
 		onLoad() {
-			console.log(this.item)
 		},
 		
         methods: {
 			updateHouse(item){
-				
-				console.log('房源信息',item)
 				let city=''
 				if(item.city==item.province){
 					city='市辖区'
@@ -317,7 +311,7 @@
 					floor:item.floor, //楼层位置
 					live_time:item.live_time|| ''
 				}
-				console.log('编辑房源',houseModel)
+				console.log('房源信息',houseModel)
 				uni.setStorage({
 					key:'houseModel',
 					data:JSON.stringify(houseModel)
@@ -363,7 +357,6 @@
 				})
 			},
 			offShelf(item){
-				console.log(item)
 				let data={
 					id:item.id,
 					status:3
@@ -375,8 +368,6 @@
 				})
 			},
         	homeDetail(item,index) {
-					console.log(index)
-				console.log("----> " + JSON.stringify(item))
                 uni.navigateTo({
                     url: `/pages/tabbar/home/homeDetail?index=${index}`
                 });

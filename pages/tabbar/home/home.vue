@@ -130,7 +130,7 @@ uni-swiper-item{
 						    </block>
 						</view>
 						<view  class="home_nodata" v-else>
-							暂无数据
+							<u-empty  text="暂无数据" mode="favor"></u-empty>
 						</view>
 					</view>
 				</scroll-view>
@@ -145,7 +145,7 @@ uni-swiper-item{
 					    </block>
 					</view>
 					<view class="home_nodata" v-else>
-						暂无数据
+						<u-empty  text="暂无数据" mode="favor"></u-empty>
 					</view>
 					</view>
 				</scroll-view>

@@ -1,4 +1,4 @@
-<style>
+<style lang="scss">
     page{
         width: 100%;
         height: 100%;
@@ -39,8 +39,6 @@
         flex-shrink: 0;
     }
     .img_view{
-        width: 110upx;
-        height: 110upx;
         margin: auto 0;
         flex-shrink: 0;
 		display: flex;
@@ -80,6 +78,23 @@
 	.logout{
 		padding: 25px 10px 0px 10px;
 	}
+	.userImage {
+	  background-color: white;
+	  position: relative;
+	  margin: 0 auto;
+	  width: 105rpx;
+	  height: 105rpx;
+	  overflow: hidden;
+	  border-radius: 50%;
+	  border: 1px solid #eee;
+				image {
+					display: initial;
+				}
+				/deep/.avatar{
+					width: 105rpx;
+					height: 105rpx;
+				}
+	}
 </style>
 <template>
     <view class="cont_view">
@@ -89,7 +104,9 @@
                 <view class="item_text">头像</view>
                 <view class="f_r_e img_view_info">
                     <view class="img_view">
-						<image @error="imgError" :src="this.userInfo.avatar" mode="aspectFit"></image>
+					<view class="userImage">
+					  <u-avatar class="avatar" :src="this.userInfo.avatar" level-bg-color="#8072f3" size="110rpx" ></u-avatar>
+					</view>
 						<u-icon class="arrow_right" name="arrow-right"></u-icon>
 					</view>
                 </view>
@@ -113,7 +130,7 @@
             <!--地区-->
             <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/region`)">
                 <view class="item_text">地区</view>
-				<block v-if="this.userInfo.province == ''">
+				<block v-if="!this.userInfo.province">
 					<view class="item_val">
 						请选择地区
 						<u-icon class="arrow_right" name="arrow-right"></u-icon>
@@ -173,7 +190,7 @@
     export default {
         data() {
             return {
-				userInfo: ''
+				userInfo: '',
 			}
         },
         onLoad(options) {
@@ -182,18 +199,15 @@
        onShow(){
 		   that=this
 			this.userInfo =this.$store.state.userInfo
+			console.log(this.userInfo)
        },
 
         methods: {
 			goto(uri){
-				console.log(uri)
 				uni.navigateTo({
 					url: uri
 				})
 			},
-            imgError() {
-                // 这里填充一个默认图片
-            },
             // 更新头像
             chooseAvatar() {
 				console.log('更新了')

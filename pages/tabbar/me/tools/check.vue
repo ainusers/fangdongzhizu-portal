@@ -298,25 +298,21 @@
 		<!-- 顶部区域 -->
 		  <!-- 选项卡 -->
 			<u-sticky bgColor="#fff">
-			  <u-tabs :list="tabList" :current="current" @change="tabChange" 
-			   lineWidth="30"
-			lineColor="#f56c6c"></u-tabs>
+			  <u-tabs :list="tabList" :current="current" @change="tabChange" lineWidth="30" lineColor="#f56c6c"></u-tabs>
 			</u-sticky>
 		<!-- 内容区域 -->
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300"  >
 			<swiper-item v-for=" (item,index) in tabList" :key="index">
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
 					<view v-show="current == index">
-						<view class="content">
+						<block v-if="houseList.length === 0 && pageNum==1">
+							<u-empty  text="暂无数据" mode="favor"></u-empty>
+						</block>
+						<view class="content" v-else>
 							<!-- 列表 -->
-							<div v-if="houseList.length>0">
 								<block v-for="(item, index) in houseList" :key="index">
 									<house-list-item ref="ListItem" :item="item" :index="index" @updateHouseList="updateHouseList" :current="current"></house-list-item>
 								</block>
-							</div>
-						   <div v-else>
-								<p class="home_nodata">暂无数据</p>
-						   </div>
 						</view>
 					</view>
 				</scroll-view>
@@ -379,27 +375,40 @@ export default {
 		current:{
 			handler(newVal,oldVal){
 				that.houseList=[]
-				var webView = this.$mp.page.$getAppWebview();
+				that.pageNum=1
+				// #ifdef APP-PLUS
+					var webView = this.$mp.page.$getAppWebview();
+				// #endif
+				
 				if(newVal==3){
 					that.getCollect()
-					
-					webView.setTitleNViewButtonStyle(0,{  
+					// #ifdef APP-PLUS
+					webView.setTitleNViewButtonStyle(0,{
 						width: '0'  
 					});
+					// #endif
+					
 				}else{
 					if(newVal==1){ //已发布
-						webView.setTitleNViewButtonStyle(0,{  
-							width: '100px'  
-						});
+					// #ifdef APP-PLUS
+					webView.setTitleNViewButtonStyle(0,{
+						width: '100px'  
+					});
+					// #endif
+						
 					}else if(newVal==0){ //待审核
-						webView.setTitleNViewButtonStyle(0,{
-							width: '100px'  
-						});
+					// #ifdef APP-PLUS
+					webView.setTitleNViewButtonStyle(0,{
+						width: '100px'  
+					});
+					// #endif
 					}
 					else{
-						webView.setTitleNViewButtonStyle(0,{  
+						// #ifdef APP-PLUS
+						webView.setTitleNViewButtonStyle(0,{
 							width: '0px'  
 						});
+						// #endif
 					}
 					that.getstatusHouseList(Number(newVal)+1)
 				}
@@ -421,10 +430,13 @@ export default {
 			txt='管理'
 			this.isUpdate=false
 		}
+		if(this.$refs.ListItem&&this.$refs.ListItem.length>0){
 			this.$refs.ListItem.forEach(item=>{
 				item.isUpdate=this.isUpdate
 			})
 			editTitleText(txt)
+		}
+			
 	},
 	methods: {
 		//滚动
@@ -448,7 +460,7 @@ export default {
 				}else{
 					uni.showToast({
 						icon:'none',
-						title:res.messages
+						title:res.message
 					})
 				}
 			})
@@ -473,16 +485,15 @@ export default {
 				this.$H.post('/zf/v1/room/list',params,true).then(res=>{
 							if(res.data&&res.status&&res.data.length>0){
 								that.houseList=[...that.houseList,...res.data]
-								console.log(that.houseList)
 							}else if(res.data.length==0&&that.houseList.length==0){
 								this.houseList=[]
 							}else{
-								this.loadStatus='end'
 								uni.showToast({
 									icon: 'none',
 									title: '已加载完成'
 								});
 							}
+							res.data.length<10?this.loadStatus='end':this.loadStatus='loadmore'
 							that.$store.commit('houseInfo',that.houseList)
 				})
 		},

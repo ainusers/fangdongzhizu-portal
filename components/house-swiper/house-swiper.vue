@@ -98,8 +98,6 @@
             },
 			// 预览图片
 			previewImage(url, urls) {
-				console.log("-----url-----> " + url)
-				console.log("-----urls-----> " + urls)
 				uni.previewImage({
 					current: url,
 					urls: urls

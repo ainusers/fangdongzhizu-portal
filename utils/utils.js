@@ -62,8 +62,8 @@ const htmlEncode = function(str) {
 	temp = temp.replace(/</g, "&lt;");
 	temp = temp.replace(/>/g, "&gt;");
 	temp = temp.replace(/\s/g, "&nbsp;");
-	temp = temp.replace(/\'/g, "&#39;");
-	temp = temp.replace(/\"/g, "&quot;");
+	// temp = temp.replace(/\'/g, "&#39;");
+	// temp = temp.replace(/\"/g, "&quot;");
 	return temp;
 }
 
@@ -118,6 +118,18 @@ const getuserInfo = function(userId) {
 		})
 	})
 }
+//检测图片是否能正常加载
+ const checkPicExist=function() {
+      let _this = this
+      let img = new Image()
+      img.onload = function() {
+        _this.picExist = true
+      }
+      img.onerror = function() {
+        _this.picExist = false
+      }
+      img.src = _this.picUrl
+    }
 export {
 	getStoreData,
 	initStorestate,

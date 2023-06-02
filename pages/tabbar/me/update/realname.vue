@@ -8,7 +8,7 @@
 								<view class="uni-uploader__files">
 									<block v-if="form.straightUrl" >
 										<view class="uni-uploader__file" style="position: relative;" @tap="chooseImage('straight')">
-											<image class="uni-uploader__img" mode="aspectFill" :src="form.straightUrl[0]" :data-src="form.straightUrl" @tap="previewImage"></image>
+											<image class="uni-uploader__img" mode="aspectFill" :src="form.straightUrl" :data-src="form.straightUrl" @tap="previewImage"></image>
 										</view>
 									</block>
 									<view class="uni-uploader__input-box" v-if="!form.straightUrl[0]">
@@ -26,7 +26,7 @@
 								<view class="uni-uploader__files">
 									<block v-if="form.reverseUrl">
 										<view class="uni-uploader__file" style="position: relative;" @tap="chooseImage('reverse')">
-											<image class="uni-uploader__img" mode="aspectFill" :src="form.reverseUrl[0]" :data-src="form.straightUrl" @tap="previewImage"></image>
+											<image class="uni-uploader__img" mode="aspectFill" :src="form.reverseUrl" :data-src="form.straightUrl" @tap="previewImage"></image>
 										</view>
 									</block>
 									<view class="uni-uploader__input-box" v-if="!form.reverseUrl[0]">
@@ -52,6 +52,7 @@
 		['original'],
 		['compressed', 'original']
 	]
+	import {attachUpload} from '@/utils/utils.js'
 	export default{
 		data(){
 			return{
@@ -59,12 +60,6 @@
 					straightUrl:'', //正面url
 					reverseUrl:''//反面url
 				},
-				action:'http://www.example.com/upload',
-				fileList:[
-					{
-											url: 'http://pics.sc.chinaz.com/files/pic/pic9/201912/hpic1886.jpg',
-				   }
-				],
 				sourceTypeIndex: 2,
 				sourceType: ['拍照', '相册', '拍照或相册'],
 				sizeTypeIndex: 2,
@@ -78,13 +73,11 @@
 			chooseImageFn:async function(type){
 				let imageList=[]
 				let count=1
-				console.log('选择图片')
 				uni.chooseImage({
 					sourceType: sourceType[this.sourceTypeIndex],
 					sizeType: sizeType[this.sizeTypeIndex],
 					count: count,
 					success: (res) => {
-						console.log(res)
 						// #ifdef APP-PLUS
 						//提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
 						var compressd = cp_images=> {
@@ -92,11 +85,11 @@
 						}
 						image.compress(res.tempFilePaths,compressd);
 						// #endif
-						
 						// #ifndef APP-PLUS
-						this.form[type+'Url']=res.tempFilePaths
+						attachUpload(res.tempFilePaths).then(res=>{
+							this.form[type+'Url']=res[0]
+						})
 						// #endif
-						console.log(this.form)
 					}
 				})
 			},
@@ -109,8 +102,6 @@
 			},
 		},
 		onNavigationBarButtonTap(e){
-			console.log(e)
-
 			if(!this.form.straightUrl&&!this.form.reverseUrl){
 				uni.showToast({
 					title: '请上传身份证，正反面',
@@ -121,13 +112,11 @@
 			}
 			let data={
 					userId:this.$store.state.userInfo.id,
-					imageUrl:this.form.straightUrl[0],
-					reverseImageUrl:this.form.reverseUrl[0]
+					imageUrl:this.form.straightUrl,
+					reverseImageUrl:this.form.reverseUrl
 				}
 				
-			this.$H.post('v1/card/verifi',data,true).then(res=>{
-				console.log(res)
-				
+			this.$H.post('/zf/v1/card/verifi',data,true).then(res=>{
 				if(res.status&&res.data[0].indexOf('失败')==-1){
 					uni.showToast({
 						title: '认证成功',
@@ -151,25 +140,6 @@
 				}
 				
 			})
-			// uni.request({
-			// 	url:'http://81.70.163.240:11001/zf/v1/card/verifi',
-			// 	method:'POST',
-			// 	data:{
-			// 		userId:this.$store.state.userInfo.id,
-			// 		imageUrl:this.form.straightUrl[0],
-			// 		// +','+this.form.reverseUrl
-			// 	},
-			// 	header: {
-			// 		'content-type': 'application/json',
-			// 		'Authorization': 'Bearer ' +  this.$store.state.token
-			// 	},
-			// 	success: (res) => {
-			// 		console.log(res)
-			// 		if(res.data.status&&res.data[]){
-						
-			// 		}
-			// 	}
-			// })
 		}
 	}
 </script>

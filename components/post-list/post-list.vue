@@ -84,6 +84,7 @@
 			<!-- margin-top="100" -->
 			<u-empty  text="我可是有底线的" mode="favor"></u-empty>
 		</block>
+		
 		<block v-if="loadStatus == 'loadmore'">
 			<view style="padding: 30rpx 0;">
 				<u-loadmore :status="loadStatus" :load-text="loadText"/>
@@ -238,12 +239,12 @@
 			// 点赞
 			addCollection(id, index,isLove) {
 				let data={
-					dynamicId:this.$store.state.communityInfo.id,
-					commentId:id?id:0,
+					userId:this.$store.state.userInfo.id,
+					id:id?id:0,
 					type:isLove?'reduce':'plus',
 				}
 				console.log(data)
-				this.$H.patch('/zf/v1/comment/love',data,true).then(res=>{
+				this.$H.patch('/zf/v1/dynamic/follow',data,true).then(res=>{
 					console.log(res)
 					if(res.status&&res.status!=500){
 						this.list[index].follow = true;

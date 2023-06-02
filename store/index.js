@@ -8,7 +8,7 @@ const store = new Vuex.Store({
 		userInfo:"",
 		token:'',
 		messegeNum:[],
-		houseInfo:{},
+		houseInfo:[],
 		communityInfo:{},
 		currentCity:'北京市',//当前城市
 		ThreeInfo:{},

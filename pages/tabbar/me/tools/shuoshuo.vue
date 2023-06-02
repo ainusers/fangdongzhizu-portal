@@ -27,14 +27,16 @@
 			</u-sticky>
 		<!-- 内容区域 -->
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
-		
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
 					<view v-if="current === 0">
 						<!-- 内容区域 -->
-						<view class="content">
+						<block v-if="tuwen_data.length === 0 && currPage==1">
+							<u-empty  text="暂无数据" mode="favor"></u-empty>
+						</block>
+						<view class="content" v-else>
 							<!-- 圈子 -->
-						    <post-list :list="tuwen_data" :loadStatus="load_status_tuwen"></post-list>
+						    <post-list :list="tuwen_data" :loadStatus="load_status_tuwen"></post-list>					
 						</view>
 					</view>
 				</scroll-view>
@@ -42,7 +44,10 @@
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
 					<view v-if="current === 1">
-					<view class="content">
+					<block v-if="tuwen_data.length === 0 && currPage==1">
+						<u-empty  text="暂无数据" mode="favor"></u-empty>
+					</block>
+					<view class="content" v-else>
 						<!-- 已发布 -->
 					   <post-list :list="tuwen_data" :loadStatus="load_status_tuwen"></post-list>
 					</view>
@@ -52,17 +57,23 @@
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
 					<view v-if="current === 2">
-					<view class="content">
-						<!-- 已下架 -->
-					     <post-list :list="tuwen_data" :loadStatus="load_status_tuwen"></post-list>
-					</view>
+						<block v-if="tuwen_data.length === 0 && currPage==1">
+								<u-empty  text="暂无数据" mode="favor"></u-empty>
+						</block>
+						<view class="content" v-else>
+							<!-- 已下架 -->
+							 <post-list :list="tuwen_data" :loadStatus="load_status_tuwen"></post-list>
+						</view>
 					</view>
 				</scroll-view>
 			</swiper-item>
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
 					<view v-if="current === 3">
-					<view class="content">
+					<block v-if="tuwen_data.length === 0 && currPage==1">
+						<u-empty  text="暂无数据" mode="favor"></u-empty>
+					</block>
+					<view class="content" v-else>
 						<!-- 收藏 -->
 					    <post-list :list="tuwen_data" :loadStatus="load_status_tuwen"></post-list>
 					</view>
@@ -106,7 +117,7 @@ export default {
 					name: '圈子'
 				},
 				{
-					name: '互动'
+					name: '点赞'
 				},
 				{
 					name: '转发'
@@ -201,7 +212,7 @@ export default {
 			if(res.status){
 				that.tuwen_data=[...that.tuwen_data,...res.data]
 				console.log(that.tuwen_data)
-					if(res.data.length==0){
+					if(res.data.length==0 &&this.currPage!=1){
 						that.load_status_tuwen='nomore'
 					}
 			}
