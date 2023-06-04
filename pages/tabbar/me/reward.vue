@@ -24,11 +24,11 @@
 				</view>
 			</block>
 			<view class="pay_type">
-				<view class="item_pay" @click="pay('wx')" :class="{pay_ative:payType=='wx'}">
+				<view class="item_pay" @click="pay('wxpay')" :class="{pay_ative:payType=='wxpay'}">
 					<image src="../../../static/me/wx.png" mode=""></image>
 					微信
 				</view>
-				<view class="item_pay" @click="pay('zfb')" :class="{pay_ative:payType=='zfb'}">
+				<view class="item_pay" @click="pay('alipay')" :class="{pay_ative:payType=='alipay'}">
 						<image src="../../../static/me/zwb.png" mode=""></image>
 					支付宝
 				</view>
@@ -65,7 +65,7 @@
 				currentIndex:0,
 				moneyList:[1,5,10,15,20,50],
 				show:false,
-				payType:'wx'
+				payType:'wxpay'
 			}
 		},
 		methods:{
@@ -76,14 +76,8 @@
 				this.payType=type
 			},
 			goPay(){
-				uni.getProvider({
-					service:'payment',
-					success:(res)=>{
-						console.log(res)
-					}
-				})
 				uni.requestPayment({
-				    provider: 'alipay',
+				    provider:this.payType,
 				    orderInfo: 'orderInfo', //微信、支付宝订单数据 【注意微信的订单信息，键值应该全部是小写，不能采用驼峰命名】
 				    success: function (res) {
 				        console.log('success:' + JSON.stringify(res));

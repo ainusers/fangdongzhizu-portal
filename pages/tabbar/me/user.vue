@@ -105,7 +105,7 @@
                 <view class="f_r_e img_view_info">
                     <view class="img_view">
 					<view class="userImage">
-					  <u-avatar class="avatar" :src="this.userInfo.avatar" level-bg-color="#8072f3" size="110rpx" ></u-avatar>
+					  <u-avatar class="avatar" :src="this.userInfo.avatar" level-bg-color="#8072f3" size="110rpx" img-mode="scaleToFill"></u-avatar>
 					</view>
 						<u-icon class="arrow_right" name="arrow-right"></u-icon>
 					</view>
@@ -147,7 +147,7 @@
             <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/updatephone`)">
                 <view class="item_text">手机号</view>
                 <view class="item_val">
-					{{ this.userInfo.username }}
+					{{ this.userInfo.username.replace(/^(.{3})(?:\d+)(.{4}$)/,"$1****$2") }}
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
             </view>
@@ -187,6 +187,7 @@
 </template>
 <script>
 	var that;
+	import {compressImg,attachUpload} from '@/utils/utils.js'
     export default {
         data() {
             return {
@@ -229,74 +230,67 @@
                     success: function (res) {
 						console.log(res)
                         uni.showLoading({title: '上传中...'});
-                        // 上传图片操作 (.then().catch(err => {}))
-									let files=res.tempFiles
-									let filesPath=res.tempFilePaths
-									that.uploadFileAvtar(files,filesPath).then(res=>{
-										that.updateImg(res[0])
+									compressImg(res.tempFilePaths[0]).then(file=>{
+										attachUpload([file]).then(res=>{
+											that.updateImg(res[0])
+										})
 									})
-						
-						
                     }
                 });
             },
-			// 上传图片
-			uploadFileAvtar(files,filesPath){
-				console.log(files)
-				console.log(filesPath)
-				return new Promise((resolve,reject)=>{
-					uni.uploadFile({
-						url: 'http://81.70.163.240:11001/zf/v1/file/uploads',
-						filePath:filesPath[0],
-						name:'file',
-						header: {
-							// 'content-type': 'multipart/form-data',
-							'Authorization': 'Bearer ' + that.$store.state.token
-						},
-						formData:{
-							// file:files[0]
-							},
-						success: (res) => {
-							resolve(JSON.parse(res.data).data);
-						},
-						fail: (e) => {
-							console.log("e: " + JSON.stringify(e));
-							uni.hideLoading();
-							reject(e);
-							}
-						});
-				})
-			},
 			//更改头像
 			updateImg(imgAvtar){
-				console.log(imgAvtar)
 				let that=this
-				uni.request({
-					method: 'patch',
-					data: {
-						id: that.userInfo.id,
-						avatar: imgAvtar
-					},
-					header: {
-						'content-type': 'application/json',
-						'Authorization': 'Bearer ' +  that.$store.state.token
-					},
-					url: 'http://81.70.163.240:11001/zf/v1/user/attr',
-					success: (res) => {
-						console.log(res)
-						console.log(res.data)
-						 uni.hideLoading();
-						if(res.data.status){
+				let data= {
+					id: that.userInfo.id,
+					avatar: imgAvtar
+					}
+				this.$H.patch('/zf/v1/user/attr',data,true).then(res=>{
+					 uni.hideLoading();
+					 console.log(res)
+					 if(res.status&&res.code==200){
 							uni.showToast({
 								title: '修改成功',
-								icon: 'none',
+										icon: 'none',
 								duration: 2000
 							})
 							that.userInfo.avatar=imgAvtar
-							that.$store.commit('userInfo',that.userInfo)
-						}
-					}
+							that.$store.commit('userInfo',that.userInfo) 
+					 }else{
+						 uni.showToast({
+						 	title:res.message,
+						 	icon: 'none',
+						 	duration: 2000
+						 })
+					 }
+				
 				})
+				// uni.request({
+				// 	method: 'patch',
+				// 	data: {
+				// 		id: that.userInfo.id,
+				// 		avatar: imgAvtar
+				// 	},
+				// 	header: {
+				// 		'content-type': 'application/json',
+				// 		'Authorization': 'Bearer ' +  that.$store.state.token
+				// 	},
+				// 	url: 'http://81.70.163.240:11001/zf/v1/user/attr',
+				// 	success: (res) => {
+				// 		console.log(res)
+				// 		console.log(res.data)
+				// 		 uni.hideLoading();
+				// 		if(res.data.status){
+				// 			uni.showToast({
+				// 				title: '修改成功',
+				// 				icon: 'none',
+				// 				duration: 2000
+				// 			})
+				// 			that.userInfo.avatar=imgAvtar
+				// 			that.$store.commit('userInfo',that.userInfo)
+				// 		}
+				// 	}
+				// })
 			},
 			// 退出登录
 			logout() {
@@ -321,7 +315,6 @@
 						console.log('success');
 					}
 				});
-				
 					uni.navigateTo({
 						url: '/pages/auth/login'
 					})

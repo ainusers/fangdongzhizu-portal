@@ -181,7 +181,7 @@
 	    <view class="card" @click="goto('/pages/tabbar/me/user')">
 	      <view class="top">
 	        <view class="userImage">
-			  <u-avatar class="avatar" :src="this.userInfo.avatar" level-bg-color="#8072f3" size="140rpx" ></u-avatar>
+			  <u-avatar class="avatar" :src="this.userInfo.avatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
 			</view>
 			 <image mode="aspectFit" src="../../../static/me/renzheng.png" class="renzheng_icon" v-if="this.userInfo.auth==1"></image>
 			 <image mode="aspectFit" src="../../../static/me/weirenzheng.png" class="renzheng_icon" v-else></image>

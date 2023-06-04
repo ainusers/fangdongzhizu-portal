@@ -33,6 +33,60 @@ const attachUpload = function(imageList) {
 		})
 	})
 }
+//图片压缩
+const  compressImg = function(img, res) {
+	// uni.showLoading({
+	// 	mask: true,
+	// 	title: "图片压缩中..."
+	// })
+	let that = this
+	return new Promise((res) => {
+		console.log("img",img)
+		// var localPath = plus.io.convertAbsoluteFileSystem(img);
+		plus.io.resolveLocalFileSystemURL(img, (entry) => { //通过URL参数获取目录对象或文件对象
+			entry.file((file) => { // 可通过entry对象操作图片 
+				//console.log('压缩前图片信息:' + JSON.stringify(file)); //压缩前图片信息
+				if (file.size > 504800) { //   如果大于500Kb进行压缩
+					plus.zip.compressImage({ // 5+ plus.zip.compressImage 了解一下，有详细的示例
+						src: img, //src: 压缩原始图片的路径    
+						dst: img.replace('.png', '2222.png').replace('.PNG',
+								'2222.PNG').replace('.jpg', '2222.jpg')
+							.replace('.JPG', '2222.JPG'),
+						width: '40%', //dst: (String 类型 )压缩转换目标图片的路径，这里先在后面原始名后面加一个2222区分一下
+						height: '40%', //width,height: (String 类型 )缩放图片的宽度,高度
+						quality: 10, //quality: (Number 类型 )压缩图片的质量
+						overwrite: true, //overwrite: (Boolean 类型 )覆盖生成新文件
+						// format:'jpg'   //format: (String 类型 )压缩转换后的图片格式
+					}, (event) => {
+						// setTimeout(() => {
+						// 	uni.hideLoading()
+						// }, 1000)s
+						let newImg = event.target;
+						console.log('压缩后图片信息:' + newImg); // 压缩后图片信息
+						res(newImg); //返回新的图片地址，在uploadFile之前接收
+					}, function(err) {
+						// console.log('Resolve file URL failed: ' + err.message);
+					});
+				} else { //else小于500kb跳过压缩，直接返回现有的src
+					res(img);
+				}
+			});
+		}, (e) => { // 返回错误信息
+			console.log('返回错误信息' + e.message);
+		});
+	})
+}
+ const dataURLtoFile=function(dataurl, filename) {
+    var arr = dataurl.split(',')
+    var mime = arr[0].match(/:(.*?);/)[1]
+    var bstr = atob(arr[1])
+    var n = bstr.length
+    var u8arr = new Uint8Array(n)
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n)
+    }
+    return new File([u8arr], filename, { type: mime })
+  }
 //编辑右上角按钮文字
 const editTitleText = function(txt) {
 	let pages = getCurrentPages();
@@ -103,9 +157,9 @@ const tranfTime = function(autoTime) {
 	if (hours == 0 && minutes == 0) {
 		return "刚刚"
 	} else if (!hours) {
-		return "前" + minutes + " 分钟"
+		return  minutes + " 分钟前"
 	} else {
-		return "前" + hours + '小时' + minutes + " 分钟"
+		return hours + '小时前' 
 	}
 }
 //获取userid 信息
@@ -118,18 +172,6 @@ const getuserInfo = function(userId) {
 		})
 	})
 }
-//检测图片是否能正常加载
- const checkPicExist=function() {
-      let _this = this
-      let img = new Image()
-      img.onload = function() {
-        _this.picExist = true
-      }
-      img.onerror = function() {
-        _this.picExist = false
-      }
-      img.src = _this.picUrl
-    }
 export {
 	getStoreData,
 	initStorestate,
@@ -139,5 +181,6 @@ export {
 	getPlatform,
 	isLoginCheck,
 	tranfTime,
-	getuserInfo
+	getuserInfo,
+	compressImg
 }

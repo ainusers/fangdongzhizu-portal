@@ -25,7 +25,17 @@ const app = new Vue({
 	...App,
 	store,
 })
-
+uni.getStorage({
+			key:'token',
+			success(res) {
+				
+				if(res.data){
+					uni.switchTab({
+						url: '/pages/tabbar/home/home'
+					})
+				}
+			}
+		})
 app.$mount()
 // #endif
 // #ifdef H5

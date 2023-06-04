@@ -213,7 +213,7 @@
 	<view class="er_house_main">
 		<view @click="homeDetail(item,index)" class="er_house_item f_r_s">
 			<view class="er_house_img_view">
-				<image mode="aspectFill" class="er_house_img" :src="item.imgUrl.split(',')[0]" lazy-load></image>
+				<image mode="scaleToFill" class="er_house_img" :src="item.imgUrl.split(',')[0]" lazy-load></image>
 			</view>
 			<view class="er_house_cont">
 				<!-- 兰亭新苑 三区 朝向 主卧-->
@@ -223,8 +223,9 @@
 				</view>
 				<!-- 租房类型，两室一厅（配比），大小，楼层 -->
 				<view class="er_house_des">
-					<text v-if="item.layout">{{ item.roomType }}|</text>
-					<text v-if="item.layout">{{ item.size }}m² |</text>
+					<text v-if="item.layout">{{ item.roomType.split('-')[0] }}</text>
+					<text v-if="item.homeType">{{item.homeType}}</text>
+					<text v-if="item.layout">{{ item.size }}m² </text>
 					<text v-if="item.layout">{{ item.floor }}层</text>
 				</view>
 				<!-- 地理位置：距离昌平线沙河地铁站1020米 -->

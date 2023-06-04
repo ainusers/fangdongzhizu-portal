@@ -175,8 +175,9 @@
 		    <block v-if="detailData != null">
 			 <view class="description">
 				<view class="position">
-					<view class="community">{{detailData.communityName}}</view>
-					<!-- <view class="bedroom"> - {{detailData.roomType}}</view> -->
+					<view class="community">{{detailData.communityName}}-</view>
+					
+					<view class="value">&nbsp;{{detailData.layout}} ({{detailData.roomType}})</view>
 				</view>
 				<view class="money">
 					<view class="pay">
@@ -200,11 +201,14 @@
 					</view>
 				</view>
 				
-				<view class="info_con">
+				<!-- <view class="info_con">
 					<view  class="value">{{detailData.layout}}</view>
 					<view  class="key">  {{detailData.roomType}}-{{detailData.roomName}}</view>
+				</view> -->
+				<view class="info_con">
+					<view  class="value">{{detailData.liveTime||'-'}}</view>
+					<view  class="key"> 入住时间</view>
 				</view>
-				
 				<view class="info_con">
 					<view  class="value">{{detailData.floor}}</view>
 					<view  class="key">楼层</view>
@@ -299,9 +303,10 @@
 		zhizuReport
 	},
 	// 页面传值
-	onLoad(options) {
+	 onLoad(options) {
 		let index=options.index
 		this.detailData =this.$store.state.houseInfo[index]
+		
 	},
 	onShow() {
 		that=this

@@ -1,6 +1,10 @@
 
 
 <style lang="scss" scoped>
+	/deep/.u-checkbox__icon-wrap--disabled--checked{
+		background-color:#5199ff;
+		border-color: #5199ff;
+	}
 	.required{
 		color: #ef5350;
 		display: inline;
@@ -264,7 +268,7 @@
 									</view>
 									<block v-for="(image,index) in houseModel.naturalImageList" :key="index">
 										<view class="uni-uploader__file" style="position: relative;">
-											<image class="uni-uploader__img" mode="aspectFill" :src="image" :data-src="image" @tap="previewImage(image,'natural')"></image>
+											<image class="uni-uploader__img" mode="aspectFit" :src="image" :data-src="image" @tap="previewImage(image,'natural')"></image>
 											<view class="close-view" @click="deletImg(index,'natural')">×</view>
 										</view>
 									</block>
@@ -406,7 +410,7 @@
 				</u-form-item>
 				<!-- 楼层位置 -->
 				<u-form-item :label-position="labelPosition" label="楼层位置 :" prop="floor" label-width="150">
-					<u-input :border="border" placeholder="请输入楼层" type="text" @click="popUpShowFn('floor')" v-model="houseModel.floor" :disabled="setpAll" ></u-input>层
+					<u-input :border="border" placeholder="请输入楼层" type="select" @click="popUpShowFn('floor')" v-model="houseModel.floor" :disabled="setpAll" ></u-input>层
 				</u-form-item>
 				<!-- 入住时间 -->
 				<u-form-item :label-position="labelPosition" label="入住时间 :" prop="live_time" label-width="150">
@@ -426,7 +430,7 @@
 									</view>
 									<block v-for="(image,index) in houseModel.houseImageList" :key="index">
 										<view class="uni-uploader__file" style="position: relative;">
-											<image class="uni-uploader__img" mode="aspectFill" :src="image" :data-src="image" @tap="previewImage(image,'house')"></image>
+											<image class="uni-uploader__img" mode="aspectFit" :src="image" :data-src="image" @tap="previewImage(image,'house')"></image>
 											<view class="close-view" @click="deletImg(index,'house')">×</view>
 										</view>
 									</block>
@@ -508,7 +512,7 @@
 
 <script>
 import image from '@/store/image.js';
-import { attachUpload ,htmlEncode} from '../../../../utils/utils';
+import { attachUpload ,htmlEncode,compressImg} from '../../../../utils/utils';
 	
 	var sourceType = [
 		['camera'],
@@ -670,6 +674,7 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 							validator: (rule, value, callback) => {
 								let isT=true
 								console.log(this.homeArrIndex)
+								console.log(this.homeArrIndex==this.houseModel.chekcNum-1)
 								if(this.homeArrIndex==this.houseModel.chekcNum-1){
 									value.forEach((item,index)=>{
 										if(index<this.houseModel.chekcNum&&item.tenantStr==""){
@@ -1224,17 +1229,13 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 			}
 		},
 		onLoad(options){
-			console.log(options)
 			this.isEdit=options.isUpdate
-			console.log(',isEdit',this.isEdit)
 			that=this
 			// 其他选项值
 			uni.getStorage({
 				key:'houseModel',
 				success:function(data){
 					that.houseModel=JSON.parse(data.data)
-					console.log('房源信息',that.houseModel)
-					console.log('供暖方式',that.houseModel.heatType)
 					if(that.houseModel.heatType=='自供暖'){
 						that.heatActiveVar=1
 					}
@@ -1245,7 +1246,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					}
 					let loacalData=JSON.parse(data.data)
 					let Numstr=loacalData.layout?loacalData.layout.slice(0,1):''
-					console.log(Numstr)
 					if(that.houseModel.homeArr.length==0){
 						that.houseModel.homeArr=[{name:'A室',tenantStr:''},
 						{name:'B室',tenantStr:''},
@@ -1291,17 +1291,13 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				key:'currentObj',
 				success:function(data){
 					that.currentObj=data.data
-					console.log('下拉选择',that.currentObj)
 				}
 			})
-			console.log(this.houseModel)
-			
 			//房源配置
 			uni.getStorage({
 				key:'houseConfigList',
 				success:function(data){
 					that.houseConfigList=data.data
-					console.log('房源配置')
 				}
 			})
 			this.userInfo=this.$store.state.userInfo
@@ -1317,14 +1313,12 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 		watch:{
 			houseConfigList:{
 				handler(newVal,oldVal){
-					console.log(newVal)
 					this.houseModel.houseConfigStr=''
 					 for(let i=0;i<newVal.length;i++){
 						 if(newVal[i].checked){
 							 this.houseModel.houseConfigStr+=newVal[i].name+','
 						 }
 					 }
-					 console.log(this.houseModel)
 				},
 				deep:true
 			},
@@ -1381,7 +1375,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				if(this.stepNum==1){
 					this.validateParam().then(res=>{
 						this.isPublish=true
-						console.log(this.isCheck)
 						if(this.isCheck){
 							this.stepNum++
 						}
@@ -1389,14 +1382,13 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				}else if(this.stepNum==2){
 					this.validateParam2().then(res=>{
 						this.isPublish1=true
-						console.log(this.isCheck)
 						if(this.isCheck){
 							this.stepNum++
 						}
 					})
 				}else if(this.stepNum==3){
+					this.homeArrIndex=this.houseModel.chekcNum-1
 					this.validateParam3().then(res=>{
-						console.log(this.isCheck)
 						this.isPublish2=true
 						if(this.isCheck){
 							this.saveLocal()
@@ -1446,7 +1438,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 			},
 
 			deleteHouseInfo(){
-				console.log('不保存草稿')
 				uni.removeStorage({
 					key:'houseModel'
 				})
@@ -1462,7 +1453,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				       })
 			},
 			saveBack(){
-				console.log('保存草稿回到首页')
 				// 返回首页
 				uni.switchTab({
 				        url: '/pages/tabbar/home/home'
@@ -1517,7 +1507,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				this.houseModel[name+'Type']=this.selectList[val[0]].value
 				this.currentObj[name].valueName=this.selectList[val[0]].value
 				this.currentObj[name].valueCode=this.selectList[val[0]].label	
-				console.log(this.houseModel)
 				if(this.isPublish1){
 					this.validateParam2()
 				}
@@ -1564,7 +1553,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 			regionConfirm(e) {
 				this.getCommunit(e.province.label)
 				this.houseModel.region1 = e.province.label + '-' + e.city.label + '-' + e.area.label;
-				console.log(this.houseModel)
 				this.houseModel.province=e.province.label
 				this.houseModel.city=e.city.label=='市辖区'?this.houseModel.province:e.city.label
 				this.houseModel.area=e.area.label
@@ -1572,7 +1560,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 			// 房屋概况
 			layoutConfirm(e) {
 				let result = '';
-				console.log(e)
 				e.map((val, index) => {
 					if(index==0){
 						this.homeNum=val.value
@@ -1584,20 +1571,16 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				this.houseModel.layout = result;
 			},
 			layoutCancel(e) {
-				console.log(e);
+		
 			},
 			// 出租房屋
 			leaseConfirm(e) {
 				let result = '';
-				console.log(e)
 				e.map((val, index) => {
-					console.log(index)
-					console.log(val)
 					//当前为合租
 					if(index==0&&val.value==8){
 						this.isJoint=true
 						this.isHomeArr=true
-						console.log('合租，显示')
 					}
 					if(index==1){
 						this.rentNum=val.value
@@ -1607,10 +1590,7 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					}
 					if(val.label) result += result == '' ? val.label : '-' + val.label;	
 				})
-				console.log(result)
-				console.log(this.homeNum)
 				this.isJoint?this.houseModel.chekcNum=Number(this.homeNum)-Number(this.rentNum):this.houseModel.chekcNum=0
-				console.log(this.houseModel)
 				this.houseModel.lease = result;
 			},
 			leaseCancel(e) {
@@ -1641,7 +1621,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				this.houseModel.orientation = result;
 			},
 			orientationCancel(e) {
-				console.log(e);
 			},
 			// 房源配置
 			houseConfig(e) {
@@ -1668,6 +1647,10 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 			confirmPopup(e){
 				switch(this.popUpType){
 					case "floor":
+					if( this.currentValue>this.maxValue){
+						uni.$u.toast('当前楼层不能大于总楼层')
+						return
+					}
 						this.houseModel.floor = this.currentValue + "/" + this.maxValue;
 					break;
 					case "tenant":
@@ -1689,14 +1672,12 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				this.popupinit()
 			},
 			async validateParam(){
-				console.log(this.houseModel)
 				uni.setStorage({
 					key:'houseModel',
 					data:JSON.stringify(this.houseModel)
 				})
 				return new Promise((resolve,reject)=>{
 					this.$refs.form1.validate().then(res => {
-						console.log('校验是否通过',res)
 							if(res){
 								resolve(true)
 									this.isCheck=true
@@ -1745,7 +1726,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				
 			},
 			async publish(){
-						console.log(this.isCheck)
 									this.homeArrIndex=this.houseModel.chekcNum
 									if(!this.isCheck){
 										return
@@ -1797,7 +1777,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 						params['latitude']=location.latitude
 						params['position']=location.position
 					// #endif
-					console.log('发布房源参数'+params)
 					 let roommate=[]
 					 this.houseModel.homeArr.forEach(item=>{
 						 if(item.tenantStr){
@@ -1808,14 +1787,12 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 							params['roomType'] =this.houseModel.lease
 							params['roommate']=roommate
 					}
-					console.log('保存编辑参数',params)
 					let url='/zf/v1/room/increase'
 					if(this.isEdit){
 						url='/zf/v1/room/status'
 						params['id']=this.houseModel.id
 						params['status']=1
 					}
-					console.log('参数',params)
 					this.$H.post(url,params,true).then(res=>{
 						uni.hideLoading();
 						if(res.data&&res.status){
@@ -1883,7 +1860,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 				}
 				if (imageList.length === 9) {
 					let isContinue = await this.isFullImg();
-					console.log("是否继续?", isContinue);
 					if (!isContinue) {
 						return;
 					}
@@ -1895,27 +1871,26 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 					success: (res) => {
 						// #ifdef APP-PLUS
 						//提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
-						var compressd = cp_images=> {
-							attachUpload(cp_images).then(res=>{
+							compressImg(res.tempFilePaths[0]).then(res=>{
+								attachUpload([res]).then(file=>{
 									if(type=='natural'){
-										this.houseModel.naturalImageList = this.houseModel.naturalImageList.concat(res)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
+										this.houseModel.naturalImageList = this.houseModel.naturalImageList.concat(file)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
 										if(this.isPublish){
 											this.validateParam()
 										}
 									}else{
-										this.houseModel.houseImageList = this.houseModel.houseImageList.concat(res)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
+										this.houseModel.houseImageList = this.houseModel.houseImageList.concat(file)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
 										if(this.isPublish2){
 											this.validateParam3()
 										}
 									}
+									})
 							})
+					
 							
-						}
-						image.compress(res.tempFilePaths,compressd);
 						// #endif
 						
 						// #ifndef APP-PLUS
-						
 						attachUpload(res.tempFilePaths).then(res=>{
 								if(type=='natural'){
 									this.houseModel.naturalImageList = this.houseModel.naturalImageList.concat(res)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
@@ -2001,7 +1976,6 @@ import { attachUpload ,htmlEncode} from '../../../../utils/utils';
 			//获取小区
 			getCommunit(city){
 				this.$H.get('/zf/v1/const/community/name',{city:city},true).then(res=>{
-					console.log(res)
 					if(res.code==200){
 						this.communityArr=res.data
 					}

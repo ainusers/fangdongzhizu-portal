@@ -31,7 +31,7 @@
 						<block>
 							<!--一张图片-->
 							<block v-if="item.image&&item.image.length == 1">
-								<image :lazy-load="true" mode="aspectFill" class="img-style-1" :src="item.image[0]"
+								<image :lazy-load="true" mode="scaleToFill" class="img-style-1" :src="item.image[0]"
 									@tap.stop="previewImage(item.image[0], item.image, item.integral, item.id)"></image>
 							</block>
 							<!--二张图片-->
@@ -39,7 +39,7 @@
 								<view class="img-style-2">
 									<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
 										@tap.stop="previewImage(imgItem, item.image, item.integral, item.id)"
-										mode="aspectFill" :src="imgItem"></image>
+										mode="scaleToFill" :src="imgItem"></image>
 								</view>
 							</block>
 							<!--三张以上图片-->
@@ -47,7 +47,7 @@
 								<view class="img-style-3">
 									<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
 										@tap.stop="previewImage(imgItem, item.image, item.integral, item.id)"
-										mode="aspectFill" :src="imgItem"></image>
+										mode="scaleToFill" :src="imgItem"></image>
 								</view>
 							</block>
 						</block>
@@ -185,9 +185,9 @@
 							    if(hours==0&&minutes==0){
 							    	return   "刚刚"
 							    }else if(!hours){
-							    	return   "前"+minutes + " 分钟"
+							    	return   minutes + " 分钟前"
 							    }else{
-							    	 return   "前"+hours+'小时'+minutes + " 分钟"
+							    	 return   hours+'小时前'
 							    }   
 						},
 			goReport(index){

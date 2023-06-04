@@ -36,7 +36,7 @@
 			<block v-for="(item, index) of list" :key="index">
 				<swiper-item class="swiper_item">
 					<image @tap.stop="previewImage(item.url, item.urls)"
-					mode="aspectFill" class="swiper_img" :src="item.url"></image>
+					mode="scaleToFill" class="swiper_img" :src="item.url"></image>
 				</swiper-item>
 			</block>
 		</swiper>

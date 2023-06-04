@@ -130,7 +130,7 @@
 							<view class="uni-uploader__files">
 								<block v-for="(image,index) in imageList" :key="index">
 									<view class="uni-uploader__file" style="position: relative;">
-										<image class="uni-uploader__img" mode="aspectFill" :src="image" :data-src="image" @tap="previewImage"></image>
+										<image class="uni-uploader__img" mode="aspectFit" :src="image" :data-src="image" @tap="previewImage"></image>
 										<view class="close-view" @click="close(index)">×</view>
 									</view>
 								</block>
@@ -156,7 +156,7 @@
 
 <script>
 	import image from '@/store/image.js';
-	import {attachUpload,htmlEncode} from '@/utils/utils.js'
+	import {attachUpload,htmlEncode,compressImg} from '@/utils/utils.js'
 	var sourceType = [
 		['camera'],
 		['album'],
@@ -210,13 +210,18 @@
 				}
 				uni.showLoading({title:'发布中'});
 				// 获取位置信息
-				// let location = await this.getLocation();
+				// #ifdef APP-PLUS
+				let location = await this.getLocation();
+				// #endif
+				
 				// 获取上传图片地址
 				let images;
 				if(this.imageList.length == 0) {
 					images = [];
 				} else {
+					
 					images = await attachUpload(this.imageList);
+					console.log(images)
 				}
 				let data= {
 						'imgUrl': images.toString(),
@@ -224,14 +229,16 @@
 						'avatar': this.$store.state.userInfo.avatar,
 						'userId': this.$store.state.userInfo.id,
 						'words': htmlEncode(this.input_content),
-						// 'longitude': location.longitude, // 经度
-						// 'latitude': location.latitude, // 纬度
-						// 'country': location.address.country,
-						// 'province': location.address.province,
-						// 'city': location.address.city,
-						// 'address': location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName,
-						// 'type': location.type
 					}
+					// #ifdef APP-PLUS
+					data['longitude']=location.longitude// 经度
+					data['latitude']=location.latitude// 纬度
+					data['country']=location.address.country
+					data['province']=location.address.province
+					data['city']=location.address.city
+					data['address']=location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName
+					data['type']=location.type
+					// #endif
 				// 上传动态信息
 				this.$H.post('/zf/v1/dynamic/dynamics',data,true).then(res=>{
 					if(res.status){
@@ -282,10 +289,17 @@
 					success: (res) => {
 						// #ifdef APP-PLUS
 						//提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
-						var compressd = cp_images=> {
-							this.imageList = this.imageList.concat(cp_images)//压缩后的图片路径
-						}
-						image.compress(res.tempFilePaths,compressd);
+						// var compressd = cp_images=> {
+						// //压缩后的图片路径
+						// }
+						res.tempFilePaths.forEach(item=>{
+							compressImg(item).then(cp_images=>{
+								console.log(cp_images)
+									this.imageList = this.imageList.concat(cp_images)
+							})
+						})
+						
+						// image.compress(res.tempFilePaths,compressd);
 						// #endif
 						
 						// #ifndef APP-PLUS

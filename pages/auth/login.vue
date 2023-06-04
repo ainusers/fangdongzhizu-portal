@@ -79,16 +79,7 @@
 		},
 		onLoad() {
 			that = this;
-			uni.getStorage({
-				key:'token',
-				success(res) {
-					if(res.data){
-						uni.switchTab({
-							url: '/pages/tabbar/home/home'
-						})
-					}
-				}
-			})
+			
 			uni.getSystemInfo({
 				success(res){
 					uni.setStorage({
@@ -210,13 +201,11 @@
 					provider: 'qq',
 					success: function(loginRes) {
 						// 获取用户信息
-						console.log(loginRes)
 						uni.getUserInfo({
 							provider: 'qq',
 							success: function(infoRes) {
 								// 查看需要保存的信息
 								that.$store.commit('isWx',false)
-								console.log('infoRes.userInfo',infoRes.userInfo)
 								that.$store.commit('ThreeInfo',infoRes.userInfo)
 								that.checkUser(infoRes.userInfo)
 								
@@ -227,7 +216,6 @@
 			},
 			//判断当前元素是否注册过
 		async checkUser(obj,phoneInfo){
-			console.log({openid:obj.openId})
 				this.$H.get('/zf/v1/user/third/check',{openid:obj.openId},false).then(res=>{
 					if(res.status){
 						let token=res.data[0].token

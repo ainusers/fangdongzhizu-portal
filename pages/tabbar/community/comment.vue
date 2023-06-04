@@ -152,8 +152,8 @@
 										
 										<view class="reply-box">
 											<view v-if="res.AllReply">
-												<view class="item" @tap.stop="onReply(item, index,2)" v-for="(item, index) in res.replyList" :key="item.index">
-													<view class="left"><image :src="res.avatar" mode="aspectFill"></image></view>
+												<view class="item" @tap.stop="onReply(item, index,2,res)" v-for="(item, index) in res.replyList" :key="item.index">
+													<view class="left"><image :src="item.avatar" mode="aspectFill"></image></view>
 													<view class="right" @longpress="delComment(item, index,index1)">
 														<view class="desc">
 															<view class="username">{{ item.username }}</view>
@@ -208,6 +208,7 @@ export default {
 			loadStatus: 'loadmore', //用于控制是否可以再继续加载
 			comment_id:'',//评论id
 			dyId:'',//动态id
+			parentId:'',//二级评论的父id
 		};
 	},
 	props:{
@@ -256,6 +257,8 @@ export default {
 			},
 		// 跳转到全部回复
 		toAllReply(index,id) {
+			console.log(index)
+			console.log(this.beforeIndex)
 			this.AllReply=true
 			this.commentList.forEach((item)=>{
 				item.AllReply=false
@@ -273,7 +276,12 @@ export default {
 			this.getTwoList(this.commentList[index].comment_user_id,index,id)
 		},
 		// 回复评论
-		onReply(e,index,type) {
+		onReply(e,index,type,item) {
+			if(item){
+				this.parentId=item.comment_id
+			}else if(!item){
+				this.parentId=e.comment_id
+			}
 			if(type==1){
 				this.beforeIndex=index
 			}
@@ -284,7 +292,7 @@ export default {
 				this.beCommentUserId=e.commentUserId
 			}
 			this.comment_id=e.comment_id ||e.id
-			console.log('回复评论id'+this.comment_id)
+			// console.log('回复评论id'+this.comment_id)
 			this.focus = true;
 			
 		},
@@ -306,16 +314,15 @@ export default {
 				username:this.$store.state.userInfo.username,
 				beCommentId:this.beCommentUserId?this.comment_id:0,
 				create_time:'刚刚',
-				love:0
+				love:0,
+				parentId:this.parentId? this.parentId:0
 			}
 			let that=this
 			this.$H.post('/zf/v1/comment/increase',addComment,true).then(res=>{	
-				console.log(res)
 				if(res.status&&res.status!=500){
+					addComment['comment_id']=res.data[0].commentId
 					if(res.status&&this.beCommentUserId){
 						//回复二级评论
-						console.log(this.beCommentUserId)
-						console.log(this.commentList[this.beforeIndex])
 						this.commentList[this.beforeIndex].replyList.unshift(addComment)
 						let time=new Date()
 						let y=time.getFullYear()
@@ -325,7 +332,6 @@ export default {
 						let mm=time.getMinutes()
 						let s=time.getSeconds()
 						let create_time=y+'-'+m+'-'+d +'  '+h+':'+mm+':'+s
-						console.log(tranfTime(create_time))
 						// this.commentList[this.beforeIndex].create_time=tranfTime(create_time)
 					}
 					if(res.status&&!this.beCommentUserId){
@@ -385,7 +391,7 @@ export default {
 				dynamicId:this.$store.state.communityInfo.id,
 				pageNum:this.pageNumOne,
 				pageSize:10,
-				status:1
+				// status:1
 			}
 			this.$H.post('/zf/v1/comment/list',data,true).then(res=>{
 						if(res.status){
@@ -398,6 +404,7 @@ export default {
 								// item.replyList=[]
 								item.AllReply=false
 								item.commentText='展开查看更多'
+								
 								let time=new Date(item.create_time)
 								let y=time.getFullYear()
 								let m=time.getMonth()+1
@@ -420,11 +427,13 @@ export default {
 				// beCommentUserId:beCommentUserId,
 				pageNum:this.pageNum,
 			    pageSize:10,
-				status:1,
-				beCommentId:id
+				// status:1,
+				parentId:id,
+				dynamicId:this.dyId
 			}
 			this.$H.post('/zf/v1/comment/second/list',data,true).then(res=>{
 				if(res.status){
+					console.log(res)
 					if(this.commentList[index].AllReply &&res.data.length<10){
 						this.commentList[index].commentText=''
 					}
@@ -433,10 +442,16 @@ export default {
 					}else{
 						this.commentList[index].replyList=res.data
 					}
-					this.commentList[index].replyList.forEach(item=>{
-						let create_time=item.create_time.slice(0,10)
-						item.create_time=tranfTime(item.create_time)
-					})
+					if(res.data.length>0){
+						this.commentList[index].replyList.forEach(item=>{
+							if(item.create_time.length>10){
+								let create_time=item.create_time.slice(0,10)
+								item.create_time=tranfTime(item.create_time)
+							}
+							
+						})
+					}
+					
 				}
 			})
 		},

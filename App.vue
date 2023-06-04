@@ -16,10 +16,10 @@ export default {
 		// 	});
 		// }, 1000);
 		initStorestate()
+		
 	},
 	onShow: function() {
 		initStorestate()
-		console.log('App Show');
 	},
 	onHide: function() {
 		console.log('App Hide');

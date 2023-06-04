@@ -349,8 +349,9 @@ export default {
 			this.getHouseList()
 	},
 	onShow(){
-		console.log('又展示了')
-		// this.getHouseList()
+		// this.currPage=1
+		
+		// this.houseList=[]
 		
 	},
 	onReady(){
@@ -416,6 +417,12 @@ export default {
 			this.getHouseList()
 		},
 		getHouseList(){
+			if(this.currPage==1){
+				uni.showLoading({
+					icon:'none',
+					title:'加载中'
+				})
+			}
 					let data={
 							publish_type:that.publish_type,
 							page:that.currPage,
@@ -435,6 +442,7 @@ export default {
 						}
 						console.log('查询的参数',data)
 					this.$H.post('/zf/v1/room/list',data,true).then(res=>{
+						uni.hideLoading()
 							if(res.status){
 								this.fulling=false
 								that.houseList=that.houseList.concat(res.data)
