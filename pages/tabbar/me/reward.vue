@@ -40,16 +40,16 @@
 				温馨提示:
 			</view>
 			<view>
-				1.打赏的金额仅用于APP，将不会计于个人账户中
+				1.打赏的金额仅用于APP服务器运行费用，将不会计于个人账户
 			</view>
 			<view>
-				2.不可转让、提现或退款
+				2.已打赏金额金额不可转让、提现或退款
 			</view>
 			<view>
-				3.如遇无法打赏问题，请联系客服或提交反馈信息
+				3.不建议军人/军属，教师，医生/护士进行打赏
 			</view>
 			<view>
-				4.充值需要缓冲使时间，请在网络条件好的情况下充值，耐心等待，不要关闭等待界面
+				4.如遇无法打赏问题，请在"反馈建议"中提交信息
 			</view>
 		</view>
 		<view>
@@ -140,7 +140,7 @@
 			height: 100rpx;
 			margin-bottom: 30rpx;
 			line-height: 100rpx;
-			background: #e5e5e5;
+			background: #f2f2f2;
 			text-align: center;
 			.num{
 				display: inline-block;
@@ -190,7 +190,7 @@
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			padding: 20px;
+			padding: 10px 30px;
 		}
 	}
 </style>

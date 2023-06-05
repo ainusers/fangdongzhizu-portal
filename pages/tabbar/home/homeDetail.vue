@@ -184,7 +184,7 @@
 						<view class="price"><view class="num">{{detailData.money}}</view>元/月</view>
 						<view class="way">({{detailData.payType}})</view>
 					</view>
-					<view class="datetime">{{detailData.updateTime.split('T')[0]}}</view>
+					<view class="datetime">{{detailData.updateTime}}</view>
 				</view>
 			 </view>
 			 <view class="detail">
@@ -271,7 +271,7 @@
 					<view class="target">举报</view>
 				</view>
 				
-				<view class="report " :class="[collection==1?'report_active':'']" @click="report(2)">
+				<view class="report " :class="[detailData.collection==1?'report_active':'']" @click="report(2)">
 					<u-icon name="heart" size="50"></u-icon>
 					<view class="target" >收藏</view>
 				</view>
@@ -304,8 +304,7 @@
 	},
 	// 页面传值
 	 onLoad(options) {
-		let index=options.index
-		this.detailData =this.$store.state.houseInfo[index]
+		this.houseId=options.id
 		
 	},
 	onShow() {
@@ -318,11 +317,13 @@
 				iconPath: require('../../../static/address.png'),
 				width:25,
 				height:25})
+				
 	},
     data() {
       return {
+		  houseId:'',//房源id
+		  detailData:'',
 		  markers:[],
-		  collection:'',//是否收藏了
 		  isMap:true,
 		reportShow:false,
 		isOtherR:false,
@@ -396,16 +397,27 @@
     },
 	methods:{
 		//初始化数据
-		initData(){
+		async initData(){
+			await this.getHouseDetail()
 			// 轮播图 img 数据初始化
-			this.swiperImgInit()
+			await this.swiperImgInit()
 			//费用数据初始化
 			this.coseDataInit()
 			// 配套设施展示
 			this.showSupport()
 			//租赁信息
 			this.initzulinData()
-			this.getCollect()
+			
+		},
+		getHouseDetail(){
+			let data={
+				roomId:this.houseId,
+				userId:this.$store.state.userInfo.id
+			}
+		 return	this.$H.get('/zf/v1/room/list/id',data,true).then(res=>{
+				this.detailData=res.data[0]
+				console.log(this.detailData)
+			})
 		},
 		reportShowFn(){
 			this.isMap=false
@@ -413,9 +425,11 @@
 		},
 		swiperImgInit(){
 			let imgUrl=this.detailData.imgUrl
+			console.log(imgUrl)
 			if(imgUrl){
 				imgUrl=imgUrl.split(',')
 			}
+			console.log(imgUrl)
 			for(let i=0;i<imgUrl.length;i++){
 				let obj={
 					url:'',
@@ -439,6 +453,7 @@
 			this.feiyongData[9].value=this.detailData.waterElectricMoney //水电费
 		},
 		initzulinData(){
+			this.zulinData=[]
 			let roommate=this.detailData.roommate
 			roommate.forEach((item,index)=>{
 				let otherInfo=''
@@ -472,19 +487,13 @@
 			// 1 举报  2 收藏  3立即沟通
 			switch (index){
 				case 2:
-				if(this.collection==1){
-					this.collection=0
-					params['collection']=0
-				}else{
-					this.collection=1
-					params['collection']=1
-				}
+				this.detailData.collection==0?params['collection']=1:params['collection']=0
 				this.statistics(params)
 				break;
 				case 3:
 				params['chat']=1
 				uni.navigateTo({
-					url:'/pages/tabbar/community/tools/news?houseId='+this.detailData.id+'&userId='+this.detailData.userId
+					url:'/pages/tabbar/community/tools/news?houseId='+this.houseId+'&userId='+this.detailData.userId
 				})
 				break;
 			}
@@ -492,6 +501,7 @@
 		statistics(params){
 			this.$H.post('/zf/v1/const/save/statistics',params,true).then(res=>{
 				if(res.status){
+					this.detailData.collection=params.collection
 					// 收藏成功
 					params.collection==0?this.$u.toast('取消收藏'):this.$u.toast('收藏成功')
 				}
@@ -518,18 +528,6 @@
 		cancelReport(){
 			this.isMap=true
 		},
-		getCollect(){
-			let data={
-				userId:this.detailData.userId,
-				roomId:this.detailData.id
-			}
-			this.$H.get('/zf/v1/room/collect',data,true).then(res=>{
-				// collection   1  收藏 0 没有收藏
-				if(res.status){
-					this.collection=res.data[0]?res.data[0].collection:''
-				}
-			})
-		}
 	}
 }
 </script>

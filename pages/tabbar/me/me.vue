@@ -33,14 +33,14 @@
 	    .top {
 	      height: 30%;
 	      position: relative;
-		  margin-bottom: 34px;
+		  margin-bottom: 25px;
 	      .userImage {
 			background-color: white;
 	        position: relative;
 	        bottom: 40px;
 			margin: 0 auto;
-	        width: 180rpx;
-	        height: 180rpx;
+	        width: 160rpx;
+	        height: 160rpx;
 	        overflow: hidden;
 	        border-radius: 50%;
 	        border: 1px solid #eee;
@@ -165,8 +165,8 @@
 		}
 	}
 	.renzheng_icon{
-		width:140upx;
-		height: 50upx;
+		width:120upx;
+		height: 40upx;
 		position: relative;
 		bottom:110rpx;
 		}

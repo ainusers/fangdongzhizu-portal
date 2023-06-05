@@ -1,8 +1,4 @@
 <style scoped lang="scss" scoped>
-	.er_house_main{
-		position: relative;
-		border-bottom: 20rpx solid #f2f2f2;
-	}
 	.isTopHouse_view{
 		position: absolute;
 		bottom: 30upx;
@@ -20,6 +16,7 @@
         background: #FFFFFF;
 		margin: 3px 0px 10px 0px;
 		padding-top: 0;
+		border-bottom: 20rpx solid #f2f2f2;
     }
     .er_house_img_view{
         position: relative;
@@ -216,17 +213,17 @@
 				<image mode="scaleToFill" class="er_house_img" :src="item.imgUrl.split(',')[0]" lazy-load></image>
 			</view>
 			<view class="er_house_cont">
-				<!-- 兰亭新苑 三区 朝向 主卧-->
+				<!-- 租房类型，小区名称-->
 				<view class="er_house_title">
+					<text v-if="item.layout">{{ item.roomType.split('-')[0] }}</text>
 					<text v-if=" item.communityName">{{ item.communityName }}</text>
-					<text v-if="item.orientation">{{ item.orientation }}</text>
 				</view>
 				<!-- 租房类型，两室一厅（配比），大小，楼层 -->
 				<view class="er_house_des">
-					<text v-if="item.layout">{{ item.roomType.split('-')[0] }}</text>
 					<text v-if="item.homeType">{{item.homeType}}</text>
 					<text v-if="item.layout">{{ item.size }}m² </text>
 					<text v-if="item.layout">{{ item.floor }}层</text>
+					<text v-if="item.orientation">{{ item.orientation }}</text>
 				</view>
 				<!-- 地理位置：距离昌平线沙河地铁站1020米 -->
 				<view class="er_house_tag_info f_r_s">
@@ -241,7 +238,6 @@
 					</view>
 					<view class="place">
 						<text v-if="item.area">{{item.area}}</text>
-						<text v-if="item.subway">{{ item.subway }}</text>
 					</view>
 				</view>
 			</view>
@@ -370,7 +366,7 @@
 			},
         	homeDetail(item,index) {
                 uni.navigateTo({
-                    url: `/pages/tabbar/home/homeDetail?index=${index}`
+                    url: `/pages/tabbar/home/homeDetail?id=${item.id}`
                 });
         	}
         },

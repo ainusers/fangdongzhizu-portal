@@ -40,11 +40,11 @@
 			},
 			latitude: {
 				type: String,
-				default: []
+				default: '0'
 			},
 			longitude: {
 				type: String,
-				default: []
+				default:  '0'
 			},
 			markers:{
 				type:Array,

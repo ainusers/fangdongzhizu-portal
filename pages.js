@@ -629,7 +629,7 @@ module.exports=()=>({
 		},{
 			"path": "pages/tabbar/me/personal",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "个人主页",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
 				
@@ -648,7 +648,7 @@ module.exports=()=>({
 			"style": {
 				"navigationBarTitleText": "打赏",
 				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#5199ffe",
+				"navigationBarBackgroundColor": "#5199ff",
 			}
 		}
     ],

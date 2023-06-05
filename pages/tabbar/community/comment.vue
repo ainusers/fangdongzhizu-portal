@@ -121,7 +121,7 @@
 <template>
 	<view>
 		<!-- 展示区 -->
-		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" :isDetail="true" @changeStatus="changeStatus"></post-list>
+		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" :isDetail="true" @changeStatus="changeStatus" @clickLike="clickLikes" @commontInt="commontInt"></post-list>
 		
 		<!-- 评论区 -->
 		<view class="comment_main">
@@ -209,6 +209,7 @@ export default {
 			comment_id:'',//评论id
 			dyId:'',//动态id
 			parentId:'',//二级评论的父id
+			expand:0,//当前展开的第几层
 		};
 	},
 	props:{
@@ -236,6 +237,13 @@ export default {
 		
 	},
 	methods: {
+		commontInt(){
+			console.log('修改数据')
+			this.comment_id=''
+			this.beCommentUserId=0
+			this.parentId=0
+			this.placeholder='说点什么...'
+		},
 		changeStatus(index,status){
 			this.tuwen_data[index].isReport=status
 		},
@@ -249,8 +257,9 @@ export default {
 					if(res.status){	
 							this.tuwen_data = res.data
 							this.tuwen_data.forEach(item=>{
-							this.$set(item,'isReport',false)
-					})
+								item.image=item.imgurl.split(',')
+								this.$set(item,'isReport',false)
+							})
 					uni.stopPullDownRefresh();
 					}
 				})
@@ -259,6 +268,7 @@ export default {
 		toAllReply(index,id) {
 			console.log(index)
 			console.log(this.beforeIndex)
+			this.expand++
 			this.AllReply=true
 			this.commentList.forEach((item)=>{
 				item.AllReply=false
@@ -274,6 +284,19 @@ export default {
 			}
 			this.beforeIndex=index
 			this.getTwoList(this.commentList[index].comment_user_id,index,id)
+		},
+		//动态点赞
+		clickLikes(id,isLove,index){
+			let data={
+				userId:this.$store.state.userInfo.id,
+				id:id?id:0,
+				type:isLove?'plus':'reduce',
+			}
+			this.$H.patch('/zf/v1/dynamic/follow',data,true).then(res=>{
+				if(res.status&&res.status!=500){
+					res.data[0].count?this.tuwen_data[index].likes+=1 :this.tuwen_data[index].likes-=1
+				}
+			})
 		},
 		// 回复评论
 		onReply(e,index,type,item) {
@@ -292,7 +315,7 @@ export default {
 				this.beCommentUserId=e.commentUserId
 			}
 			this.comment_id=e.comment_id ||e.id
-			// console.log('回复评论id'+this.comment_id)
+			console.log('回复评论id'+this.comment_id)
 			this.focus = true;
 			
 		},
@@ -323,7 +346,7 @@ export default {
 					addComment['comment_id']=res.data[0].commentId
 					if(res.status&&this.beCommentUserId){
 						//回复二级评论
-						this.commentList[this.beforeIndex].replyList.unshift(addComment)
+						this.expand>0?this.commentList[this.beforeIndex].replyList.unshift(addComment):''
 						let time=new Date()
 						let y=time.getFullYear()
 						let m=time.getMonth()+1

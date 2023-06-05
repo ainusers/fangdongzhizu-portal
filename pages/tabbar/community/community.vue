@@ -85,7 +85,7 @@
 		</view>
  -->
 		<!-- 朋友圈 -->
-		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus" @clickLike="clickLike"></post-list>
+		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus" @clickLike="clickLike" ></post-list>
 	</view>
 </template>
 
@@ -136,6 +136,7 @@
 			}	
 		},
 		methods: {
+
 			changeStatus(index,statu){
 				this.tuwen_data[index].isReport=statu
 				console.log(this.tuwen_data)
@@ -164,6 +165,7 @@
 							this.tuwen_data=[...this.tuwen_data,...res.data]
 						}
 						this.tuwen_data.forEach(item=>{
+							item.image=item.imgurl.split(',')
 							this.$set(item,'isReport',false)
 						})
 						if(res.data.length>=10){
@@ -175,8 +177,17 @@
 					}
 				})
 			},
-			clickLike(type){
-				console.log('取消点赞')
+			clickLike(id,isLove,index){
+				let data={
+					userId:this.$store.state.userInfo.id,
+					id:id?id:0,
+					type:isLove?'plus':'reduce',
+				}
+				this.$H.patch('/zf/v1/dynamic/follow',data,true).then(res=>{
+					if(res.status&&res.status!=500){
+						res.data[0].count?this.tuwen_data[index].likes+=1 :this.tuwen_data[index].likes-=1
+					}
+				})
 			}
 		}
 	}

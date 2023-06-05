@@ -79,7 +79,16 @@
 		},
 		onLoad() {
 			that = this;
-			
+			uni.getStorage({
+					key:'token',
+					success(res) {
+						if(res.data){
+							uni.switchTab({
+								url: '/pages/tabbar/home/home'
+							})
+						}
+					}
+				})
 			uni.getSystemInfo({
 				success(res){
 					uni.setStorage({

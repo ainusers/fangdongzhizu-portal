@@ -6,7 +6,7 @@
 					<!-- 用户数据 -->
 					<view class="post-item-top-user">
 						<!-- 用户头像 -->
-						<view class="avatar-img" @click.stop="toUcenter(item.userId)">
+						<view class="avatar-img" @click.stop="toUcenter(item.userid)">
 							<u-avatar class="avatar" :src="item.avatar" level-bg-color="#8072f3"></u-avatar>
 						</view>
 						<!-- 用户名称 -->
@@ -21,7 +21,7 @@
 								</view>
 							</view>
 							<view>
-								<text class="time">{{tranfTime(item.createTime)}}</text>
+								<text class="time">{{tranfTime(item.createtime)}}</text>
 							</view>
 						</view>
 					</view>
@@ -58,7 +58,7 @@
 						<view class="p-item">
 							<button @click.stop="showShares(index)" class="u-reset-button" open-type="share">
 								<u-icon name="zhuanfa" size="38"></u-icon>
-								<text class="count">{{ item.share_count }}</text>
+								<text class="count">{{ item.transfer }}</text>
 							</button>
 						</view>
 						<!-- 评论 -->
@@ -67,13 +67,13 @@
 							<text class="count">{{ item.comment_count }}</text>
 						</view>
 						<!-- 点赞和取消点赞 -->
-						<view v-show="item.follow" class="p-item" @click.stop="cancelCollection(item.id, index)">
+						<view v-show="item.likes" class="p-item" @click.stop="cancelCollection(item.id, index)">
 							<u-icon name="heart-fill" color="#cc0000" size="38"></u-icon>
-							<text class="count">{{ item.followCount }}</text>
+							<text class="count">{{ item.likes ?item.likes :'' }}</text>
 						</view>
-						<view v-show="!item.follow" class="p-item" @click.stop="addCollection(item.id, index,item.follow)">
+						<view v-show="!item.likes" class="p-item" @click.stop="addCollection(item.id, index)">
 							<u-icon name="heart" size="38"></u-icon>
-							<text class="count">{{ item.followCount }}</text>
+							<text class="count">{{ item.likes?item.likes:'' }}</text>
 						</view>
 					</view>
 				</view>
@@ -125,7 +125,8 @@
 		props: {
 			list: Array,
 			loadStatus: String,
-			isDetail:Boolean
+			isDetail:Boolean,
+			isPersonal:Boolean
 		},
 		components:{
 				zhizuReport
@@ -144,7 +145,8 @@
 				reportType:'动态',
 				reportUserId:'',
 				reportId:'',
-				currentIndex:''
+				currentIndex:'',
+				follow:'' //当前是否点赞状态
 			};
 		},
 		watch: {
@@ -163,7 +165,6 @@
 			this.isDetail=options.isDetail
 			console.log('当前的状态',this.isDetail)
 			that=this
-			console.log('list',list)
 		},
 		methods: {
 			tranfTime(autoTime){
@@ -213,18 +214,20 @@
 
 			// 跳转详情页
 			toDetail(data) {
-				console.log('当前状态',this.isDetail)
 				if(this.isDetail) {
+					if(this.$parent.$parent.comment_id){
+						this.$emit('commontInt')
+					}
 					return
 				}
 				this.$store.commit('communityInfo',data)
-				console.log('跳转详情页',data)
 				this.dyId=data.id
 				uni.navigateTo({
 					url: "/pages/tabbar/community/comment?id="+data.id
 				})
 			},
 			toUcenter(userId){
+				if(this.isPersonal) return
 				uni.navigateTo({
 					url:'/pages/tabbar/me/personal?userId='+userId
 				})
@@ -238,25 +241,12 @@
 			},
 			// 点赞
 			addCollection(id, index,isLove) {
-				let data={
-					userId:this.$store.state.userInfo.id,
-					id:id?id:0,
-					type:isLove?'reduce':'plus',
-				}
-				console.log(data)
-				this.$H.patch('/zf/v1/dynamic/follow',data,true).then(res=>{
-					console.log(res)
-					if(res.status&&res.status!=500){
-						this.list[index].follow = true;
-						this.list[index].followCount=res.data[0].count;
-					}
-				})
+				this.$emit('clickLike',id,1,index)
 			},
 			// 取消点赞
-			cancelCollection(id, index) {
-				this.list[index].follow = false;
-				this.list[index].followCount--;
-				this.$emit('clickLike',false,1)
+			cancelCollection(id, index,isLove) {
+				console.log('取消点赞')
+				this.$emit('clickLike',id,0,index)
 			},
 			// 预览图片
 			previewImage(url, urls, integral, post_id) {

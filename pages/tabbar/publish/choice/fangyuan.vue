@@ -675,7 +675,7 @@ import { attachUpload ,htmlEncode,compressImg} from '../../../../utils/utils';
 								let isT=true
 								console.log(this.homeArrIndex)
 								console.log(this.homeArrIndex==this.houseModel.chekcNum-1)
-								if(this.homeArrIndex==this.houseModel.chekcNum-1){
+								if(this.homeArrIndex==this.houseModel.chekcNum-1&&this.isHomeArr){
 									value.forEach((item,index)=>{
 										if(index<this.houseModel.chekcNum&&item.tenantStr==""){
 											isT=false
@@ -1342,6 +1342,10 @@ import { attachUpload ,htmlEncode,compressImg} from '../../../../utils/utils';
 			if(!this.isEdit){
 				this.modalShow=true
 				return true
+			}else{
+				uni.removeStorage({
+					key:'houseModel'
+				})
 			}
 			
 		},
@@ -1770,7 +1774,7 @@ import { attachUpload ,htmlEncode,compressImg} from '../../../../utils/utils';
 									 waterElectricMoney:this.houseModel.hydropowerType,
 									 support:this.houseModel.houseConfigStr,
 									 status:1,
-									 live_time:this.houseModel.live_time		
+									 liveTime:this.houseModel.live_time		
 					}
 					// #ifdef APP-PLUS
 						params['longitude']=location.longitude
