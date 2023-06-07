@@ -157,7 +157,7 @@
 													<view class="right" @longpress="delComment(item, index,index1)">
 														<view class="desc">
 															<view class="username">{{ item.username }}</view>
-															<view class="date">{{ item.create_time?item.create_time.slice(0,10):"" }}</view>
+															<view class="date">{{ item.create_time?item.create_time:'' }}</view>
 														</view>
 														<view class="text">{{ item.words }}</view>
 													</view>
@@ -295,6 +295,7 @@ export default {
 			this.$H.patch('/zf/v1/dynamic/follow',data,true).then(res=>{
 				if(res.status&&res.status!=500){
 					res.data[0].count?this.tuwen_data[index].likes+=1 :this.tuwen_data[index].likes-=1
+					res.data[0].count?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
 				}
 			})
 		},
@@ -429,13 +430,20 @@ export default {
 								item.commentText='展开查看更多'
 								
 								let time=new Date(item.create_time)
+								console.log(item.create_time)
 								let y=time.getFullYear()
 								let m=time.getMonth()+1
 								let d=time.getDate()
 								let h=time.getHours()
 								let mm=time.getMinutes()
 								let s=time.getSeconds()
-								item.create_time=tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm+':'+s)
+								if(h<10){
+									h='0'+h
+								}
+								if(mm<10){
+									mm='0'+mm
+								}
+								item.create_time=tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm)
 								that.commentList.push(item)
 								item.likeNum=0
 								that.getTwoList(item.comment_user_id,index,item.comment_id)
@@ -468,7 +476,6 @@ export default {
 					if(res.data.length>0){
 						this.commentList[index].replyList.forEach(item=>{
 							if(item.create_time.length>10){
-								let create_time=item.create_time.slice(0,10)
 								item.create_time=tranfTime(item.create_time)
 							}
 							

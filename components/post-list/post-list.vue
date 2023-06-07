@@ -64,14 +64,14 @@
 						<!-- 评论 -->
 						<view class="p-item margin50">
 							<u-icon name="chat" size="38"></u-icon>
-							<text class="count">{{ item.comment_count }}</text>
+							<text class="count">{{ item.look }}</text>
 						</view>
 						<!-- 点赞和取消点赞 -->
-						<view v-show="item.likes" class="p-item" @click.stop="cancelCollection(item.id, index)">
+						<view v-show="item.status&&item.status==1" class="p-item" @click.stop="cancelCollection(item.id, index)">
 							<u-icon name="heart-fill" color="#cc0000" size="38"></u-icon>
 							<text class="count">{{ item.likes ?item.likes :'' }}</text>
 						</view>
-						<view v-show="!item.likes" class="p-item" @click.stop="addCollection(item.id, index)">
+						<view v-show="!item.status" class="p-item" @click.stop="addCollection(item.id, index)">
 							<u-icon name="heart" size="38"></u-icon>
 							<text class="count">{{ item.likes?item.likes:'' }}</text>
 						</view>
@@ -163,7 +163,6 @@
 		},
 		onLoad(options){
 			this.isDetail=options.isDetail
-			console.log('当前的状态',this.isDetail)
 			that=this
 		},
 		methods: {
@@ -192,7 +191,6 @@
 							    }   
 						},
 			goReport(index){
-				console.log('想去')
 				this.currentIndex=index
 				this.isReport?this.isReport=false:this.isReport=true
 				this.$emit('changeStatus',index,this.isReport)
@@ -245,7 +243,6 @@
 			},
 			// 取消点赞
 			cancelCollection(id, index,isLove) {
-				console.log('取消点赞')
 				this.$emit('clickLike',id,0,index)
 			},
 			// 预览图片

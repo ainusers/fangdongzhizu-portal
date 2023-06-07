@@ -5,29 +5,38 @@
 				<view class="screen_view">
 					<!-- 租房用这个 -->
 					<view class="screen_list f_r_b">
-						<view hover-class="none" form-type="submit" @click="screenBtn('region')" class="screen_item f_r_c">
-							<view :style="{color: screenFormData.erHouse.region.show || screenFormData.erHouse.region.text != '区域' ? '#5199ff' : '#494949'}"
+						<view hover-class="none" form-type="submit" @click="screenBtn('region')"
+							class="screen_item f_r_c">
+							<view
+								:style="{color: screenFormData.erHouse.region.show || screenFormData.erHouse.region.text != '区域' ? '#5199ff' : '#494949'}"
 								class="screent_text f_c_c">{{areaName}}</view>
 							<image :class="{screen_icon_active : screenFormData.erHouse.region.show}"
-								class="screen_icon" :src="screenFormData.erHouse.region.show ? topIcon : downIcon"></image>
+								class="screen_icon" :src="screenFormData.erHouse.region.show ? topIcon : downIcon">
+							</image>
 						</view>
-						<view hover-class="none" form-type="submit" @click="screenBtn('price')" class="screen_item f_r_c">
-							<view :style="{color: screenFormData.erHouse.price.show || screenFormData.erHouse.price.text != priceApiDataMap[from].defaultText ? '#5199ff' : '#494949'}"
+						<view hover-class="none" form-type="submit" @click="screenBtn('price')"
+							class="screen_item f_r_c">
+							<view
+								:style="{color: screenFormData.erHouse.price.show || screenFormData.erHouse.price.text != priceApiDataMap[from].defaultText ? '#5199ff' : '#494949'}"
 								class="screent_text f_c_c">{{ screenFormData.erHouse.price.text }}</view>
-							<image :class="{screen_icon_active: screenFormData.erHouse.price.show}"
-								class="screen_icon" :src="screenFormData.erHouse.price.show ? topIcon : downIcon"></image>
+							<image :class="{screen_icon_active: screenFormData.erHouse.price.show}" class="screen_icon"
+								:src="screenFormData.erHouse.price.show ? topIcon : downIcon"></image>
 						</view>
-						<view hover-class="none" form-type="submit" @click="screenBtn('room')" class="screen_item f_r_c">
-							<view :style="{color: screenFormData.erHouse.room.show || screenFormData.erHouse.room.text != '户型' ? '#5199ff' : '#494949'}"
+						<view hover-class="none" form-type="submit" @click="screenBtn('room')"
+							class="screen_item f_r_c">
+							<view
+								:style="{color: screenFormData.erHouse.room.show || screenFormData.erHouse.room.text != '户型' ? '#5199ff' : '#494949'}"
 								class="screent_text f_c_c">{{ screenFormData.erHouse.room.text }}</view>
-							<image :class="{screen_icon_active: screenFormData.erHouse.room.show}"
-								class="screen_icon" :src="screenFormData.erHouse.room.show ? topIcon : downIcon"></image>
+							<image :class="{screen_icon_active: screenFormData.erHouse.room.show}" class="screen_icon"
+								:src="screenFormData.erHouse.room.show ? topIcon : downIcon"></image>
 						</view>
-						<view hover-class="none" form-type="submit" @click="screenBtn('more')" class="screen_item f_r_c">
-							<view :style="{color: screenFormData.erHouse.more.show || screenFormData.erHouse.more.text != '更多' ? '#5199ff' : '#494949'}"
+						<view hover-class="none" form-type="submit" @click="screenBtn('more')"
+							class="screen_item f_r_c">
+							<view
+								:style="{color: screenFormData.erHouse.more.show || screenFormData.erHouse.more.text != '更多' ? '#5199ff' : '#494949'}"
 								class="screent_text f_c_c">更多</view>
-							<image :class="{screen_icon_active: screenFormData.erHouse.more.show}"
-								class="screen_icon" :src="screenFormData.erHouse.more.show ? topIcon : downIcon"></image>
+							<image :class="{screen_icon_active: screenFormData.erHouse.more.show}" class="screen_icon"
+								:src="screenFormData.erHouse.more.show ? topIcon : downIcon"></image>
 						</view>
 					</view>
 					<view @click="screenClose" :style="{height: fixedContHeight, top: fixedTcTop}"
@@ -37,54 +46,67 @@
 							v-if="currentClickType == 'region'" class="region_list_view f_r_b">
 							<scroll-view class="region_scroll_left" scroll-y>
 								<block v-for="(item, index) in regionLeftList" :key="index">
-									<view hover-class="none" form-type="submit" :class="{region_left_active: regionLeftIndex == index}"
-										@click="regionLeftBtn(item, index)" class="region_list_item" v-if="index==0">{{ $store.state.currentCity}}</view>
-									<view hover-class="none" form-type="submit" :class="{region_left_active: regionLeftIndex == index}"
-										@click="regionLeftBtn(item, index)" class="region_list_item" v-if="index>0">{{ item.text }}</view>
+									<view hover-class="none" form-type="submit"
+										:class="{region_left_active: regionLeftIndex == index}"
+										@click="regionLeftBtn(item, index)" class="region_list_item" v-if="index==0">
+										{{ $store.state.currentCity}}</view>
+									<view hover-class="none" form-type="submit"
+										:class="{region_left_active: regionLeftIndex == index}"
+										@click="regionLeftBtn(item, index)" class="region_list_item" v-if="index>0">
+										{{ item.text }}</view>
 								</block>
 							</scroll-view>
 							<scroll-view class="region_scroll_right" scroll-y>
 								<block v-for="(item, index) in regionRightMap['region']" :key="index">
-									<view hover-class="none" form-type="submit" :class="{screen_active: regionRightIndex == index}"
-										@click="regionRightBtn(item, index,1)" class="region_list_item">{{ item.name ||item.line }}</view>
+									<view hover-class="none" form-type="submit"
+										:class="{screen_active: regionRightIndex == index}"
+										@click="regionRightBtn(item, index,1)" class="region_list_item">
+										{{ item.name ||item.line }}</view>
 								</block>
 							</scroll-view>
 							<!-- 地铁站名称 -->
 							<scroll-view class="region_scroll_right" scroll-y v-show="stationData.length>0">
 								<block v-for="(item, index) in stationData" :key="index">
-									<view hover-class="none" form-type="submit" :class="{screen_active: regionRightIndex1 == index}"
-										@click="regionRightBtn(item, index,2)" class="region_list_item">{{ item }}</view>
+									<view hover-class="none" form-type="submit"
+										:class="{screen_active: regionRightIndex1 == index}"
+										@click="regionRightBtn(item, index,2)" class="region_list_item">{{ item }}
+									</view>
 								</block>
 							</scroll-view>
 							<scroll-view class="region_scroll_right" scroll-y v-show="stationData.length==0">
 								<block v-for="(item, index) in stationData" :key="index">
-									<view hover-class="none" form-type="submit" 
-										class="region_list_item">{{ item }}</view>
+									<view hover-class="none" form-type="submit" class="region_list_item">{{ item }}
+									</view>
 								</block>
 							</scroll-view>
 						</view>
 						<!-- 价格 -->
 						<view :style="{height: contHeight}" @click.stop="screenContBtn"
-							v-if="currentClickType == 'price' && enterType != 'newHouse'" class="region_list_view f_r_b">
+							v-if="currentClickType == 'price' && enterType != 'newHouse'"
+							class="region_list_view f_r_b">
 							<scroll-view class="scroll_view_list" scroll-y>
 								<view class="region_new_title">价格区间（元/月）</view>
 								<view class="region_new_cont f_r_s">
 									<block v-for="(item, index) in erHousePriceList" :key="index">
-										<view hover-class="none" form-type="submit" :class="{screen_active: erHousePriceIndex == index}"
-											v-if="item.id"
-											@click="priceBtn(item, index)" class="region_new_list_item">{{ item.text }}</view>
+										<view hover-class="none" form-type="submit"
+											:class="{screen_active: erHousePriceIndex == index}" v-if="item.id"
+											@click="priceBtn(item, index)" class="region_new_list_item">{{ item.text }}
+										</view>
 									</block>
 								</view>
 							</scroll-view>
 							<view class="price_bottom_view f_r_b">
 								<view class="f_r_s">
-									<input :value="minPriceVal" @blur="minPriceBlur" class="price_input_val" placeholder="最低价格" />
-									<input :value="maxPriceVal" @blur="maxPriceBlur" class="price_input_val" placeholder="最高价格" />
+									<input :value="minPriceVal" @blur="minPriceBlur" class="price_input_val"
+										placeholder="最低价格" />
+									<input :value="maxPriceVal" @blur="maxPriceBlur" class="price_input_val"
+										placeholder="最高价格" />
 								</view>
 							</view>
 							<view class="room_new_btn_view">
 								<view hover-class="none" form-type="submit" @click='priceReset()'>重置</view>
-								<view hover-class="none" form-type="submit" @click="confirmPrice" class="price_bottom_confirm">确认</view>
+								<view hover-class="none" form-type="submit" @click="confirmPrice"
+									class="price_bottom_confirm">确认</view>
 							</view>
 						</view>
 						<!-- 户型 -->
@@ -94,15 +116,17 @@
 								<view class="region_new_title">户型选择</view>
 								<view class="region_new_cont f_r_s">
 									<block v-for="(item, index) in roomList" :key="index">
-										<view hover-class="none" form-type="submit" :class="{screen_active: roomListIndex == index}"
-											v-if="item.id"
-											@click="roomBtn(item, index)" class="region_new_list_item">{{ item.text }}</view>
+										<view hover-class="none" form-type="submit"
+											:class="{screen_active: item.text == roomItem.text}" v-if="item.id"
+											@click="roomBtn(item, index)" class="region_new_list_item">{{ item.text }}
+										</view>
 									</block>
 								</view>
 							</scroll-view>
 							<view class="room_new_btn_view">
 								<view hover-class="none" form-type="submit" @click='roomReset()'>重置</view>
-								<view hover-class="none" form-type="submit" @click='roomConfirm(roomItem, 0)' class="room_new_btn_confirm">确认</view>
+								<view hover-class="none" form-type="submit" @click='roomConfirm(roomItem, 0)'
+									class="room_new_btn_confirm">确认</view>
 							</view>
 						</view>
 						<!-- 更多 -->
@@ -116,9 +140,10 @@
 											<view class="more_title">{{item.name}}</view>
 											<view class="more_cont f_r_s">
 												<block v-for="(item1, index1) in item.type" :key="index1">
-													<view hover-class="none" form-type="submit" :class="{ more_item_active: index1 == item.currentIndex }"
-														@click="sourceBtn(index,item1, index1)"
-														class="more_item">{{ item1.text }}</view>
+													<view hover-class="none" form-type="submit"
+														:class="{ more_item_active: index1 == item.currentIndex}"
+														@click="sourceBtn(index,item1, index1)" class="more_item">
+														{{ item1.text }}</view>
 												</block>
 											</view>
 										</view>
@@ -127,73 +152,77 @@
 							</scroll-view>
 							<view class="f_r_b more_btn_view">
 								<view hover-class="none" form-type="submit" @click="resetBtn" class="resetBtn">重置</view>
-								<view hover-class="none" form-type="submit" @click="confirmBtn" class="confirmBtn">确认</view>
+								<view hover-class="none" form-type="submit" @click="confirmBtn" class="confirmBtn">确认
+								</view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</form>
-		
 	</view>
 </template>
 
 <script>
-	import { Const } from "@/utils/const/Const.js";
+	import {
+		Const
+	} from "@/utils/const/Const.js";
 	export default {
-		props:["screenFormData","from","regionLeftList","regionRightMap","enterType","erHousePriceList","roomList"],
+		props: ["screenFormData", "from", "regionLeftList", "regionRightMap", "enterType", "erHousePriceList", "roomList"],
 		data() {
 			return {
-				areaName:'区域',
+				areaName: '区域',
 				downIcon: "http://cdn.haofang.net/static/uuminiapp/pageNewUi/list/filter_btn_nomal.png",
 				topIcon: "http://cdn.haofang.net/static/kdbweb/zdzfminiapp/zdzfPlatform/newUiStyle/down-active.png",
-				listTcShow:false,
+				listTcShow: false,
 				fixedContHeight: "100%", // 弹窗的高度
-				fixedTcTop:  "250rpx",   // 筛选条件距离顶部高度43px
-				currentClickType:'',
-				contHeight: "50%",   // 筛选条件高度
+				fixedTcTop: "250rpx", // 筛选条件距离顶部高度43px
+				currentClickType: '',
+				contHeight: "50%", // 筛选条件高度
 				regionLeftIndex: 0,
 				regionRightIndex: 0,
-				regionRightIndex1:0,
+				regionRightIndex1: 0,
 				erHousePriceIndex: 99,
 				roomListIndex: 0,
 				// 价格输入
 				minPriceVal: "",
 				maxPriceVal: "",
-				roomItem: {text:"不限", id: ""},
+				roomItem: {
+					text: "不限",
+					id: ""
+				},
 				//更多type数组
-				moreType:[
-					{
-						name:'租赁方式',
+				moreType: [{
+						name: '租赁方式',
 						type: Const.leaseType,
-						currentIndex:-1,
-						currentStr:''
+						currentIndex: -1,
+						currentStr: ''
 					},
 					{
-						name:'有无电梯',
+						name: '有无电梯',
 						type: Const.noHas,
-						currentIndex:-1,
-						currentStr:''
+						currentIndex: -1,
+						currentStr: ''
 					},
 					{
-						name:'供暖方式',
+						name: '供暖方式',
 						type: Const.heatingType,
-						currentIndex:-1,
-						currentStr:''
+						currentIndex: -1,
+						currentStr: ''
 					},
 					{
-						name:'房屋类型',
+						name: '房屋类型',
 						type: Const.houseType,
-						currentIndex:-1,
-						currentStr:''
+						currentIndex: -1,
+						currentStr: ''
 					},
 				],
-				moreChooseStr:[],//更多选项中选中的值
+				moreChooseStr: [], //更多选项中选中的值
 				// 面积
 				areaLsit: Const.areaList,
 				areaLsitIndex: -1,
-				stationData:[],//地铁站数据
-				stationStr:'',//地铁站线
+				stationData: [], //地铁站数据
+				stationStr: '', //地铁站线
 				// 价格列表的map
 				priceApiDataMap: {
 					"erHouse": {
@@ -217,227 +246,315 @@
 						defaultText: "租金"
 					},
 				},
+				priceItem: ''
 			}
 		},
-		onShow(){
+		onShow() {
 
 		},
-		onLoad(){
+		onLoad() {
 			console.log('页面加载')
 		},
 		methods: {
-			screenBtn(str){
-					this.currentClickType=str
-					this.listTcShow=true
+			screenBtn(str) {
+				this.currentClickType = str
+				this.listTcShow = true
 			},
 			// 点击外部空白区域，弹窗关闭
 			screenClose() {
-			    this.listTcShow = false;
-			    let screenFormData = this.screenFormData;
-			    let enterType = this.enterType;
-			    let moreIds = ["source", "area"];
-			    for(let key in (screenFormData[enterType] || {})) {
-			        let item = screenFormData[enterType][key];
-			        if(key === "region" ) {
-						console.log(item.text)
-						if(item.text=='区域'){
-							 screenFormData[enterType][key].show = false;
+				this.listTcShow = false;
+				let screenFormData = this.screenFormData;
+				let enterType = this.enterType;
+				let moreIds = ["source", "area"];
+				for (let key in (screenFormData[enterType] || {})) {
+					let item = screenFormData[enterType][key];
+					if (key === "region") {
+						if (item.text == '区域') {
+							screenFormData[enterType][key].show = false;
 						}
-			            continue;
-			        }
-			        if(key === "more") {
-								if(this.screenFormData.erHouse.more.text=='更多'){
-									 screenFormData[enterType][key].show = false;
-									this.moreScreenInit()
+						continue;
+					}
+			 	if (key === "more") {
+					console.log(this.moreType)
+					uni.getStorage({
+						key:'moreType',
+						success: (res) => {
+							this.moreType=res.data
+							return
+						}
+					})
+						if (this.screenFormData.erHouse.more.text == '更多') {
+							this.moreScreenInit(key)
+						}
+			  	continue;
+					}
+					if (key == 'price') {
+						uni.getStorage({
+							key:'priceArea',
+							success: (res) => {
+								console.log(res.data)
+								this.priceItem=res.data
+							}
+						})
+						uni.getStorage({
+							key:'price',
+							success: (res) => {
+								console.log(res.data)
+							}
+						})
+						if (screenFormData[enterType].price.text == '价格') {
+							screenFormData[enterType][key].show = false;
+							this.erHousePriceIndex = -1
+						}
+					}
+					if (key == 'room') {
+							
+							uni.getStorage({
+								key:'roomItem',
+								success: (res) => {
+									this.roomItem=res.data
+									screenFormData[enterType][key].show = true;
+									screenFormData[this.enterType].room.text =this.roomItem.text
+									console.log(res.data)
+									return
 								}
-			            continue;
-			        }
-					if(key == 'price'){
-						if(screenFormData[enterType].price.text=='价格'){
-							 screenFormData[enterType][key].show = false;
-							this.erHousePriceIndex=-1
+							})
+						if (screenFormData[enterType].room.text == '户型' || screenFormData[enterType].room.text == '不限') {
+							screenFormData[enterType].room.text='户型'
+							screenFormData[enterType][key].show = false;
+							this.roomListIndex = -1
 						}
 					}
-					if(key == 'room'){
-						if(screenFormData[enterType].room.text=='户型'){
-							 screenFormData[enterType][key].show = false;
-							this.roomListIndex=-1
-						}
-					}
-			    }
-			    this.screenFormData = screenFormData;
+				}
+				this.screenFormData = screenFormData;
 			},
-			moreScreenInit(){
-				this.moreType.forEach(item=>{
-					item.currentIndex=-1
-				})
+			moreScreenInit(key) {
+				let screenFormData = this.screenFormData;
+				let enterType = this.enterType;
+				screenFormData[enterType][key].show = false;
 			},
 			// 选项卡点击事件
 			screenContBtn() {},
-			regionLeftBtn(item,index){
-				this.regionLeftIndex=index
-				this.regionRightIndex=0
-				this.$emit('regionLeftBtn',item,index)
-				setTimeout(()=>{
-					if(this.regionLeftIndex==1){
-						this.$nextTick(()=>{
-							this.stationData=this.regionRightMap['region'][0].station?this.regionRightMap['region'][0].station:[]
+			regionLeftBtn(item, index) {
+				this.regionLeftIndex = index
+				this.regionRightIndex = 0
+				this.$emit('regionLeftBtn', item, index)
+				setTimeout(() => {
+					if (this.regionLeftIndex == 1) {
+						this.$nextTick(() => {
+							this.stationData = this.regionRightMap['region'][0].station ? this
+								.regionRightMap['region'][0].station : []
 						})
-					}else{
-						this.stationData=[]
+					} else {
+						this.stationData = []
 					}
-				},100)
+				}, 100)
 			},
-			regionRightBtn(item,index,type){
-			// type  1区域  2 地铁站
-				this.regionRightIndex=index
-				let screenFormData=this.screenFormData
-				if(item.line=='不限' || item.name =='不限'){
-					this.areaName='区域'
+			regionRightBtn(item, index, type) {
+				// type  1区域  2 地铁站
+				this.regionRightIndex = index
+				let screenFormData = this.screenFormData
+				if (item.line == '不限' || item.name == '不限') {
+					this.areaName = '区域'
 					screenFormData[this.enterType]['region'].show = false;
-					screenFormData[this.enterType].region.text='区域'
-					this.regionRightIndex1=-1
-					this.$emit('regionRightBtn','')
+					screenFormData[this.enterType].region.text = '区域'
+					this.regionRightIndex1 = -1
+					this.$emit('regionRightBtn', '')
 					return
-				}else{
+				} else {
 					screenFormData[this.enterType]['region'].show = true;
 					screenFormData[this.enterType].region.text = '选中了'
 				}
-				if(this.regionLeftIndex!=1 || type==2){
-					this.regionRightIndex1=index
-					this.areaName=item.name || item
-					this.$emit('regionRightBtn',item)
-				}else if(this.regionLeftIndex==1){ //当前点击的是地铁
-				console.log('地铁')
-				console.log(this.enterType)
-				console.log(this.regionRightMap)
-					this.stationData=this.regionRightMap['region'][index].station
-					this.regionRightIndex1=0
+				if (this.regionLeftIndex != 1 || type == 2) {
+					this.regionRightIndex1 = index
+					this.areaName = item.name || item
+					this.$emit('regionRightBtn', item)
+				} else if (this.regionLeftIndex == 1) { //当前点击的是地铁
+					this.stationData = this.regionRightMap['region'][index].station
+					this.regionRightIndex1 = 0
 				}
-				
 			},
-			roomBtn(item,index){
-				this.roomListIndex=index
-				this.roomItem=this.roomList[index]
-			},
+
 			// 价格选项卡
 			minPriceBlur(e) {
-				this.screenFormData[this.enterType].price.text='不限'
-				this.erHousePriceIndex='99'
+				this.screenFormData[this.enterType].price.text = '不限'
+				this.erHousePriceIndex = '99'
 				this.minPriceVal = e.detail.value;
 			},
 			maxPriceBlur(e) {
-				this.screenFormData[this.enterType].price.text='不限'
-				this.erHousePriceIndex='99'
+				this.screenFormData[this.enterType].price.text = '不限'
+				this.erHousePriceIndex = '99'
 				this.maxPriceVal = e.detail.value;
 			},
 			//选择价格
 			// 价格选择
 			priceBtn(item, index, isInput = false) {
-				if(!isInput) {
+				if (!isInput) {
 					this.minPriceVal = "";
 					this.maxPriceVal = "";
 				}
 				this.priceItem = item;
 				this.erHousePriceIndex = index;
 			},
-			confirmPrice(){
-				if(!this.minPriceVal&&this.priceItem.text=='不限' || !this.maxPriceVal&&this.priceItem.text=='不限') {
+			//更多提交
+			confirmBtn() {
+				let that=this
+				let screenFormData = this.screenFormData;
+				let enterType = this.enterType;
+				screenFormData[enterType].more.show = false;
+				let arr = []
+				this.moreType.forEach((item, index) => {
+					arr.push(item.currentStr)
+				})
+				let emArr = arr.filter(item => {
+					return item == ''
+				})
+				if (arr.length != emArr.length) {
+					screenFormData[enterType].more.text = "选中了 ";
+					screenFormData[enterType]['more'].show = true;
+				}
+				uni.setStorage({
+					key:'moreType',
+					data:that.moreType
+				})
+				this.$emit('confirmBtn', arr)
+			},
+			//更多重置
+			resetBtn() {
+				let screenFormData = this.screenFormData;
+				let enterType = this.enterType;
+				screenFormData[enterType].more.text = '更多'
+				screenFormData[enterType].more.isReset=true
+				this.moreType.forEach(item => {
+					item.currentIndex = -1
+					item.currentStr = ''
+				})
+			},
+			sourceBtn(fIndex, item, index) {
+				let currentObj = this.moreType[fIndex]
+				if(item.text==currentObj.currentStr){
+					currentObj.preCurrentStr=currentObj.currentStr //记录上次点击的是谁
+					currentObj.preIndex=index
+					currentObj.currentIndex = -1
+					currentObj.currentStr = ''	
+				}else{
+					currentObj.currentIndex = index
+					currentObj.currentStr = item.text
+				}
+				
+			},
+			roomBtn(item, index) {
+				this.roomListIndex = index
+				this.roomItem = this.roomList[index]
+			},
+			//户型重置
+			roomReset() {
+				let screenFormData = this.screenFormData
+				screenFormData[this.enterType].room.text = '户型'
+				screenFormData[this.enterType].room.show = false
+				this.roomListIndex = -1
+				this.roomItem = {
+					text: "不限",
+					id: ""
+				}
+			},
+			//户型确认
+			roomConfirm(item, index) {
+				let screenFormData = this.screenFormData
+				if (item.id) {
+					screenFormData[this.enterType]['room'].show = true;
+				}
+				uni.setStorage({
+					key:'roomItem',
+					data:this.roomItem
+				})
+				this.$emit('roomConfirm', item)
+			},
+			formSubmit() {
+
+			},
+			// 价格确认
+			confirmPrice() {
+				if (!this.minPriceVal && this.priceItem.text == '不限' || !this.maxPriceVal && this.priceItem.text == '不限') {
 					uni.showToast({
 						title: '请输入价格',
 						duration: 2000,
-						icon:'none'
+						icon: 'none'
 					});
 					return;
 				}
-				if(Number(this.minPriceVal) > Number(this.maxPriceVal)) {
+				if (Number(this.minPriceVal) > Number(this.maxPriceVal)) {
 					uni.$u.toast('最低价格不能大于最高价格')
 					return;
 				}
 				let screenFormData = this.screenFormData;
-					let val=this.priceItem.text
-					switch(this.priceItem.id){
-						case 1:
-							val='0-1000'
+				let val = this.priceItem.text
+				switch (this.priceItem.id) {
+					case 1:
+						val = '0-1000'
 						break;
-						case 2:
-							val='2000-4000'
+					case 2:
+						val = '2000-4000'
 						break;
-						case 3:
-							val='4000-6000'
+					case 3:
+						val = '4000-6000'
 						break;
-						case 4:
-							val="6000-8000"
+					case 4:
+						val = "6000-8000"
 						break;
-						case 5:
-							val="8000-10000"
+					case 5:
+						val = "8000-10000"
 						break;
-					}
-					let enterType = this.enterType;
-					screenFormData[enterType].price.id = this.priceItem.id;
-					screenFormData[enterType].price.show = false;
-					screenFormData[enterType].price.text = this.priceItem.text;
-					if(!this.priceItem.id) {
-					    screenFormData[enterType].price.text = this.priceApiDataMap[this.from].defaultText;
-					}		   
-					this.screenFormData = screenFormData
-				if(screenFormData[this.enterType].price.text =='不限'){
-					val = this.minPriceVal+'-'+this.maxPriceVal
-					screenFormData[this.enterType].price.text=this.minPriceVal+'-'+this.maxPriceVal
 				}
-				this.screenFormData[this.enterType]['price'].show = true;
-				this.$emit('confirmPrice',val)
-			},
-			//更多提交
-			confirmBtn(){
-				let screenFormData = this.screenFormData;
 				let enterType = this.enterType;
-				screenFormData[enterType].more.show = false;
-				let arr=[]
-				this.moreType.forEach((item,index)=>{
-					arr.push(item.currentStr)
-				})
-				let emArr=arr.filter(item=> {return item==''})
-				if(arr.length!=emArr.length){
-					screenFormData[enterType].more.text = "选中了 ";
-					screenFormData[enterType]['more'].show = true;
+				screenFormData[enterType].price.id = this.priceItem.id;
+				screenFormData[enterType].price.show = false;
+				screenFormData[enterType].price.text = this.priceItem.text;
+				if (!this.priceItem.id) {
+					screenFormData[enterType].price.text = this.priceApiDataMap[this.from].defaultText;
 				}
-				this.$emit('confirmBtn',arr)
-			},
-			//更多重置
-			resetBtn(){
-				let screenFormData = this.screenFormData;
-				let enterType = this.enterType;
-				screenFormData[enterType].more.text='更多'
-				this.moreType.forEach(item=>{
-					item.currentIndex=-1
-					item.currentStr=''
-				})	
-			},
-			sourceBtn(fIndex,item,index){
-				let currentObj=this.moreType[fIndex]
-				currentObj.currentIndex=index
-				currentObj.currentStr=item.text
-			},
-			//户型重置
-			roomReset(){
-				let screenFormData=this.screenFormData
-				screenFormData[this.enterType].room.text='户型'
-				this.roomListIndex=-1
-				this.roomItem={text:"不限", id: ""}
-			},
-			roomConfirm(item,index){
-				let screenFormData=this.screenFormData
-				screenFormData[this.enterType]['room'].show = true;
-				this.$emit('roomConfirm',item)
-			},
-			formSubmit(){
+				this.screenFormData = screenFormData
+				if (screenFormData[this.enterType].price.text == '不限') {
+					val = this.minPriceVal + '-' + this.maxPriceVal
+					uni.setStorage({
+						key:'priceArea',
+						data:{
+							minPriceVal:this.minPriceVal,
+							maxPriceVal:this.maxPriceVal
+						}
+					})
+					uni.removeStorage({
+						key:'price'
+					})
+					screenFormData[this.enterType].price.text = this.minPriceVal + '-' + this.maxPriceVal
+				}
+				if (val || this.priceItem.id) {
+					this.screenFormData[this.enterType]['price'].show = true;
+				}
+				if(this.priceItem.id){
+					uni.setStorage({
+						key:'price',
+						data:this.priceItem
+					})
+					uni.removeStorage({
+						key:'priceArea'
+					})
+				}
 				
+				this.$emit('confirmPrice', val)
 			},
-			priceReset(){
-				this.erHousePriceIndex=99
-				this.minPriceVal=''
-				this.maxPriceVal=''
+
+			priceReset() {
+				this.erHousePriceIndex = 99
+				let screenFormData = this.screenFormData
+				screenFormData[this.enterType].price.show = false
+				screenFormData[this.enterType].price.text = '价格'
+				this.priceItem = {
+					id: '',
+					text: ''
+				}
+				this.minPriceVal = ''
+				this.maxPriceVal = ''
 			}
 		}
 	}
@@ -445,7 +562,7 @@
 
 <style lang="scss">
 	/* 弹窗 */
-	.screen_fixed_list{
+	.screen_fixed_list {
 		position: fixed;
 		left: 0;
 		right: 0;
@@ -454,308 +571,354 @@
 		z-index: 99999;
 		font-size: 30upx;
 	}
+
 	/* #ifdef H5 */
-	.screen_fixed_list{
+	.screen_fixed_list {
 		max-width: 640px;
 		width: 100%;
 		transform: translateX(-50%);
 		left: 50%;
 		// top:250rpx !important;
 	}
-	
+
 	/* #endif */
-	.region_list_view{
+	.region_list_view {
 		height: 70%;
 		background: #FFFFFF;
 		width: 100%;
 		position: relative;
 	}
-	.region_scroll_left{
+
+	.region_scroll_left {
 		width: 300rpx;
 		height: 100%;
 		background: #FFFFFF;
 		box-sizing: border-box;
 	}
-	.region_scroll_right{
+
+	.region_scroll_right {
 		width: 36%;
 		height: 100%;
 		background: #F8F8F9;
 		padding-left: 30upx;
 		box-sizing: border-box;
 	}
-	.scroll_view_list{
+
+	.scroll_view_list {
 		width: 100%;
 		height: 100%;
 		background: #FFFFFF;
 		box-sizing: border-box;
 		position: relative;
 	}
-	.region_scroll_right .region_list_item{
+
+	.region_scroll_right .region_list_item {
 		padding-left: 0;
 	}
-	.region_list_item{
+
+	.region_list_item {
 		text-align: left;
 		padding-left: 30upx;
-		width:100%;
-		box-sizing:border-box;
-		height:100upx;
-		line-height:100upx;
+		width: 100%;
+		box-sizing: border-box;
+		height: 100upx;
+		line-height: 100upx;
 		box-sizing: border-box;
 		font-size: 30upx;
 	}
-	.screen_fixed_list .region_left_active{
-		background:#fff;
-		color:#5199ff;
+
+	.screen_fixed_list .region_left_active {
+		background: #fff;
+		color: #5199ff;
 	}
-	.price_scroll_list .screen_active{
-		color:#5199ff;
+
+	.price_scroll_list .screen_active {
+		color: #5199ff;
 	}
-	.region_scroll_right .screen_active{
+
+	.region_scroll_right .screen_active {
 		background: #F8F8F9;
 		// border: none;
-		color:#5199ff;
+		color: #5199ff;
 	}
-	.region_new_cont .screen_active{
+
+	.region_new_cont .screen_active {
 		background: #5199ff;
 		color: #FFFFFF;
 	}
-	.room_list_view{
+
+	.room_list_view {
 		width: 100%;
 	}
+
 	/* 更多 */
-	.more_list_cont{
+	.more_list_cont {
 		padding-left: 30upx;
 		box-sizing: border-box;
 		padding-bottom: 190upx;
 	}
-	.more_list{
-	/* border-bottom:1px solid #f3f3f3; */
+
+	.more_list {
+		/* border-bottom:1px solid #f3f3f3; */
 	}
-	.more_title{
-		height:90upx;
-		line-height:90upx;
-		color:#2d2c2c;
-		letter-spacing:1upx;
-		font-family:'黑体';
-		font-size:36upx;
-		font-weight:600;
+
+	.more_title {
+		height: 90upx;
+		line-height: 90upx;
+		color: #2d2c2c;
+		letter-spacing: 1upx;
+		font-family: '黑体';
+		font-size: 36upx;
+		font-weight: 600;
 	}
-	.more_cont{
+
+	.more_cont {
 		flex-wrap: wrap;
 		display: flex;
 		flex-direction: row;
 	}
-	.more_item{
-		width:150upx;
-		height:62upx;
-		background:#f2f2f2;
-		line-height:62upx;
-		text-align:center;
-		color:#101d36;
-		border-radius:6upx;
-		font-size:26upx;
-		margin-right:20upx;
-		margin-bottom:20upx;
-		letter-spacing:1px;
-		box-sizing:border-box;
+
+	.more_item {
+		width: 150upx;
+		height: 62upx;
+		background: #f2f2f2;
+		line-height: 62upx;
+		text-align: center;
+		color: #101d36;
+		border-radius: 6upx;
+		font-size: 26upx;
+		margin-right: 20upx;
+		margin-bottom: 20upx;
+		letter-spacing: 1px;
+		box-sizing: border-box;
 	}
-	.more_list .more_item_active{
-		background:#5199ff;
+
+	.more_list .more_item_active {
+		background: #5199ff;
 		color: #fff;
 	}
-	.more_btn_view{
-		width:100%;
-		height:156upx;
-		position:absolute;
-		bottom:0;
-		align-items:center;
-		background:#ffffff;
-		z-index:99;
-		padding:0 39upx 0 39upx;
-		box-sizing:border-box;
-	}
-	.more_btn_view view{
-		width:48%;
-		height:80upx;
-		border-radius:6upx;
-		background:#f1f3f6;
-		text-align:center;
-		line-height:85upx;
-		font-size:30upx;
-		letter-spacing:10upx;
-		border-radius:40upx;
-	}
-	.more_btn_view .confirmBtn{
-		background-image:linear-gradient(246deg, #87d8f1 0%, #5199ff 100%), linear-gradient( #eeeff5, #eeeff5);
-		color:#fff;
-	}
-.screen_view {
-	height:80upx;
-	border-bottom:1upx solid #f6f6f6;
-	box-sizing: border-box;
-	line-height: 80upx;
-	.screen_list {
+
+	.more_btn_view {
 		width: 100%;
-		height: 100%;
-		.screen_item {
+		height: 156upx;
+		position: absolute;
+		bottom: 0;
+		align-items: center;
+		background: #ffffff;
+		z-index: 99;
+		padding: 0 39upx 0 39upx;
+		box-sizing: border-box;
+	}
+
+	.more_btn_view view {
+		width: 48%;
+		height: 80upx;
+		border-radius: 6upx;
+		background: #f1f3f6;
+		text-align: center;
+		line-height: 85upx;
+		font-size: 30upx;
+		letter-spacing: 10upx;
+		border-radius: 40upx;
+	}
+
+	.more_btn_view .confirmBtn {
+		background-image: linear-gradient(246deg, #87d8f1 0%, #5199ff 100%), linear-gradient(#eeeff5, #eeeff5);
+		color: #fff;
+	}
+
+	.screen_view {
+		height: 80upx;
+		border-bottom: 1upx solid #f6f6f6;
+		box-sizing: border-box;
+		line-height: 80upx;
+
+		.screen_list {
 			width: 100%;
 			height: 100%;
-			position:relative;
-			overflow: inherit;
-		}
-		.f_r_c{
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-			.screent_text{
-				overflow:hidden;
-				text-overflow:ellipsis;
-				white-space:nowrap;
-				text-align:center;
-				font-size:30upx;
-				color:#494949;
+
+			.screen_item {
+				width: 100%;
+				height: 100%;
+				position: relative;
+				overflow: inherit;
+			}
+
+			.f_r_c {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+
+				.screent_text {
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					text-align: center;
+					font-size: 30upx;
+					color: #494949;
+					flex-shrink: 0;
+				}
+
+				.f_c_c {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+				}
+			}
+
+			.screen_item .screen_icon_active {
+				width: 16upx;
+				height: 10upx;
+				margin: auto 10upx auto 15upx;
 				flex-shrink: 0;
 			}
-			.f_c_c {
-			    display: flex;
-			    flex-direction: column;
-			    justify-content: center;
+
+			.screen_icon {
+				width: 20upx;
+				height: 18upx;
+				margin: auto 10upx auto 11upx;
+				flex-shrink: 0;
 			}
 		}
-		.screen_item .screen_icon_active{
-			width: 16upx;
-			height: 10upx;
-			margin: auto 10upx auto 15upx;
-			flex-shrink: 0;
-		}
-		.screen_icon{
-			width: 20upx;
-			height: 18upx;
-			margin: auto 10upx auto 11upx;
-			flex-shrink: 0;
+
+		.f_r_b {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
 		}
 	}
-	.f_r_b {
+
+	/* 新房价格切换 */
+	.new_house_price_change_view {
+		width: 28%;
+		flex-shrink: 0;
+		background: #FFFFFF;
+	}
+
+	.new_house_price_change_view>view {
+		text-align: center;
+		line-height: 100upx;
+	}
+
+	.new_house_price_change_view>.new_price_tab_active {
+		color: #5199ff;
+	}
+
+
+	.screen_view .price_scroll_list {
+		padding-bottom: 140upx;
+		box-sizing: border-box;
+	}
+
+	.price_bottom_view {
+		position: absolute;
+		bottom: 160rpx;
+		left: 0;
+		height: 140upx;
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0 40upx 0;
+		background-color: #ffffff;
+	}
+
+	.price_bottom_view .price_input_val {
+		width: 40%;
+		height: 60upx;
+		line-height: 60upx;
+		text-align: center;
+		border: 1px solid #cccccc;
+		border-radius: 6upx;
+		font-size: 24upx;
+		margin: auto 0;
+	}
+
+	.price_bottom_view .price_input_val:last-child {
+		margin-left: 50upx;
+	}
+
+	.f_r_s {
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
 	}
-}
-/* 新房价格切换 */
-.new_house_price_change_view{
-	width: 28%;
-	flex-shrink: 0;
-	background: #FFFFFF;
-}
-.new_house_price_change_view>view{
-	text-align: center;
-	line-height: 100upx;
-}
-.new_house_price_change_view>.new_price_tab_active{
-	color: #5199ff;
-}
 
+	.region_list_item {
+		border-bottom: 1px solid #ddd;
+	}
 
-.screen_view .price_scroll_list{
-	padding-bottom: 140upx;
-	box-sizing: border-box;
-}
-.price_bottom_view{
-	position:absolute;
-	bottom: 160rpx;
-	left: 0;
-	height:140upx;
-	width:100%;
-	box-sizing:border-box;
-	padding:0 40upx 0;
-	background-color:#ffffff;
-}
-.price_bottom_view .price_input_val{
-	width:40%;
-	height:60upx;
-	line-height: 60upx;
-	text-align:center;
-	border:1px solid #cccccc;
-	border-radius:6upx;
-	font-size:24upx;
-	margin: auto 0;
-}
-.price_bottom_view .price_input_val:last-child{
-	margin-left: 50upx;
-}
-.f_r_s {
-	display: flex;
-	flex-direction: row;
-}
-.region_list_item{
-	border-bottom: 1px solid #ddd;
-}
-.price_bottom_confirm{
-	width:200upx;
-	height:74upx;
-	background-image:linear-gradient(246deg, #87d8f1 0%, #5199ff 100%), linear-gradient( #eeeff5, #eeeff5) !important;
-	border-radius:37upx;
-	color:#ffffff;
-	font-size:28upx;
-	line-height:74upx;
-	text-align:center;
-	margin: auto 0;
-}
-//户型筛选
-.region_new_title{
-	font-size:36upx;
-	font-weight:600;
-	color:#101d36;
-	margin-top:20upx;
-	padding-left: 30upx;
-	box-sizing: border-box;
-	margin-bottom: -10upx;
-}
-.region_new_list_item{
-	min-width:150upx;
-	
-	height:62upx;
-	background-color:#f2f2f2;
-	border-radius:6upx;
-	float:left;
-	margin-right:23upx;
-	text-align:center;
-	line-height:62upx;
-	color:#101d36;
-	font-size:24upx;
-	margin-top:24upx;
-	padding: 0 20rpx;
-}
-.region_new_cont{
-	padding-left: 30upx;
-	box-sizing: border-box;
-	flex-wrap: wrap;
-}
-.room_new_btn_view{
-	display:flex;
-	justify-content:space-between;
-	width:100%;
-	height:156upx;
-	position:absolute;
-	bottom:0;
-	align-items:center;
-	background:#ffffff;
-	z-index:99;
-	padding:0 39upx 0 39upx;
-	box-sizing:border-box;
-}
-.room_new_btn_view view, .room_new_btn_view view, .room_new_btn_view button{
-	width:48%;
-	height:80upx;
-	border-radius:40upx;
-	background:#f1f3f6;
-	text-align:center;
-	line-height:85upx;
-	letter-spacing:10upx;
-	font-size:30upx;
-}
-.room_new_btn_view .room_new_btn_confirm{
-	background-image:linear-gradient(246deg, #87d8f1 0%, #5199ff 100%), linear-gradient( #eeeff5, #eeeff5);
-	color:#fff;
-}
+	.price_bottom_confirm {
+		width: 200upx;
+		height: 74upx;
+		background-image: linear-gradient(246deg, #87d8f1 0%, #5199ff 100%), linear-gradient(#eeeff5, #eeeff5) !important;
+		border-radius: 37upx;
+		color: #ffffff;
+		font-size: 28upx;
+		line-height: 74upx;
+		text-align: center;
+		margin: auto 0;
+	}
+
+	//户型筛选
+	.region_new_title {
+		font-size: 36upx;
+		font-weight: 600;
+		color: #101d36;
+		margin-top: 20upx;
+		padding-left: 30upx;
+		box-sizing: border-box;
+		margin-bottom: -10upx;
+	}
+
+	.region_new_list_item {
+		min-width: 150upx;
+
+		height: 62upx;
+		background-color: #f2f2f2;
+		border-radius: 6upx;
+		float: left;
+		margin-right: 23upx;
+		text-align: center;
+		line-height: 62upx;
+		color: #101d36;
+		font-size: 24upx;
+		margin-top: 24upx;
+		padding: 0 20rpx;
+	}
+
+	.region_new_cont {
+		padding-left: 30upx;
+		box-sizing: border-box;
+		flex-wrap: wrap;
+	}
+
+	.room_new_btn_view {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		height: 156upx;
+		position: absolute;
+		bottom: 0;
+		align-items: center;
+		background: #ffffff;
+		z-index: 99;
+		padding: 0 39upx 0 39upx;
+		box-sizing: border-box;
+	}
+
+	.room_new_btn_view view,
+	.room_new_btn_view view,
+	.room_new_btn_view button {
+		width: 48%;
+		height: 80upx;
+		border-radius: 40upx;
+		background: #f1f3f6;
+		text-align: center;
+		line-height: 85upx;
+		letter-spacing: 10upx;
+		font-size: 30upx;
+	}
+
+	.room_new_btn_view .room_new_btn_confirm {
+		background-image: linear-gradient(246deg, #87d8f1 0%, #5199ff 100%), linear-gradient(#eeeff5, #eeeff5);
+		color: #fff;
+	}
 </style>

@@ -159,7 +159,8 @@
 				let data = {
 					userId: this.userId,
 					page: this.currPage,
-					size: 10
+					size: 10,
+					type:'user'
 				}
 				let url = '/zf/v1/dynamic/list'
 				this.$H.post(url, data, true).then(res => {
@@ -169,7 +170,7 @@
 							item.image=item.imgurl.split(',')
 							this.$set(item,'isReport',false)
 						})
-						if (that.tuwen_data.length == 0) {
+						if (that.tuwen_data.length == 0 || that.tuwen_data.length<10) {
 							that.load_status_tuwen = 'nomore'
 						}
 					}

@@ -1,7 +1,8 @@
 <style scope lang="scss" scoped>
 .main {
 	// background-color: #f2f2f2;
-	padding-top: 50rpx;
+	padding-top: 100rpx;
+	background:#5199ff;
 	 // height: var(--status-bar-height);
 }
 .home_top {
@@ -9,7 +10,7 @@
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
-	padding: 30rpx;
+	padding: 0 30rpx;
 	padding-bottom: 0;
 	align-items: center;
 	background: #ffffff;
@@ -21,6 +22,9 @@
 			background: #ffffff;
 		}
 	}
+}
+/deep/.screen_view{
+	background: #ffffff;
 }
 .city {
 	position: absolute;
@@ -67,6 +71,7 @@
 }
 .list-swiper{
 	height: calc(100vh - var(--status-bar-height) - 180rpx);
+	background: #ffffff;
 }
 uni-swiper-item{
 	overflow: scroll;
@@ -223,25 +228,25 @@ export default {
 			            show: false,
 			            rightId: "",
 			            key_1: "regionId",
-			            key_2: "sectionId"
+			            key_2: "sectionId",
 			        },
 			        price: {
 			            text: "价格",
 			            id: "",
 			            show: false,
-			            key: "price"
+			            key: "price",
 			        },
 			        room: {
 			            text: "户型",
 			            id: "",
 			            show: false,
-			            key: "room"
+			            key: "room",
 			        },
 			        more: {
 			            text: "更多",
 			            id: "",
 			            show: false,
-			            key: "more"
+			            key: "more",
 			        },
 			    }
 			},

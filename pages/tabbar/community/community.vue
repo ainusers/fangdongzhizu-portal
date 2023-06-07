@@ -155,7 +155,8 @@
 
 				let data={
 						  "page":this.tuwen_default_page ,
-						  "size": "10"
+						  "size": "10",
+						  "userId":this.$store.state.userInfo.id
 					}
 				this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
 					if(res.status){
@@ -186,6 +187,7 @@
 				this.$H.patch('/zf/v1/dynamic/follow',data,true).then(res=>{
 					if(res.status&&res.status!=500){
 						res.data[0].count?this.tuwen_data[index].likes+=1 :this.tuwen_data[index].likes-=1
+						res.data[0].count?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
 					}
 				})
 			}

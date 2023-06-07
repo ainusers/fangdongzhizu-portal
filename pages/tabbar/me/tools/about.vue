@@ -8,7 +8,7 @@
 		height: 91vh;
 		background-color: #ffffff;
 		border-radius: 10px;
-		margin: 10px 10px 10px 10px;
+		// margin: 10px 10px 10px 10px;
 		.top{
 			display: flex;
 			justify-content: center;
