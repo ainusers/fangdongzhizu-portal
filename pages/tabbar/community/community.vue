@@ -136,8 +136,9 @@
 			}	
 		},
 		methods: {
-
 			changeStatus(index,statu){
+				console.log(index)
+				console.log(statu)
 				this.tuwen_data[index].isReport=statu
 				console.log(this.tuwen_data)
 			},

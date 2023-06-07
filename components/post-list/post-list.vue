@@ -14,9 +14,12 @@
 							<view style="display:flex;align-items: center;justify-content: space-between;">
 								<text class="username">{{ item.username?item.username.substring(0, 12):'' }}</text>
 								<view style="float: right;padding-right: 10px;font-size: 24px;">
-									<u-icon name="more-dot-fill" color="rgb(203,203,203)" @click="goReport(index)"></u-icon>
-									<view class="reportText" v-show="item.isReport" @click="report">
-										举报
+									<u-icon name="more-dot-fill" color="rgb(203,203,203)" @click="goReport(index)">
+									</u-icon>
+									<view class="reportText" v-show="item.isReport">
+										<view @click="report" class="item">举报</view>
+										<view @click="deletePost" class="item"
+											v-show="item.userid==$store.state.userInfo.id">删除</view>
 									</view>
 								</view>
 							</view>
@@ -32,13 +35,13 @@
 							<!--一张图片-->
 							<block v-if="item.image&&item.image.length == 1">
 								<image :lazy-load="true" mode="scaleToFill" class="img-style-1" :src="item.image[0]"
-									@tap.stop="previewImage(item.image[0], item.image, item.integral, item.id)"></image>
+									@tap.stop="previewImage(item.image[0], item.image, item.integral, item.id,index)"></image>
 							</block>
 							<!--二张图片-->
 							<block v-if="item.image&&item.image.length == 2">
 								<view class="img-style-2">
 									<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
-										@tap.stop="previewImage(imgItem, item.image, item.integral, item.id)"
+										@tap.stop="previewImage(imgItem, item.image, item.integral, item.id,index)"
 										mode="scaleToFill" :src="imgItem"></image>
 								</view>
 							</block>
@@ -46,7 +49,7 @@
 							<block v-if="item.image&&item.image.length > 2">
 								<view class="img-style-3">
 									<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
-										@tap.stop="previewImage(imgItem, item.image, item.integral, item.id)"
+										@tap.stop="previewImage(imgItem, item.image, item.integral, item.id,index)"
 										mode="scaleToFill" :src="imgItem"></image>
 								</view>
 							</block>
@@ -67,7 +70,8 @@
 							<text class="count">{{ item.look }}</text>
 						</view>
 						<!-- 点赞和取消点赞 -->
-						<view v-show="item.status&&item.status==1" class="p-item" @click.stop="cancelCollection(item.id, index)">
+						<view v-show="item.status&&item.status==1" class="p-item"
+							@click.stop="cancelCollection(item.id, index)">
 							<u-icon name="heart-fill" color="#cc0000" size="38"></u-icon>
 							<text class="count">{{ item.likes ?item.likes :'' }}</text>
 						</view>
@@ -82,12 +86,12 @@
 		<!-- 判断是否加载数据 -->
 		<block v-if="list.length === 0 && loadStatus == 'nomore'">
 			<!-- margin-top="100" -->
-			<u-empty  text="我可是有底线的" mode="favor"></u-empty>
+			<u-empty text="我可是有底线的" mode="favor"></u-empty>
 		</block>
-		
+
 		<block v-if="loadStatus == 'loadmore'">
 			<view style="padding: 30rpx 0;">
-				<u-loadmore :status="loadStatus" :load-text="loadText"/>
+				<u-loadmore :status="loadStatus" :load-text="loadText" />
 			</view>
 		</block>
 		<block v-else>
@@ -112,141 +116,155 @@
 		</u-popup>
 		<!-- //举报模态框 -->
 		<view v-show="reportShow">
-			<zhizuReport @cancelReport="cancelReport" @goReport="goReportText" :typeStr="reportType" :userId="reportUserId" :reportId="reportId"/>
+			<zhizuReport @cancelReport="cancelReport" @goReport="goReportText" :typeStr="reportType"
+				:userId="reportUserId" :reportId="reportId" />
 		</view>
 	</view>
 </template>
 
 <script>
-	let that=null;
+	let that = null;
 	import zhizuReport from '@/components/common/modal/report.vue'
 	export default {
 		name: 'post-list',
 		props: {
 			list: Array,
 			loadStatus: String,
-			isDetail:Boolean,
-			isPersonal:Boolean
+			isDetail: Boolean,
+			isPersonal: Boolean
 		},
-		components:{
-				zhizuReport
+		components: {
+			zhizuReport
 		},
 		data() {
 			return {
-				reportShow:false,
+				reportShow: false,
 				showShare: false,
-				loadText:{
-					 loadmore: '轻轻上拉加载更多...',
-					 loading: '努力加载中...',
-					 nomore: '没有更多了'
+				loadText: {
+					loadmore: '轻轻上拉加载更多...',
+					loading: '努力加载中...',
+					nomore: '没有更多了'
 				},
-				dyId:'',
-				isReport:false,
-				reportType:'动态',
-				reportUserId:'',
-				reportId:'',
-				currentIndex:'',
-				follow:'' //当前是否点赞状态
+				dyId: '',
+				isReport: false,
+				reportType: '动态',
+				reportUserId: '',
+				reportId: '',
+				currentIndex: '',
+				follow: '' //当前是否点赞状态
 			};
 		},
 		watch: {
-			
+
 		},
 		computed: {
 			timestamp() {
 				return Date.parse(new Date()) / 1000;
 			},
-			
 		},
 		created() {
-
+			this.isReport = false
 		},
-		onLoad(options){
-			this.isDetail=options.isDetail
-			that=this
+		onLoad(options) {
+			this.isDetail = options.isDetail
+			that = this
 		},
 		methods: {
-			tranfTime(autoTime){
-							 //var autoTime='2022-05-05 21:58:59'   //尽量让服务端传时间戳，能够有效避免时区问题
-							    var date1 = (Date.parse(new Date()))/1000;//计算当前时间戳 
-							    var date2 = (Date.parse(new Date(autoTime)))/1000;; //自动收货的时间戳 （字符串转时间戳）
-							    var date3 =  (date1 -date2)*1000; //时间差的毫秒数
-							    //计算出相差天数
-							    var days = Math.floor(date3 / (24 * 3600 * 1000));
-								if(days>=1){
-									return autoTime
-								}
-							    //计算出小时数
-							    var leave1 = date3 % (24 * 3600 * 1000); //计算天数后剩余的毫秒数
-							    var hours = Math.floor(leave1 / (3600 * 1000));
-							    //计算相差分钟数
-							    var leave2 = leave1 % (3600 * 1000); //计算小时数后剩余的毫秒数
-							    var minutes = Math.floor(leave2 / (60 * 1000));
-							    if(hours==0&&minutes==0){
-							    	return   "刚刚"
-							    }else if(!hours){
-							    	return   minutes + " 分钟前"
-							    }else{
-							    	 return   hours+'小时前'
-							    }   
-						},
-			goReport(index){
-				this.currentIndex=index
-				this.isReport?this.isReport=false:this.isReport=true
-				this.$emit('changeStatus',index,this.isReport)
-				this.reportUserId=this.list[index].userId
-				this.reportId=this.list[index].id
+			tranfTime(autoTime) {
+				//var autoTime='2022-05-05 21:58:59'   //尽量让服务端传时间戳，能够有效避免时区问题
+				var date1 = (Date.parse(new Date())) / 1000; //计算当前时间戳 
+				var date2 = (Date.parse(new Date(autoTime))) / 1000;; //自动收货的时间戳 （字符串转时间戳）
+				var date3 = (date1 - date2) * 1000; //时间差的毫秒数
+				//计算出相差天数
+				var days = Math.floor(date3 / (24 * 3600 * 1000));
+				if (days >= 1) {
+					return autoTime
+				}
+				//计算出小时数
+				var leave1 = date3 % (24 * 3600 * 1000); //计算天数后剩余的毫秒数
+				var hours = Math.floor(leave1 / (3600 * 1000));
+				//计算相差分钟数
+				var leave2 = leave1 % (3600 * 1000); //计算小时数后剩余的毫秒数
+				var minutes = Math.floor(leave2 / (60 * 1000));
+				if (hours == 0 && minutes == 0) {
+					return "刚刚"
+				} else if (!hours) {
+					return minutes + " 分钟前"
+				} else {
+					return hours + '小时前'
+				}
+			},
+			//删除动态
+			deletePost() {
+				this.isReport = false
+				this.reportShow = false
 				event.stopPropagation()
 			},
-			cancelReport(){
-				
-			},
-			report(){
-				this.reportShow=true
-				this.$emit('changeStatus',this.currentIndex,false)
+			//控制举报，删除 显示隐藏
+			goReport(index) {
+				this.currentIndex = index
+				this.isReport ? this.isReport = false : this.isReport = true
+				this.reportUserId = this.list[index].userId
+				this.reportId = this.list[index].id
+				this.$emit('changeStatus', index, this.isReport)
+
 				event.stopPropagation()
 			},
-			goReportText(){
-				this.reportShow=false
+			cancelReport() {
+
+			},
+			report() {
+				this.reportShow = true
+				this.$emit('changeStatus', this.currentIndex, false)
+				event.stopPropagation()
+			},
+			goReportText() {
+				this.isReport = false
+				this.reportShow = false
 			},
 
 			// 跳转详情页
-			toDetail(data) {
-				if(this.isDetail) {
-					if(this.$parent.$parent.comment_id){
+			toDetail(data,index) {
+					this.isReport = false
+					this.$emit('changeStatus', index, false)
+				if (this.isDetail) {
+					if (this.$parent.$parent.comment_id) {
 						this.$emit('commontInt')
 					}
 					return
 				}
-				this.$store.commit('communityInfo',data)
-				this.dyId=data.id
+				this.$store.commit('communityInfo', data)
+				this.dyId = data.id
 				uni.navigateTo({
-					url: "/pages/tabbar/community/comment?id="+data.id
+					url: "/pages/tabbar/community/comment?id=" + data.id
 				})
 			},
-			toUcenter(userId){
-				if(this.isPersonal) return
+			toUcenter(userId) {
+				if (this.isPersonal) return
 				uni.navigateTo({
-					url:'/pages/tabbar/me/personal?userId='+userId
+					url: '/pages/tabbar/me/personal?userId=' + userId
 				})
 			},
 			// 跳转评论区
 			toComment(url) {
-				if(this.isDetail) return
+				if (this.isDetail) return
 				uni.navigateTo({
 					url: url
 				});
 			},
 			// 点赞
-			addCollection(id, index,isLove) {
-				this.$emit('clickLike',id,1,index)
+			addCollection(id, index, isLove) {
+				this.$emit('clickLike', id, 1, index)
 			},
 			// 取消点赞
-			cancelCollection(id, index,isLove) {
-				this.$emit('clickLike',id,0,index)
+			cancelCollection(id, index, isLove) {
+				this.$emit('clickLike', id, 0, index)
 			},
 			// 预览图片
-			previewImage(url, urls, integral, post_id) {
+			previewImage(url, urls, integral, post_id,index) {
+				console.log('预览图片')
+				this.isReport=false
+				this.$emit('changeStatus', index, false)
 				uni.previewImage({
 					current: url,
 					urls: urls
@@ -268,9 +286,9 @@
 					provider: "weixin", // 服务提供商（即weixin|qq|sinaweibo）
 					scene: scene, // 分享到哪儿
 					type: 0, // 图文
-					href: 'https://uniapp.dcloud.net.cn/api/plugins/share.html#share',//'../../pages/tabbar/community/comment?id'+this.dyId, //跳转链接   图文连接
+					href: 'https://uniapp.dcloud.net.cn/api/plugins/share.html#share', //'../../pages/tabbar/community/comment?id'+this.dyId, //跳转链接   图文连接
 					summary: that.postDetail.words, // 分享内容的摘要
-					title: that.postDetail.words,  // 分享内容的标题
+					title: that.postDetail.words, // 分享内容的标题
 					imageUrl: imgURL, //图片地址
 					success: function(res) {
 						uni.showToast({
@@ -301,7 +319,7 @@
 					type: 0, // 图文
 					href: 'http://uniapp.dcloud.io/', // 跳转链接
 					summary: that.postDetail.words, // 分享内容的摘要
-					title: that.postDetail.words,  // 分享内容的标题
+					title: that.postDetail.words, // 分享内容的标题
 					imageUrl: imgURL, //图片地址
 					success: function(res) {
 						uni.showToast({
@@ -327,17 +345,20 @@
 
 <style lang="scss" scoped>
 	// 总体样式
-	.main-style{
+	.main-style {
 		background: #f2f2f2
 	}
+
 	.post-item {
 		background: #fff;
 		border: solid 1px #eee;
 		margin: 3px 0px 10px 0px;
 		border-radius: 10px;
-		padding:10px;
+		padding: 10px;
+
 		.post-content {
 			margin-top: 20rpx;
+
 			.img-style-1 {
 				display: block;
 				width: 100%;
@@ -345,6 +366,7 @@
 				border-radius: 5px;
 				overflow: hidden;
 			}
+
 			.img-style-2 {
 				display: flex;
 
@@ -355,6 +377,7 @@
 					height: 294rpx;
 				}
 			}
+
 			.img-style-3 {
 				display: flex;
 				flex-wrap: wrap;
@@ -368,28 +391,43 @@
 			}
 		}
 	}
+
 	// 列表操作（用户信息）
 	.post-item-top-user {
 		display: flex;
 		align-items: center;
+
 		.avatar-img {
 			padding: 5px;
 		}
-		.reportText{
-			width:200rpx;
-			padding:10rpx 20rpx;
+
+		.reportText {
+			width: 200rpx;
+			padding: 20rpx 20rpx;
 			position: absolute;
-			right:10rpx;
+			right: 10rpx;
 			text-align: center;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 			font-size: 28rpx;
+			z-index: 9999;
+			background-color: #fff;
+
+			.item {
+				margin-bottom: 20rpx;
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
 		}
+
 		.avatar {
 			width: 85rpx;
 			height: 85rpx;
 			border-radius: 50%;
 			margin-right: 20rpx;
 		}
+
 		.center {
 			flex: 1;
 			display: flex;
@@ -397,11 +435,13 @@
 			font-size: 24rpx;
 			color: #999;
 			margin-top: -16rpx;
+
 			.username {
 				font-size: 32rpx;
 				font-weight: 600;
 				color: #616161;
 			}
+
 			.official {
 				display: inline-block;
 				font-size: 20rpx;
@@ -413,6 +453,7 @@
 			}
 		}
 	}
+
 	// 列表操作（文本）
 	.post-text {
 		display: block;
@@ -424,6 +465,7 @@
 		padding: 0 10rpx 0 10rpx;
 		margin-bottom: 5px;
 	}
+
 	// 列表操作（分享，评论，点赞）
 	.p-footer {
 		display: flex;
@@ -440,27 +482,32 @@
 				font-size: 28rpx;
 			}
 		}
+
 		.p-item[hidden] {
 			display: none !important;
 		}
 	}
+
 	// 分享弹窗
 	.share-wrap {
 		display: flex;
 		justify-content: space-between;
-		width:80%;
-		margin:0 auto;
+		width: 80%;
+		margin: 0 auto;
 		padding: 30rpx;
+
 		.share-item {
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
-			margin:0;
+			margin: 0;
+
 			image {
 				width: 100rpx;
 				height: 100rpx;
 			}
+
 			text {
 				font-size: 24rpx;
 				margin-top: 20rpx;

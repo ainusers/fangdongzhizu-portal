@@ -17,6 +17,7 @@
 				</view>
 			</view>
 		</view>
+		<u-modal v-model="show" :content="content" :mask-close-able="true" title="提示" @confirm="confirm"></u-modal>
 	</view>
 </template> 
 
@@ -24,7 +25,9 @@
 export default {
 	data() {
 		return {
-			active: false
+			active: false,
+			show:false,
+			content:'需要实名认证，是否去认证'
 		};
 	},
 	onLoad() {},
@@ -38,10 +41,18 @@ export default {
 	},
 	methods: {
 		goToPage(url) {
-			console.log(url)
+			if(!this.$store.state.userInfo.auth){
+				this.show=true
+				return
+			}
 			if (!url) return;
 			uni.navigateTo({
 				url
+			});
+		},
+		confirm(){
+			uni.navigateTo({
+				url:'/pages/tabbar/me/update/realname'
 			});
 		}
 	}

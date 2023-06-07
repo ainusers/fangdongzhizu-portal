@@ -94,6 +94,10 @@
 			goReport(){
 				console.log(this.userId)
 				console.log(this.typeStr)
+				if(!this.tipcontent) {
+					this.$u.toast('请选择举报类型')
+					return
+				}
 				let data={
 					userId:this.userId,
 					type:this.typeStr,

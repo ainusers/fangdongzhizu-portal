@@ -36,7 +36,7 @@
 						</block>
 						<view class="content" v-else>
 							<!-- 圈子 -->
-						    <post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @clickLike="clickLike"></post-list>					
+						    <post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @clickLike="clickLike"  @changeStatus="changeStatus"></post-list>					
 						</view>
 					</view>
 				</scroll-view>
@@ -49,7 +49,7 @@
 					</block>
 					<view class="content" v-else>
 						<!-- 点赞 -->
-					   <post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @clickLike="clickLike"></post-list>
+					   <post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @clickLike="clickLike" @changeStatus="changeStatus"></post-list>
 					</view>
 					</view>
 				</scroll-view>
@@ -62,7 +62,7 @@
 						</block>
 						<view class="content" v-else>
 							<!-- 已下架 -->
-							 <post-list :list="tuwen_data" :loadStatus="load_status_tuwen"  @clickLike="clickLike"></post-list>
+							 <post-list :list="tuwen_data" :loadStatus="load_status_tuwen"  @clickLike="clickLike"  @changeStatus="changeStatus"></post-list>
 						</view>
 					</view>
 				</scroll-view>
@@ -75,7 +75,7 @@
 					</block>
 					<view class="content" v-else>
 						<!-- 收藏 -->
-					    <post-list :list="tuwen_data" :loadStatus="load_status_tuwen"  @clickLike="clickLike"></post-list>
+					    <post-list :list="tuwen_data" :loadStatus="load_status_tuwen"  @clickLike="clickLike"  @changeStatus="changeStatus" ></post-list>
 					</view>
 					</view>
 				</scroll-view>
@@ -167,6 +167,12 @@ export default {
 				}
 			})
 		},
+		changeStatus(index,statu){
+			console.log(index)
+			console.log(statu)
+			this.tuwen_data[index].isReport=statu
+			console.log(this.tuwen_data)
+		},
 		getShowData(){
 			let data={}
 			let url=''
@@ -214,7 +220,8 @@ export default {
 				this.tuwen_dataAll[type]=[...this.tuwen_data,...res.data]
 						this.tuwen_dataAll[type].forEach(item=>{
 							item.image=item.imgurl.split(',')
-				})
+							this.$set(item,'isReport',false)
+						})
 				this.tuwen_data=this.tuwen_dataAll[type]
 			}
 		}

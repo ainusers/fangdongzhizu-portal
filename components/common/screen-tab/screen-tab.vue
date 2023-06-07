@@ -89,8 +89,8 @@
 								<view class="region_new_cont f_r_s">
 									<block v-for="(item, index) in erHousePriceList" :key="index">
 										<view hover-class="none" form-type="submit"
-											:class="{screen_active: erHousePriceIndex == index}" v-if="item.id"
-											@click="priceBtn(item, index)" class="region_new_list_item">{{ item.text }}
+											:class="{screen_active: item.text == priceItem.text}" v-if="item.id"
+											@click="priceBtn(item.id,item.text, index)" class="region_new_list_item">{{ item.text }}
 										</view>
 									</block>
 								</view>
@@ -172,9 +172,9 @@
 		data() {
 			return {
 				areaName: '区域',
-				downIcon: "http://cdn.haofang.net/static/uuminiapp/pageNewUi/list/filter_btn_nomal.png",
-				topIcon: "http://cdn.haofang.net/static/kdbweb/zdzfminiapp/zdzfPlatform/newUiStyle/down-active.png",
-				listTcShow: false,
+				downIcon:require('../../../static/home/filter_btn_nomal.png'),
+				topIcon: require('../../../static/home/down-active.png'),
+				listTcShow: false, //筛选框显示状态
 				fixedContHeight: "100%", // 弹窗的高度
 				fixedTcTop: "250rpx", // 筛选条件距离顶部高度43px
 				currentClickType: '',
@@ -182,7 +182,6 @@
 				regionLeftIndex: 0,
 				regionRightIndex: 0,
 				regionRightIndex1: 0,
-				erHousePriceIndex: 99,
 				roomListIndex: 0,
 				// 价格输入
 				minPriceVal: "",
@@ -246,7 +245,10 @@
 						defaultText: "租金"
 					},
 				},
-				priceItem: ''
+				priceItem: {
+					id:'',
+					text:''
+				}
 			}
 		},
 		onShow() {
@@ -292,23 +294,30 @@
 						uni.getStorage({
 							key:'priceArea',
 							success: (res) => {
-								console.log(res.data)
-								this.priceItem=res.data
+								let priceArea=res.data
+								this.minPriceVal=priceArea.minPriceVal
+								this.maxPriceVal=priceArea.maxPriceVal
+								screenFormData.erHouse.price.show=true
+								this.priceItem.id=''
+								this.priceItem.text=''
+								screenFormData.erHouse.price.text =this.minPriceVal+'-'+this.maxPriceVal
+								return
 							}
 						})
 						uni.getStorage({
 							key:'price',
 							success: (res) => {
-								console.log(res.data)
+								this.priceItem=res.data
+								screenFormData.erHouse.price.show=true
+								 screenFormData.erHouse.price.text =this.priceItem.text	
+								 return
 							}
 						})
 						if (screenFormData[enterType].price.text == '价格') {
 							screenFormData[enterType][key].show = false;
-							this.erHousePriceIndex = -1
 						}
 					}
 					if (key == 'room') {
-							
 							uni.getStorage({
 								key:'roomItem',
 								success: (res) => {
@@ -378,23 +387,21 @@
 			// 价格选项卡
 			minPriceBlur(e) {
 				this.screenFormData[this.enterType].price.text = '不限'
-				this.erHousePriceIndex = '99'
 				this.minPriceVal = e.detail.value;
 			},
 			maxPriceBlur(e) {
 				this.screenFormData[this.enterType].price.text = '不限'
-				this.erHousePriceIndex = '99'
 				this.maxPriceVal = e.detail.value;
 			},
 			//选择价格
 			// 价格选择
-			priceBtn(item, index, isInput = false) {
+			priceBtn(id,text, index, isInput = false) {
 				if (!isInput) {
 					this.minPriceVal = "";
 					this.maxPriceVal = "";
 				}
-				this.priceItem = item;
-				this.erHousePriceIndex = index;
+				this.priceItem.id=id
+				this.priceItem.text=text
 			},
 			//更多提交
 			confirmBtn() {
@@ -514,7 +521,11 @@
 					screenFormData[enterType].price.text = this.priceApiDataMap[this.from].defaultText;
 				}
 				this.screenFormData = screenFormData
-				if (screenFormData[this.enterType].price.text == '不限') {
+				console.log(screenFormData[this.enterType].price.text)
+				if (this.minPriceVal || this.maxPriceVal) {
+					this.priceItem.id=''
+					this.priceItem.text=''
+					console.log('设置价格区间值')
 					val = this.minPriceVal + '-' + this.maxPriceVal
 					uni.setStorage({
 						key:'priceArea',
@@ -545,7 +556,6 @@
 			},
 
 			priceReset() {
-				this.erHousePriceIndex = 99
 				let screenFormData = this.screenFormData
 				screenFormData[this.enterType].price.show = false
 				screenFormData[this.enterType].price.text = '价格'
@@ -563,7 +573,7 @@
 <style lang="scss">
 	/* 弹窗 */
 	.screen_fixed_list {
-		position: fixed;
+		position: absolute;
 		left: 0;
 		right: 0;
 		bottom: 0;
