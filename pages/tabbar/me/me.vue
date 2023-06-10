@@ -170,6 +170,9 @@
 		position: relative;
 		bottom:110rpx;
 		}
+	/deep/.u-avatar__img{
+		overflow: visible;
+	}
 </style>
 <template>
 	<!-- 个人信息区域 -->

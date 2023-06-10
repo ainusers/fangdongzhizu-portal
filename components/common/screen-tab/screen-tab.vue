@@ -95,14 +95,14 @@
 									</block>
 								</view>
 							</scroll-view>
-							<view class="price_bottom_view f_r_b">
+							<!-- <view class="price_bottom_view f_r_b">
 								<view class="f_r_s">
 									<input :value="minPriceVal" @blur="minPriceBlur" class="price_input_val"
 										placeholder="最低价格" />
 									<input :value="maxPriceVal" @blur="maxPriceBlur" class="price_input_val"
 										placeholder="最高价格" />
 								</view>
-							</view>
+							</view> -->
 							<view class="room_new_btn_view">
 								<view hover-class="none" form-type="submit" @click='priceReset()'>重置</view>
 								<view hover-class="none" form-type="submit" @click="confirmPrice"

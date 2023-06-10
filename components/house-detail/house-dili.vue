@@ -1,12 +1,10 @@
 <style scoped>
-	.pei_tao_she_shi{
-		box-sizing: border-box;
+	.map_item{
 		margin-top: 20upx;
-		flex-direction: column;
 	}
 </style>
 <template>
-	<view class="f_r_s pei_tao_she_shi" @click="click()" >
+	<view class="f_r_s map_item" @click="click()" >
 		<map style="width: 100%; height: 284upx;" :scale="12" :latitude="latitude" :longitude="longitude" :markers="markers"></map>
 	</view>
 </template>

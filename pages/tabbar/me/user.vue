@@ -152,9 +152,9 @@
 				</view>
             </view>
             <!--实名认证-->
-            <view class="item f_r_b" >
+            <view class="item f_r_b"  @click="goto(`/pages/tabbar/me/update/realname?username=${userInfo.username}`,'auth')">
                 <view class="item_text">实名认证</view>
-                <view class="item_val" v-if="!userInfo.auth" @click="goto(`/pages/tabbar/me/update/realname?username=${userInfo.username}`)">
+                <view class="item_val" v-if="!userInfo.auth" >
 					未认证
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
@@ -204,10 +204,13 @@
        },
 
         methods: {
-			goto(uri){
-				uni.navigateTo({
-					url: uri
-				})
+			goto(uri,type){
+				console.log(type)
+				if(type=='auth'&&!this.userInfo.auth || type!='auth'){
+					uni.navigateTo({
+						url: uri
+					})
+				}
 			},
             // 更新头像
             chooseAvatar() {

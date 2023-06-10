@@ -133,12 +133,13 @@
 					password: this.password,
 					rememberMe: 'true'
 				}).then(res => {
-					console.log(res)
 					if (res.code === 200) {
-						this.$u.toast(res.message);
-						uni.navigateTo({
-							url: '/pages/auth/login'
-						})
+						this.$u.toast(`您是第${res.data[0]}位注册成功！`);
+						setTimeout(()=>{
+							uni.navigateTo({
+								url: '/pages/auth/login'
+							})
+						},2000)
 					}else if(res.code!=200){
 						this.$u.toast(res.message);
 					}

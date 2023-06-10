@@ -109,7 +109,7 @@
 			<scroll-view :scroll-with-animation="scrollAnimate" enable-back-to-top :scroll-into-view="scrollIntoId"
 				class="choose_city_scroll" scroll-y>
 				<view class="choose_city_cont">
-					<view class="choose_title">当前定位城市 :<button class="resetBtn" v-show="gpsCityInfo.cityName != '定位中..'" @click="resetAddress">重新定位</button>
+					<view class="choose_title">当前定位城市 :<button class="resetBtn"  @click="resetAddress">重新定位</button>
 					</view>
 				   <button form-type="submit" hover-class="none" class="gps_city f_r_s" @click="cityBtn(gpsCityInfo)">
 					   <image class="gps_city_icon"

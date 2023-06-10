@@ -240,12 +240,13 @@
 		font-size:24upx;
 		padding:20upx;
 		background:#f6f8f9;
+		box-sizing: border-box;
 	}
 
 	.wordwrap {
 		position: absolute;
-		bottom:50upx;
-		right: 10rpx;
+		bottom:90upx;
+		right: 20rpx;
 	}
 
 	/* 联系方式 */
@@ -268,6 +269,7 @@
 	}
 
 	.concactContent {
+		width:97%;
 		margin: 4px 5px 0px 5px;
 		height: 90rpx;
 		background-color: #f8f9fd;
@@ -276,6 +278,7 @@
 		padding:10upx;
 		padding-left: 20upx;
 		font-size:#f6f8f9;
+		box-sizing: border-box;
 	}
 
 	/* 按钮 */

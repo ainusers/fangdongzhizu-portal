@@ -5,7 +5,7 @@
 		background-color: #f2f2f2;
     }
 	.content{
-		height: 91vh;
+		height: 95vh;
 		background-color: #ffffff;
 		border-radius: 10px;
 		// margin: 10px 10px 10px 10px;
@@ -62,12 +62,15 @@
 	.mb20{
 		margin-bottom: 20rpx;
 	}
+	.about_tit{
+		font-size: 36upx;
+	}
 </style>
 <template>
 	<view class="content">
 		<view class="top">
 			<image src="../../../../static/me/about.jpg" mode=""></image>
-			<view class="mb20">
+			<view class="mb20 about_tit">
 				房东直租
 			</view>
 			<view >
@@ -98,7 +101,6 @@
 					<view class="txt">
 						<view class="high">《注册协议》</view>和<view class="high">《隐私政策》</view>
 					</view>
-					<view class="txt1">北京灵感边界科技有限公司 </view>
 					<view class="txt1">版权所有，违法必究 </view>
 				</view>
 				

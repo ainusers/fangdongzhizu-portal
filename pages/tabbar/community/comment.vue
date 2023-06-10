@@ -131,7 +131,6 @@
 							<view class="comment_con">
 								<view   class="comment" v-for="(res, index1) in commentList" :key="res.id">
 									<view class="left">
-										<!-- <image :src="res.avatar" mode="aspectFill"></image> -->
 											<u-avatar class="avatar" :src="res.avatar" level-bg-color="#8072f3"></u-avatar>
 										</view>
 									<view class="right">
@@ -141,11 +140,11 @@
 													<view class="name"  @tap.stop="onReply(res, index1,1)">{{ res.username }}</view>
 													<view class="date"  @tap.stop="onReply(res, index1,1)">{{res.create_time  }}</view>
 												</view>
-												<view class="like" :class="{ highlight: res.love }"  @click="clickLike(res.comment_id,res.love,index1)">
+												<!-- <view class="like" :class="{ highlight: res.love }"  @click="clickLike(res.comment_id,res.love,index1)">
 													<view class="num">{{ res.love }}</view>
 													<u-icon v-if="!res.love" name="thumb-up" :size="30" color="#9a9a9a"></u-icon>
 													<u-icon v-if="res.love" name="thumb-up-fill" :size="30" ></u-icon>
-												</view>
+												</view> -->
 											</view>
 											<view class="content"  @tap.stop="onReply(res, index1,1)">{{ res.words }}</view>
 										</view>
@@ -238,7 +237,6 @@ export default {
 	},
 	methods: {
 		commontInt(){
-			console.log('修改数据')
 			this.comment_id=''
 			this.beCommentUserId=0
 			this.parentId=0
@@ -266,8 +264,6 @@ export default {
 			},
 		// 跳转到全部回复
 		toAllReply(index,id) {
-			console.log(index)
-			console.log(this.beforeIndex)
 			this.expand++
 			this.AllReply=true
 			this.commentList.forEach((item)=>{
@@ -316,7 +312,6 @@ export default {
 				this.beCommentUserId=e.commentUserId
 			}
 			this.comment_id=e.comment_id ||e.id
-			console.log('回复评论id'+this.comment_id)
 			this.focus = true;
 			
 		},
@@ -415,39 +410,39 @@ export default {
 				dynamicId:this.$store.state.communityInfo.id,
 				pageNum:this.pageNumOne,
 				pageSize:10,
-				// status:1
 			}
 			this.$H.post('/zf/v1/comment/list',data,true).then(res=>{
 						if(res.status){
 							let commentList=res.data
-							if(commentList.length<10){
+							if(commentList&&commentList.length<10){
 								this.loadStatus='state'
 							}
-							commentList.forEach((item,index)=>{
-								this.$set(item,'replyList',[])
-								// item.replyList=[]
-								item.AllReply=false
-								item.commentText='展开查看更多'
+							if(commentList){
+								commentList.forEach((item,index)=>{
+										this.$set(item,'replyList',[])
+										// item.replyList=[]
+										item.AllReply=false
+										item.commentText='展开查看更多'
+										let time=new Date(item.create_time)
+										let y=time.getFullYear()
+										let m=time.getMonth()+1
+										let d=time.getDate()
+										let h=time.getHours()
+										let mm=time.getMinutes()
+										let s=time.getSeconds()
+										if(h<10){
+											h='0'+h
+										}
+										if(mm<10){
+											mm='0'+mm
+										}
+										item.create_time=tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm)
+										that.commentList.push(item)
+										item.likeNum=0
+										that.getTwoList(item.comment_user_id,index,item.comment_id)
+									})
 								
-								let time=new Date(item.create_time)
-								console.log(item.create_time)
-								let y=time.getFullYear()
-								let m=time.getMonth()+1
-								let d=time.getDate()
-								let h=time.getHours()
-								let mm=time.getMinutes()
-								let s=time.getSeconds()
-								if(h<10){
-									h='0'+h
-								}
-								if(mm<10){
-									mm='0'+mm
-								}
-								item.create_time=tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm)
-								that.commentList.push(item)
-								item.likeNum=0
-								that.getTwoList(item.comment_user_id,index,item.comment_id)
-							})
+							}
 						}
 			})
 
@@ -455,7 +450,6 @@ export default {
 		getTwoList(beCommentUserId,index,id){
 			let that=this
 			let data={
-				// beCommentUserId:beCommentUserId,
 				pageNum:this.pageNum,
 			    pageSize:10,
 				// status:1,
@@ -464,7 +458,6 @@ export default {
 			}
 			this.$H.post('/zf/v1/comment/second/list',data,true).then(res=>{
 				if(res.status){
-					console.log(res)
 					if(this.commentList[index].AllReply &&res.data.length<10){
 						this.commentList[index].commentText=''
 					}

@@ -163,7 +163,9 @@
   .pei_tao_she_shi{
 	  padding:20upx;
   }
- 
+	.map_con{
+		padding: 20upx;
+	}
 </style>
 <template>
     <view class="er_house_detail">
@@ -246,8 +248,10 @@
 		<view class="model">
 		  <block v-if="diliData.length > 0">
 			 <view class="modelName">地理位置</view>
-			 <view>{{detailData.distanceSubway}}</view>
-			 <di-li-wei-zhi :list="diliData"  v-show="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi>
+			 <view class="map_con">
+				<view>{{detailData.distanceSubway}}</view>
+				<di-li-wei-zhi :list="diliData"  v-show="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi>
+			 </view>
 		   </block>
 		<!-- 详情页 - 配套设施 -->
 		</view>
