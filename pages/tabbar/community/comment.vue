@@ -249,7 +249,8 @@ export default {
 			let data={
 					  "id": this.dyId,
 					  "page":1 ,
-					  "size": "10"
+					  "size": "10",
+					  "userId":this.$store.state.userInfo.id
 				}
 			this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
 					if(res.status){	
