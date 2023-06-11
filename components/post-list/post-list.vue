@@ -18,7 +18,7 @@
 									</u-icon>
 									<view class="reportText" v-show="item.isReport">
 										<view @click="report" class="item">举报</view>
-										<view @click="deletePost" class="item"
+										<view @click="deletePost(index,item.id)" class="item"
 											v-show="item.userid==$store.state.userInfo.id">删除</view>
 									</view>
 								</view>
@@ -59,7 +59,7 @@
 					<view class="p-footer">
 						<!-- 分享 -->
 						<view class="p-item">
-							<button @click.stop="showShares(index)" class="u-reset-button" open-type="share">
+							<button @click.stop="showShares(index,item.id)" class="u-reset-button" open-type="share">
 								<u-icon name="zhuanfa" size="38"></u-icon>
 								<text class="count">{{ item.transfer }}</text>
 							</button>
@@ -151,7 +151,8 @@
 				reportUserId: '',
 				reportId: '',
 				currentIndex: '',
-				follow: '' //当前是否点赞状态
+				follow: '' ,//当前是否点赞状态
+				shareId:''
 			};
 		},
 		watch: {
@@ -195,9 +196,23 @@
 				}
 			},
 			//删除动态
-			deletePost() {
-				this.isReport = false
+			deletePost(index,id) {
+				this.isReport ? this.isReport = false : this.isReport = true
 				this.reportShow = false
+				let data={
+					id:id,
+					status:0
+				}
+				let isDelete=false
+				this.$H.patch('/zf/v1/dynamic/dynamics',data,true).then(res=>{
+					if(res.code==200){
+						isDelete=true
+					}
+					return isDelete
+				}).then(res=>{
+					this.$emit('changeStatus', index, this.isReport,res)
+				})
+				
 				event.stopPropagation()
 			},
 			//控制举报，删除 显示隐藏
@@ -271,9 +286,10 @@
 				});
 			},
 			// 显示分享弹框
-			showShares(index) {
+			showShares(index,id) {
 				this.showShare = true;
 				this.postDetail = this.list[index];
+				this.shareId=id
 			},
 			// 分享至微信
 			shareWX(scene) {
@@ -291,6 +307,7 @@
 					title: that.postDetail.words, // 分享内容的标题
 					imageUrl: imgURL, //图片地址
 					success: function(res) {
+						that.tranferCount()
 						uni.showToast({
 							title: '分享成功',
 							icon: 'none',
@@ -322,6 +339,7 @@
 					title: that.postDetail.words, // 分享内容的标题
 					imageUrl: imgURL, //图片地址
 					success: function(res) {
+						that.tranferCount()
 						uni.showToast({
 							title: '分享成功',
 							icon: 'none',
@@ -337,6 +355,16 @@
 						})
 						that.posters = false;
 					}
+				})
+			},
+			tranferCount(){
+				let data={
+					id:this.shareId,
+					userId:this.$store.state.userInfo.id,
+					type:'plus'
+				}
+				this.$H.patch('/zf/v1/dynamic/transfer',data,true).then(res=>{
+					console.log(res)
 				})
 			}
 		}

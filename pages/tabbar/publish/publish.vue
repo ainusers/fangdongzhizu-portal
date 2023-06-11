@@ -1,6 +1,6 @@
 <template>
 	<view class="content" :class="{'active':active}">
-		<image class="logo" :class="{'active':active}" src="../../../static/logo.png"  mode="aspectFit"></image>
+		<!-- <image class="logo" :class="{'active':active}" src="../../../static/logo.png"  mode="aspectFit"></image> -->
 		<view class="tabbar-box-wrap">
 			<view class="tabbar-box">
 				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/tuwen')">

@@ -249,7 +249,7 @@
 		ref="form1"
 		>
 			<!-- 发布类型 -->
-			<view class="Hometype_con">
+			<view class="Hometype_con" v-show="stepNum==1 || setpAll">
 				<view class="item" v-for ="(item,index) in radioList" :key="index" @click="radioGroupChange(index)" :class="[{'active':item.checked}]">
 					{{ item.name }}
 				</view>

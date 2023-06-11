@@ -121,7 +121,7 @@
 <template>
 	<view>
 		<!-- 展示区 -->
-		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" :isDetail="true" @changeStatus="changeStatus" @clickLike="clickLikes" @commontInt="commontInt"></post-list>
+		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" :isDetail="true" @changeStatus="changeStatus" @clickLike="clickLikes" @commontInt="commontInt" @deletePostFn="deletePostFn"></post-list>
 		
 		<!-- 评论区 -->
 		<view class="comment_main">
@@ -220,6 +220,7 @@ export default {
 		}
 		this.getOneList()
 		this.getdyDetail()
+		this.lookCount(this.dyId)
 	},
 	onPullDownRefresh(){
 		this.pageNumOne=1
@@ -242,8 +243,11 @@ export default {
 			this.parentId=0
 			this.placeholder='说点什么...'
 		},
-		changeStatus(index,status){
+		changeStatus(index,status,isDelete){
 			this.tuwen_data[index].isReport=status
+			if(isDelete){
+				uni.navigateBack()
+			}
 		},
 		getdyDetail(){
 			let data={
@@ -495,6 +499,26 @@ export default {
 					this.commentList[index].love=1;
 					this.commentList[index].likeNum=res.data[0].count;
 				}
+			})
+		},
+		deletePostFn(id){
+			console.log('删除')
+			let data={
+				id:id,
+				status:0
+			}
+			this.$H.patch('/zf/v1/dynamic/dynamics',data,true).then(res=>{
+				console.log(res)
+			})
+		},
+		lookCount(id){
+			let data={
+				id:id,
+				userId:this.$store.state.userInfo.id,
+				type:'plus'
+			}
+			this.$H.patch('/zf/v1/dynamic/look',data,true).then(res=>{
+				console.log(res)
 			})
 		}
 	}

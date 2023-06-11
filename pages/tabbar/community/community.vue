@@ -85,7 +85,7 @@
 		</view>
  -->
 		<!-- 朋友圈 -->
-		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus" @clickLike="clickLike" ></post-list>
+		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus" @clickLike="clickLike" @deletePost="deletePostFn"></post-list>
 	</view>
 </template>
 
@@ -136,11 +136,11 @@
 			}	
 		},
 		methods: {
-			changeStatus(index,statu){
-				console.log(index)
-				console.log(statu)
+			changeStatus(index,statu,isDelete){
 				this.tuwen_data[index].isReport=statu
-				console.log(this.tuwen_data)
+				if(isDelete){
+					this.tuwen_data.splice(index,1)
+				}
 			},
 			// 跳转页面
 			goto(url) {
@@ -191,6 +191,10 @@
 						res.data[0].count?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
 					}
 				})
+			},
+			deletePostFn(id){
+				console.log('删除3')
+			
 			}
 		}
 	}
