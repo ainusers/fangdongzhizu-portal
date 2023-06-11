@@ -203,7 +203,7 @@ export default {
 			pageNumOne:1,
 			tuwen_data:[],
 			beforeIndex:'9999',//点击评论查看更多的index
-			load_status_tuwen: 'nomore',
+			load_status_tuwen: 'loadmore',
 			loadStatus: 'loadmore', //用于控制是否可以再继续加载
 			comment_id:'',//评论id
 			dyId:'',//动态id
@@ -256,7 +256,12 @@ export default {
 					  "size": "10",
 					  "userId":this.$store.state.userInfo.id
 				}
+				uni.showLoading({
+					icon:'none',
+					title:'加载中'
+				})
 			this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
+				uni.hideLoading()
 					if(res.status){	
 							this.tuwen_data = res.data
 							this.tuwen_data.forEach(item=>{

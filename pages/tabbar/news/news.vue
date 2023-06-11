@@ -2,7 +2,7 @@
 	<view class="container" :class="{'active':active}">
 		<u-cell-group v-if="InfoList.length>0">
 			<block v-for="(item,index) in InfoList" :key="index">
-				<u-cell-item :icon="item.data[item.data.length-1].otherAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.data[0].from" :label='item.data[item.data.length-1].msg' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="timestampToTime(item.data[0].datetime)" @click="goInfo(item)" v-if="item.data[0]" ></u-cell-item>
+				<u-cell-item :icon="item.data[item.data.length-1].otherAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.data[0].from" :label='item.data[item.data.length-1].msg' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="item.data[0].datetime" @click="goInfo(item)" v-if="item.data[0]" ></u-cell-item>
 			</block>
 		</u-cell-group>
 		<view v-else class="noData">
@@ -91,21 +91,6 @@
 				            url: '/pages/tabbar/community/tools/news?houseId='+info.houseId
 				        })
 			},
-			 timestampToTime(timestamp) {
-			  // 时间戳为10位需*1000，时间戳为13位不需乘1000
-			  console.log(timestamp)
-			  var date = new Date(Number(timestamp));
-			  var Y = date.getFullYear() + "-";
-			  var M =
-			    (date.getMonth() + 1 < 10
-			      ? "0" + (date.getMonth() + 1)
-			      : date.getMonth() + 1) + "-";
-			  var D = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + " ";
-			  var h = date.getHours() + ":";
-			  var m = date.getMinutes() + ":";
-			  var s = date.getSeconds();
-			  return Y + M + D + h + m + s;
-			}
 		}
 	};
 </script>

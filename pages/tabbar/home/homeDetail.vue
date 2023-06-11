@@ -275,8 +275,8 @@
 					<view class="target">举报</view>
 				</view>
 				
-				<view class="report " :class="[detailData.collection==1?'report_active':'']" @click="report(2)">
-					<u-icon name="heart" size="50"></u-icon>
+				<view class="report"  @click="report(2)">
+					<u-icon :name="startIcon" size="50" :color="iconColor"></u-icon>
 					<view class="target" >收藏</view>
 				</view>
 				
@@ -396,7 +396,9 @@
           archiveId: "",
           show: false
         },
-		tipcontent:''
+		tipcontent:'',
+		startIcon:'heart',
+		iconColor:''
       };
     },
 	methods:{
@@ -420,7 +422,10 @@
 			}
 		 return	this.$H.get('/zf/v1/room/list/id',data,true).then(res=>{
 				this.detailData=res.data[0]
-				console.log(this.detailData)
+				if(this.detailData.collection==1){
+					this.startIcon='heart-fill'
+					this.iconColor='#f91e08'
+				}
 			})
 		},
 		reportShowFn(){
@@ -508,6 +513,10 @@
 					this.detailData.collection=params.collection
 					// 收藏成功
 					params.collection==0?this.$u.toast('取消收藏'):this.$u.toast('收藏成功')
+					if(params.collection==1){
+						this.startIcon='heart-fill'
+						this.iconColor='#f91e08'
+					}
 				}
 			})
 		},

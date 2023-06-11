@@ -176,35 +176,26 @@ export default {
 		getShowData(){
 			let data={}
 			let url=''
+			let type=null
+			
+			url='/zf/v1/dynamic/list'
 			if(this.current==0){
-				data={
-					userId:this.$store.state.userInfo.id, 
-					page:this.currPage,
-					size:10,
-					type:'user'
-				}
-				url='/zf/v1/dynamic/list'
-				this.$H.post(url,data,true).then(res=>{
-					this.status=false
-					this.getRestus(res,this.current)
-				})
-			}else if(this.current==1 || this.current==2 ||this.current==3){
-				let type=''
-				if(this.current==1) type='likes'
-				if(this.current==2) type='transfer'
-				if(this.current==3) type="look" 
-				data={
-					userId:this.$store.state.userInfo.id,
-					pageNum:this.currPage,
-					pageSize:10,
-					type:type
-				}
-				url='/zf/v1/dynamic/statistics'
-				this.$H.get(url,data,true).then(res=>{
-					this.status=false
-					this.getRestus(res,this.current)
-				})
+				data['way']='user'	
 			}
+			if(this.current==1) type='likes'; 
+			if(this.current==2) type='transfer' ; 
+			if(this.current==3) type="look"; 
+			data={
+				userId:this.$store.state.userInfo.id, 
+				page:this.currPage,
+				size:10,
+				way:'user',
+				type:type
+			}
+			this.$H.post(url,data,true).then(res=>{
+				this.status=false
+				this.getRestus(res,this.current)
+			})
 		},
 			
 		getRestus(res,type){

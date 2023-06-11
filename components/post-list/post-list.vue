@@ -89,7 +89,7 @@
 			<u-empty text="我可是有底线的" mode="favor"></u-empty>
 		</block>
 
-		<block v-if="loadStatus == 'loadmore'">
+		<block v-if="loadStatus == 'loadmore'&&!isDetail">
 			<view style="padding: 30rpx 0;">
 				<u-loadmore :status="loadStatus" :load-text="loadText" />
 			</view>

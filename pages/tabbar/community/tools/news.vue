@@ -419,10 +419,10 @@
 			// 点击发送数据按钮
 			sendGenernalMsg() {
 				if (this.socket_status) {
-					// target   变成房源id
+					// target   变成userid
 					console.log("发送对象{'type':'text','msg':'" + this.textMsg + "','target'"+this.houseId+"}")
 					this.socketInstance.send({
-						data: "{'type':'text','msg':'" + this.textMsg + "','target'"+this.houseId+"}",
+						data: "{'type':'text','msg':'" + this.textMsg + "','target'"+this.$store.state.userInfo.id+"}",
 						async success() {
 							// console.log("普通消息发送成功");
 						},
@@ -674,7 +674,8 @@
 							'type': type,
 							'msg':content.text,
 							'target':this.houseId,
-							'face':this.$store.state.userInfo.avatar
+							'face':this.$store.state.userInfo.avatar,
+							"from":this.$store.state.userInfo.username
 							}
 							this.socketInstance.send({
 								data: JSON.stringify(data),
