@@ -425,6 +425,7 @@ export default {
 			if(this.currPage==1){
 				uni.showLoading({
 					icon:'none',
+					mask:true,
 					title:'加载中'
 				})
 			}
@@ -445,7 +446,6 @@ export default {
 									data[this.moreSubKey[index]]=item?item:null
 								})
 						}
-						console.log('查询的参数',data)
 					this.$H.post('/zf/v1/room/list',data,true).then(res=>{
 						uni.hideLoading()
 							if(res.status){

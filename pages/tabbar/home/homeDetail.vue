@@ -179,7 +179,7 @@
 				<view class="position">
 					<view class="community">{{detailData.communityName}}-</view>
 					
-					<view class="value">&nbsp;{{detailData.layout}} ({{detailData.roomType}})</view>
+					<view class="value">&nbsp;{{detailData.layout}}</view>
 				</view>
 				<view class="money">
 					<view class="pay">
@@ -191,8 +191,8 @@
 			 </view>
 			 <view class="detail">
 				<view class="info_con">
-					<view  class="value"> {{detailData.orientation}}</view>
-					<view  class="key">朝向 </view>
+					<view  class="value"> {{detailData.roomType}}</view>
+					<view  class="key">出租房间 </view>
 				</view>
 				<view class="info_con">
 					<view class="value">
@@ -224,6 +224,10 @@
 				 <view class="item">
 				 	<!-- 集中供暖-->
 				 	{{detailData.heatType}} 
+				 </view>
+				 <!-- 朝向 -->
+				 <view class="item">
+					 {{detailData.orientation}}
 				 </view>
 			 </view>
 		   </block>
@@ -501,8 +505,9 @@
 				break;
 				case 3:
 				params['chat']=1
+				var chatId = this.$store.state.userInfo.id+''+this.houseId
 				uni.navigateTo({
-					url:'/pages/tabbar/community/tools/news?houseId='+this.houseId+'&userId='+this.detailData.userId
+					url:'/pages/tabbar/community/tools/news?houseId='+this.houseId+'&userId='+this.detailData.userId+'&chatId='+chatId
 				})
 				break;
 			}

@@ -258,6 +258,7 @@ export default {
 				}
 				uni.showLoading({
 					icon:'none',
+          mask:true,
 					title:'加载中'
 				})
 			this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{

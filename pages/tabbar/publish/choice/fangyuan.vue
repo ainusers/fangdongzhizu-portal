@@ -240,6 +240,9 @@
 			border-bottom: 1px solid #e4e7ed;
 		}
 	}
+	/deep/.u-form-item--left__content--required{
+		color: #fff;
+	}
 </style>
 <template>
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
@@ -284,7 +287,7 @@
 				</u-form-item>
 	
 				<!-- 房屋位置 -->
-				<view class="region_new_title">您的房屋位置</view>
+				<view class="region_new_title">您的房间位置</view>
 				<u-form-item :label-position="labelPosition"  prop="region1" label-width="150"  borderBottom required>
 					<u-input :border="border" type="select" v-model="houseModel.region1" placeholder="请选择所属区域"   @click="showPickerArea" ></u-input>
 				</u-form-item>
@@ -310,9 +313,9 @@
 			>
 			<view class="step_2" v-show="stepNum==2 ||setpAll">
 				<!-- 费用信息 -->
-				<view class="region_new_title">您的房屋费用信息</view>
-				<u-form-item :label-position="labelPosition" label="房屋布局 :" prop="layout" label-width="150">
-					<u-input :border="border" placeholder="请选择房屋结构" v-model="houseModel.layout" type="select" @click="layoutShowFn" :disabled="setpAll"></u-input>
+				<view class="region_new_title">您的房间费用信息</view>
+				<u-form-item :label-position="labelPosition" label="房间布局 :" prop="layout" label-width="150">
+					<u-input :border="border" placeholder="请选择房间结构" v-model="houseModel.layout" type="select" @click="layoutShowFn" :disabled="setpAll"></u-input>
 					<u-select :mode="mode" v-model="layoutShow" :list="layoutList" @confirm="layoutConfirm" @cancel="layoutCancel"></u-select>
 				</u-form-item>
 				<!-- 付款方式 -->
@@ -321,13 +324,13 @@
 				</u-form-item>
 				
 				  <!-- 月度租金 -->
-				  <u-form-item :label-position="labelPosition" label="房屋租金 :" prop="money" label-width="150" required>
-				  	<u-input :border="border" :type="Number" placeholder="请输入房屋租金" type="text" v-model="houseModel.money" :disabled="setpAll" @blur="rentMoney"></u-input>
+				  <u-form-item :label-position="labelPosition" label="房间租金 :" prop="money" label-width="150" required>
+				  	<u-input :border="border" :type="Number" placeholder="请输入房间租金" type="text" v-model="houseModel.money" :disabled="setpAll" @blur="rentMoney"></u-input>
 					<span>元</span>
 				  </u-form-item>
 				  <!-- 房屋押金 -->
-				  <u-form-item :label-position="labelPosition" label="房屋押金 :" prop="mortgageMoney" label-width="150">
-				  	<u-input :border="border" :type="Number" placeholder="请输入房屋押金" type="text" v-model="houseModel.mortgageMoney" :disabled="setpAll"></u-input>
+				  <u-form-item :label-position="labelPosition" label="房间押金 :" prop="mortgageMoney" label-width="150">
+				  	<u-input :border="border" :type="Number" placeholder="请输入房间押金" type="text" v-model="houseModel.mortgageMoney" :disabled="setpAll"></u-input>
 					<span>元</span>
 				  </u-form-item>
 				  <!-- 服务费用 -->
@@ -377,28 +380,28 @@
 			>
 			<view class="step_3" v-show="stepNum==3 || setpAll">
 				<!-- 费用信息 -->
-				<view class="region_new_title">您的房屋信息（必填项）</view>
+				<view class="region_new_title">您的房间信息（必填项）</view>
 				<!-- 出租房屋 -->
-				<u-form-item :label-position="labelPosition" label="出租房屋 :" prop="lease" label-width="150">
-					<u-input :border="border" placeholder="请选择房屋结构" v-model="houseModel.lease" type="select" @click="leaseShowFn" :disabled="setpAll"></u-input>
+				<u-form-item :label-position="labelPosition" label="出租房间:" prop="lease" label-width="150">
+					<u-input :border="border" placeholder="请选择房间结构" v-model="houseModel.lease" type="select" @click="leaseShowFn" :disabled="setpAll"></u-input>
 					<u-select mode="mutil-column-auto" v-model="leaseShow" :list="leaseList" @confirm="leaseConfirm" @cancel="leaseCancel"></u-select>
 				</u-form-item>
 				<!-- 几室 -->
 				<view v-show="isHomeArr">
 					<view class="" v-for="(item,index) in houseModel.homeArr">
 						<u-form-item :label-position="labelPosition" :label="item.name" prop="homeArr" label-width="150" v-if="houseModel.chekcNum!=0&&index<houseModel.chekcNum" >
-							<u-input :border="border" placeholder="请填写房屋信息" v-model="item.tenantStr"  type="select"  @click="popUpShowFn('tenant',index)" :disabled="setpAll"></u-input>
+							<u-input :border="border" placeholder="请填写房间信息" v-model="item.tenantStr"  type="select"  @click="popUpShowFn('tenant',index)" :disabled="setpAll"></u-input>
 						</u-form-item>
 					</view>   
 				</view>
 				
 				<!-- 房屋朝向 -->
-				<u-form-item :label-position="labelPosition" label="房屋朝向 :" prop="orientation" label-width="150">
-					<u-input :border="border" placeholder="请选择房屋朝向" v-model="houseModel.orientation" type="select" @click="orientationShowFn" :disabled="setpAll"></u-input>
+				<u-form-item :label-position="labelPosition" label="房间朝向 :" prop="orientation" label-width="150">
+					<u-input :border="border" placeholder="请选择房间朝向" v-model="houseModel.orientation" type="select" @click="orientationShowFn" :disabled="setpAll"></u-input>
 					<u-select :mode="mode" v-model="orientationShow" :list="orientationList" @confirm="orientationConfirm" @cancel="orientationCancel"></u-select>
 				</u-form-item>
 				<!-- 房屋面积 -->
-				<u-form-item :label-position="labelPosition" label="房屋面积 :" prop="homesize" label-width="150">
+				<u-form-item :label-position="labelPosition" label="房间面积 :" prop="homesize" label-width="150">
 						<u-input :border="border" placeholder="请输入平方数" type="number" v-model="houseModel.homesize" :disabled="setpAll"></u-input>m²
 				</u-form-item>
 				<!-- 有无电梯 -->
@@ -418,7 +421,7 @@
 					<!-- <view @click="showTimeFn" :class="[{'select_btn':houseModel.live_time?houseModel.live_time.indexOf('请选择')!=-1:''}]">{{houseModel.live_time}}</view> -->
 				</u-form-item>
 				<!-- 房源照片 -->
-				<view class="region_new_title">房源照片</view>
+				<view class="region_new_title">房间照片</view>
 				<u-form-item prop="houseImageList" :border-bottom="false" required >
 				<view class="uni-list list-pd">
 					<view class="uni-list-cell cell-pd">
@@ -444,7 +447,7 @@
 					</view>
 				</view>
 				</u-form-item >
-					<view class="region_new_title">房源设施</view>
+					<view class="region_new_title">房间设施</view>
 				<!-- 房源配置 -->
 				<u-form-item :label-position="labelPosition"  label-width="150" prop="houseConfigStr">
 					<u-checkbox-group @change="houseConfig" :width="radioCheckWidth" :wrap="false">
@@ -485,7 +488,7 @@
 						</u-form-item>
 						<!-- 面积 -->
 						<u-form-item :label-position="labelPosition" label="面积 :"  label-width="150" >
-							<u-input :border="border" :type="Number" placeholder="请输入房屋面积" type="text" v-model="tenantArea" :disabled="setpAll"></u-input>m²
+							<u-input :border="border" :type="Number" placeholder="请输入房间面积" type="text" v-model="tenantArea" :disabled="setpAll"></u-input>m²
 						</u-form-item>
 						
 					</view>
@@ -603,7 +606,7 @@ import { attachUpload ,htmlEncode,compressImg} from '../../../../utils/utils';
 					layout:{
 						type: 'string',
 						required: true,
-						message: '请选择房屋布局',
+						message: '请选择房间布局',
 						trigger: ['change', 'blur']
 					},
 					payType: [
@@ -616,13 +619,13 @@ import { attachUpload ,htmlEncode,compressImg} from '../../../../utils/utils';
 					money:[
 						{
 							required: true,
-							message: '请填写房屋租金',
+							message: '请填写房间租金',
 							trigger: ['change', 'blur']
 						}
 					],
 					mortgageMoney:{
 						required: true,
-						message: '请填写房屋押金',
+						message: '请填写房间押金',
 						trigger: ['change', 'blur']
 					},
 					serviceMoney:{
@@ -660,14 +663,14 @@ import { attachUpload ,htmlEncode,compressImg} from '../../../../utils/utils';
 					lease:{
 						type:'string',
 						required:true,
-						message:'请选择出租房屋',
+						message:'请选择出租房间',
 						trigger: ['change', 'blur']
 					},
 					homeArr:[
 					    {
 								type:'array',
 								required: true, 
-								message: '请填写房屋信息',
+								message: '请填写房间信息',
 								trigger: ['change','blur'],
 						},
 						{
@@ -684,7 +687,7 @@ import { attachUpload ,htmlEncode,compressImg} from '../../../../utils/utils';
 								}
 									return isT;
 							},
-							message: '请填写房屋信息',
+							message: '请填写房间信息',
 										// 触发器可以同时用blur和change
 							trigger: ['change','blur'],
 						}
@@ -692,13 +695,13 @@ import { attachUpload ,htmlEncode,compressImg} from '../../../../utils/utils';
 					orientation:{
 						type:'string',
 						required:true,
-						message:'请选择房屋朝向',
+						message:'请选择房间朝向',
 						trigger: ['change', 'blur']
 					},
 					homesize:{
 						type:'string',
 						required:true,
-						message:'请填写房屋面积',
+						message:'请填写房间面积',
 						trigger: ['change', 'blur']
 					},
 					floor:{
@@ -717,13 +720,13 @@ import { attachUpload ,htmlEncode,compressImg} from '../../../../utils/utils';
 					houseImageList:{
 						type:'array',
 						required: true,
-						message: '请上传房源证明',
+						message: '请上传房间证明',
 						trigger: ['change', 'blur']
 					},
 					
 					houseConfigStr:{
 						required: true,
-						message: '请选择房屋配置',
+						message: '请选择房间配置',
 						trigger: ['change', 'blur']
 					},
 					
@@ -1734,7 +1737,7 @@ import { attachUpload ,htmlEncode,compressImg} from '../../../../utils/utils';
 									if(!this.isCheck){
 										return
 									}
-									uni.showLoading({title:'发布中'});
+									uni.showLoading({title:'发布中',mask:true,});
 									let imagesNatureArr=''
 									let imagesHouseArr=''
 									// #ifdef APP-PLUS

@@ -4,6 +4,12 @@
 	.send .btn{
 		background: linear-gradient(to right, #129ef1, #2c93eb) !important;
 	}
+	.userImage{
+		.avatar{
+			width:80upx;
+			height:80upx
+		}
+	}
 </style>
 <template>
 	<view class="news">
@@ -53,7 +59,9 @@
 							</view>
 							<!-- 右-头像 -->
 							<view class="right">
-								<image :src="myAvatar"></image>
+								<view class="userImage">
+								  <u-avatar class="avatar" :src="row.avatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
+								</view>
 							</view>
 						</view>
 						<!-- 2. 别人发出的消息 -->
@@ -212,7 +220,8 @@
 				otherAvatar:'',//房主的头像
 				myAvatar:'',//自己的头像
 				socket_status:false,
-				Platform:''
+				Platform:'',
+				chatId:'' //聊天室id
 			};
 		},
 		onLoad(option) {
@@ -221,6 +230,7 @@
 			// console.log('option',option)
 			this.houseId=''
 			this.houseId=option.houseId
+			this.chatId=option.chatId
 			this.currentName=this.$store.state.userInfo.username
 			this.myAvatar=this.$store.state.userInfo.avatar 
 			if(option.userId){
@@ -324,7 +334,7 @@
 					// console.log('有没有聊天过',this.isChat)
 					if(!this.isChat&&this.houseId){
 						// console.log('push一条新的数据')
-						this.chatList.push({houseId:this.houseId,data:[]})
+						this.chatList.push({houseId:this.houseId,room:this.chatId,data:[]})
 						// console.log('push的新的',JSON.stringify(this.chatList))
 					}
 					if(this.currentChatList.length<20){
@@ -348,7 +358,7 @@
 			// 创建websocket连接方法
 			initSocket() {
 				// 创建socketInstance对象实例，进行所有操作
-				this.socketInstance = uni.connectSocket({
+				this.$socketInstance = uni.connectSocket({
 					// 确保你的服务器是运行态
 					url: "ws://81.70.163.240:17180/websocket",
 					
@@ -357,18 +367,19 @@
 					}
 				});
 				// 打开socket链接
-				this.socketInstance.onOpen((res) => {
+				this.$socketInstance.onOpen((res) => {
 					// console.log("WebSocket连接正常打开中..." + JSON.stringify(res));
 					this.socket_status = true;
 					// 发送认证消息
 					this.authSocket();
 				});
+				
 				// 接受服务端消息
-				this.socketInstance.onMessage((res) => {
+				
+				this.$socketInstance.onMessage((res) => {
 					console.log("收到服务器内容：" + res.data);
 					// console.log('当前房源id',this.houseId)
 					let data = eval("(" + res.data + ")");
-					console.log(this.$store.state.userInfo)
 					data.avatar=this.$store.state.userInfo.avatar
 					
 					data.otherAvatar=this.otherAvatar
@@ -398,7 +409,7 @@
 					});
 				});
 				// 监听socket关闭链接
-				this.socketInstance.onClose(() => {
+				this.$socketInstance.onClose(() => {
 					this.isChatStatus=false
 					console.log("已经被关闭了")
 				})
@@ -406,7 +417,7 @@
 			// 关闭socket
 			closeSocket() {
 				let that=this
-				this.socketInstance.close({
+				this.$socketInstance.close({
 					success(res) {
 						that.socket_status = false;
 						console.log("关闭通信服务成功", res)
@@ -421,7 +432,7 @@
 				if (this.socket_status) {
 					// target   变成userid
 					console.log("发送对象{'type':'text','msg':'" + this.textMsg + "','target'"+this.houseId+"}")
-					this.socketInstance.send({
+					this.$socketInstance.send({
 						data: "{'type':'text','msg':'" + this.textMsg + "','target'"+this.$store.state.userInfo.id+"}",
 						async success() {
 							// console.log("普通消息发送成功");
@@ -433,9 +444,8 @@
 			authSocket() {
 				let that=this
 				if (this.socket_status) {
-					let that=this
-					this.socketInstance.send({
-						data: "{'type':'signal','from':"+that.$store.state.userInfo.username+"}",
+					this.$socketInstance.send({
+						data: "{'type':'signal','from':"+that.$store.state.userInfo.username+","+'room:'+that.chatId+"}",
 						async success() {
 							that.isChatStatus=true
 							// console.log("认证消息发送成功");
@@ -497,10 +507,23 @@
 					if(list[i].type=='user' || list[i].type=="img"){
 						// list[i].msg.content = this.setPicSize(JSON.parse(list[i].msg));
 						console.log('消息列表',list[i].msg)
-						this.msgImgList.push(JSON.parse(list[i].msg).url);
+						if(JSON.parse(list[i].msg) instanceof Array){
+							console.log('我是数组')
+							console.log(JSON.parse(list[i].msg)[0])
+							this.msgImgList.push(JSON.parse(list[i].msg)[0]);
+						}else{
+							let url=JSON.parse(list[i].msg).url
+							if(url instanceof Array){
+								this.msgImgList.push(url[0]);
+							}else{
+								this.msgImgList.push(url);
+							}
+							
+						}
+						
 					}
 				}
-				
+				console.log(this.msgImgList)
 				this.msgList = list;
 				// console.log('当前聊天记录',this.msgList)
 				// 滚动到底部
@@ -673,11 +696,13 @@
 						let data={
 							'type': type,
 							'msg':content.text,
-							'target':this.houseId,
+							'target':this.$store.state.userInfo.id,
 							'face':this.$store.state.userInfo.avatar,
-							"from":this.$store.state.userInfo.username
+							"from":this.$store.state.userInfo.username,
+							"room":this.chatId
 							}
-							this.socketInstance.send({
+							console.log(data)
+							this.$socketInstance.send({
 								data: JSON.stringify(data),
 								async success() {
 									console.log("普通消息发送成功");
@@ -686,17 +711,35 @@
 							break;
 						case 'voice':
 							let voice = JSON.stringify(content);
-							this.socketInstance.send({
-								data: "{'type':'" + type + "','msg':'" + voice + "','target':"+this.houseId+"}",
+							let data1={
+								'type': type,
+								'msg':voice,
+								'target':this.$store.state.userInfo.id,
+								'face':this.$store.state.userInfo.avatar,
+								"from":this.$store.state.userInfo.username,
+								"room":this.chatId
+								}
+							this.$socketInstance.send({
+								data: data1,
 								async success() {
 									console.log("语音发送成功");
 								},
 							});
 							break;
 						case 'img':
+						console.log(content)
 							let img = JSON.stringify(content);
-							this.socketInstance.send({
-								data: "{'type':'" + type + "','msg':'" + img + "','target':"+this.houseId+"}",
+							let data2={
+								'type': type,
+								'msg':img,
+								'target':this.$store.state.userInfo.id,
+								'face':this.$store.state.userInfo.avatar,
+								"from":this.$store.state.userInfo.username,
+								"room":this.chatId
+								}
+								console.log(data2)
+							this.$socketInstance.send({
+								data:data2 ,
 								async success() {
 									console.log("图片发送成功");
 								},
@@ -712,11 +755,9 @@
 				console.log('消息',data)
 				let hasCur=false
 				if(data.id){
-					console.log(this.chatList.length)
+					console.log(this.chatList)
 					this.chatList.forEach(item=>{
-						console.log(item)
-						console.log(data.target)
-						if(item.houseId==data.target){
+						if(item.room==data.room){
 							hasCur=true
 							let date=new Date(item.datetime)
 							let y=date.getFullYear()
@@ -745,7 +786,7 @@
 			addVoiceMsg(data){
 				if(data.id){
 					this.chatList.forEach(item=>{
-						if(item.houseId==data.target){
+						if(item.data[0].id==data.target){
 							let date=new Date(item.datetime)
 							let y=date.getFullYear()
 							item.data.push(data)
@@ -769,7 +810,7 @@
 				// this.msgList.push(msg);
 				if(msg.id){
 					this.chatList.forEach(item=>{
-						if(item.houseId==msg.target){
+						if(item.data[0].id==msg.target){
 							let date=new Date(item.datetime)
 							let y=date.getFullYear()
 							item.data.push(msg)
@@ -801,11 +842,22 @@
 			// 预览图片
 			showPic(msg){
 				console.log('图片预览',msg)
+				let currentUrl=''
+				if(JSON.parse(msg).url instanceof Array){
+					currentUrl=JSON.parse(msg).url[0]
+				}else{
+					currentUrl=JSON.parse(msg).url
+				}
+				console.log('当前',currentUrl)
+				let imgurls=["http://81.70.163.240:9090/asiatrip/6458d276283c63fa37ba2bbe1683542645624_Screenshot_2023-05-08-17-46-17-19_b783bf344239542886fee7b48fa4b892.jpg","http://81.70.163.240:9090/asiatrip/6458d276283c63fa37ba2bbe1683542645624_Screenshot_2023-05-08-17-46-17-19_b783bf344239542886fee7b48fa4b892.jpg","http://81.70.163.240:9090/asiatrip/6458d2cf283c63fa37ba2bbf1683542734382_wx_camera_1683523799792.jpg","http://81.70.163.240:9090/asiatrip/6458d31d283c63fa37ba2bc01683542811910_wx_camera_1683523799792.jpg","http://81.70.163.240:9090/asiatrip/6458d31d283c63fa37ba2bc21683542811767_Screenshot_2023-05-08-17-46-17-19_b783bf344239542886fee7b48fa4b892.jpg","http://81.70.163.240:9090/asiatrip/6458d31d283c63fa37ba2bc11683542811953_Screenshot_2023-05-08-08-41-04-56_2332cb9b27b851b548ba47a91682926c.jpg","http://81.70.163.240:9090/asiatrip/6458d3a0283c63fa37ba2bc31683542943301_IMG_20230507_173411000.jpg","http://81.70.163.240:9090/asiatrip/6458d3ef283c63fa37ba2bc41683543022196_IMG_20230507_172940360.jpg","http://81.70.163.240:9090/asiatrip/6458d3f4283c63fa37ba2bc51683543027682_Screenshot_2023-05-08-17-46-17-19_b783bf344239542886fee7b48fa4b892.jpg","file:///storage/emulated/0/Android/data/io.dcloud.HBuilder/apps/HBuilder/doc/uniapp_temp/compressed/1683543233873_Screenshot_2023-05-08-17-46-17-19_b783bf344239542886fee7b48fa4b892.jpg","file:///storage/emulated/0/Android/data/io.dcloud.HBuilder/apps/HBuilder/doc/uniapp_temp/compressed/1683543260701_Screenshot_2023-05-08-08-41-04-56_2332cb9b27b851b548ba47a91682926c.jpg","file:///storage/emulated/0/Android/data/io.dcloud.HBuilder/apps/HBuilder/doc/uniapp_temp/compressed/1683543774106_Screenshot_2023-05-08-17-46-17-19_b783bf344239542886fee7b48fa4b892.jpg","file:///storage/emulated/0/Android/data/io.dcloud.HBuilder/apps/HBuilder/doc/uniapp_temp/compressed/1683543822767_Screenshot_2023-05-08-17-46-17-19_b783bf344239542886fee7b48fa4b892.jpg","http://81.70.163.240:9090/asiatrip/6458da26283c63fa37ba2bcd1683544612738_Screenshot_2023-05-08-17-46-17-19_b783bf344239542886fee7b48fa4b892.jpg","http://81.70.163.240:9090/asiatrip/6458da5a283c63fa37ba2bce1683544665705_Screenshot_2023-05-08-17-46-17-19_b783bf344239542886fee7b48fa4b892.jpg"]
+				imgurls.push(currentUrl)
 				uni.previewImage({
 					indicator:"none",
-					current:JSON.parse(msg).url,
-					urls: this.msgImgList[0]
+					current:currentUrl,
+					urls: imgurls
 				});
+				
+				console.log(this.msgImgList[0])
 				console.log(this.msgImgList)
 			},
 			// 播放语音

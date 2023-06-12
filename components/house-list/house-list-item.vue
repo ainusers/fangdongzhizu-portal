@@ -221,9 +221,9 @@
 				<!-- 租房类型，两室一厅（配比），大小，楼层 -->
 				<view class="er_house_des">
 					<text v-if="item.homeType">{{item.homeType}}</text>
+					<text v-if="item.rentalHouse">{{item.rentalHouse}}</text>
 					<text v-if="item.layout">{{ item.size }}m² </text>
 					<text v-if="item.layout">{{ item.floor }}层</text>
-					<text v-if="item.orientation">{{ item.orientation }}</text>
 				</view>
 				<!-- 地理位置：距离昌平线沙河地铁站1020米 -->
 				<view class="er_house_tag_info f_r_s">

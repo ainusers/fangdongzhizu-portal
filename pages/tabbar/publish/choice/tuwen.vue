@@ -208,7 +208,7 @@
 					});
 					return;
 				}
-				uni.showLoading({title:'发布中'});
+				uni.showLoading({title:'发布中',mask:true,});
 				// 获取位置信息
 				// #ifdef APP-PLUS
 				let location = await this.getLocation();

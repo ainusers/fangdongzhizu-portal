@@ -4,6 +4,7 @@ import App from './App.vue'
 // 挂载Vuex
 import store from './store';  
 Vue.prototype.$store = store;
+import './utils/request/createWebsocket.js'
 
 // config配置文件
 import config from './utils/request/config.js';  
