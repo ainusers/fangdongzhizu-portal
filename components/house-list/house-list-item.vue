@@ -221,7 +221,7 @@
 				<!-- 租房类型，两室一厅（配比），大小，楼层 -->
 				<view class="er_house_des">
 					<text v-if="item.homeType">{{item.homeType}}</text>
-					<text v-if="item.rentalHouse">{{item.rentalHouse}}</text>
+					<text v-if="item.rentalHouse">{{item.roomType.split('-')[1]}}</text>
 					<text v-if="item.layout">{{ item.size }}m² </text>
 					<text v-if="item.layout">{{ item.floor }}层</text>
 				</view>

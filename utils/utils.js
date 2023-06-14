@@ -2,7 +2,7 @@ import store from '@/store/index.js';
 import {get,post} from '@/utils/request/request.js'
 import request from './request/request.js'
 //获取本地存储中的数据
-const initKey = ['token', 'userInfo', 'houseInfo', 'communityInfo', 'ThreeInfo'] //防止刷新vuex丢失数据 
+const initKey = ['token', 'userInfo', 'houseInfo', 'communityInfo', 'ThreeInfo','chatList','currentChatList','otherName','otherAvtar'] //防止刷新vuex丢失数据 
 const getStoreData = function(key) {
 	uni.getStorage({
 		key: key,
@@ -162,12 +162,19 @@ const tranfTime = function(autoTime) {
 		return hours + '小时前' 
 	}
 }
-//获取userid 信息
-const getuserInfo = function(userId) {
+//根据userid获取userid 信息
+const getuserInfo = function(userId,type) {
+	let url='/zf/v1/user/id'
+	let data={userId: userId}
+	if(type){
+		url='/zf/v1/user/name' //根据用户名查询信息
+		data={
+			username:userId
+		}
+	}
 	return new Promise((resolve, reject) => {
-		request.get('/zf/v1/user/id', {
-			userId: userId
-		}, true).then(res => {
+		
+		request.get(url,data, true).then(res => {
 			resolve(res)
 		})
 	})

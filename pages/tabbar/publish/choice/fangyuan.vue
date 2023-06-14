@@ -1749,6 +1749,7 @@ import { attachUpload ,htmlEncode,compressImg} from '../../../../utils/utils';
 									imagesHouseArr=	this.houseModel.houseImageList
 						let params={
 									 userId:this.userInfo.id,
+									 username:this.userInfo.username,
 									 imgUrl:imagesHouseArr.toString(), //房源图片
 									 condition:imagesNatureArr.toString(),//资质图片
 									 publishType:this.houseModel.publishType, //1 个人转租  2.房东直租  3.个人换租
@@ -1763,7 +1764,7 @@ import { attachUpload ,htmlEncode,compressImg} from '../../../../utils/utils';
 									 floor:this.houseModel.floor,
 									 // distanceSubway:'距离西二旗地铁站600米',
 									 // subway:'西二旗',
-									 rentalHouse:this.houseModel.roomType,
+									 // rentalHouse:this.houseModel.roomType,
 									 payType:this.houseModel.payType,
 									 heatType:this.houseModel.heatType, //供暖方式
 									 hasElevator:this.houseModel.hasElevatorStr,

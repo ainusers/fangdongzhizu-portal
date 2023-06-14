@@ -13,8 +13,61 @@ const store = new Vuex.Store({
 		currentCity:'北京市',//当前城市
 		ThreeInfo:{},
 		isWx:false, //是否是微信授权
+		chatList:[],//聊天记录
+		currentChatList:[],//当前聊天记录
+		isChatStatus:false,//当前聊天连接的状态是否成功 给服务发送消息验证
+		socket_status:false,//当前socket 是否打开
+		otherName:'',
+		otherAvtar:''
 	},
 	mutations: {
+		otherAvtar(state,obj){
+			state.otherAvtar=obj
+			uni.setStorage({
+				key:'otherAvtar',
+				data:obj
+			})
+		},
+		otherName(state,obj){
+			state.otherName=obj
+			uni.setStorage({
+				key:'otherName',
+				data:obj
+			})
+		},
+		currentChatList(state,obj){
+			state.currentChatList=obj
+			uni.setStorage({
+				key:'currentChatList',
+				data:obj
+			})
+		},
+		socket_status(state,obj){
+			state.socket_status=obj
+			uni.setStorage({
+				key:'socket_status',
+				data:obj
+			})
+			
+		},
+		isChatStatus(state,obj){
+			if(obj){
+				state.isChatStatus=obj
+				uni.setStorage({
+					key:'isChatStatus',
+					data:obj
+				})
+			}
+		},
+		chatList(state,obj){
+			if(obj){
+				state.chatList=obj
+				uni.setStorage({
+					key:'chatList',
+					data:obj
+				})
+			}
+		},
 		userInfo(state,obj){
 			if(obj){
 				state.userInfo=obj
@@ -92,6 +145,12 @@ const store = new Vuex.Store({
 		},
 		WXInfo:state=>{
 			return state.WXInfo
+		},
+		userInfo:state=>{
+			return state.userInfo
+		},
+		chatList:state=>{
+			return state.chatList
 		}
 	}
 })

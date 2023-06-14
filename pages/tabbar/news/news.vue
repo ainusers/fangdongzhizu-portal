@@ -2,7 +2,7 @@
 	<view class="container" :class="{'active':active}">
 		<u-cell-group v-if="InfoList.length>0">
 			<block v-for="(item,index) in InfoList" :key="index">
-				<u-cell-item :icon="item.data[item.data.length-1].otherAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.data[0].from" :label='item.data[item.data.length-1].msg' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="item.data[0].datetime" @click="goInfo(item)" v-if="item.data[0]" ></u-cell-item>
+				<u-cell-item :icon="item.data[item.data.length-1].otherAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.data[0].from" :label='item.data[item.data.length-1].typename' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="item.data[0].datetime" @click="goInfo(item)" v-if="item.data[0]" ></u-cell-item>
 			</block>
 		</u-cell-group>
 		<view v-else class="noData">
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+	let that=''
 	import {isLoginCheck} from '../../../utils/utils.js'
 	export default {
 		data() {
@@ -41,7 +42,7 @@
 		},
 		onLoad() {
 			console.log('news')
-			
+			that=this
 			// uni.getStorage({
 			// 	key:'chatList',
 			// 	success(res){
@@ -50,28 +51,46 @@
 			// })
 			// console.log(this.InfoList[0].data[0].msg)
 		},
+		watch:{
+			"$store.state.chatList":{
+				handler:(val,oldval)=>{
+					let tempVal=JSON.parse(JSON.stringify(val))
+					console.log(tempVal)
+					that.InfoList=tempVal		
+				},
+				deep:true
+			}
+		},
 		onShow() {
-			// isLoginCheck()
 			console.log('newshow')
 			var that=this
 			this.active = true;
-			uni.getStorage({
-				key:'chatList',
-				success(res){
-					that.InfoList=JSON.parse(res.data).reverse()
-					that.InfoList.forEach(item=>{
-						item.data.forEach(res=>{	
-							if(res.msg.indexOf("url")!=-1&&res.msg.indexOf('length')==-1){
-								res.msg='[图片]'
-							}else if(res.msg.indexOf("url")!=-1&&res.msg.indexOf('length')!=-1){
-								res.msg='[语音]'
-							}else if(res.msg.indexOf('alt')!=-1){
-								res.msg='[表情]'
-							}
-						})
-					})
-				}
-			})
+			let chatList=this.$store.state.chatList 
+			console.log(chatList)
+			if(chatList.length==0){
+				uni.getStorage({
+					key:'chatList',
+					success: (res) => {
+						chatList=res.data
+					}
+				})
+			}
+			if(!Array.isArray(chatList)){
+				chatList=JSON.parse(chatList)
+			}
+			console.log(chatList)
+			that.InfoList=chatList.reverse()
+			// that.InfoList.forEach(item=>{
+			// 	item.data.forEach(res=>{	
+			// 		if(res.msg.indexOf("url")!=-1&&res.msg.indexOf('length')==-1){
+			// 			res.msg='[图片]'
+			// 		}else if(res.msg.indexOf("url")!=-1&&res.msg.indexOf('length')!=-1){
+			// 			res.msg='[语音]'
+			// 		}else if(res.msg.indexOf('alt')!=-1){
+			// 			res.msg='[表情]'
+			// 		}
+			// 	})
+			// })
 		},
 			
 		onPullDownRefresh(){
@@ -87,8 +106,8 @@
 			goInfo(info){
 				console.log(info)
 				 uni.navigateTo({
-				            //保留当前页面，跳转到应用内的某个页面
-				            url: '/pages/tabbar/community/tools/news?houseId='+info.houseId
+				 //            //保留当前页面，跳转到应用内的某个页面
+				            url: '/pages/tabbar/community/tools/news?userId='+info.data[0].target+'&chatId='+info.room+'&isNewsList=1'
 				        })
 			},
 		}
