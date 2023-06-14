@@ -13,10 +13,8 @@ let socketInstance=''
 			});
 			// 打开socket链接
 			socketInstance.onOpen((res) => {
-				console.log('打开链接')
 				// 发送认证消息
 					store.commit('socket_status',true)
-					console.log(store.state.socket_status)
 				setTimeout(function() {
 					authSocket();
 				}, 10);
@@ -29,10 +27,8 @@ let socketInstance=''
 						initStorestate()
 					if(!store.state.otherName|| !store.state.otherAvtar){
 						getuserInfo(data.from,1).then(res=>{
-							console.log('对方的信息',res)
 							store.commit('otherName',res.nickname)
 							store.commit('otherAvtar',res.avatar)
-							console.log(store.state.otherName)
 						})
 					}
 					
@@ -79,14 +75,10 @@ function addTextMsg(data){
 	console.log('添加文本',data)
 	let isChat=false
 	let chatList=store.state.chatList
-	console.log(chatList)
-	console.log(typeof chatList)
 	if(Array.isArray(chatList)){
 		chatList=chatList
-		console.log('zheli')
 	}else{
 		chatList=JSON.parse(chatList)
-		console.log('这里1')
 	}
 	chatList.forEach(item=>{
 		if(item.room==data.room){
@@ -109,9 +101,7 @@ function addTextMsg(data){
 		chatList.push({room:data.room,data:[data]})
 	}
 	store.commit('chatList',chatList)
-	console.log(chatList)
-		
-	
+	store.commit('lock',0)
 }	
 function addImgMsg(msg){
 	let chatList=store.state.chatList
@@ -131,6 +121,7 @@ function addImgMsg(msg){
 					chatList.push({room:msg.room,data:[msg]})
 				}
 				store.commit('chatList',chatList)
+				store.commit('lock',0)
 			}
 function addVoiceMsg(data){
 	let chatList=store.state.chatList
@@ -153,7 +144,7 @@ function addVoiceMsg(data){
 					chatList.push({room:data.room,data:[data]})
 				}
 				store.commit('chatList',chatList)
-				console.log(chatList)
+				store.commit('lock',0)
 			}
 			// 处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
 function setPicSize(content){

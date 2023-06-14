@@ -224,6 +224,7 @@
 				currentUserId:'' ,//当前userid
 				island:false, //当前是否是房东
 				isNewsList:'0',//从消息列表过来的
+				lock:0
 			};
 		},
 		onLoad(option) {
@@ -280,18 +281,22 @@
 		watch:{
 			"$store.state.chatList":{
 				handler:(val,oldval)=>{
-					let tempVal=JSON.parse(JSON.stringify(val))
-					that.chatList=tempVal
-					let isChat=false
-					tempVal.forEach(item=>{
-						if(item.room==that.chatId){
-							isChat=true
-							console.log(item.data)
-							that.msgList= item.data
-							console.log(that.msgList)
-						}
-					})
-					that.getMsgList()
+					that.$store.state.lock+=1
+					if(that.$store.state.lock==1){
+						let tempVal=JSON.parse(JSON.stringify(val))
+						that.chatList=tempVal
+						let isChat=false
+						tempVal.forEach(item=>{
+							if(item.room==that.chatId){
+								isChat=true
+								console.log(item.data)
+								that.msgList= item.data
+								console.log(that.msgList)
+							}
+						})
+						that.getMsgList()
+					}
+
 				
 				},
 				deep:true
@@ -301,8 +306,19 @@
 			//聊天记录初始化
 			chatSaveLocal(){
 				console.log( '所有的聊天记录',this.msgList)
+				if(this.msgList.length==0){
+					this.chatList=this.$store.state.chatList
+					this.chatList.forEach(item=>{
+						if(item.room==that.chatId){
+							console.log(item.data)
+							this.msgList= item.data
+							console.log(that.msgList)
+						}
+					})
+				}
 				if(this.isNewsList!=1){
 					if(!Array.isArray(this.chatList)){
+						console.log('初始化')
 						this.chatList=JSON.parse(this.chatList)
 					}
 					if(this.msgList.length<20){
@@ -576,6 +592,7 @@
 				let targetUserName=this.targetUserName
 				if (this.$store.state.socket_status) {
 					let tempTarget=this.island?'18510303268':'15097454227'
+					console.log(tempTarget)
 					switch (type) {
 						case 'text':
 						let data={

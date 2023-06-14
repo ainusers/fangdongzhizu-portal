@@ -18,9 +18,17 @@ const store = new Vuex.Store({
 		isChatStatus:false,//当前聊天连接的状态是否成功 给服务发送消息验证
 		socket_status:false,//当前socket 是否打开
 		otherName:'',
-		otherAvtar:''
+		otherAvtar:'',
+		lock:0,//让watch监听只走一次
 	},
 	mutations: {
+		lock(state,obj){
+			state.lock=obj
+			uni.setStorage({
+				key:'lock',
+				data:obj
+			})
+		},
 		otherAvtar(state,obj){
 			state.otherAvtar=obj
 			uni.setStorage({

@@ -56,7 +56,8 @@
 				handler:(val,oldval)=>{
 					let tempVal=JSON.parse(JSON.stringify(val))
 					console.log(tempVal)
-					that.InfoList=tempVal		
+					that.InfoList=tempVal.reverse()	
+					console.log(that.InfoList)
 				},
 				deep:true
 			}
@@ -65,7 +66,7 @@
 			console.log('newshow')
 			var that=this
 			this.active = true;
-			let chatList=this.$store.state.chatList 
+			let chatList=JSON.parse(JSON.stringify(this.$store.state.chatList ))
 			console.log(chatList)
 			if(chatList.length==0){
 				uni.getStorage({
@@ -78,7 +79,6 @@
 			if(!Array.isArray(chatList)){
 				chatList=JSON.parse(chatList)
 			}
-			console.log(chatList)
 			that.InfoList=chatList.reverse()
 			// that.InfoList.forEach(item=>{
 			// 	item.data.forEach(res=>{	
