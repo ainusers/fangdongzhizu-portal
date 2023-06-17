@@ -1,25 +1,24 @@
 <script>
-import {initStorestate} from '@/utils/utils.js'
+import {initStorestate,setBarBadgeNum} from '@/utils/utils.js'
 export default {
 	onLaunch: function() {
 		console.log('App Launch');
-
-		setTimeout(() => {
-		// 显示消息多少
-			uni.setTabBarBadge({
-				index: 3,
-				text: '31'
-			});
-		// 显示右上角的红点
-			// uni.showTabBarRedDot({
-			// 	index: 3
-			// });
-		}, 1000);
-		initStorestate()
-		
+	
+				// initStorestate()
 	},
 	onShow: function() {
 		initStorestate()
+		let count=this.$store.state.unReadCount
+		if(count>0){
+			setBarBadgeNum(count)
+		}else{
+			uni.removeTabBarBadge({
+				index:3
+			})
+		}
+		
+			
+
 	},
 	onHide: function() {
 		console.log('App Hide');

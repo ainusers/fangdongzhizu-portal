@@ -2,7 +2,7 @@ import store from '@/store/index.js';
 import {get,post} from '@/utils/request/request.js'
 import request from './request/request.js'
 //获取本地存储中的数据
-const initKey = ['token', 'userInfo', 'houseInfo', 'communityInfo', 'ThreeInfo','chatList','currentChatList','otherName','otherAvtar'] //防止刷新vuex丢失数据 
+const initKey = ['token', 'userInfo', 'houseInfo', 'communityInfo', 'ThreeInfo','chatList','currentChatList','otherName','otherAvtar','unReadCount'] //防止刷新vuex丢失数据 
 const getStoreData = function(key) {
 	uni.getStorage({
 		key: key,
@@ -15,6 +15,18 @@ const initStorestate = function() {
 	initKey.forEach(item => {
 		getStoreData(item)
 	})
+}
+const setBarBadgeNum=function(num){
+	uni.setTabBarBadge({
+		index: 3,
+		text: num+'',
+		success: (res) => {
+			console.log('成功')
+		},
+		fail:(err)=>{
+			console.log(err)
+		}
+	});
 }
 // 批量上传接口
 const attachUpload = function(imageList) {
@@ -189,5 +201,6 @@ export {
 	isLoginCheck,
 	tranfTime,
 	getuserInfo,
-	compressImg
+	compressImg,
+	setBarBadgeNum
 }

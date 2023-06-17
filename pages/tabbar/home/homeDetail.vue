@@ -507,7 +507,7 @@
 				params['chat']=1
 				var chatId = this.$store.state.userInfo.id+''+this.houseId
 				uni.navigateTo({
-					url:'/pages/tabbar/community/tools/news?houseId='+this.houseId+'&userId='+this.detailData.userId+'&chatId='+chatId
+					url:'/pages/tabbar/community/tools/news?houseId='+this.houseId+'&userId='+this.detailData.username+'&chatId='+chatId
 				})
 				break;
 			}

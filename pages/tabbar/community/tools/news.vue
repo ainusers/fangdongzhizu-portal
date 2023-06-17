@@ -14,8 +14,8 @@
 <template>
 	<view class="news">
 		<view class="content" @touchstart="hideDrawer">
-			<!-- @scrolltoupper="loadHistory"  获取历史记录的 -->
-			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView"  upper-threshold="50">
+			<!--   获取历史记录的 -->
+			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView"  upper-threshold="50" @scrolltoupper="loadHistory">
 				<!-- 加载历史数据的滚动动画 -->
 				<view class="loading" v-if="!isHistoryLoading">
 					<view class="spinner">
@@ -68,12 +68,12 @@
 						<view class="other" v-else>
 							<!-- 左-头像 -->
 							<view class="left">
-								<image :src="$store.state.otherAvtar"></image>
+								<image :src="otherAvatar"></image>
 							</view>
 							<!-- 右-用户名称-时间-消息 -->
 							<view class="right">
 								<view class="username">
-									<view class="name">{{$store.state.otherName}}</view> <view class="time">{{row.datetime}}</view>
+									<view class="name">{{otherName}}</view> <view class="time">{{row.datetime}}</view>
 								</view>
 								<!-- 文字消息 -->
 								<view v-if="row.type=='text'" class="bubble">
@@ -129,7 +129,7 @@
 				<view class="voice-mode" :class="[isVoice?'':'hidden',recording?'recording':'']" @touchstart="voiceBegin" @touchmove.stop.prevent="voiceIng" @touchend="voiceEnd" @touchcancel="voiceCancel">{{voiceTis}}</view>
 				<view class="text-mode"  :class="isVoice?'hidden':''">
 					<view class="box">
-						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus" cursor-spacing="20"/>
+						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus" cursor-spacing="20" ref="textA" :focus="isFocus"/>
 					</view>
 					<view class="em" @tap="chooseEmoji">
 						<view class="icon biaoqing"></view>
@@ -156,7 +156,8 @@
 
 <script>
 	let that=''
-	import {getPlatform,getuserInfo,initStorestate} from '../../../../utils/utils.js'
+import store from '../../../../store/index.js';
+	import {getPlatform,initStorestate,getStoreData} from '../../../../utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -222,9 +223,12 @@
 				chatId:'', //聊天室id
 				targetUserId:'',//目标userid
 				currentUserId:'' ,//当前userid
-				island:false, //当前是否是房东
 				isNewsList:'0',//从消息列表过来的
-				lock:0
+				lock:0,
+				isFocus:false,
+				emojLen:0,
+				historyArr:[],
+				historyIndex:0
 			};
 		},
 		onLoad(option) {
@@ -234,12 +238,10 @@
 			this.chatId=option.chatId
 			this.isNewsList=option.isNewsList
 			this.currentUserId=this.$store.state.userInfo.id
-			this.targetUserName=option.userId //当前用户名
+			this.targetUserName=option.userId //发送目标用户名
 			this.currentName=this.$store.state.userInfo.username
 			this.myAvatar=this.$store.state.userInfo.avatar 
-			if(this.targetUserName==this.currentName){
-				this.island=true
-			}
+			this.$store.commit('currentNameChat',this.targetUserName)
 			//处理聊天记录
 			setTimeout(()=>{
 				this.chatSaveLocal()
@@ -275,6 +277,7 @@
 		},
 		onUnload(){
 			this.chatList=[]//所有聊天记录的数据
+			this.$store.commit('currentNameChat','')
 			//关闭连接
 			// this.closeSocket()
 		},
@@ -289,15 +292,34 @@
 						tempVal.forEach(item=>{
 							if(item.room==that.chatId){
 								isChat=true
-								console.log(item.data)
-								that.msgList= item.data
-								console.log(that.msgList)
+							if(item.data.length>30){
+								let temp=JSON.parse(JSON.stringify(item.data))
+								that.historyArr=item.data.slice(0,temp.length-29)
+								console.log(that.historyArr)
+								that.msgList=item.data.slice(item.data.length-30)
+								that.isHistoryLoading=false
+							}else{
+								that.msgList= item.data	
+								that.isHistoryLoading=true
+							}
 							}
 						})
+						that.$nextTick(function() {
+							console.log('可以滚动一下吗')
+							//进入页面滚动到底部
+							that.scrollTop = 9999;
+							let chatL=tempVal[tempVal.length-1].data
+							let chatLen=chatL.length-1
+							console.log(chatL[chatLen])
+							that.scrollToView='msg'+chatL[chatLen].id
+							that.scrollAnimation = true;
+							that.$nextTick(function() {
+								
+							});
+							
+						});
 						that.getMsgList()
 					}
-
-				
 				},
 				deep:true
 			}
@@ -305,35 +327,29 @@
 		methods:{
 			//聊天记录初始化
 			chatSaveLocal(){
-				console.log( '所有的聊天记录',this.msgList)
 				if(this.msgList.length==0){
 					this.chatList=this.$store.state.chatList
 					this.chatList.forEach(item=>{
 						if(item.room==that.chatId){
-							console.log(item.data)
-							this.msgList= item.data
+							if(item.data.length>30){
+								that.msgList=item.data.slice(item.data.length-30)
+								this.isHistoryLoading=false
+							}else{
+								this.msgList= item.data	
+								this.isHistoryLoading=true
+							}
+							this.otherName=item.fromName
+							this.otherAvatar=item.fromAvatar
 							console.log(that.msgList)
 						}
 					})
 				}
 				if(this.isNewsList!=1){
 					if(!Array.isArray(this.chatList)){
-						console.log('初始化')
 						this.chatList=JSON.parse(this.chatList)
-					}
-					if(this.msgList.length<20){
-						this.isHistoryLoading=true
 					}
 				}
 				this.getMsgList()
-			},
-			getHead(username){
-				getuserInfo(username,1).then(res=>{
-						if(res.id){
-							this.otherName=res.nickname
-							this.otherAvatar=res.avatar
-						}
-				})
 			},
 			// 创建websocket连接方法
 			initSocket() {
@@ -381,46 +397,38 @@
 				}
 				this.isHistoryLoading = true; //参数作为进入请求标识，防止重复请求
 				this.scrollAnimation = false; //关闭滑动动画
-				//本地模拟请求历史记录效果
-				setTimeout(()=>{
 					// 消息列表
-				let list = [
-					{"auth":true,"datetime":"1657357976767","from":"zhangjun8","id":826627537346224360,"msg":"大家聊的挺好呀","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-					{"auth":true,"datetime":"1654355976768","from":"zhangjun8","id":826627537346224360,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-					{"auth":true,"datetime":"1654355976768","from":"zhangjun8","id":826627537346224360,"msg":"你们都是哪儿的","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-					{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-					{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-					{"auth":true,"datetime":"1657358976769","from":"zhangjun8","id":826627537346224360,"msg":"北京","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-					{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"天津","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-					{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"河北","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-					{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"西安","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-					{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"河南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"},
-					{"auth":true,"datetime":"1657355976770","from":"zhangjun8","id":826627537346224360,"msg":"海南","status":"true","target":"all","type":"text",face:"/static/chat/head/face_8.jpg"}
-				]
-					// 获取消息中的图片,并处理显示尺寸
-					for(let i=0;i<list.length;i++){
-						if(list[i].type=='user'&&list[i].type=="img"){
-							list[i].msg.content = this.setPicSize(list[i].msg.content);
-							this.msgImgList.unshift(list[i].msg.content.url);
-						}
-						list[i].id = Math.floor(Math.random()*1000+1);
-						this.msgList.unshift(list[i]);
+				let list =this.historyArr
+				let len=list.length
+				let startIndex=''
+					startIndex=len-29
+				let endIndex=len
+				this.isHistoryLoading = false; //可以在加载了
+				if(list.length<=30){
+					startIndex=0
+					this.isHistoryLoading = true; //不可以在加载了
+				}
+				// 获取消息中的图片,并处理显示尺寸
+				for(let i=endIndex-1;i>=startIndex ;i--){
+					if(list[i].type=='user'&&list[i].type=="img"){
+						list[i].msg.content = this.setPicSize(list[i].msg.content);
+						this.msgImgList.unshift(list[i].msg.content.url);
 					}
-					let Viewid = list[0].id; //记住第一个信息ID
-					//这段代码很重要，不然每次加载历史数据都会跳到顶部
+					this.msgList.unshift(list[i]);
+				}
+				let Viewid = list[startIndex].id; //记住第一个信息ID
+				list.splice(startIndex-1)
+				//这段代码很重要，不然每次加载历史数据都会跳到顶部
+				this.$nextTick(function() {
+					this.scrollToView = 'msg' + Viewid; // 跳转上次的第一行信息位置
 					this.$nextTick(function() {
-						this.scrollToView = 'msg' + Viewid; // 跳转上次的第一行信息位置
-						this.$nextTick(function() {
-							this.scrollAnimation = true; // 恢复滚动动画
-						});
+						this.scrollAnimation = true; // 恢复滚动动画
 					});
-					this.isHistoryLoading = false;
-				},1000)
+				});
 			},
 			// 加载初始页面消息
 			getMsgList(){
 				// 消息列表
-			// console.log('消息列表',list)
 				// 获取消息中的图片,并处理显示尺寸
 				let list=this.msgList
 				for(let i=0;i<list.length;i++){
@@ -539,8 +547,26 @@
 			},
 			// 添加表情
 			addEmoji(em){
-				console.log(em)
-				this.textMsg=em.alt;
+				this.isFocus=true
+				this.$nextTick(()=>{
+					uni.getSelectedTextRange({
+						success:res=>{
+							console.log(res.start,res.end)
+							this.emojLen=res.start
+						}
+					})
+				})
+				let temp=this.textMsg.split('')
+				if(temp.length>0){
+					setTimeout(()=>{
+						temp[this.emojLen-1]+=em.alt;
+						this.textMsg=temp.join('')
+					},0)
+				}else{
+					this.textMsg=em.alt
+				}
+				
+				
 			},
 			// 获取焦点，如果不是选表情ing,则关闭抽屉
 			textareaFocus(){
@@ -549,7 +575,8 @@
 				}
 			},
 			// 发送文字消息
-			sendText(){
+			async sendText(){
+				getStoreData('isChatStatus')
 				if(this.$store.state.isChatStatus){
 					this.hideDrawer(); // 隐藏抽屉
 					if(!this.textMsg){
@@ -560,15 +587,14 @@
 					this.sendMsg(msg,'text');
 					this.textMsg = ''; // 清空输入框
 				}else{
-					this.initSocket()
-					this.sendText()
+					await this.authSocket();
+					 this.sendText()
 				}
 				
 			},
 			// 替换表情符号为图片
 			replaceEmoji(str){
 				let replacedStr = str.replace(/\[([^(\]|\[)]*)\]/g,(item, index)=>{
-			
 					for(let i=0;i<this.emojiList.length;i++){
 						let row = this.emojiList[i];
 						for(let j=0;j<row.length;j++){
@@ -576,14 +602,16 @@
 							if(EM.alt==item){
 								//在线表情路径，图文混排必须使用网络路径，请上传一份表情到你的服务器后再替换此路径 
 								//比如你上传服务器后，你的100.gif路径为https://www.xxx.com/emoji/100.gif 则替换onlinePath填写为https://www.xxx.com/emoji/
-								let onlinePath = 'https://s2.ax1x.com/2019/04/12/'
-								let imgstr = '<img src="'+onlinePath+this.onlineEmoji[EM.url]+'" alt="'+str+'">';
+								// let onlinePath = 'https://s2.ax1x.com/2019/04/12/'
+								// console.log(onlinePath+this.onlineEmoji[EM.url])
+								// let imgstr = '<img src="'+onlinePath+this.onlineEmoji[EM.url]+'" alt="'+str+'">';
+								let onlinePath = 'http://81.70.163.240:9090/emoji/'
+								let imgstr = '<img src="'+onlinePath+EM.url+'" alt="'+str+'">';
 								return imgstr;
 							}
 						}
 					}
 				});
-				// return '<div style="display: flex;align-items: center;word-wrap:break-word;">'+replacedStr+'</div>';
 				return replacedStr
 			},
 			// 发送消息
@@ -591,14 +619,13 @@
 				// 如果socket状态正常连接，则可以发送消息
 				let targetUserName=this.targetUserName
 				if (this.$store.state.socket_status) {
-					let tempTarget=this.island?'18510303268':'15097454227'
-					console.log(tempTarget)
+					
 					switch (type) {
 						case 'text':
 						let data={
 							'type': type,
 							'msg':content.text,
-							'target':tempTarget, //this.targetUserName,
+							'target': this.targetUserName,
 							'face':this.$store.state.userInfo.avatar,
 							"from":this.currentName,
 							"room":this.chatId
@@ -615,7 +642,7 @@
 							let data1={
 								'type': type,
 								'msg':voice,
-								'target':tempTarget,
+								'target':this.targetUserName,
 								'face':this.$store.state.userInfo.avatar,
 								"from":this.currentName,
 								"room":this.chatId
@@ -632,11 +659,12 @@
 							let data2={
 								'type': type,
 								'msg':img,
-								'target':tempTarget,
+								'target':this.targetUserName,
 								'face':this.$store.state.userInfo.avatar,
 								"from":this.currentName,
 								"room":this.chatId
 								}
+								console.log(data2)
 							this.$socketInstance.send({
 								data: JSON.stringify(data2) ,
 								async success() {
@@ -648,50 +676,6 @@
 					}
 				}
 			},
-			// 添加语音消息到列表
-			// addVoiceMsg(data){
-			// 	if(data.id){
-			// 		this.chatList.forEach(item=>{
-			// 			if(item.data[0].id==data.target){
-			// 				let date=new Date(item.datetime)
-			// 				let y=date.getFullYear()
-			// 				item.data.push(data)
-			// 			}
-			// 		})
-			// 		uni.setStorage({
-			// 			key:'chatList',
-			// 			data:JSON.stringify(this.chatList)
-			// 		})
-			// 	}
-			// 	//从来没有聊过天
-			// 	if(!this.isChat){
-			// 		 this.msgList.push(data);
-			// 	}
-			// },
-			// 添加图片消息到列表
-			// addImgMsg(msg){
-			// 	console.log('添加图片',msg)
-			// 	msg.msg = this.setPicSize(msg.msg);
-			// 	this.msgImgList.push(JSON.parse(msg.msg).url);
-			// 	// this.msgList.push(msg);
-			// 	if(msg.id){
-			// 		this.chatList.forEach(item=>{
-			// 			if(item.room==this.chatId){
-			// 				let date=new Date(item.datetime)
-			// 				let y=date.getFullYear()
-			// 				item.data.push(msg)
-			// 			}	
-			// 		})
-			// 		uni.setStorage({
-			// 			key:'chatList',
-			// 			data:JSON.stringify(this.chatList)
-			// 		})
-			// 	}
-			// 	//从来没有聊过天
-			// 	if(!this.isChat){
-			// 		 this.msgList.push(msg);
-			// 	}
-			// },
 			// 添加系统文字消息到列表
 			addSystemTextMsg(msg){
 				this.msgList.push(msg);

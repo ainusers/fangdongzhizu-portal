@@ -20,8 +20,24 @@ const store = new Vuex.Store({
 		otherName:'',
 		otherAvtar:'',
 		lock:0,//让watch监听只走一次
+		currentNameChat:'',//当前和谁正在聊天
+		unReadCount:0,//未读消息总数
 	},
 	mutations: {
+		currentNameChat(state,obj){
+			state.currentNameChat=obj
+			uni.setStorage({
+				key:'currentNameChat',
+				data:obj
+			})
+		},
+		unReadCount(state,obj){
+			state.unReadCount=obj
+			uni.setStorage({
+				key:'unReadCount',
+				data:obj
+			})
+		},
 		lock(state,obj){
 			state.lock=obj
 			uni.setStorage({
@@ -68,6 +84,7 @@ const store = new Vuex.Store({
 			}
 		},
 		chatList(state,obj){
+			console.log(obj)
 			if(obj){
 				state.chatList=obj
 				uni.setStorage({

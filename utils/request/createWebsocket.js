@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import store from '@/store/index.js';
-import {getuserInfo,initStorestate} from '@/utils/utils.js'
+import {getuserInfo,initStorestate,getStoreData,setBarBadgeNum} from '@/utils/utils.js'
+let fromName=''
 let socketInstance=''
 
  function createlink(){
@@ -22,15 +23,41 @@ let socketInstance=''
 			socketInstance.onMessage((res) => {
 				console.log("收到服务器内容：" + res.data);
 				let data = eval("(" + res.data + ")");
+				
+				//发送消息的时候需要给当前聊天记录赋值上fromname 和 fromavater  用于消息列表展示
+				let tempChatList=''
+				setTimeout(function(){
+					initStorestate()
+					tempChatList=store.state.chatList
+					tempChatList.forEach(item=>{
+						if(item.room==data.room&&!item.fromName){
+							addKey(data,item,tempChatList)
+						}	
+					})
+				},0)
+			
+				
 				// // 非自己的消息震动
 				if(data.id&&data.from!=store.state.userInfo.username&&data.msg!='ping'&& data.type!='signal'){
-						initStorestate()
-					if(!store.state.otherName|| !store.state.otherAvtar){
-						getuserInfo(data.from,1).then(res=>{
-							store.commit('otherName',res.nickname)
-							store.commit('otherAvtar',res.avatar)
-						})
-					}
+							setTimeout(function(){
+								if(tempChatList.length>0){
+									tempChatList.forEach(item=>{
+										if(item.room==data.room){
+											if(store.state.currentNameChat!=data.from){
+												console.log('++')
+												item.unReadCount+=1
+												getStoreData('unReadCount')
+												let count=store.state.unReadCount+=1
+												store.commit('unReadCount',count)
+												setBarBadgeNum(count)
+												
+											}
+										}
+									})
+										store.commit('chatList',tempChatList)
+								}	
+								
+							},0)
 					
 					uni.vibrateLong();
 				}
@@ -51,12 +78,14 @@ let socketInstance=''
 						addImgMsg(data);
 						break;
 				}
-				
-				// // 滚动到底
-				// Vue.$nextTick(function() {
-				// 	// this.scrollToView = 'msg' + data.id
-				// });
 			});
+		}
+		function addKey(data,item,tempChatList){
+			getuserInfo(data.target,1).then(res=>{
+				item.fromName=res.nickname
+				item.fromAvatar=res.avatar
+				store.commit('chatList',tempChatList)
+			})
 		}
 		//消息认证
 function authSocket(room) {
@@ -71,8 +100,14 @@ function authSocket(room) {
 			});
 		}
 	}
+function setUnreadCountAll(data){
+	if(store.state.currentNameChat!=data.fromName){
+		let count=store.state.unReadCount++
+		store.commit('unReadCount',count)
+	}
+}
 function addTextMsg(data){
-	console.log('添加文本',data)
+	console.log(data)
 	let isChat=false
 	let chatList=store.state.chatList
 	if(Array.isArray(chatList)){
@@ -83,8 +118,13 @@ function addTextMsg(data){
 	chatList.forEach(item=>{
 		if(item.room==data.room){
 			isChat=true
+			let alttext=data.msg.split('alt="')[1]
+			let typename=''
+			if(alttext){
+				typename=alttext.slice(0,alttext.length-2).split('"><img')[0]
+			} 
 			if(data.msg.indexOf('alt')!=-1){
-				data.typename='[表情]'
+				data.typename=typename
 			}else{
 				data.typename=data.msg
 			}
@@ -98,31 +138,38 @@ function addTextMsg(data){
 		}else{
 			data.typename=data.msg
 		}
-		chatList.push({room:data.room,data:[data]})
+		setUnreadCountAll(data)
+		// item.targetName=data.from
+			chatList.push({room:data.room,fromName:fromName,targetName:data.target,unReadCount:0,data:[data]})
+	}
+		store.commit('chatList',chatList)
+		store.commit('lock',0)
+}	
+function addImgMsg(msg){
+	console.log(msg)
+	let chatList=store.state.chatList
+	let isChats=false
+	msg.msg = setPicSize(msg.msg);
+	if(msg.id&&chatList.length>0){
+		chatList.forEach(item=>{
+			console.log(item.room)
+			if(item.room==msg.room){
+				isChats=true
+				let date=new Date(item.datetime)
+				let y=date.getFullYear()
+				msg.typename="[图片]"
+				item.data.push(msg)
+			}
+		})
+	}
+	if(!isChats){
+		msg.typename="[图片]"
+		setUnreadCountAll(msg)
+		chatList.push({room:msg.room,targetName:msg.target,unReadCount:0,data:[msg]})
 	}
 	store.commit('chatList',chatList)
 	store.commit('lock',0)
-}	
-function addImgMsg(msg){
-	let chatList=store.state.chatList
-				msg.msg = setPicSize(msg.msg);
-				if(msg.id&&chatList.length>0){
-					chatList.forEach(item=>{
-						if(item.room==msg.room){
-							let date=new Date(item.datetime)
-							let y=date.getFullYear()
-							msg.typename="[图片]"
-							item.data.push(msg)
-						
-						}	
-					})
-				}else{
-					msg.typename="[图片]"
-					chatList.push({room:msg.room,data:[msg]})
-				}
-				store.commit('chatList',chatList)
-				store.commit('lock',0)
-			}
+}
 function addVoiceMsg(data){
 	let chatList=store.state.chatList
 	let isChat=false
@@ -140,8 +187,9 @@ function addVoiceMsg(data){
 				}
 				//从来没有聊过天
 				if(!isChat){
+					setUnreadCountAll(data)
 					data.typename="[语音]"
-					chatList.push({room:data.room,data:[data]})
+					chatList.push({room:data.room,targetName:data.target,unReadCount:0,data:[data]})
 				}
 				store.commit('chatList',chatList)
 				store.commit('lock',0)

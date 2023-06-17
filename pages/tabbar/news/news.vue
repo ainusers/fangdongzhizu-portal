@@ -2,7 +2,9 @@
 	<view class="container" :class="{'active':active}">
 		<u-cell-group v-if="InfoList.length>0">
 			<block v-for="(item,index) in InfoList" :key="index">
-				<u-cell-item :icon="item.data[item.data.length-1].otherAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.data[0].from" :label='item.data[item.data.length-1].typename' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="item.data[0].datetime" @click="goInfo(item)" v-if="item.data[0]" ></u-cell-item>
+				<u-cell-item :icon="item.fromAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.fromName" :label='item.data[item.data.length-1].typename' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="item.data[0].datetime" @click="goInfo(item)" v-if="item.data[0]" >
+					 <u-badge :count="item.unReadCount" :absolute="true" slot="right-icon" v-if="item.unReadCount" :offset="offset"></u-badge>
+				</u-cell-item>
 			</block>
 		</u-cell-group>
 		<view v-else class="noData">
@@ -13,7 +15,7 @@
 
 <script>
 	let that=''
-	import {isLoginCheck} from '../../../utils/utils.js'
+	import {initStorestate,setBarBadgeNum} from '../../../utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -36,20 +38,13 @@
 					"font-weight":"normal"
 				},
 				InfoList:[],
-				newsmsg:''
+				newsmsg:'',
+				offset:[20,20]
 				
 			};
 		},
 		onLoad() {
-			console.log('news')
 			that=this
-			// uni.getStorage({
-			// 	key:'chatList',
-			// 	success(res){
-			// 		that.InfoList=JSON.parse(res.data).reverse()
-			// 	}
-			// })
-			// console.log(this.InfoList[0].data[0].msg)
 		},
 		watch:{
 			"$store.state.chatList":{
@@ -58,16 +53,15 @@
 					console.log(tempVal)
 					that.InfoList=tempVal.reverse()	
 					console.log(that.InfoList)
+					that.initData(that.InfoList)
 				},
 				deep:true
 			}
 		},
 		onShow() {
-			console.log('newshow')
 			var that=this
 			this.active = true;
 			let chatList=JSON.parse(JSON.stringify(this.$store.state.chatList ))
-			console.log(chatList)
 			if(chatList.length==0){
 				uni.getStorage({
 					key:'chatList',
@@ -80,17 +74,7 @@
 				chatList=JSON.parse(chatList)
 			}
 			that.InfoList=chatList.reverse()
-			// that.InfoList.forEach(item=>{
-			// 	item.data.forEach(res=>{	
-			// 		if(res.msg.indexOf("url")!=-1&&res.msg.indexOf('length')==-1){
-			// 			res.msg='[图片]'
-			// 		}else if(res.msg.indexOf("url")!=-1&&res.msg.indexOf('length')!=-1){
-			// 			res.msg='[语音]'
-			// 		}else if(res.msg.indexOf('alt')!=-1){
-			// 			res.msg='[表情]'
-			// 		}
-			// 	})
-			// })
+			this.initData(that.InfoList)
 		},
 			
 		onPullDownRefresh(){
@@ -103,11 +87,41 @@
 			this.active = false;
 		},
 		methods: {
+			initData(arr){
+				arr.forEach(item=>{
+					if(!item.fromName){
+						item.fromName=this.$store.state.userInfo.nickname
+						item.fromAvatar=this.$store.state.userInfo.avatar
+					}
+				})
+			},
 			goInfo(info){
+				initStorestate()
 				console.log(info)
+				let count=info.unReadCount
+				console.log(this.$store.state.unReadCount)
+				console.log(count)
+				let all =Number(this.$store.state.unReadCount)-count
+				this.$store.commit('unReadCount',all)
+				if(all>0){
+					setBarBadgeNum(all)
+				}else{
+					uni.removeTabBarBadge({
+						index:3
+					})
+				}
+				let chatList=this.$store.state.chatList
+				console.log(chatList)
+				for(let i=0;i<chatList.length;i++){
+					if(chatList[i].room==info.room){
+						chatList[i].unReadCount=0
+						break;
+					}
+				}
+				this.$store.commit('chatList',chatList)
 				 uni.navigateTo({
 				 //            //保留当前页面，跳转到应用内的某个页面
-				            url: '/pages/tabbar/community/tools/news?userId='+info.data[0].target+'&chatId='+info.room+'&isNewsList=1'
+				            url: '/pages/tabbar/community/tools/news?userId='+info.targetName+'&chatId='+info.room+'&isNewsList=1'
 				        })
 			},
 		}
