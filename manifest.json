@@ -1,7 +1,7 @@
 {
-    "name" : "fangdongzhizu",
-    "appid" : "__UNI__E4D4678",
-    "description" : "",
+    "name" : "房东直租",
+    "appid" : "__UNI__190F3AB",
+    "description" : "面对面交易，拒绝中间商",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
@@ -13,7 +13,8 @@
         "compilerVersion" : 3,
         /* 5+App特有相关 */
         "modules" : {
-            "OAuth" : {}
+            "OAuth" : {},
+            "Geolocation" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -36,17 +37,29 @@
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                ],
+                "abiFilters" : [ "armeabi-v7a", "arm64-v8a", "x86" ]
             },
             "ios" : {
                 "dSYMs" : false
             },
             /* ios打包配置 */
             "sdkConfigs" : {
-                "geolocation" : {},
+                "geolocation" : {
+                    "system" : {
+                        "__platform__" : [ "ios", "android" ]
+                    }
+                },
                 "oauth" : {},
-                "ad" : {}
+                "ad" : {},
+                "maps" : {}
+            },
+            "splashscreen" : {
+                "useOriginalMsgbox" : true
             }
+        },
+        "uniStatistics" : {
+            "enable" : true
         }
     },
     /* SDK配置 */
@@ -68,6 +81,14 @@
                     "key" : "GGSBZ-TCJEX-DVR45-Z2CM2-2ZPO7-U5B6X"
                 }
             }
+        },
+        "optimization" : {
+            "treeShaking" : {
+                "enable" : true
+            }
         }
+    },
+    "uniStatistics" : {
+        "version" : "2"
     }
 }
