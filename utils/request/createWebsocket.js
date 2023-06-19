@@ -30,8 +30,10 @@ let socketInstance=''
 				setTimeout(function(){
 					initStorestate()
 					tempChatList=store.state.chatList
+					console.log(tempChatList)
 					tempChatList.forEach(item=>{
 						if(item.room==data.room&&!item.fromName){
+							console.log(item.fromName)
 							addKey(data,item,tempChatList)
 						}	
 					})
@@ -82,7 +84,11 @@ let socketInstance=''
 			});
 		}
 		function addKey(data,item,tempChatList){
-			getuserInfo(data.target,1).then(res=>{
+			let target=data.target
+			if(data.from != store.state.userInfo.username){
+				target=data.from
+			}
+			getuserInfo(target,1).then(res=>{
 				item.fromName=res.nickname
 				item.fromAvatar=res.avatar
 				store.commit('chatList',tempChatList)
@@ -146,8 +152,11 @@ function addTextMsg(data){
 			data.typename=data.msg
 		}
 		setUnreadCountAll(data)
-		// item.targetName=data.from
-			chatList.push({room:data.room,fromName:fromName,targetName:data.target,unReadCount:0,data:[data]})
+			let target=data.target
+			if(data.from != store.state.userInfo.username){
+				target=data.from
+			}
+			chatList.push({room:data.room,fromName:fromName,targetName:target,unReadCount:0,data:[data]})
 	}
 		store.commit('chatList',chatList)
 		store.commit('lock',0)
@@ -172,6 +181,10 @@ function addImgMsg(msg){
 	if(!isChats){
 		msg.typename="[图片]"
 		setUnreadCountAll(msg)
+		let target=msg.target
+		if(msg.from != store.state.userInfo.username){
+			target=msg.from
+		}
 		chatList.push({room:msg.room,targetName:msg.target,unReadCount:0,data:[msg]})
 	}
 	store.commit('chatList',chatList)
@@ -196,7 +209,11 @@ function addVoiceMsg(data){
 				if(!isChat){
 					setUnreadCountAll(data)
 					data.typename="[语音]"
-					chatList.push({room:data.room,targetName:data.target,unReadCount:0,data:[data]})
+					let target=data.target
+					if(data.from != store.state.userInfo.username){
+						target=data.from
+					}
+					chatList.push({room:data.room,targetName:target,unReadCount:0,data:[data]})
 				}
 				store.commit('chatList',chatList)
 				store.commit('lock',0)

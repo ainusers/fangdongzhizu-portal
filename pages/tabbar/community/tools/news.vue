@@ -157,7 +157,7 @@
 <script>
 	let that=''
 import store from '../../../../store/index.js';
-	import {getPlatform,initStorestate,getStoreData} from '../../../../utils/utils.js'
+	import {getPlatform,initStorestate,getStoreData,getuserInfo} from '../../../../utils/utils.js'
 	import {createlink} from '../../../../utils/request/createWebsocket.js'
 	export default {
 		data() {
@@ -292,6 +292,10 @@ import store from '../../../../store/index.js';
 						tempVal.forEach(item=>{
 							if(item.room==that.chatId){
 								isChat=true
+								getuserInfo(item.targetName,1).then(res=>{
+									that.otherName=res.nickname
+									that.otherAvatar=res.avatar
+								})
 							if(item.data.length>30){
 								let temp=JSON.parse(JSON.stringify(item.data))
 								that.historyArr=item.data.slice(0,temp.length-29)
@@ -356,8 +360,13 @@ import store from '../../../../store/index.js';
 								this.msgList= item.data	
 								this.isHistoryLoading=true
 							}
-							this.otherName=item.fromName
-							this.otherAvatar=item.fromAvatar
+							
+							getuserInfo(item.targetName,1).then(res=>{
+								console.log(res)
+								this.otherName=res.nickname
+								this.otherAvatar=res.avatar
+							})
+						
 							console.log(that.msgList)
 						}
 					})
