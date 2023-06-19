@@ -53,7 +53,7 @@
 			init(){
 				uni.getLocation({
 					type: 'wgs84',
-					isHighAccuracy:true,
+					// isHighAccuracy:true,
 					success:(res) => {
 						if(res.errMsg=="getLocation:ok"){
 							this.setMap(res)
@@ -64,7 +64,7 @@
 			click() {
 				uni.getLocation({
 					type: 'gcj02',
-					isHighAccuracy:true,
+					// isHighAccuracy:true,
 					success: function (res) {
 						const latitude = res.latitude;
 						const longitude = res.longitude;

@@ -261,7 +261,7 @@
 					uni.getLocation({
 						type: 'gcj02',
 						geocode: true,
-						isHighAccuracy:true,
+						// isHighAccuracy:true,
 						success: function (res) {
 							resolve(res);
 						},

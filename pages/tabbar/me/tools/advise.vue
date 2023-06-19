@@ -30,7 +30,7 @@
 </template>
 
 <script>
-	import {htmlEncode} from '../../../../utils/utils.js'
+	import {htmlEncode,showToastTit} from '../../../../utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -130,28 +130,21 @@
 				var regEmail=/^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(\.[0-9A-Za-z]+)+$/
 				console.log(words.toString())
 				if(!words.toString()){
-					uni.showToast({
-						title: '请选择反馈建议',
-						icon: 'none',
-						duration: 2000
-					})
+					showToastTit('请选择反馈建议')
+					return
+				}
+				if(!e.detail.value.content){
+					showToastTit('请填写意见和反馈')
 					return
 				}
 				if(contact&&!regQQ.test(contact)&&!regPhone.test(contact)&&!regWx.test(contact)&&!regEmail.test(regPhone)){
-					uni.showToast({
-						title: '请正确填写联系方式',
-						icon: 'none',
-						duration: 2000
-					})
+					showToastTit('请正确填写联系方式')
 					return
 				}else if(!contact){
-					uni.showToast({
-						title: '请添加联系方式',
-						icon: 'none',
-						duration: 2000
-					})
+					showToastTit('请添加联系方式')
 					return
 				}
+				
 				let data={
 					type: words.toString(),
 					content: htmlEncode(e.detail.value.content),
@@ -159,11 +152,7 @@
 				}
 				this.$H.post('/zf/v1/advise/advises',data,true).then(res=>{
 					if(res.status){
-							uni.showToast({
-								title: '反馈建议已成功提交',
-								icon: 'none',
-								duration: 2000
-							})
+							showToastTit( '反馈建议已成功提交')
 							// 返回上一页
 							setTimeout(() => {
 								uni.navigateBack({

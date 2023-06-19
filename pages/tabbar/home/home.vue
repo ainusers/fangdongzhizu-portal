@@ -345,7 +345,7 @@ export default {
 			uni.getStorage({
 				key:'phoneInfo',
 				success(res){
-					console.log('手机信息',res)
+					console.log('手机信息1',res)
 					this.phoneInfo=res.data
 					that.savePhoneInfo(res.data)
 				}
@@ -376,7 +376,8 @@ export default {
 	methods: {	
 //保存登录人的设备
 			async savePhoneInfo(phoneInfo){
-					var location = await this.getLocation();
+					var location=await this.getLocation();
+          console.log('房源列表',location)
 					let address=location.address
 					let position=address.province+'-'+address.city+'-'+address.district+'-'+address.street+'-'+address.streetNum+'-'+address.poiName+'-'+address.cityCode
 					let params={
@@ -394,7 +395,6 @@ export default {
 					  "osTheme":phoneInfo.osTheme,
 					  "position":position
 				}
-				console.log('上报系统',params)
 				this.$H.post('/zf/v1/const/user/device',params,true).then(res=>{
 					console.log('传送手机信息',res)
 				})
@@ -404,7 +404,7 @@ export default {
 					uni.getLocation({
 						type: 'gcj02',
 						geocode:true,
-						isHighAccuracy:true,
+						// isHighAccuracy:true,
 						success: function (res) {
 							resolve(res);
 						},

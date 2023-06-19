@@ -191,6 +191,13 @@ const getuserInfo = function(userId,type) {
 		})
 	})
 }
+const showToastTit=function(tit){
+	uni.showToast({
+		title: tit,
+		icon: 'none',
+		duration: 2000
+	})
+}
 export {
 	getStoreData,
 	initStorestate,
@@ -202,5 +209,6 @@ export {
 	tranfTime,
 	getuserInfo,
 	compressImg,
-	setBarBadgeNum
+	setBarBadgeNum,
+	showToastTit
 }

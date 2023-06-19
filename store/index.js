@@ -75,13 +75,12 @@ const store = new Vuex.Store({
 			
 		},
 		isChatStatus(state,obj){
-			if(obj){
+			
 				state.isChatStatus=obj
 				uni.setStorage({
 					key:'isChatStatus',
 					data:obj
 				})
-			}
 		},
 		chatList(state,obj){
 			console.log(obj)

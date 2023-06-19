@@ -158,6 +158,7 @@
 	let that=''
 import store from '../../../../store/index.js';
 	import {getPlatform,initStorestate,getStoreData} from '../../../../utils/utils.js'
+	import {createlink} from '../../../../utils/request/createWebsocket.js'
 	export default {
 		data() {
 			return {
@@ -262,11 +263,7 @@ import store from '../../../../store/index.js';
 			})
 			// #endif
 			// 进入页面聊天链接
-			if(this.$store.state.socket_status){
-				this.authSocket()
-			}else{
-				this.initSocket()
-			}
+			createlink()
 			
 		},
 		onShow(){
@@ -274,11 +271,14 @@ import store from '../../../../store/index.js';
 		},
 		onHide(){
 			//关闭连接
+			
 		},
 		onUnload(){
 			this.chatList=[]//所有聊天记录的数据
 			this.$store.commit('currentNameChat','')
 			//关闭连接
+			// this.closeSocket()
+			console.log('你要关闭连接了')
 			// this.closeSocket()
 		},
 		watch:{
@@ -322,13 +322,31 @@ import store from '../../../../store/index.js';
 					}
 				},
 				deep:true
+			},
+			"$store.state.isChatStatus":{
+				handler(newval,old){
+					console.log('newVal',newval)
+					initStorestate()
+					if(newval==true){
+					console.log('我要发送消息了')
+					console.log(that.$store.state.isChatStatus)
+						that.sendText()
+					}
+				}
 			}
 		},
 		methods:{
 			//聊天记录初始化
 			chatSaveLocal(){
 				if(this.msgList.length==0){
-					this.chatList=this.$store.state.chatList
+					let chatList=this.$store.state.chatList
+					
+					console.log(this.chatList instanceof Array)
+					if(chatList instanceof Array){
+						this.chatList=chatList
+					}else{
+						this.chatList=JSON.parse(chatList)
+					}
 					this.chatList.forEach(item=>{
 						if(item.room==that.chatId){
 							if(item.data.length>30){
@@ -354,12 +372,17 @@ import store from '../../../../store/index.js';
 			// 创建websocket连接方法
 			initSocket() {
 				// 打开socket链接
-				this.$socketInstance.onOpen((res) => {
-					// console.log("WebSocket连接正常打开中..." + JSON.stringify(res));
-					this.$store.commit('socket_status',true)
-					// 发送认证消息
-					this.authSocket();
-				});
+				console.log('我要重新连接')
+				uni.onSocketOpen(res=>{
+					console.log(res)
+				})
+				// this.$socketInstance.onOpen((res) => {
+					
+				// 	console.log("WebSocket连接正常打开中..." + JSON.stringify(res));
+				// 	this.$store.commit('socket_status',true)
+				// 	// 发送认证消息
+				// 	this.authSocket();
+				// });
 				// 监听socket关闭链接
 				this.$socketInstance.onClose(() => {
 					this.$store.commit('isChatStatus',false)
@@ -370,8 +393,8 @@ import store from '../../../../store/index.js';
 				let that=this
 				this.$socketInstance.close({
 					success(res) {
-						that.$store.state.socket_status = false;
-						// console.log("关闭通信服务成功", res)
+						that.$store.commit('isChatStatus',false)
+						console.log("关闭通信服务成功", res)
 					},
 					fail(err) {
 						// console.log("关闭通信服务失败", err)
@@ -382,11 +405,15 @@ import store from '../../../../store/index.js';
 			authSocket() {
 				let that=this
 				if (this.$store.state.socket_status) {
+					console.log('我要重新发送')
 					this.$socketInstance.send({
 						data: "{'type':'signal','from':"+that.currentName+","+'room:'+that.chatId+"}",
 						async success() {
 							that.$store.commit('isChatStatus',true)
 						},
+						fail(err){
+							console.log(err)
+						}
 					});
 				}
 			},
@@ -577,8 +604,10 @@ import store from '../../../../store/index.js';
 			// 发送文字消息
 			async sendText(){
 				getStoreData('isChatStatus')
+				console.log(this.$store.state.isChatStatus)
 				if(this.$store.state.isChatStatus){
 					this.hideDrawer(); // 隐藏抽屉
+					console.log(this.textMsg)
 					if(!this.textMsg){
 						return;
 					}
@@ -587,8 +616,8 @@ import store from '../../../../store/index.js';
 					this.sendMsg(msg,'text');
 					this.textMsg = ''; // 清空输入框
 				}else{
-					await this.authSocket();
-					 this.sendText()
+					await createlink(1)
+					 // this.sendText()
 				}
 				
 			},
@@ -630,6 +659,7 @@ import store from '../../../../store/index.js';
 							"from":this.currentName,
 							"room":this.chatId
 							}
+							console.log(this.$socketInstance)
 							this.$socketInstance.send({
 								data: JSON.stringify(data),
 								async success() {

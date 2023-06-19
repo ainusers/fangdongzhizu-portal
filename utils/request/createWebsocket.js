@@ -4,7 +4,8 @@ import {getuserInfo,initStorestate,getStoreData,setBarBadgeNum} from '@/utils/ut
 let fromName=''
 let socketInstance=''
 
- function createlink(){
+ const createlink=function createlink(type){
+			socketInstance=''
 			socketInstance  =  uni.connectSocket({
 				// 确保你的服务器是运行态
 				url: "ws://81.70.163.240:17180/websocket",
@@ -17,7 +18,7 @@ let socketInstance=''
 				// 发送认证消息
 					store.commit('socket_status',true)
 				setTimeout(function() {
-					authSocket();
+					authSocket(type);
 				}, 10);
 			});
 			socketInstance.onMessage((res) => {
@@ -88,7 +89,7 @@ let socketInstance=''
 			})
 		}
 		//消息认证
-function authSocket(room) {
+function authSocket(room,type) {
 		if (store.state.socket_status) {
 			socketInstance.send({
 				data: "{'type':'signal','from':"+store.state.userInfo.username+"}",
@@ -96,8 +97,14 @@ function authSocket(room) {
 					store.commit('isChatStatus',true)
 					// that.isChatStatus=true
 					console.log("认证消息发送成功");
+					if(type){
+						console.log('我要发送消息了')
+					}
+					
 				},
 			});
+			Vue.prototype.$socketInstance=socketInstance
+			console.log(Vue.prototype.$socketInstance)
 		}
 	}
 function setUnreadCountAll(data){
@@ -209,4 +216,7 @@ function setPicSize(content){
 createlink()
 
 
-Vue.prototype.$socketInstance=socketInstance
+
+export {
+	createlink
+}

@@ -187,6 +187,7 @@
 						<view class="way">({{detailData.payType}})</view>
 					</view>
 					<view class="datetime">{{detailData.updateTime}}</view>
+					<view class="datetime">IP属地：{{detailData.city}}</view>
 				</view>
 			 </view>
 			 <view class="detail">
