@@ -175,6 +175,7 @@ uni-swiper-item{
 </template>
 
 <script>
+import '@/utils/request/createWebsocket.js'
 var that;
 import houseListItem from '@/components/house-list/house-list-item.vue';
 import screenTab from '@/components/common/screen-tab/screen-tab.vue'
