@@ -70,7 +70,7 @@
 	height: calc(100vh - var(--status-bar-height) - 88rpx);
 }
 .list-swiper{
-	height: calc(100vh - var(--status-bar-height) - 180rpx);
+	height: calc(100vh - var(--status-bar-height) - 88rpx);
 	background: #ffffff;
 }
 uni-swiper-item{
@@ -122,7 +122,7 @@ uni-swiper-item{
 		<!-- 换租的筛选 -->
 		<screenHuan v-if="current==2"></screenHuan>
 		<!-- 内容区域 -->
-		<swiper class="list-swiper" @change="swipeIndex" :current="current" :duration="300">
+		<swiper class="list-swiper" @change="swipeIndex" :current="current" :duration="300" ref="listSwiper">
 		
 			<swiper-item>
 				<scroll-view scroll-y="true" class=" list-content" @scrolltolower="scrolltolower">
@@ -338,20 +338,18 @@ export default {
 	},
 	onLoad() {
 		that=this
-			// isLoginCheck()
-			this.cityName=this.$store.state.currentCity
-			this.regionLeftList[0].text=this.cityName
-			console.log('zhixing')
-			uni.getStorage({
-				key:'phoneInfo',
-				success(res){
-					console.log('手机信息1',res)
-					this.phoneInfo=res.data
-					that.savePhoneInfo(res.data)
-				}
-			})
-			this.getArea()
-			this.getHouseList()
+		this.cityName=this.$store.state.currentCity
+		this.regionLeftList[0].text=this.cityName
+		uni.getStorage({
+			key:'phoneInfo',
+			success(res){
+				console.log('手机信息1',res)
+				this.phoneInfo=res.data
+				that.savePhoneInfo(res.data)
+			}
+		})
+		this.getArea()
+		this.getHouseList()
 	},
 	onShow(){
 		// this.currPage=1

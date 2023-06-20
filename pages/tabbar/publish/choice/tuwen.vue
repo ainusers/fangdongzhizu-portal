@@ -239,6 +239,7 @@
 					data['address']=location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName
 					data['type']=location.type
 					// #endif
+					console.log('发布图文',data)
 				// 上传动态信息
 				this.$H.post('/zf/v1/dynamic/dynamics',data,true).then(res=>{
 					if(res.status){

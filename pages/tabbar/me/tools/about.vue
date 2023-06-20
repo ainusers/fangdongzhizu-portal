@@ -11,15 +11,16 @@
 		// margin: 10px 10px 10px 10px;
 		.top{
 			display: flex;
-			justify-content: center;
 			align-items: center;
 			flex-direction: column;
 			width:100%;
-			height:40%;
+			height:52%;
+			
 			image{
 				width:400rpx;
 				height:400rpx;
 				margin-bottom: 20rpx;
+				margin-top:250rpx;
 			}
 		}
 		.bottom{
@@ -27,7 +28,7 @@
 			display: flex;
 			justify-content: center;
 			width:100%;
-			height: 60%;
+			height: 45%;
 			color: #aaa;
 			.app_info{
 				padding: 40rpx;

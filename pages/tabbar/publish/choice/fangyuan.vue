@@ -289,6 +289,10 @@
 	.selectbtnItem{
 		width:100%;
 	}
+	.tipTxt{
+		font-size: 24rpx;
+		font-weight: normal;
+	}
 </style>
 <template>
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
@@ -302,7 +306,7 @@
 			</view>
 			<view class="step_1" v-show="stepNum==1||setpAll">
 				<!-- 资质上传 -->
-				<view class="region_new_title">资质上传</view>
+				<view class="region_new_title">资质上传  <text class="tipTxt">({{tipTxt}})</text></view>
 				<u-form-item prop="naturalImageList" required :border-bottom="false">
 					<view class="uni-list list-pd">
 						<view class="uni-list-cell cell-pd">
@@ -359,7 +363,7 @@
 		<u-form labelPosition="left" :model="houseModel" ref="form2">
 			<view class="step_2" v-show="stepNum==2 ||setpAll">
 				<!-- 费用信息 -->
-				<view class="region_new_title">您的房间费用信息</view>
+				<view class="region_new_title">您的房间费用信息<text class="tipTxt">(客观地评估价格有助于更快出租)</text></view>
 				<u-form-item :label-position="labelPosition" label="房间布局 :" prop="layout" label-width="150">
 					<u-input :border="border" placeholder="请选择房间结构" v-model="houseModel.layout" type="select"
 						@click="layoutShowFn" :disabled="setpAll"></u-input>
@@ -485,7 +489,7 @@
 					<!-- <view @click="showTimeFn" :class="[{'select_btn':houseModel.live_time?houseModel.live_time.indexOf('请选择')!=-1:''}]">{{houseModel.live_time}}</view> -->
 				</u-form-item>
 				<!-- 房源照片 -->
-				<view class="region_new_title">房间照片</view>
+				<view class="region_new_title">房间照片 <text class="tipTxt">(不允许虚假和合成图片)</text></view>
 				<u-form-item prop="houseImageList" :border-bottom="false" required>
 					<view class="uni-list list-pd">
 						<view class="uni-list-cell cell-pd">
@@ -1289,6 +1293,7 @@
 				isEdit: false, //当前是否为编辑房源
 				isPublish1: false,
 				isPublish2: false,
+				tipTxt:'请出示完整的租房合同'
 			}
 		},
 		onLoad(options) {
@@ -1625,12 +1630,14 @@
 			// 发布类型选择发生变化
 			radioGroupChange(index) {
 				if (this.setpAll) return
+				
 				this.radioList.forEach((item, key) => {
 					item.checked = false
 					if (index == key) {
 						item.checked = true
 					}
 				})
+				index==0?this.tipTxt='请出示完整的租房合同':this.tipTxt='请出示清晰的房产证主页'
 				this.houseModel.publishType = index + 1
 			},
 			// 选择地区回调

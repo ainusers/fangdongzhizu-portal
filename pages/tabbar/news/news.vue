@@ -2,7 +2,7 @@
 	<view class="container" :class="{'active':active}">
 		<u-cell-group v-if="InfoList.length>0">
 			<block v-for="(item,index) in InfoList" :key="index">
-				<u-cell-item :icon="item.fromAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.fromName" :label='item.data[item.data.length-1].typename' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="item.data[0].datetime" @click="goInfo(item)" v-if="item.data[0]" >
+				<u-cell-item :icon="item.fromAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.fromName" :label='item.data[item.data.length-1].typename' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="item.data[item.data.length-1].datetime" @click="goInfo(item)" v-if="item.data[0]" >
 					 <u-badge :count="item.unReadCount" :absolute="true" slot="right-icon" v-if="item.unReadCount" :offset="offset"></u-badge>
 				</u-cell-item>
 			</block>

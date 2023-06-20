@@ -38,8 +38,6 @@ let socketInstance=''
 						}	
 					})
 				},0)
-			
-				
 				// // 非自己的消息震动
 				if(data.id&&data.from!=store.state.userInfo.username&&data.msg!='ping'&& data.type!='signal'){
 							setTimeout(function(){
@@ -64,9 +62,6 @@ let socketInstance=''
 					
 					uni.vibrateLong();
 				}
-				// data.avatar=this.$store.state.userInfo.avatar
-				
-				// data.otherAvatar=this.otherAvatar
 				switch (data.type) {
 					// case 'system':
 					// 	this.addSystemTextMsg(data);
@@ -133,8 +128,11 @@ function addTextMsg(data){
 			isChat=true
 			let alttext=data.msg.split('alt="')[1]
 			let typename=''
+			console.log(alttext)
 			if(alttext){
-				typename=alttext.slice(0,alttext.length-2).split('"><img')[0]
+				console.log(alttext.slice(0,alttext.length-2))
+				typename=alttext.slice(0,alttext.length-2).split('><img')[0]
+				console.log(typename)
 			} 
 			if(data.msg.indexOf('alt')!=-1){
 				data.typename=typename
@@ -147,7 +145,11 @@ function addTextMsg(data){
 	})
 	if(!isChat){
 		if(data.msg.indexOf('alt')!=-1){
-			data.typename='[表情]'
+			// let alttext=data.msg.split('alt="')[1]
+			// let typename=''
+			// if(alttext){
+			// 	typename=alttext.slice(0,alttext.length-2).split('"><img')[0]
+			// } 
 		}else{
 			data.typename=data.msg
 		}

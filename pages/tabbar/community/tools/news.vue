@@ -68,7 +68,10 @@
 						<view class="other" v-else>
 							<!-- 左-头像 -->
 							<view class="left">
-								<image :src="otherAvatar"></image>
+								<view class="userImage">
+								  <u-avatar class="avatar" :src="otherAvatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
+								</view>
+								<!-- <image :src="otherAvatar"></image> -->
 							</view>
 							<!-- 右-用户名称-时间-消息 -->
 							<view class="right">
@@ -574,6 +577,16 @@ import store from '../../../../store/index.js';
 			// 选择表情
 			chooseEmoji(){
 				this.hideMore = true;
+				this.isFocus=true
+				uni.hideKeyboard()
+				this.$nextTick(()=>{
+					uni.getSelectedTextRange({
+						success:res=>{
+							console.log(res.start,res.end)
+							this.emojLen=res.start
+						}
+					})
+				})
 				if(this.hideEmoji){
 					this.hideEmoji = false;
 					this.openDrawer();
@@ -583,23 +596,17 @@ import store from '../../../../store/index.js';
 			},
 			// 添加表情
 			addEmoji(em){
-				this.isFocus=true
-				this.$nextTick(()=>{
-					uni.getSelectedTextRange({
-						success:res=>{
-							console.log(res.start,res.end)
-							this.emojLen=res.start
-						}
-					})
-				})
+				
 				let temp=this.textMsg.split('')
 				if(temp.length>0){
 					setTimeout(()=>{
 						temp[this.emojLen-1]+=em.alt;
 						this.textMsg=temp.join('')
+						this.hideMore = true;
 					},0)
 				}else{
 					this.textMsg=em.alt
+					this.hideMore = true;
 				}
 				
 				
@@ -640,11 +647,8 @@ import store from '../../../../store/index.js';
 							if(EM.alt==item){
 								//在线表情路径，图文混排必须使用网络路径，请上传一份表情到你的服务器后再替换此路径 
 								//比如你上传服务器后，你的100.gif路径为https://www.xxx.com/emoji/100.gif 则替换onlinePath填写为https://www.xxx.com/emoji/
-								// let onlinePath = 'https://s2.ax1x.com/2019/04/12/'
-								// console.log(onlinePath+this.onlineEmoji[EM.url])
-								// let imgstr = '<img src="'+onlinePath+this.onlineEmoji[EM.url]+'" alt="'+str+'">';
 								let onlinePath = 'http://81.70.163.240:9090/emoji/'
-								let imgstr = '<img src="'+onlinePath+EM.url+'" alt="'+str+'">';
+								let imgstr = '<img src="'+onlinePath+EM.url+'"  width="30rpx" height="30rpx" alt="'+str+'">';
 								return imgstr;
 							}
 						}
