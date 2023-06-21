@@ -116,7 +116,7 @@
 			</view>
 		</view>
 		<!-- 底部输入栏 -->
-		<view class="input-box" :class="popupLayerClass" @touchmove.stop.prevent="discard">
+		<view class="input-box" :class="popupLayerClass" @touchmove.stop.prevent="discard" :style="{bottom:inputOffsetBottom >0?inputOffsetBottom +'px':'0',position:poType}">
 			<!-- H5下不能录音，输入栏布局改动一下 -->
 			<!-- #ifndef H5 -->
 			<view class="voice">
@@ -132,7 +132,7 @@
 				<view class="voice-mode" :class="[isVoice?'':'hidden',recording?'recording':'']" @touchstart="voiceBegin" @touchmove.stop.prevent="voiceIng" @touchend="voiceEnd" @touchcancel="voiceCancel">{{voiceTis}}</view>
 				<view class="text-mode"  :class="isVoice?'hidden':''">
 					<view class="box">
-						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus" cursor-spacing="20" ref="textA" :focus="isFocus"/>
+						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus" cursor-spacing="20" ref="textA" :focus="isFocus" :adjust-position="false"/>
 					</view>
 					<view class="em" @tap="chooseEmoji">
 						<view class="icon biaoqing"></view>
@@ -232,11 +232,20 @@ import store from '../../../../store/index.js';
 				isFocus:false,
 				emojLen:0,
 				historyArr:[],
-				historyIndex:0
+				historyIndex:0,
+				inputOffsetBottom:0,//键盘的高度
+				poType:'fixed'
 			};
 		},
 		onLoad(option) {
 			that=this
+			uni.onKeyboardHeightChange(res=>{
+				this.inputOffsetBottom=res.height
+				if(res.height==0){
+					this.isFocus=false
+					this.poType='fixed'
+				}
+			})
 			initStorestate()
 			this.Platform=getPlatform()
 			this.chatId=option.chatId
@@ -281,7 +290,6 @@ import store from '../../../../store/index.js';
 			this.$store.commit('currentNameChat','')
 			//关闭连接
 			// this.closeSocket()
-			console.log('你要关闭连接了')
 			// this.closeSocket()
 		},
 		watch:{
@@ -289,6 +297,8 @@ import store from '../../../../store/index.js';
 				handler:(val,oldval)=>{
 					that.$store.state.lock+=1
 					if(that.$store.state.lock==1){
+						console.log(val)
+						console.log(typeof val)
 						let tempVal=JSON.parse(JSON.stringify(val))
 						that.chatList=tempVal
 						let isChat=false
@@ -613,6 +623,8 @@ import store from '../../../../store/index.js';
 			},
 			// 获取焦点，如果不是选表情ing,则关闭抽屉
 			textareaFocus(){
+				console.log('获取了焦点')
+				
 				if(this.popupLayerClass=='showLayer' && this.hideMore == false){
 					this.hideDrawer();
 				}

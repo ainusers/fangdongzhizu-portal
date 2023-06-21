@@ -157,6 +157,7 @@
    			"backgroundColor":"#fff",
    			"app-plus": {
    				"scrollIndicator": "none"
+				
    			}
    		}
    	},

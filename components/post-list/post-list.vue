@@ -12,7 +12,10 @@
 						<!-- 用户名称 -->
 						<view class="center">
 							<view style="display:flex;align-items: center;justify-content: space-between;">
-								<text class="username">{{ item.username?item.username.substring(0, 12):'' }}</text>
+								<text class="username">{{ item.username?item.username.substring(0, 12):'' }}
+								<text class="cityTxt">{{item.province | splitEnd1}}</text>
+								</text>
+								
 								<view style="float: right;padding-right: 10px;font-size: 24px;">
 									<u-icon name="more-dot-fill" color="rgb(203,203,203)" @click="goReport(index)">
 									</u-icon>
@@ -155,8 +158,19 @@
 				shareId:''
 			};
 		},
+		
 		watch: {
 
+		},
+		filters:{
+			splitEnd1(val){
+				if(val){
+					return val.substring(0,val.length-1)
+				}else{
+					return val
+				}
+				
+			}
 		},
 		computed: {
 			timestamp() {
@@ -468,6 +482,11 @@
 				font-size: 32rpx;
 				font-weight: 600;
 				color: #616161;
+				.cityTxt{
+					font-size: 24rpx;
+					font-weight: normal;
+					margin-left: 20rpx;
+				}
 			}
 
 			.official {

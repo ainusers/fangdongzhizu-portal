@@ -89,10 +89,28 @@
 		methods: {
 			initData(arr){
 				arr.forEach(item=>{
-					if(!item.fromName){
-						item.fromName=this.$store.state.userInfo.nickname
-						item.fromAvatar=this.$store.state.userInfo.avatar
-					}
+					this.getHistory(item.room,item).then(res=>{
+						if(res){
+							item.data=item.data.concat(res)
+						}
+						
+						if(!item.fromName){
+							item.fromName=this.$store.state.userInfo.nickname
+							item.fromAvatar=this.$store.state.userInfo.avatar
+							
+						}
+					})
+					
+				})
+			},
+			getHistory(roomId,item){
+				let data={
+					roomId:roomId
+				}
+				return this.$H.get('/zf/v1/const/community/offline/msg',data,true).then(res=>{
+					if(res.data.length>0){
+						return res.data
+					}	
 				})
 			},
 			goInfo(info){
