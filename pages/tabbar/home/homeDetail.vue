@@ -1,14 +1,16 @@
 <style scope lang="scss">
   page {
-    background: #FFFFFF;
+    background: #f2f2f2;
   }
   .er_house_detail {
     overflow-x: hidden;
 	box-shadow: 0 1px 0 2px rgba(0,0,0,0.05);
   }
   .model {
-	  border-bottom: 10upx solid #F5F5F5;
-	  padding:30upx;
+	  background-color: #ffffff;
+	  padding: 10px;
+	  border-radius: 15px;
+	  border-bottom: 10px solid #f2f2f2;
   }
   /deep/.u-mode-center-box{
 	  z-index: 9999 !important;
@@ -21,11 +23,9 @@
 	 font-size:28upx;
 	 font-weight:600;
 	 color:#101d36;
-	 padding-left: 26upx;
+	 padding-left: 13upx;
 	 box-sizing: border-box;
 	 border-left: 6rpx solid #5199ff;
-	 margin-top: 24upx;
-	 margin-bottom: 40upx;
   }
   .near_map_item {
     height: 25upx;
@@ -52,6 +52,7 @@
 	  padding: 8px 0px 8px 0px;
 	  font-weight: bolder;
 	  font-size: 30upx;
+	  justify-content: space-between;
 	  .community{
 		  padding-left: 8px
 	  }
@@ -161,7 +162,7 @@
 	  }
   }
   .pei_tao_she_shi{
-	  padding:20upx;
+	  padding:10upx;
   }
 	.map_con{
 		padding: 20upx;
@@ -177,9 +178,8 @@
 		    <block v-if="detailData != null">
 			 <view class="description">
 				<view class="position">
-					<view class="community">{{detailData.communityName}}-</view>
-					
-					<view class="value">&nbsp;{{detailData.layout}}</view>
+					<view class="community">{{detailData.communityName}}</view>
+					<view class="value">{{detailData.layout}}</view>
 				</view>
 				<view class="money">
 					<view class="pay">
@@ -187,7 +187,6 @@
 						<view class="way">({{detailData.payType}})</view>
 					</view>
 					<view class="datetime">{{detailData.updateTime}}</view>
-					<view class="datetime">IP属地：{{detailData.city}}</view>
 				</view>
 			 </view>
 			 <view class="detail">
@@ -203,11 +202,6 @@
 						建筑面积
 					</view>
 				</view>
-				
-				<!-- <view class="info_con">
-					<view  class="value">{{detailData.layout}}</view>
-					<view  class="key">  {{detailData.roomType}}-{{detailData.roomName}}</view>
-				</view> -->
 				<view class="info_con">
 					<view  class="value">{{detailData.liveTime||'-'}}</view>
 					<view  class="key"> 入住时间</view>
@@ -240,7 +234,6 @@
 			 <zu-lin-xin-xi :list="zulinData"></zu-lin-xin-xi>
 		   </block>
 		</view>
-
 		<!-- 详情页 - 费用详情 -->
 		<view class="model">
 		  <block v-if="feiyongData.length > 0">
@@ -248,7 +241,6 @@
 			 <fei-yong-xiang-qing :list="feiyongData"></fei-yong-xiang-qing>
 		   </block>
 		</view>
-		
 		<!-- 详情页 - 地理位置 -->
 		<view class="model">
 		  <block v-if="diliData.length > 0">
@@ -258,9 +250,8 @@
 				<di-li-wei-zhi :list="diliData"  v-show="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi>
 			 </view>
 		   </block>
-		<!-- 详情页 - 配套设施 -->
 		</view>
-		
+		<!-- 详情页 - 配套设施 -->
 		<view class="model">
 		  <block v-if="sheshiData.length > 0">
 			 <view class="modelName">配套设施</view>
@@ -271,7 +262,6 @@
 		<view v-show="reportShow">
 			<zhizuReport @cancelReport="cancelReport" @goReport="goReport" :typeStr="reportType" :userId="detailData.userId" :reportId="detailData.id"/>
 		</view>
-	
 		<!-- 详情页 - 立即沟通 -->
 		<view class="final">
 			<view class="left">
@@ -279,12 +269,10 @@
 					<u-icon name="bell" size="50"></u-icon>
 					<view class="target">举报</view>
 				</view>
-				
 				<view class="report"  @click="report(2)">
 					<u-icon :name="startIcon" size="50" :color="iconColor"></u-icon>
 					<view class="target" >收藏</view>
 				</view>
-				
 			</view>
 			<view class="contact">
 				<u-button shape="square" @click="report(3)">立即沟通</u-button>
@@ -314,7 +302,6 @@
 	// 页面传值
 	 onLoad(options) {
 		this.houseId=options.id
-		
 	},
 	onShow() {
 		that=this
@@ -326,7 +313,6 @@
 				iconPath: require('../../../static/address.png'),
 				width:25,
 				height:25})
-				
 	},
     data() {
       return {
@@ -379,7 +365,7 @@
 				{'title':'押金','value':'-'},
 				{'title':'维修费用','value':'-'},
 				{'title':'中介费','value':'-'},
-				{'title':'','value':'-'},
+				{'title':'','value':''},
 				{'title':'取暖费','value':'-'},
 				{'title':'无线费','value':'-'},
 				{'title':'物业费','value':'-'},
@@ -387,14 +373,11 @@
 			],
 		zulinData: [],
 		diliData: [{}],
-
         housePhone: "", // 按月付的电话
         openHuabei: "",  // 是否开通花呗 0:未开通，1:已开通
-
         showBackIndex: false,
         shareInfoFlag: false,  // 是否显示 例如: pageFrom = personal
         activity: 0,  // 具体干什么的暂时还不清楚(感觉像是判断是否是真房源的) B端分享会带这个参数 等于1时会调用B段分享接口
-
         // 撩客文案
         liaoKeTips: {
           tips: "",
@@ -418,7 +401,6 @@
 			this.showSupport()
 			//租赁信息
 			this.initzulinData()
-			
 		},
 		getHouseDetail(){
 			let data={
@@ -489,7 +471,6 @@
 					size:otherInfo[2]
 				}
 				this.zulinData.push(obj)
-				
 			})
 		},
 		//举报，收藏，
@@ -534,15 +515,12 @@
 					if(support.indexOf(item.text)!=-1){
 						item.isShow=true
 						item.iconUrl=item.hIconUrl
-						
 					}
 				})
 			}
 		},
-		
 		goReport(){
 			this.isMap=true
-			
 		},
 		cancelReport(){
 			this.isMap=true

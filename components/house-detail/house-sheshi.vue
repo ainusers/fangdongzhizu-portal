@@ -9,10 +9,8 @@
 	.pei_item{
 		width: 19%;
 		text-align: center;
-        margin-bottom: 30upx;
 		padding: 20upx;
 		border:1px solid #dcdcdc;
-		
 		border-radius: 10upx;
 	}
 	.pei_icon{
