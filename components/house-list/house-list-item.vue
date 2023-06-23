@@ -7,21 +7,24 @@
 		font-size: 22upx;
 		text-align: right;
 	}
+	.er_house_main {
+		background-color: #f2f2f2
+	}
     .er_house_item{
 		position: relative;
 		display: flex;
 		align-items: center;
-        padding: 20rpx 30rpx;
+        padding: 0px 0px 5px 5px;
         box-sizing: border-box;
         background: #FFFFFF;
-		margin: 3px 0px 10px 0px;
+		margin: 0px 0px 5px 0px;
 		padding-top: 0;
 		border-bottom: 20rpx solid #f2f2f2;
     }
     .er_house_img_view{
         position: relative;
         width:300upx;
-        height:180upx;
+        height:200upx;
         flex-shrink: 0;
 		background:#f2f2f2 url(http://cdn.haofang.net/static/wxPlusApp/yjk/house/house_list_default.png) no-repeat center center;
 		background-size:cover;
@@ -68,7 +71,7 @@
     }
 
     .er_house_cont{
-		padding: 0px 20upx 0px 20upx;
+		padding: 0px 10upx 0px 10upx;
         box-sizing: border-box;
         width: calc(100% - 180upx);
     }
