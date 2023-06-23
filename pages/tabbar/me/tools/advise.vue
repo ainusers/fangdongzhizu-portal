@@ -12,14 +12,13 @@
 			</u-radio-group>
 		</view>
 		<view class="middle">
-			<textarea name="content" class="recordContent" maxlength="500" @input = "descInput($event)"
+			<textarea name="content" class="recordContent" maxlength="100" @input = "descInput($event)"
 				placeholder="输入内容帮我们了解您的意见和建议" />
-			<span class="wordwrap">{{number}}/500</span>
+			<span class="wordwrap">{{number}}/100</span>
 		</view>
 		<view class="bottom">
 			<view class="concact">
-				<text class="way">请留下真实联系方式(邮箱，QQ,微信,手机号)，方便我们答疑解惑</text>
-				<!-- <text class="communication">　注：手机号/微信/QQ</text> -->
+				<text class="way">请留下真实联系方式 (邮箱/QQ/微信/手机号)</text>
 			</view>
 			<input name="contact" class="concactContent" placeholder="请留下任一联系方式" bindinput="userNameInput" />
 		</view>

@@ -40,16 +40,16 @@
 				温馨提示:
 			</view>
 			<view>
-				1.打赏金额用于APP服务器运行费用，不会计入个人账户
+				1、打赏金额用于APP服务器运行费用，不会计入个人账户
 			</view>
 			<view>
-				2.已打赏金额不可转让、提现或退款
+				2、已打赏金额不可转让、提现或退款
 			</view>
 			<view>
-				3.不建议军人/军属，教师，医生/护士进行打赏
+				3、不建议军人/军属，教师，医生/护士进行打赏
 			</view>
 			<view>
-				4.如遇无法打赏问题，请在"反馈建议"中提交信息
+				4、如遇无法打赏问题，请在"反馈建议"中提交信息
 			</view>
 		</view>
 		<view>
@@ -96,7 +96,7 @@
 		box-shadow: 0 0px 5px 0 #5199ff;
 	}
 	.reward_bg{
-		height:200rpx;
+		height:250rpx;
 		background-image:linear-gradient( #5199ff 0%, #ffffff 100%);
 	}
 	.reward_info{
@@ -105,7 +105,7 @@
 		margin: 0 auto;
 		background: #ffffff;
 		box-shadow: 0 0 10px 3px #eee;
-		margin-top: -120rpx;
+		margin-top: -150rpx;
 		border-radius: 20rpx;
 		padding: 30rpx;
 		.reward_avatar{
