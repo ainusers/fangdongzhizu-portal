@@ -68,7 +68,7 @@
 						<!-- 评论 -->
 						<view class="p-item margin50">
 							<u-icon name="chat" size="38"></u-icon>
-							<text class="count">{{ item.look }}</text>
+							<text class="count">{{ item.comment }}</text>
 						</view>
 						<!-- 点赞和取消点赞 -->
 						<view v-show="item.status&&item.status==1" class="p-item"
