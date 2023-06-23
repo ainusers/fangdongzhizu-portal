@@ -92,7 +92,7 @@
 					</view>
 					<view class="item">
 						<view>
-							商家合作
+							商务合作
 						</view>
 						<view>
 							5730473@qq.com
