@@ -12,13 +12,10 @@
 						<!-- 用户名称 -->
 						<view class="center">
 							<view style="display:flex;align-items: center;justify-content: space-between;">
-								<text class="username">{{ item.username?item.username.substring(0, 12):'' }}
-								<text class="cityTxt">{{item.province | splitEnd1}}</text>
-								</text>
+								<text class="nickname">{{ item.nickname?item.nickname.substring(0, 12):'' }}</text>
 								
-								<view style="float: right;padding-right: 10px;font-size: 24px;">
-									<u-icon name="more-dot-fill" color="rgb(203,203,203)" @click="goReport(index)">
-									</u-icon>
+								<view style="float: right;padding-right: 10px;font-size: 18px;">
+									<u-icon name="more-dot-fill" color="rgb(203,203,203)" @click="goReport(index)"></u-icon>
 									<view class="reportText" v-show="item.isReport">
 										<view @click="report" class="item">举报</view>
 										<view @click="deletePost(index,item.id)" class="item"
@@ -28,6 +25,7 @@
 							</view>
 							<view>
 								<text class="time">{{tranfTime(item.createtime)}}</text>
+								<text class="city">发布于{{item.province | splitEnd1}}</text>
 							</view>
 						</view>
 					</view>
@@ -169,7 +167,6 @@
 				}else{
 					return val
 				}
-				
 			}
 		},
 		computed: {
@@ -192,7 +189,9 @@
 				var date3 = (date1 - date2) * 1000; //时间差的毫秒数
 				//计算出相差天数
 				var days = Math.floor(date3 / (24 * 3600 * 1000));
-				if (days >= 1) {
+				if (days <= 31) {
+					return days + "天前"
+				} else {
 					return autoTime
 				}
 				//计算出小时数
@@ -204,7 +203,7 @@
 				if (hours == 0 && minutes == 0) {
 					return "刚刚"
 				} else if (!hours) {
-					return minutes + " 分钟前"
+					return minutes + "分钟前"
 				} else {
 					return hours + '小时前'
 				}
@@ -394,13 +393,13 @@
 	.post-item {
 		background: #fff;
 		border: solid 1px #eee;
-		margin: 3px 0px 10px 0px;
+		margin: 0px 0px 10px 0px;
 		border-radius: 10px;
-		padding: 10px;
+		padding: 5px 5px 0 5px;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 10px 0 rgba(0, 0, 0, 0.15);
 
 		.post-content {
-			margin-top: 20rpx;
-
+			margin-top: 10rpx;
 			.img-style-1 {
 				display: block;
 				width: 100%;
@@ -445,7 +444,7 @@
 
 		.reportText {
 			width: 200rpx;
-			padding: 20rpx 20rpx;
+			padding: 10rpx 10rpx;
 			position: absolute;
 			right: 10rpx;
 			text-align: center;
@@ -453,10 +452,7 @@
 			font-size: 28rpx;
 			z-index: 9999;
 			background-color: #fff;
-
 			.item {
-				margin-bottom: 20rpx;
-
 				&:last-child {
 					margin-bottom: 0;
 				}
@@ -478,17 +474,16 @@
 			color: #999;
 			margin-top: -16rpx;
 
-			.username {
+			.nickname {
 				font-size: 32rpx;
 				font-weight: 600;
 				color: #616161;
-				.cityTxt{
+			}
+			.city{
 					font-size: 24rpx;
 					font-weight: normal;
 					margin-left: 20rpx;
-				}
 			}
-
 			.official {
 				display: inline-block;
 				font-size: 20rpx;

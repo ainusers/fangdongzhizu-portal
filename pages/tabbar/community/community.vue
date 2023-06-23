@@ -2,7 +2,7 @@
 	.community {
 		display: flex;
 		width: 100%;
-		height: 280upx;
+		height: 300upx;
 		align-items: center;
 		background-color: #FFFFFF;
 		flex-wrap: wrap;
@@ -131,7 +131,7 @@
 			}else{
 				uni.showToast({
 					icon:'none',
-					title:"已加载完成"
+					title:"主人，已经到底了呦"
 				})
 			}	
 		},
@@ -194,7 +194,6 @@
 			},
 			deletePostFn(id){
 				console.log('删除3')
-			
 			}
 		}
 	}
