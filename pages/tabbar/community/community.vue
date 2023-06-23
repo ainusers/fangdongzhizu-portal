@@ -153,12 +153,10 @@
 			getMomentPost() {
 				// 测试数据待修改
 				this.load_status_tuwen = 'loading';
-
 				let data={
 						  "page":this.tuwen_default_page ,
 						  "size": "10",
-						  "userId":this.$store.state.userInfo.id
-					}
+				}
 				this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
 					if(res.status){
 						if(this.tuwen_default_page==1){
@@ -183,12 +181,12 @@
 				let data={
 					userId:this.$store.state.userInfo.id,
 					id:id?id:0,
-					type:isLove?'plus':'reduce',
+					type:isLove?'plus':'reduce'
 				}
 				this.$H.patch('/zf/v1/dynamic/follow',data,true).then(res=>{
 					if(res.status&&res.status!=500){
 						res.data[0].count?this.tuwen_data[index].likes+=1 :this.tuwen_data[index].likes-=1
-						res.data[0].count?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
+						res.data[0].status?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
 					}
 				})
 			},

@@ -503,6 +503,9 @@
 					if(params.collection==1){
 						this.startIcon='heart-fill'
 						this.iconColor='#f91e08'
+					} else {
+						this.startIcon='heart'
+						this.iconColor=''
 					}
 				}
 			})
