@@ -1,23 +1,10 @@
 <style lang="scss" scoped>
-    /* 城市列表 */
-    .choose_city{
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-        position: relative;
-    }
-    .choose_city_scroll{
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-    }
     .choose_city_cont{
         box-sizing: border-box;
     }
-    /* #ifdef  MP-ALIPAY*/
-    .choose_city_scroll .choose_city_cont{
-        padding-right: 0;
-    }
+	.city_title{
+		padding: 10px 10px 10px 15px;
+	}
     /* #endif */
     .choose_title{
 		display: flex;
@@ -25,83 +12,52 @@
         height:80upx;
         line-height:80upx;
         font-size:27upx;
-        margin-left: 32upx;
         box-sizing: border-box;
-		.resetBtn{
-			display: inline-block;
-			width:200rpx;
-			height: 60rpx;
-			 line-height:60rpx;
-			margin: 0;
-			margin-left: 20rpx;
-			font-size: 20upx;
-		}
     }
     .gps_city{
-        margin-left: 30upx;
-		margin-right: 30upx;
+        margin-left: 33upx;
+		width:186upx;
+		height:60upx;
+		line-height:60upx;
+		font-size:27upx;
+		letter-spacing:1upx;
+		text-align:center;
         position:relative;
-        height:80upx;
-        line-height:84upx;
-        font-size:27upx;
+		border-radius:6upx;
         color:#0f0f0f;
     }
-    .gps_city_icon{
-        width: 35upx;
-        height: 35upx;
-        margin: auto 10upx auto 0;
-    }
-    .city_item{
-        margin-left: 30upx;
-        height:90upx;
-        line-height:90upx;
-        font-size:28upx;
-    }
-
-    /* 城市首字母 */
-    .letter_list{
-        height: 100%;
-        position:fixed;
-        right:0;
-        top:0;
-        background:#ffffff;
-        z-index:2;
-        box-sizing:border-box;
-        padding-top: 180upx;
-    }
-    .letter_item{
-        line-height:38upx;
-        text-align:center;
-        font-size:18upx;
-		background-color: #FFFFFF
-    }
-
-    /* 热门城市 */
-    .hot_city_list{
-       
-        box-sizing: border-box;
+	.dingwei{
 		display: flex;
-		 flex-wrap: wrap;
-		 padding: 0 20rpx;
-		 // justify-content: space-between
-    }
-	/deep/uni-button{
-		margin: 0;
+		flex-direction: row;
+		padding-right: 35upx;
+		.reset{
+			height:60upx;
+			line-height:60upx;
+			font-size:27upx;
+			letter-spacing:1upx;
+			text-align:center;
+		    position:relative;
+			border-radius:6upx;
+		    color:#0f0f0f;
+		}
+		.gps_icon{
+		    width: 35upx;
+		    height: 35upx;
+			padding-top: 7px;
+		}
 	}
     .hot_city_item{
+        margin-left: 33upx;
         width:186upx;
         height:60upx;
         line-height:60upx;
         font-size:27upx;
         letter-spacing:1upx;
         text-align:center;
+        position:relative;
         border-radius:6upx;
-        margin-right:30upx;
-        margin-bottom:20upx;
-		marign-left:20upx !important;
+        color:#0f0f0f;
     }
-
-
 </style>
 <template>
 	<form report-submit>
@@ -109,17 +65,21 @@
 			<scroll-view :scroll-with-animation="scrollAnimate" enable-back-to-top :scroll-into-view="scrollIntoId"
 				class="choose_city_scroll" scroll-y>
 				<view class="choose_city_cont">
-					<view class="choose_title">当前定位城市 :<button class="resetBtn"  @click="resetAddress">重新定位</button>
+					<view class='city_title'>当前定位城市 :</view>
+					<view class="choose_title">
+						<button form-type="submit" hover-class="none" class="gps_city f_r_s" @click="cityBtn(gpsCityInfo)">
+								  {{ gpsCityInfo.cityName }}
+						</button>
+						<view class="dingwei">
+							<image class="gps_icon" src="@/static/home/position.svg"></image>
+							<view class="reset"  @click="resetAddress">
+								重新定位
+							</view>
+						</view>
 					</view>
-				   <button form-type="submit" hover-class="none" class="gps_city f_r_s" @click="cityBtn(gpsCityInfo)">
-					   <image class="gps_city_icon"
-							  v-if="gpsCityInfo.cityName != '定位中..'"
-							  src="https://zdzfapi.haofang.net/PublicC/images/icon_mylocation.png"></image>
-							  {{ gpsCityInfo.cityName }}
-					   <view class="gps_city_text">{{ gpsCityInfo.cityName }}</view>
-				   </button>
-				   <view class="choose_title">开通城市</view>
-				   <view class="hot_city_list f_r_s">
+					
+				    <view class='city_title'>已开通城市：</view>
+				    <view class="hot_city_list f_r_s">
 					   <block v-for="(item, hotIndex) in hotCityList" :index="hotIndex" :key="hotIndex">
 						   <button form-type="submit" hover-class="none" @click="cityBtn(item)" 
 								class="hot_city_item">{{ item.cityNameLess }}</button>
@@ -132,6 +92,8 @@
 </template>
 
 <script>
+	import permision from "@/sdk/wa-permission/permission.js";
+	
 	export default {
 		data() {
 			return {
@@ -151,162 +113,86 @@
 			};
 		},
         onLoad() {
-			this.getLocation()
-        	this.initCityList();
+			this.resetAddress()
         },
         onReady() {
         	this.getPhoneInfo();
         },
         methods: {
-			resetAddress(){
-				this.gpsCityInfo.cityName='定位中..'
-				this.gpsCityInfo.cityId="1"
-				this.getLocation()
+			async resetAddress(){
+				// 检查是否开启位置信息服务
+				let server = permision.checkSystemEnableLocation();
+				if(!server) {
+					uni.showModal({
+						title: '提示',
+						content: '请打开定位服务功能',
+						showCancel: false,
+						success() {
+							var main = plus.android.runtimeMainActivity();
+							var Intent = plus.android.importClass('android.content.Intent');
+							var Settings = plus.android.importClass('android.provider.Settings');
+							var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+							main.startActivity(intent); // 打开系统设置GPS服务页面
+						}
+					});
+				} else {
+					//手机定位服务（GPS）已授权
+					that.fnGetlocation();
+				}
 			},
             // 获取设备信息
             getPhoneInfo() {
                 let res = uni.getSystemInfoSync();
                 this.pageHeight = res.screenHeight + "px";
             },
-
-            // 城市列表初始化
-        	initCityList() {
-        		return new Promise((resolve, reject) => {
-					// 发送请求所有城市请求
-					this.drawCityList(this.cityList || {});
-                });
-        	},
-            drawCityList(apiData = {}) {
-                let cityList = [];
-                let letterList = [];
-                for(let key in apiData) {
-                    if(!apiData[key]) continue;
-
-                    let itemObj = {};
-                    itemObj = {title: {text: key, id: key}};
-                    letterList.push({text: key, id: key+"_key"});
-                    let list = [];
-                    for(let i = 0;i<apiData[key].length;i++) {
-                        let info = apiData[key][i];
-                        if(!info.CITY_ID || !info.POSITION_X || !info.POSITION_Y) continue;
-
-                        let item = {
-                            cityId: info.CITY_ID || "",
-                            cityName: info.CITY_NAME || "",
-                            cityNameLess: info.C_CITY_NAME || "",
-                            lat: info.POSITION_X || "",
-                            lng: info.POSITION_Y || ""
-                        };
-                        list.push(item);
-                    }
-                    itemObj["list"] = list;
-                    cityList.push(itemObj);
-                }
-				cityList.sort(function(a, b){
-					if(a.title.id<b.title.id) return -1;
-					
-					if(a.title.id>b.title.id) return 1;
-					
-					return 0;
+			// 定位获取
+			fnGetlocation() {
+				let that = this;
+				uni.getLocation({
+					type: 'gcj02',
+					isHighAccuracy:true,
+					geocode: true,
+					success: function (res) {
+						let platform = uni.getSystemInfoSync().platform;
+						if (platform == "ios") {
+							that.bindList.long = res.longitude.toFixed(6);
+							that.bindList.lat = res.latitude.toFixed(6);
+						} else {
+							that.bindList.long = res.longitude;
+							that.bindList.lat = res.latitude;
+						}
+						that.gpsCityInfo.cityName=res.address.city
+						that.gpsCityInfo.cityId=res.address.cityCode
+						that.bindList.areaCode = res.address.cityCode;
+						that.bindList.address = res.address.city;
+						that.bindList.longlat =
+							"经度" +
+							that.changeTwoDecimal_f(that.bindList.long) +
+							"/" +
+							"纬度" +
+							that.changeTwoDecimal_f(that.bindList.lat);
+						// TODO 上报用户设备信息
+					},
+					fail: (e) => {
+						// 检查是否开启位置信息服务
+						let server = permision.checkSystemEnableLocation();
+						if(!server) {
+							uni.showModal({
+								title: '提示',
+								content: '请打开定位服务功能',
+								showCancel: false,
+								success() {
+									var main = plus.android.runtimeMainActivity();
+									var Intent = plus.android.importClass('android.content.Intent');
+									var Settings = plus.android.importClass('android.provider.Settings');
+									var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+									main.startActivity(intent); // 打开系统设置GPS服务页面
+								}
+							});
+						}
+					}
 				});
-				letterList.sort(function(a, b){
-					if(a.id<b.id) return -1;
-					if(a.id>b.id) return 1;
-					return 0;
-				});
-                this.cityList = cityList;
-                this.letterList = letterList;
-            },
-
-            // 字母事件
-            letterBtn(item) {
-                this.scrollIntoId = item.id.replace("_key", "");
-            },
-
-            // 城市点击事件
-            cityBtn(item) {
-				console.log('item',item)
-				let pages = getCurrentPages() 
-				console.log('pages',pages)
-				 // 2. 上一页面实例
-				// 注意是length长度，所以要想得到上一页面的实例需要 -2
-				// 若要返回上上页面的实例就 -3，以此类推
-				 let prevPage = pages[pages.length -2] 
-				 console.log('gps_city_text',prevPage)
-				 // 3. 给上一页面实例绑定getValue()方法和参数（注意是$vm）
-				 prevPage.$vm.getValue(item.cityNameLess ||item.cityName)
-				 // 4. 返回上一页
-                uni.navigateBack({
-                    delta: 1
-                });
-            },
-			// 定位授权
-			    getLocation() {
-			      let that = this;
-			      // 1、判断手机定位服务【GPS】 是否授权
-			      uni.getSystemInfo({
-			        success(res) {
-			          console.log("判断手机定位服务是否授权:", res);
-			          let locationEnabled = res.locationEnabled; //判断手机定位服务是否开启
-			          let locationAuthorized = res.locationAuthorized; //判断定位服务是否允许微信授权
-			          if (locationEnabled == false || locationAuthorized == false) {
-			            //手机定位服务（GPS）未授权
-			            uni.showToast({
-			              title: "请打开手机GPS",
-			              icon: "none",
-			            });
-			          } else {
-			            //手机定位服务（GPS）已授权
-							that.fnGetlocation()
-			          }
-			        },
-			      });
-			    },
-				// 定位获取
-				fnGetlocation() {
-				      let that = this;
-					  console.log('定位获取')
-					  	uni.getLocation({
-					  		type: 'gcj02',
-							isHighAccuracy:true,
-					  		geocode: true,
-					  		success: function (res) {
-								let platform = uni.getSystemInfoSync().platform;
-					  			if (platform == "ios") {
-									
-					  			      	//toFixed() 方法可把 Number 四舍五入为指定小数位数的数字。
-					  			        that.bindList.long = res.longitude.toFixed(6);
-					  			        that.bindList.lat = res.latitude.toFixed(6);
-					  			      } else {
-					  			        that.bindList.long = res.longitude;
-					  			        that.bindList.lat = res.latitude;
-					  			      }
-									  console.log('res',res)
-									  that.gpsCityInfo.cityName=res.address.city
-									  that.gpsCityInfo.cityId=res.address.cityCode
-									  console.log(that.gpsCityInfo)
-									  that.bindList.areaCode = res.address.cityCode;
-									  // that.bindList.specificAddress = res.data.detailLocation;
-									  that.bindList.address = res.address.city;
-					  				  console.log('bindList',that.bindList)
-					  			      that.bindList.longlat =
-					  			        "经度" +
-					  			        that.changeTwoDecimal_f(that.bindList.long) +
-					  			        "/" +
-					  			        "纬度" +
-					  			        that.changeTwoDecimal_f(that.bindList.lat);
-					  			      // that.getAreaCode(res.latitude, res.longitude);
-					  		},
-					  		fail: (e) => {  
-					  			        uni.showModal({
-					  			          content: "请开启手机定位服务",
-					  			          showCancel: false,
-					  			        });
-					  		}
-					  		});
-				   
-				    },
-				
+			},
 			changeTwoDecimal_f(num){
 				return num.toFixed(2)
 			}
