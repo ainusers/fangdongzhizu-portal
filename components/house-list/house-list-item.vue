@@ -71,7 +71,7 @@
     }
 
     .er_house_cont{
-		padding: 0px 10upx 0px 10upx;
+		padding: 0px 6px 0px 6px;
         box-sizing: border-box;
         width: calc(100% - 180upx);
     }

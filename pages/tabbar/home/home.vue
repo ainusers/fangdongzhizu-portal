@@ -1,11 +1,9 @@
 <style scope lang="scss" scoped>
 .main {
-	// background-color: #f2f2f2;
-	padding-top: 100rpx;
 	background:#5199ff;
-	 // height: var(--status-bar-height);
 }
 .home_top {
+	margin-top: calc(var(--status-bar-height));
 	position: relative;
 	width: 100%;
 	display: flex;
@@ -315,10 +313,10 @@ export default {
 			screenMoney:'',//筛选价格
 			has_elevator:'',//筛选是否有电梯
 			screenHeat_type:'',//筛选供暖方式
-			rental_house:'',//筛选主卧，次卧
+			room_type:'',//筛选主卧，次卧
 			home_type:'',//筛选三居室
 			moreChooseStr:[],//更多选中的筛选
-			moreSubKey:['room_type','has_elevator','heat_type','rental_house'],//更多提交接口的key 与screen-tab组件中moreType顺序相同
+			moreSubKey:['room_type','has_elevator','heat_type','room_type'],//更多提交接口的key 与screen-tab组件中moreType顺序相同
 		};
 	},
 	props: {
