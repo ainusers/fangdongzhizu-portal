@@ -25,7 +25,9 @@
 							</view>
 							<view>
 								<text class="time">{{tranfTime(item.createtime)}}</text>
-								<text class="city">发布于{{item.province | splitEnd1}}</text>
+								<block v-if="item.province">
+									<text class="city">发布于{{item.province | splitEnd1}}</text>
+								</block>
 							</view>
 						</view>
 					</view>
@@ -183,29 +185,24 @@
 		},
 		methods: {
 			tranfTime(autoTime) {
-				//var autoTime='2022-05-05 21:58:59'   //尽量让服务端传时间戳，能够有效避免时区问题
-				var date1 = (Date.parse(new Date())) / 1000; //计算当前时间戳 
-				var date2 = (Date.parse(new Date(autoTime))) / 1000;; //自动收货的时间戳 （字符串转时间戳）
-				var date3 = (date1 - date2) * 1000; //时间差的毫秒数
-				//计算出相差天数
-				var days = Math.floor(date3 / (24 * 3600 * 1000));
-				if (days <= 31) {
-					return days + "天前"
+				var now = (Date.parse(new Date())) / 1000; //计算当前时间戳 
+				var occur = (Date.parse(new Date(autoTime))) / 1000;; //自动收货的时间戳 （字符串转时间戳）
+				var diff = (now - occur) * 1000; //时间差的毫秒数
+				// 差值计算日、时、分
+				var day = Math.floor(diff / (24 * 3600 * 1000));
+				var hour = Math.floor(diff / (3600 * 1000));
+				var minute = Math.floor(diff / (60 * 1000));
+				//计算显示数值
+				if (minute < 1) {
+					return "刚刚"
+				} else if (hour < 1) {
+					return minute + "分钟前"
+				} else if(day < 1) {
+					return hour + '小时前'
+				} else if (day <= 31) {
+					return day + "天前"
 				} else {
 					return autoTime
-				}
-				//计算出小时数
-				var leave1 = date3 % (24 * 3600 * 1000); //计算天数后剩余的毫秒数
-				var hours = Math.floor(leave1 / (3600 * 1000));
-				//计算相差分钟数
-				var leave2 = leave1 % (3600 * 1000); //计算小时数后剩余的毫秒数
-				var minutes = Math.floor(leave2 / (60 * 1000));
-				if (hours == 0 && minutes == 0) {
-					return "刚刚"
-				} else if (!hours) {
-					return minutes + "分钟前"
-				} else {
-					return hours + '小时前'
 				}
 			},
 			//删除动态

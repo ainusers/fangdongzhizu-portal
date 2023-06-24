@@ -424,7 +424,7 @@ export default {
 			if(this.currPage==1){
 				uni.showLoading({
 					icon:'none',
-					mask:true,
+					mask:false,
 					title:'加载中'
 				})
 			}
