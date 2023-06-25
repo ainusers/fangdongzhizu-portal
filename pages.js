@@ -129,7 +129,7 @@ module.exports=()=>({
 			"style": {
 				// "transparentTitle":  "always",
 				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "图文正文",
+				"navigationBarTitleText": "图文详情",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
 				"backgroundTextStyle":"light"

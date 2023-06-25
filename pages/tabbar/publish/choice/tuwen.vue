@@ -208,7 +208,7 @@
 					});
 					return;
 				}
-				uni.showLoading({title:'发布中',mask:true,});
+				uni.showLoading({title:'发布中',mask:false,});
 				// 获取位置信息
 				// #ifdef APP-PLUS
 				let location = await this.getLocation();
@@ -219,13 +219,12 @@
 				if(this.imageList.length == 0) {
 					images = [];
 				} else {
-					
 					images = await attachUpload(this.imageList);
 					console.log(images)
 				}
 				let data= {
 						'imgUrl': images.toString(),
-						'username': this.$store.state.userInfo.username,
+						'nickname': this.$store.state.userInfo.nickname,
 						'avatar': this.$store.state.userInfo.avatar,
 						'userId': this.$store.state.userInfo.id,
 						'words': htmlEncode(this.input_content),
