@@ -3,8 +3,8 @@ import store from '@/store/index.js';
 import {getuserInfo,initStorestate,getStoreData,setBarBadgeNum} from '@/utils/utils.js'
 let fromName=''
 let socketInstance=''
-
- const createlink=function createlink(type){
+let isChatStatus=''
+ const createlink=  function  createlink(type){
 			socketInstance=''
 			socketInstance  =  uni.connectSocket({
 				// 确保你的服务器是运行态
@@ -21,73 +21,99 @@ let socketInstance=''
 					authSocket(type);
 				}, 10);
 			});
-			socketInstance.onMessage((res) => {
+			socketInstance.onMessage( async (res) => {
 				console.log("收到服务器内容：" + res.data);
 				let data = eval("(" + res.data + ")");
-				
-				//发送消息的时候需要给当前聊天记录赋值上fromname 和 fromavater  用于消息列表展示
+				//当前是否有过聊天记录 ，有直接push ，不需要添加fromName  没有就创建一个新的对象  
 				let tempChatList=''
-				setTimeout(function(){
-					initStorestate()
-					tempChatList=store.state.chatList
-					console.log(tempChatList)
-					tempChatList.forEach(item=>{
-						if(item.room==data.room&&!item.fromName){
-							console.log(item.fromName)
-							addKey(data,item,tempChatList)
-						}	
+				let newchatList=[]
+				 //之前是否聊过天
+				isChatStatus=isChatBoolean(data) 
+				// 添加对方的fromName
+					//处理所有类型初次聊天的info数据 //1.直接push，第一次添加都需要类型的判断处理
+				if(!isChatStatus){
+					let targetName=data.target
+					if(data.from != store.state.userInfo.username){
+						targetName=data.from
+					}
+					//初次收到消息要对当前对象添加fromName和fromAvtar  用于消息列表展示	
+					addKey(data).then(res=>{
+						 newchatList.push({room:data.room,fromName:res.fromName,fromAvatar:res.fromAvatar,targetName:targetName,unReadCount:0,data:[]})
+						return newchatList
+					}).then(res=>{
+						addInfoInit(data,res)
 					})
-				},0)
-				// // 非自己的消息震动
-				if(data.id&&data.from!=store.state.userInfo.username&&data.msg!='ping'&& data.type!='signal'){
-							setTimeout(function(){
-								if(tempChatList.length>0){
-									tempChatList.forEach(item=>{
-										if(item.room==data.room){
-											if(store.state.currentNameChat!=data.from){
-												console.log('++')
-												item.unReadCount+=1
-												getStoreData('unReadCount')
-												let count=store.state.unReadCount+=1
-												store.commit('unReadCount',count)
-												setBarBadgeNum(count)
-												
-											}
-										}
-									})
-										store.commit('chatList',tempChatList)
-								}	
-								
-							},0)
-					
-					uni.vibrateLong();
-				}
-				switch (data.type) {
-					// case 'system':
-					// 	this.addSystemTextMsg(data);
-					// 	break;
-					case 'text':
-						addTextMsg(data);
-						break;
-					case 'voice':
-						addVoiceMsg(data);
-						break;
-					case 'img':
-						addImgMsg(data);
-						break;
+				}else{
+					newchatList=store.state.chatList
+					console.log(newchatList)
+					addInfoInit(data,newchatList)
 				}
 			});
 		}
-		function addKey(data,item,tempChatList){
+		function addInfoInit(data,newchatList){
+			let tempChatList=''
+			console.log(newchatList)
+			switch (data.type) {
+				// case 'system':
+				// 	this.addSystemTextMsg(data);
+				// 	break;
+				case 'text':
+					tempChatList=addTextMsg(data,newchatList);
+					break;
+				case 'voice':
+					tempChatList=addVoiceMsg(data,newchatList);
+					console.log('返回数据')
+					break;
+				case 'img':
+					tempChatList=addImgMsg(data,newchatList);
+					break;
+			}
+					console.log(newchatList)
+					console.log('最后的数据',tempChatList)
+
+							if(data.id&&data.from!=store.state.userInfo.username&&data.msg!='ping'&& data.type!='signal'){
+							if(tempChatList.length>0){
+								tempChatList.forEach(item=>{
+									if(item.room==data.room){
+										if(store.state.currentNameChat!=data.from){
+											console.log('++')
+											setUnreadCountAll(data)
+											item.unReadCount+=1
+											console.log(item.unReadCount)
+											getStoreData('unReadCount')
+											let count=store.state.unReadCount+=1
+											console.log(count)
+											store.commit('unReadCount',count)
+											setBarBadgeNum(count)
+										}
+									}
+								})		
+							}	
+								uni.vibrateLong();
+							}
+							store.commit('chatList',tempChatList)	
+		}
+		function addKey(data){
 			let target=data.target
 			if(data.from != store.state.userInfo.username){
 				target=data.from
 			}
-			getuserInfo(target,1).then(res=>{
-				item.fromName=res.nickname
-				item.fromAvatar=res.avatar
-				store.commit('chatList',tempChatList)
+			let obj={
+				
+			}
+			return getuserInfo(target,1).then(res=>{
+				obj.fromName=res.nickname
+				obj.fromAvatar=res.avatar
+				return obj
 			})
+		}
+		function isChatBoolean(data){
+			let temp=store.state.chatList
+			if(temp&&temp.length==0){return }
+			let arr=temp.filter(item=>{
+				return item.room==data.room
+			})
+			return arr.length
 		}
 		//消息认证
 function authSocket(room,type) {
@@ -114,65 +140,26 @@ function setUnreadCountAll(data){
 		store.commit('unReadCount',count)
 	}
 }
-function addTextMsg(data){
-	console.log(data)
-	let isChat=false
-	let chatList=store.state.chatList
-	if(Array.isArray(chatList)){
-		chatList=chatList
-	}else{
-		chatList=JSON.parse(chatList)
-	}
-	chatList.forEach(item=>{
-		if(item.room==data.room){
-			isChat=true
-			let alttext=data.msg.split('alt="')[1]
-			let typename=''
-			console.log(alttext)
-			if(alttext){
-				console.log(alttext.slice(0,alttext.length-2))
-				typename=alttext.slice(0,alttext.length-2).split('><img')[0]
-				console.log(typename)
-			} 
-			if(data.msg.indexOf('alt')!=-1){
-				data.typename=typename
-			}else{
-				data.typename=data.msg
+function addTextMsg(data,chatList){
+	let typename=''
+	for(let i=0;i<chatList.length;i++){
+		let item=chatList[i]
+			if(item.room==data.room){
+				if(data.msg.indexOf('alt')!=-1){
+					data.typename=infoImgInit(data)
+				}else{
+					data.typename=data.msg
+				}
+				item.data.push(data)
 			}
-			
-			item.data.push(data)
-		}
-	})
-	if(!isChat){
-		if(data.msg.indexOf('alt')!=-1){
-			// let alttext=data.msg.split('alt="')[1]
-			// let typename=''
-			// if(alttext){
-			// 	typename=alttext.slice(0,alttext.length-2).split('"><img')[0]
-			// } 
-		}else{
-			data.typename=data.msg
-		}
-		setUnreadCountAll(data)
-			let target=data.target
-			if(data.from != store.state.userInfo.username){
-				target=data.from
-			}
-			chatList.push({room:data.room,fromName:fromName,targetName:target,unReadCount:0,data:[data]})
 	}
-		store.commit('chatList',chatList)
-		store.commit('lock',0)
+	return chatList	
 }	
-function addImgMsg(msg){
-	console.log(msg)
-	let chatList=store.state.chatList
-	let isChats=false
+function addImgMsg(msg,chatList){
 	msg.msg = setPicSize(msg.msg);
 	if(msg.id&&chatList.length>0){
 		chatList.forEach(item=>{
-			console.log(item.room)
 			if(item.room==msg.room){
-				isChats=true
 				let date=new Date(item.datetime)
 				let y=date.getFullYear()
 				msg.typename="[图片]"
@@ -180,26 +167,15 @@ function addImgMsg(msg){
 			}
 		})
 	}
-	if(!isChats){
-		msg.typename="[图片]"
-		setUnreadCountAll(msg)
-		let target=msg.target
-		if(msg.from != store.state.userInfo.username){
-			target=msg.from
-		}
-		chatList.push({room:msg.room,targetName:msg.target,unReadCount:0,data:[msg]})
-	}
-	store.commit('chatList',chatList)
-	store.commit('lock',0)
+	return chatList
 }
-function addVoiceMsg(data){
-	let chatList=store.state.chatList
-	let isChat=false
+function addVoiceMsg(data,chatList){
+	// let chatList=store.state.chatList
+	// let isChat=false
 				console.log('添加语音，',data)
 				if(data.id){
 					chatList.forEach(item=>{
 						if(item.room==data.room){
-							isChat=true
 							let date=new Date(item.datetime)
 							let y=date.getFullYear()
 							data.typename='[语音]'
@@ -207,20 +183,40 @@ function addVoiceMsg(data){
 						}
 					})
 				}
+				return chatList
 				//从来没有聊过天
-				if(!isChat){
-					setUnreadCountAll(data)
-					data.typename="[语音]"
-					let target=data.target
-					if(data.from != store.state.userInfo.username){
-						target=data.from
-					}
-					chatList.push({room:data.room,targetName:target,unReadCount:0,data:[data]})
-				}
-				store.commit('chatList',chatList)
-				store.commit('lock',0)
+				// if(!isChat){
+				// 	// setUnreadCountAll(data)
+				// 	data.typename="[语音]"
+				// 	let target=data.target
+				// 	if(data.from != store.state.userInfo.username){
+				// 		target=data.from
+				// 	}
+				// 	chatList.push({room:data.room,targetName:target,unReadCount:0,data:[data]})
+				// }
+				// store.commit('chatList',chatList)
+				// store.commit('lock',0)
 			}
 			// 处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
+
+function createPromise(data){
+	return new Promise((resolve,reject)=>{
+		setTimeout(function(){
+			resolve(data)
+		},0)
+		
+	})
+}
+
+function infoImgInit(data){
+	let	name=''
+	let alttext=data.msg.split('alt="')[1]
+	if(alttext){
+		name=alttext.slice(0,alttext.length-2).split('"><img')[0]
+	} 
+	return name
+}
+
 function setPicSize(content){
 				// 让图片最长边等于设置的最大长度，短边等比例缩小，图片控件真实改变，区别于aspectFit方式。
 				let maxW = uni.upx2px(350);//350是定义消息图片最大宽度

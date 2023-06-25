@@ -8,14 +8,20 @@ export default {
 	},
 	onShow: function() {
 		initStorestate()
-		let count=this.$store.state.unReadCount
-		if(count>0){
-			setBarBadgeNum(count)
-		}else{
-			uni.removeTabBarBadge({
-				index:3
-			})
-		}
+		uni.getStorage({
+			key:'unReadCount',
+			success(res){
+				let count=res.data
+				if(count>0){
+					setBarBadgeNum(count)
+				}else{
+					uni.removeTabBarBadge({
+						index:3
+					})
+				}
+			}
+		})
+		
 		
 			
 
