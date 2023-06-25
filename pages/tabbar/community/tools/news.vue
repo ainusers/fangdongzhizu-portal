@@ -132,7 +132,7 @@
 				<view class="voice-mode" :class="[isVoice?'':'hidden',recording?'recording':'']" @touchstart="voiceBegin" @touchmove.stop.prevent="voiceIng" @touchend="voiceEnd" @touchcancel="voiceCancel">{{voiceTis}}</view>
 				<view class="text-mode"  :class="isVoice?'hidden':''">
 					<view class="box">
-						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus" cursor-spacing="20" ref="textA" :focus="isFocus" :adjust-position="false"/>
+						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus" cursor-spacing="20" ref="textA" :focus="isFocus" :adjust-position="true"/>
 					</view>
 					<view class="em" @tap="chooseEmoji">
 						<view class="icon biaoqing"></view>
@@ -227,19 +227,30 @@ import store from '../../../../store/index.js';
 				chatId:'', //聊天室id
 				targetUserId:'',//目标userid
 				currentUserId:'' ,//当前userid
-				isNewsList:'0',//从消息列表过来的
+				isNewsList:'0',// 1 从消息列表过来的  0 否
 				lock:0,
 				isFocus:false,
 				emojLen:0,
 				historyArr:[],
 				historyIndex:0,
 				inputOffsetBottom:0,//键盘的高度
-				poType:'fixed'
+				poType:'fixed',
+				screenH:'',
+				inputOffsetTop:0
 			};
 		},
 		onLoad(option) {
 			that=this
+			uni.getSystemInfo({
+				success: (res) => {
+					console.log(res)
+					that.screenH=res.safeArea.height
+				}
+			})
+			//解决输入框遮挡问题
 			uni.onKeyboardHeightChange(res=>{
+				this.inputOffsetTop=that.screenH-res.height-50
+				console.log(this.inputOffsetTop)
 				this.inputOffsetBottom=res.height
 				if(res.height==0){
 					this.isFocus=false
@@ -255,10 +266,14 @@ import store from '../../../../store/index.js';
 			this.currentName=this.$store.state.userInfo.username
 			this.myAvatar=this.$store.state.userInfo.avatar 
 			this.$store.commit('currentNameChat',this.targetUserName)
-			//处理聊天记录
-			setTimeout(()=>{
-				this.chatSaveLocal()
-			},0)
+			if(this.isNewsList!=1){
+				//处理聊天记录
+				setTimeout(()=>{
+					console.log('处理聊天记录延迟')
+					this.chatSaveLocal()
+				},0)
+			}
+			
 			
 			// 语音自然播放结束
 			this.AUDIO.onEnded((res)=>{
@@ -279,7 +294,7 @@ import store from '../../../../store/index.js';
 			
 		},
 		onShow(){
-			this.scrollTop = 9999999;
+			// this.scrollTop = 99999;
 		},
 		onHide(){
 			//关闭连接
@@ -295,48 +310,39 @@ import store from '../../../../store/index.js';
 		watch:{
 			"$store.state.chatList":{
 				handler:(val,oldval)=>{
-					that.$store.state.lock+=1
-					if(that.$store.state.lock==1){
-						console.log(val)
-						console.log(typeof val)
 						let tempVal=JSON.parse(JSON.stringify(val))
 						that.chatList=tempVal
-						let isChat=false
-						tempVal.forEach(item=>{
-							if(item.room==that.chatId){
-								isChat=true
-								getuserInfo(item.targetName,1).then(res=>{
-									that.otherName=res.nickname
-									that.otherAvatar=res.avatar
-								})
-							if(item.data.length>30){
-								let temp=JSON.parse(JSON.stringify(item.data))
-								that.historyArr=item.data.slice(0,temp.length-29)
-								console.log(that.historyArr)
-								that.msgList=item.data.slice(item.data.length-30)
-								that.isHistoryLoading=false
-							}else{
-								that.msgList= item.data	
-								that.isHistoryLoading=true
-							}
-							}
-						})
-						that.$nextTick(function() {
-							console.log('可以滚动一下吗')
-							//进入页面滚动到底部
-							that.scrollTop = 9999;
-							let chatL=tempVal[tempVal.length-1].data
-							let chatLen=chatL.length-1
-							console.log(chatL[chatLen])
-							that.scrollToView='msg'+chatL[chatLen].id
-							that.scrollAnimation = true;
+						if(Array.isArray(tempVal)){
+							tempVal.forEach(item=>{
+								if(item.room==that.chatId){
+									getuserInfo(item.targetName,1).then(res=>{
+										that.otherName=res.nickname
+										that.otherAvatar=res.avatar
+									})
+								if(item.data.length>30){
+									let temp=JSON.parse(JSON.stringify(item.data))
+									that.historyArr=item.data.slice(0,temp.length-29)
+									console.log(that.historyArr)
+									that.msgList=item.data.slice(item.data.length-30)
+									that.isHistoryLoading=false
+								}else{
+									that.msgList= item.data	
+									that.isHistoryLoading=true
+								}
+								}
+							})
+							that.scrollAnimation = false
 							that.$nextTick(function() {
+								//进入页面滚动到底部
+								that.scrollTop +=300
+								that.$nextTick(function() {
+									that.scrollAnimation = true;
+								});
 								
 							});
-							
-						});
-						that.getMsgList()
-					}
+							that.getMsgList()
+						}
+		
 				},
 				deep:true
 			},
@@ -355,10 +361,20 @@ import store from '../../../../store/index.js';
 		methods:{
 			//聊天记录初始化
 			chatSaveLocal(){
+				console.log(this.msgList)
 				if(this.msgList.length==0){
 					let chatList=this.$store.state.chatList
-					
-					console.log(this.chatList instanceof Array)
+					uni.getStorage({
+						key:'chatList',
+						success: (res) => {
+							console.log(res)
+						}
+					})
+					console.log(chatList instanceof Array)
+					console.log(this.chatList)
+					if(chatList instanceof Object){
+						return
+					}
 					if(chatList instanceof Array){
 						this.chatList=chatList
 					}else{
@@ -497,7 +513,7 @@ import store from '../../../../store/index.js';
 				// 滚动到底部
 				this.$nextTick(function() {
 					//进入页面滚动到底部
-					this.scrollTop = 9999;
+					this.scrollTop = 99999;
 					this.$nextTick(function() {
 						this.scrollAnimation = true;
 					});
@@ -618,7 +634,7 @@ import store from '../../../../store/index.js';
 					this.textMsg=em.alt
 					this.hideMore = true;
 				}
-				
+				console.log(this.textMsg)
 				
 			},
 			// 获取焦点，如果不是选表情ing,则关闭抽屉
@@ -670,6 +686,7 @@ import store from '../../../../store/index.js';
 			},
 			// 发送消息
 			sendMsg(content,type){
+				
 				// 如果socket状态正常连接，则可以发送消息
 				let targetUserName=this.targetUserName
 				if (this.$store.state.socket_status) {

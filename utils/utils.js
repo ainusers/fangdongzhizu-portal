@@ -176,14 +176,18 @@ const tranfTime = function(autoTime) {
 }
 //根据userid获取userid 信息
 const getuserInfo = function(userId,type) {
+	console.log(type)
 	let url='/zf/v1/user/id'
-	let data={userId: userId}
+	let data=''
 	if(type){
 		url='/zf/v1/user/name' //根据用户名查询信息
 		data={
 			username:userId
 		}
+	}else{
+		data={userId: userId}
 	}
+	console.log(data)
 	return new Promise((resolve, reject) => {
 		
 		request.get(url,data, true).then(res => {

@@ -49,11 +49,17 @@
 		watch:{
 			"$store.state.chatList":{
 				handler:(val,oldval)=>{
-					let tempVal=JSON.parse(JSON.stringify(val))
-					console.log(tempVal)
-					that.InfoList=tempVal.reverse()	
-					console.log(that.InfoList)
-					that.initData(that.InfoList)
+					setTimeout(function(){
+						let tempVal=JSON.parse(JSON.stringify(val))
+						console.log(tempVal)
+						if(tempVal instanceof Array){
+							that.InfoList=tempVal.reverse()
+							console.log(that.InfoList)
+							that.initData(that.InfoList)
+						}
+						
+					},100)
+					
 				},
 				deep:true
 			}
@@ -88,6 +94,7 @@
 		},
 		methods: {
 			initData(arr){
+				console.log(arr)
 				arr.forEach(item=>{
 					this.getHistory(item.room,item).then(res=>{
 						if(res){
@@ -121,6 +128,7 @@
 				console.log(count)
 				let all =Number(this.$store.state.unReadCount)-count
 				this.$store.commit('unReadCount',all)
+				console.log(all)
 				if(all>0){
 					setBarBadgeNum(all)
 				}else{
@@ -136,7 +144,10 @@
 						break;
 					}
 				}
+				console.log(chatList)
+				console.log(this.$store.state.chatList)
 				this.$store.commit('chatList',chatList)
+				console.log('/pages/tabbar/community/tools/news?userId='+info.targetName+'&chatId='+info.room+'&isNewsList=1')
 				 uni.navigateTo({
 				 //            //保留当前页面，跳转到应用内的某个页面
 				            url: '/pages/tabbar/community/tools/news?userId='+info.targetName+'&chatId='+info.room+'&isNewsList=1'
