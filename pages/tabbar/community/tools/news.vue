@@ -14,86 +14,96 @@
 <template>
 	<view class="news">
 		<view class="content" @touchstart="hideDrawer">
-			<!--   获取历史记录的 -->
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView"  upper-threshold="50" @scrolltoupper="loadHistory">
+				<view class="main_con" :style="{paddingBottom:keyHeight+'px'}">
 				<!-- 加载历史数据的滚动动画 -->
-				<view class="loading" v-if="!isHistoryLoading">
-					<view class="spinner">
-						<view class="rect1"></view>
-						<view class="rect2"></view>
-						<view class="rect3"></view>
-						<view class="rect4"></view>
-						<view class="rect5"></view>
+					<view class="loading" v-if="!isHistoryLoading">
+						<view class="spinner">
+							<view class="rect1"></view>
+							<view class="rect2"></view>
+							<view class="rect3"></view>
+							<view class="rect4"></view>
+							<view class="rect5"></view>
+						</view>
 					</view>
-				</view>
 				<!-- 判断展示的内容类型 -->
-				<view class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
-					<!-- 系统消息 -->
-					<block v-if="row.type=='system'">
-						<view class="system">
-							<!-- 文字消息 -->
-							<view v-if="row.type=='system'" class="text">
-								{{row.msg}}
-							</view>
-						</view>
-					</block>
-					<!-- 用户消息 -->
-					<block v-if="row.type == 'text' || row.type == 'img' || row.type == 'voice'">
-						<!-- 1. 自己发出的消息 -->
-						<view class="my" v-if="row.from==currentName">
-							<!-- 左-消息 -->
-							<view class="left">
+					<view class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
+						<!-- 系统消息 -->
+						<block v-if="row.type=='system'">
+							<view class="system">
 								<!-- 文字消息 -->
-								<view v-if="row.type=='text'" class="bubble">
-									<rich-text :nodes="row.msg" ></rich-text>
-								</view>
-								<!-- 语言消息 -->
-								<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
-									<view class="length">{{JSON.parse(row.msg).length}}</view>
-									<view class="icon my-voice"></view>
-								</view>
-								<!-- 图片消息 -->
-								<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
-									<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}"></image>
+								<view v-if="row.type=='system'" class="text">
+									{{row.msg}}
 								</view>
 							</view>
-							<!-- 右-头像 -->
-							<view class="right">
-								<view class="userImage">
-								  <u-avatar class="avatar" :src="$store.state.userInfo.avatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
+						</block>
+						<!-- 用户消息 -->
+						<block v-if="row.type == 'text' || row.type == 'img' || row.type == 'voice'">
+							<!-- 1. 自己发出的消息 -->
+							<view class="my" v-if="row.from==currentName">
+								<!-- 左-消息 -->
+								<view class="time" v-if="row.datetime">{{row.datetime}}</view>
+								<view class="my_item">
+									<view class="left">
+											<!-- 文字消息 -->
+											<view v-if="row.type=='text'" class="bubble">
+												<rich-text :nodes="row.msg" ></rich-text>
+											</view>
+											<!-- 语言消息 -->
+											<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
+												<view class="length">{{JSON.parse(row.msg).length}}</view>
+												<view class="icon my-voice"></view>
+											</view>
+											<!-- 图片消息 -->
+											<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
+												<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}" mode="widthFix"></image>
+											</view>
+										</view>
+										<!-- 右-头像 -->
+										<view class="right">
+											<view class="userImage">
+											  <u-avatar class="avatar" :src="$store.state.userInfo.avatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
+											
+											</view>
+										</view>
+									
+								</view>
+								</view>
+							<!-- 2. 别人发出的消息 -->
+							<view class="other" v-else>
+								<!-- 左-头像 -->
+								<view class="time" v-if="row.datetime">{{row.datetime}}</view>
+								<view class="other_item">
+									<view class="left">
+											<view class="userImage">
+											  <u-avatar class="avatar" :src="otherAvatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
+											</view>
+											<!-- <image :src="otherAvatar"></image> -->
+										</view>
+										<!-- 右-用户名称-时间-消息 -->
+										<view class="right">
+											<view class="username">
+												<view class="name">{{otherName}}</view> 
+											</view>
+											<!-- 文字消息 -->
+											<view v-if="row.type=='text'" class="bubble">
+												<rich-text :nodes="row.msg"></rich-text>
+											</view>
+											<!-- 语音消息 -->
+											<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
+												<view class="icon other-voice"></view>
+												<view class="length">{{JSON.parse(row.msg).length}}</view>
+											</view>
+											<!-- 图片消息 -->
+											<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
+												<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}"></image>
+											</view>
+										</view>
+									
 								</view>
 							</view>
-						</view>
-						<!-- 2. 别人发出的消息 -->
-						<view class="other" v-else>
-							<!-- 左-头像 -->
-							<view class="left">
-								<view class="userImage">
-								  <u-avatar class="avatar" :src="otherAvatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
-								</view>
-								<!-- <image :src="otherAvatar"></image> -->
-							</view>
-							<!-- 右-用户名称-时间-消息 -->
-							<view class="right">
-								<view class="username">
-									<view class="name">{{otherName}}</view> <view class="time">{{row.datetime}}</view>
-								</view>
-								<!-- 文字消息 -->
-								<view v-if="row.type=='text'" class="bubble">
-									<rich-text :nodes="row.msg"></rich-text>
-								</view>
-								<!-- 语音消息 -->
-								<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
-									<view class="icon other-voice"></view>
-									<view class="length">{{JSON.parse(row.msg).length}}</view>
-								</view>
-								<!-- 图片消息 -->
-								<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
-									<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}"></image>
-								</view>
-							</view>
-						</view>
-					</block>
+						</block>
+					</view>
 				</view>
 			</scroll-view>
 		</view>
@@ -132,7 +142,7 @@
 				<view class="voice-mode" :class="[isVoice?'':'hidden',recording?'recording':'']" @touchstart="voiceBegin" @touchmove.stop.prevent="voiceIng" @touchend="voiceEnd" @touchcancel="voiceCancel">{{voiceTis}}</view>
 				<view class="text-mode"  :class="isVoice?'hidden':''">
 					<view class="box">
-						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus" cursor-spacing="20" ref="textA" :focus="isFocus" :adjust-position="true"/>
+						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus" cursor-spacing="20" ref="textA" :focus="isFocus" :adjust-position="false"/>
 					</view>
 					<view class="em" @tap="chooseEmoji">
 						<view class="icon biaoqing"></view>
@@ -160,7 +170,7 @@
 <script>
 	let that=''
 import store from '../../../../store/index.js';
-	import {getPlatform,initStorestate,getStoreData,getuserInfo} from '../../../../utils/utils.js'
+	import {getPlatform,initStorestate,getStoreData,getuserInfo,dateTime1,spaceTime} from '../../../../utils/utils.js'
 	import {createlink} from '../../../../utils/request/createWebsocket.js'
 	export default {
 		data() {
@@ -236,7 +246,9 @@ import store from '../../../../store/index.js';
 				inputOffsetBottom:0,//键盘的高度
 				poType:'fixed',
 				screenH:'',
-				inputOffsetTop:0
+				inputOffsetTop:0,
+				oldTime:new Date(),
+				keyHeight:0
 			};
 		},
 		onLoad(option) {
@@ -252,6 +264,8 @@ import store from '../../../../store/index.js';
 				this.inputOffsetTop=that.screenH-res.height-50
 				console.log(this.inputOffsetTop)
 				this.inputOffsetBottom=res.height
+				this.keyHeight=res.height
+				this.scrollBottom()
 				if(res.height==0){
 					this.isFocus=false
 					this.poType='fixed'
@@ -268,10 +282,10 @@ import store from '../../../../store/index.js';
 			this.$store.commit('currentNameChat',this.targetUserName)
 			if(this.isNewsList!=1){
 				//处理聊天记录
-				setTimeout(()=>{
-					console.log('处理聊天记录延迟')
-					this.chatSaveLocal()
-				},0)
+				// setTimeout(()=>{
+				// 	console.log('处理聊天记录延迟')
+				// 	this.chatSaveLocal()
+				// },0)
 			}
 			
 			
@@ -310,11 +324,31 @@ import store from '../../../../store/index.js';
 		watch:{
 			"$store.state.chatList":{
 				handler:(val,oldval)=>{
+						that.oldTime=new Date()
 						let tempVal=JSON.parse(JSON.stringify(val))
 						that.chatList=tempVal
+						console.log(that.chatList)
 						if(Array.isArray(tempVal)){
 							tempVal.forEach(item=>{
 								if(item.room==that.chatId){
+									let data=item.data
+									for(let i=data.length-1;i>=0;i--){
+										let t=	spaceTime(that.oldTime,data[i].datetime)
+										console.log(t)
+										// if(i<data.length-1){
+											if(t){
+												that.oldTime=t
+											}
+										
+										// }
+											data[i].datetime=t
+											if(data[i].datetime){
+												data[i].datetime=dateTime1(data[i].datetime)	
+											}else{
+												data[i].datetime=''
+											}	
+									}
+									
 									getuserInfo(item.targetName,1).then(res=>{
 										that.otherName=res.nickname
 										that.otherAvatar=res.avatar
@@ -334,7 +368,7 @@ import store from '../../../../store/index.js';
 							that.scrollAnimation = false
 							that.$nextTick(function() {
 								//进入页面滚动到底部
-								that.scrollTop +=300
+								that.scrollToView="msg"+that.msgList[that.msgList.length-1].id
 								that.$nextTick(function() {
 									that.scrollAnimation = true;
 								});
@@ -382,6 +416,11 @@ import store from '../../../../store/index.js';
 					}
 					this.chatList.forEach(item=>{
 						if(item.room==that.chatId){
+							console.log(item)
+							let data=item.data
+							for(let i=0;i<data.length;i++){
+								data[i].datetime=dateTime1(data[i].datetime)
+							}
 							if(item.data.length>30){
 								that.msgList=item.data.slice(item.data.length-30)
 								this.isHistoryLoading=false
@@ -407,6 +446,7 @@ import store from '../../../../store/index.js';
 				}
 				this.getMsgList()
 			},
+			
 			// 创建websocket连接方法
 			initSocket() {
 				// 打开socket链接
@@ -600,6 +640,15 @@ import store from '../../../../store/index.js';
 					}
 				});
 			},
+			getElementHeight(){
+				const query=uni.createSelectorQuery().in(this)
+				query.select('.popup-layer').boundingClientRect(data=>{
+					// this.
+					this.keyHeight=data.height
+					console.log(data.height)
+					this.scrollBottom()
+				}).exec()
+			},
 			// 选择表情
 			chooseEmoji(){
 				this.hideMore = true;
@@ -614,9 +663,13 @@ import store from '../../../../store/index.js';
 					})
 				})
 				if(this.hideEmoji){
+					setTimeout(()=>{
+						this.getElementHeight()
+					},0)
 					this.hideEmoji = false;
 					this.openDrawer();
 				}else{
+					this.keyHeight=0
 					this.hideDrawer();
 				}
 			},
@@ -878,6 +931,18 @@ import store from '../../../../store/index.js';
 			discard(){
 				return;
 			},
+			//滚动到底部
+			scrollBottom(){
+				that.scrollToView=''
+				that.scrollAnimation = false
+				that.$nextTick(function() {
+					//进入页面滚动到底部
+					that.scrollToView="msg"+that.msgList[that.msgList.length-1].id
+					that.$nextTick(function() {
+						that.scrollAnimation = true;
+					});
+				});
+			}
 		}
 	}
 </script>

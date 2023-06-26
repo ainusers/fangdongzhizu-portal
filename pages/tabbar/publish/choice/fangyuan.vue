@@ -1819,7 +1819,7 @@
 			},
 			async publish() {
 				this.getCount().then(async res => {
-					if (res.code == 200 && !res.data[0].status) {
+					if (res.code == 200 && res.data[0].status) {
 						this.homeArrIndex = this.houseModel.chekcNum
 						if (!this.isCheck) {
 							return
@@ -1915,6 +1915,8 @@
 								uni.$u.toast('发布失败')
 							}
 						})
+					}else{
+						uni.$u.toast('每个用户只能发布三个房源')
 					}
 				})
 			},

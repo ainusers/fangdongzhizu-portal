@@ -376,6 +376,7 @@ export default {
 			handler(newVal,oldVal){
 				that.houseList=[]
 				that.pageNum=1
+				that.loadStatus='loadmore'
 				// #ifdef APP-PLUS
 					var webView = this.$mp.page.$getAppWebview();
 				// #endif
@@ -443,7 +444,12 @@ export default {
 		scrolltolower(){
 			if(this.loadStatus=='loadmore'){
 				this.pageNum++
-				this.getstatusHouseList(Number(this.current)+1)
+				if(this.current!=3){
+					this.getstatusHouseList(Number(this.current)+1)
+				}else{
+					this.getCollect()
+				}
+				
 			}
 		},
 		//下架刷新
@@ -453,9 +459,20 @@ export default {
 		},
 		//获取收藏的房源
 		getCollect(){
-			this.$H.get('/zf/v1/const/collect/rooms',{userId:that.$store.state.userInfo.id},true).then(res=>{
+			this.$H.get('/zf/v1/const/collect/rooms',{
+				userId:that.$store.state.userInfo.id,
+				page:that.pageNum,
+				size:10
+			},true).then(res=>{
 				if(res.status&&res.code==200){
 					that.houseList=[...that.houseList,...res.data]	
+					if(res.data&&res.data.length<10){
+						this.loadStatus='end'
+						uni.showToast({
+							icon: 'none',
+							title: '已加载完成'
+						});
+					}
 					that.$store.commit('houseInfo',that.houseList)
 				}else{
 					uni.showToast({

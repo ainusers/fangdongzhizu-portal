@@ -416,9 +416,17 @@ page{
 				}
 			}
 			.my{
-				width: 100%;
-				display: flex;
-				justify-content: flex-end;
+				.time{
+					text-align: center;
+					color: #999;
+					font-size: 24rpx;
+					margin-bottom: 20rpx;
+				}
+				.my_item{
+					width: 100%;
+					display: flex;
+					justify-content: flex-end;
+				}
 				.left{
 					min-height: 80upx;
 					
@@ -458,8 +466,15 @@ page{
 				}
 			}
 			.other{
-				width: 100%;
-				display: flex;
+				.other_item{
+					width: 100%;
+					display: flex;
+				}
+				.time{
+					text-align: center;
+					color: #999;
+					font-size: 24upx;
+				}
 				.left{
 					margin-right: 15upx;
 				}

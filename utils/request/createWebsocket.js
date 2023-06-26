@@ -26,7 +26,7 @@ let isChatStatus=''
 				let data = eval("(" + res.data + ")");
 				//当前是否有过聊天记录 ，有直接push ，不需要添加fromName  没有就创建一个新的对象  
 				let tempChatList=''
-				let newchatList=[]
+				let newchatList=store.state.chatList ||[]
 				 //之前是否聊过天
 				isChatStatus=isChatBoolean(data) 
 				// 添加对方的fromName
@@ -44,7 +44,7 @@ let isChatStatus=''
 						addInfoInit(data,res)
 					})
 				}else{
-					newchatList=store.state.chatList
+					
 					console.log(newchatList)
 					addInfoInit(data,newchatList)
 				}
@@ -184,18 +184,6 @@ function addVoiceMsg(data,chatList){
 					})
 				}
 				return chatList
-				//从来没有聊过天
-				// if(!isChat){
-				// 	// setUnreadCountAll(data)
-				// 	data.typename="[语音]"
-				// 	let target=data.target
-				// 	if(data.from != store.state.userInfo.username){
-				// 		target=data.from
-				// 	}
-				// 	chatList.push({room:data.room,targetName:target,unReadCount:0,data:[data]})
-				// }
-				// store.commit('chatList',chatList)
-				// store.commit('lock',0)
 			}
 			// 处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
 

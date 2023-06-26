@@ -156,6 +156,7 @@
 				let data={
 						  "page":this.tuwen_default_page ,
 						  "size": "10",
+						  'userId':this.$store.state.userInfo.id
 				}
 				this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
 					if(res.status){

@@ -149,6 +149,82 @@ const isLoginCheck = function() {
 		})
 	}
 }
+// 聊天记录中的事件格式化
+const dateTime1=function(e){
+	let old=new Date(e)
+	let neT =new Date()
+	// 获取旧的具体时间
+	let d=old.getTime()
+	let h=old.getHours()
+	let m=old.getMinutes()
+	let Y=old.getFullYear()
+	let M=old.getMonth()+1
+	let D=old.getDate()
+	//获取新的具体时间
+	let nd=neT.getTime()
+	let nh=neT.getHours()
+	let n=neT.getMinutes()
+	let nY=neT.getFullYear()
+	let nM=neT.getMonth()+1
+	let nD=neT.getDate()
+	//当天的时间
+	console.log(D==nD&&M==nM&&Y==nY)
+	if(D==nD&&M==nM&&Y==nY){
+		if(h<10){
+			h='0'+h
+		}
+		if(m<10){
+			m='0'+m
+		}
+		return h+':'+m
+	}
+	//昨天的时间
+	if(D+1==nD&&M==nM&&Y==nY){
+		if(h<10){
+			h='0'+h
+		}
+		if(m<10){
+			m='0'+m
+		}
+		return  '昨天'+h+':'+m
+	}
+	//当年的
+	if(Y==nY){
+		if(h<10){
+			h='0'+h
+		}
+		if(m<10){
+			m='0'+m
+		}
+		return  M+'月' +D+'日'+' '+h+':'+m
+	}else{
+		if(h<10){
+			h='0'+h
+		}
+		if(m<10){
+			m='0'+m
+		}
+		return  Y+'年'+M+'月'+D+'日'+' '+h+':'+m
+	}
+}
+// 控制时间间隔
+const spaceTime=function(old,now){
+	console.log(old)
+	old=new Date(old)
+	now=new Date(now)
+	console.log(old)
+	console.log(now)
+	var told=old.getTime()
+	var tnow=now.getTime()
+	console.log(told)
+	console.log(tnow+1000*60*5)
+	console.log(told>(tnow+1000*60*5))
+	if(told>(tnow+1000*60*5)){
+		return now
+	}else{
+		return ''
+	}
+}
 //时间转换
 const tranfTime = function(autoTime) {
 	//var autoTime='2022-05-05 21:58:59'   //尽量让服务端传时间戳，能够有效避免时区问题
@@ -214,5 +290,7 @@ export {
 	getuserInfo,
 	compressImg,
 	setBarBadgeNum,
-	showToastTit
+	showToastTit,
+	dateTime1,
+	spaceTime
 }

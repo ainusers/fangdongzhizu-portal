@@ -93,7 +93,7 @@ module.exports=()=>({
 			"style": {
 				"transparentTitle":  "always",
 				// "navigationBarTitleText": "",
-				// "navigationBarTextStyle": "black",
+				"navigationBarTextStyle": "black",
 				// "navigationBarBackgroundColor": "#f2f2f2",
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light",

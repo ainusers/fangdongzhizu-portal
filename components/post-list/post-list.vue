@@ -32,31 +32,33 @@
 						</view>
 					</view>
 					<!-- 列表内容 -->
-					<view class="post-content">
+					<view class="post-content" >
 						<rich-text class="post-text" :nodes="item.words"></rich-text>
-						<block>
-							<!--一张图片-->
-							<block v-if="item.image&&item.image.length == 1">
-								<image :lazy-load="true" mode="scaleToFill" class="img-style-1" :src="item.image[0]"
-									@tap.stop="previewImage(item.image[0], item.image, item.integral, item.id,index)"></image>
+						<view v-show="item.image[0]!=''">
+							<block>
+								<!--一张图片-->
+								<block v-if="item.image&&item.image.length == 1">
+									<image :lazy-load="true" mode="aspectFill" class="img-style-1" :src="item.image[0]"
+										@tap.stop="previewImage(item.image[0], item.image, item.integral, item.id,index)"></image>
+								</block>
+								<!--二张图片-->
+								<block v-if="item.image&&item.image.length == 2">
+									<view class="img-style-2">
+										<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
+											@tap.stop="previewImage(imgItem, item.image, item.integral, item.id,index)"
+											mode="aspectFill" :src="imgItem"></image>
+									</view>
+								</block>
+								<!--三张以上图片-->
+								<block v-if="item.image&&item.image.length > 2">
+									<view class="img-style-3">
+										<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
+											@tap.stop="previewImage(imgItem, item.image, item.integral, item.id,index)"
+											mode="aspectFill" :src="imgItem"></image>
+									</view>
+								</block>
 							</block>
-							<!--二张图片-->
-							<block v-if="item.image&&item.image.length == 2">
-								<view class="img-style-2">
-									<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
-										@tap.stop="previewImage(imgItem, item.image, item.integral, item.id,index)"
-										mode="scaleToFill" :src="imgItem"></image>
-								</view>
-							</block>
-							<!--三张以上图片-->
-							<block v-if="item.image&&item.image.length > 2">
-								<view class="img-style-3">
-									<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
-										@tap.stop="previewImage(imgItem, item.image, item.integral, item.id,index)"
-										mode="scaleToFill" :src="imgItem"></image>
-								</view>
-							</block>
-						</block>
+						</view>
 					</view>
 					<!-- 列表操作（分享，评论，点赞） -->
 					<view class="p-footer">

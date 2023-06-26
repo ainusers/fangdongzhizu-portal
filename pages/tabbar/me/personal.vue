@@ -1,34 +1,8 @@
 <template>
 	<view class="personal_main">
 		<view class="person_info">
-			<view class="top">
-				<view class="background"></view>
-			</view>
-			<view class="user-card">
-				<view class="card" @click="goto('/pages/tabbar/me/user')">
-					<view class="top">
-			  	<view class="userImage">
-							<!-- <image :src="this.userInfo.avatar" mode="aspectFit"></image> -->
-							<u-avatar class="avatar" :src="this.userInfo.avatar" level-bg-color="#8072f3" size="140rpx">
-							</u-avatar>
-						</view>
-						<image mode="aspectFit" src="../../../static/me/renzheng.png" class="renzheng_icon"></image>
-					</view>
-					<view class="bottom">
-						<view class="left">
-							<view class="user-text">
-								<view class="userNickName">{{ this.userInfo.nickname }}
-									<image mode="aspectFit" src="../../../static/me/girl.svg" class="sex_con"
-										v-if="this.userInfo.sex == 0"></image>
-									<image mode="aspectFit" src="../../../static/me/boy.svg" class="sex_con" v-else>
-									</image>
-								</view>
-							</view>
-							<view class="user-phone">{{ this.userInfo.signature }}</view>
-						</view>
-					</view>
-				</view>
-			</view>
+			<!-- 个人信息 -->
+			<myInfoAavtar :userInfo="userInfo" :isShow="false"/>
 			<u-tabs :list="list" :is-scroll="false" :current="current" @change="change"></u-tabs>
 		</view>
 
@@ -64,6 +38,7 @@
 	import postList from '@/components/post-list/post-list.vue';
 	import houseListItem from '@/components/house-list/house-list-item.vue';
 	import { getuserInfo } from '@/utils/utils.js'
+	import myInfoAavtar from '@/components/common/myInfoAvatar.vue'
 	export default {
 		data() {
 			return {
@@ -85,6 +60,7 @@
 				userId: ''
 			}
 		},
+		
 		onLoad(options) {
 			that = this
 			this.userId = options.userId
@@ -94,7 +70,8 @@
 		},
 		components: {
 			houseListItem,
-			postList
+			postList,
+			myInfoAavtar
 		},
 		methods: {
 			//动态点赞
@@ -160,7 +137,7 @@
 					userId: this.userId,
 					page: this.currPage,
 					size: 10,
-					type:'user'
+					way:'user'
 				}
 				let url = '/zf/v1/dynamic/list'
 				this.$H.post(url, data, true).then(res => {
@@ -192,7 +169,7 @@
 	.personal_bottom {
 		position: absolute;
 		width: 100%;
-		height: 65%;
+		height: 70%;
 		bottom: 0;
 		overflow-y: scroll;
 		webkit-overflow-scrolling: touch;
@@ -303,8 +280,8 @@
 
 	.renzheng_icon {
 		display: block;
-		width: 100upx;
-		height: 30upx;
+		width: 120upx;
+		height: 40upx;
 		position: relative;
 		bottom: 110rpx;
 		margin: 0 auto;

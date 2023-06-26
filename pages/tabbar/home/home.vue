@@ -82,6 +82,7 @@ uni-swiper-item{
 <template>
 	<view class="main">
 		<!-- 顶部区域 -->
+		<u-sticky offset-top="0">
 		<view class="home_top">
 		  <!-- 城市 -->
 		  <view class="city" @click.stop="chooseCity">
@@ -97,6 +98,7 @@ uni-swiper-item{
 		  <!-- 搜索按钮 -->
 		  <!-- <view class="search" @click.stop="searchBtn"></view> -->
 		</view>
+		
 		<!-- 筛选项 -->
 		<!-- 转租和直租 -->
 		<screenTab ref="screenTab" 
@@ -119,6 +121,7 @@ uni-swiper-item{
 		</screenTab>
 		<!-- 换租的筛选 -->
 		<screenHuan v-if="current==2"></screenHuan>
+		</u-sticky>
 		<!-- 内容区域 -->
 		<swiper class="list-swiper" @change="swipeIndex" :current="current" :duration="300" ref="listSwiper">
 		
@@ -363,8 +366,6 @@ export default {
 		// this.tuwen_default_page = 1;
 		// this.tuwen_data = this.tuwen_data.reverse();
 		// this.getMomentPost();
-		// 
-		console.log('刷新')
 		that.currPage=1
 		this.getHouseList()
 		this.houseList=[]

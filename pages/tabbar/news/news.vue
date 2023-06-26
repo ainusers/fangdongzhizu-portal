@@ -1,11 +1,15 @@
 <template>
 	<view class="container" :class="{'active':active}">
 		<u-cell-group v-if="InfoList.length>0">
-			<block v-for="(item,index) in InfoList" :key="index">
-				<u-cell-item :icon="item.fromAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.fromName" :label='item.data[item.data.length-1].typename' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="item.data[item.data.length-1].datetime" @click="goInfo(item)" v-if="item.data[0]" >
-					 <u-badge :count="item.unReadCount" :absolute="true" slot="right-icon" v-if="item.unReadCount" :offset="offset"></u-badge>
-				</u-cell-item>
-			</block>
+			<uni-swipe-action>
+				<block v-for="(item,index) in InfoList" :key="index">
+					 <uni-swipe-action-item :right-options="options"  @click="bindClick" @change="swipeChange($event, index)" :show="actionShow">
+							<u-cell-item :icon="item.fromAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.fromName" :label='item.data[item.data.length-1].typename' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="item.data[item.data.length-1].datetime" @click="goInfo(item)" v-if="item.data[0]" >
+								 <u-badge :count="item.unReadCount" :absolute="true" slot="right-icon" v-if="item.unReadCount" :offset="offset"></u-badge>
+							</u-cell-item> 
+						</uni-swipe-action-item>
+				</block>
+			</uni-swipe-action>
 		</u-cell-group>
 		<view v-else class="noData">
 			暂无消息!
@@ -19,6 +23,14 @@
 	export default {
 		data() {
 			return {
+				options:[
+					 {
+						text: '删除',
+						style: {
+							backgroundColor: '#dd524d'
+						}
+					 }
+				],
 				active: false,
 				avatar: "https://web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png",
 				iconStype:{
@@ -39,8 +51,10 @@
 				},
 				InfoList:[],
 				newsmsg:'',
-				offset:[20,20]
-				
+				offset:[20,20],
+				deleteIndex:0,
+				deleteItem :0,
+				actionShow:'none'
 			};
 		},
 		onLoad() {
@@ -85,6 +99,9 @@
 			
 		onPullDownRefresh(){
 			console.log('页面下拉数显了')
+			setTimeout(function(){
+				uni.stopPullDownRefresh();
+			},2000)
 		},
 		onReachBottom(){
 			console.log('滚动到底部了')
@@ -95,6 +112,7 @@
 		methods: {
 			initData(arr){
 				console.log(arr)
+				this.getHistory()
 				arr.forEach(item=>{
 					this.getHistory(item.room,item).then(res=>{
 						if(res){
@@ -110,11 +128,28 @@
 					
 				})
 			},
-			getHistory(roomId,item){
-				let data={
-					roomId:roomId
+			bindClick(e){
+				this.actionShow='none'
+					let tempT=''
+					tempT=setInterval(()=>{
+						if(this.deleteItem){
+							this.InfoList.splice(this.deleteIndex,1)
+							clearInterval(tempT)
+						}
+					},500)
+					
+			},
+			swipeChange(e,index){
+				this.actionShow=e
+				if(e=='none'){
+					this.deleteItem=1
+				}else{
+					this.deleteItem=0
 				}
-				return this.$H.get('/zf/v1/const/community/offline/msg',data,true).then(res=>{
+				this.deleteIndex=index
+			},
+			getHistory(roomId,item){
+				return this.$H.get('/zf/v1/const/community/offline/msg',null,true).then(res=>{
 					if(res.data.length>0){
 						return res.data
 					}	

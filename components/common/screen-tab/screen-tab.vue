@@ -176,7 +176,7 @@
 				topIcon: require('../../../static/home/down-active.png'),
 				listTcShow: false, //筛选框显示状态
 				fixedContHeight: "100%", // 弹窗的高度
-				fixedTcTop: "250rpx", // 筛选条件距离顶部高度43px
+				fixedTcTop: "235rpx", // 筛选条件距离顶部高度43px
 				currentClickType: '',
 				contHeight: "50%", // 筛选条件高度
 				regionLeftIndex: 0,

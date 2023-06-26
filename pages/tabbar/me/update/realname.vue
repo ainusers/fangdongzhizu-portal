@@ -52,7 +52,7 @@
 		['original'],
 		['compressed', 'original']
 	]
-	import {attachUpload} from '@/utils/utils.js'
+	import {attachUpload,compressImg} from '@/utils/utils.js'
 	export default{
 		data(){
 			return{
@@ -80,10 +80,16 @@
 					success: (res) => {
 						// #ifdef APP-PLUS
 						//提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
-						var compressd = cp_images=> {
-							this.form[type+'Url']=cp_images
-						}
-						image.compress(res.tempFilePaths,compressd);
+						// var compressd = cp_images=> {
+						// 	this.form[type+'Url']=cp_images
+						// }
+						// image.compress(res.tempFilePaths,compressd);
+						res.tempFilePaths.forEach(item=>{
+							compressImg(item).then(cp_images=>{
+								console.log(cp_images)
+								this.form[type+'Url']=cp_images
+							})
+						})
 						// #endif
 						// #ifndef APP-PLUS
 						attachUpload(res.tempFilePaths).then(res=>{
