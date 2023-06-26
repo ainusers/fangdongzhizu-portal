@@ -5,7 +5,6 @@
 	.city_title{
 		padding: 10px 10px 10px 15px;
 	}
-    /* #endif */
     .choose_title{
 		display: flex;
 		align-items: center;
@@ -120,21 +119,11 @@
         },
         methods: {
 			async resetAddress(){
-				// 检查是否开启位置信息服务
-				let server = permision.checkSystemEnableLocation();
-				if(!server) {
-					uni.showModal({
-						title: '提示',
-						content: '请打开定位服务功能',
-						showCancel: false,
-						success() {
-							var main = plus.android.runtimeMainActivity();
-							var Intent = plus.android.importClass('android.content.Intent');
-							var Settings = plus.android.importClass('android.provider.Settings');
-							var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-							main.startActivity(intent); // 打开系统设置GPS服务页面
-						}
-					});
+				// 检查是否开启位置信息权限
+				let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
+				if (result != 1) {
+					// 打开权限设置界面
+					permision.gotoAppPermissionSetting(); 
 				} else {
 					//手机定位服务（GPS）已授权
 					that.fnGetlocation();
