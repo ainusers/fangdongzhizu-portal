@@ -122,7 +122,7 @@
 					});
 					return;
 				}
-				this.$H.post('v1/user/reset',{
+				this.$H.post('/zf/v1/user/reset',{
 					username: this.phone,
 					code: this.code,
 					password: this.password

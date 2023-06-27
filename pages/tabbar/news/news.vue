@@ -2,13 +2,13 @@
 	<view class="container" :class="{'active':active}">
 		<u-cell-group v-if="InfoList.length>0">
 			<uni-swipe-action>
-				<block v-for="(item,index) in InfoList" :key="index">
-					 <uni-swipe-action-item :right-options="options"  @click="bindClick" @change="swipeChange($event, index)" :show="actionShow">
-							<u-cell-item :icon="item.fromAvatar || '../../../static/me/avtar.png'"  mode="circle" icon-size="100" :icon-style="iconStype" :title="item.fromName" :label='item.data[item.data.length-1].typename' :arrow="false" :title-style="titStyle"  :label-style="lableStyle"  :value="item.data[item.data.length-1].datetime" @click="goInfo(item)" v-if="item.data[0]" >
-								 <u-badge :count="item.unReadCount" :absolute="true" slot="right-icon" v-if="item.unReadCount" :offset="offset"></u-badge>
-							</u-cell-item> 
-						</uni-swipe-action-item>
-				</block>
+				<uni-list>
+					<block v-for="(item,index) in InfoList" :key="index">
+						 <uni-swipe-action-item :right-options="options"  @click="bindClick" @change="swipeChange($event, index)" :show="item.actionShow">
+								<uni-list-chat :avatar-circle="true" :title="item.fromName" :avatar="item.fromAvatar || '../../../static/me/avtar.png'" :note="item.data[item.data.length-1].typename" :time="item.data[item.data.length-1].datetime" :show-badge="true" :badge-text="item.unReadCount" clickable   @click="goInfo(item)"></uni-list-chat>
+							</uni-swipe-action-item>
+					</block>
+				</uni-list>
 			</uni-swipe-action>
 		</u-cell-group>
 		<view v-else class="noData">
@@ -140,7 +140,7 @@
 					
 			},
 			swipeChange(e,index){
-				this.actionShow=e
+				this.InfoList[index].actionShow=e
 				if(e=='none'){
 					this.deleteItem=1
 				}else{
@@ -157,13 +157,9 @@
 			},
 			goInfo(info){
 				initStorestate()
-				console.log(info)
 				let count=info.unReadCount
-				console.log(this.$store.state.unReadCount)
-				console.log(count)
 				let all =Number(this.$store.state.unReadCount)-count
 				this.$store.commit('unReadCount',all)
-				console.log(all)
 				if(all>0){
 					setBarBadgeNum(all)
 				}else{
@@ -172,17 +168,13 @@
 					})
 				}
 				let chatList=this.$store.state.chatList
-				console.log(chatList)
 				for(let i=0;i<chatList.length;i++){
 					if(chatList[i].room==info.room){
 						chatList[i].unReadCount=0
 						break;
 					}
 				}
-				console.log(chatList)
-				console.log(this.$store.state.chatList)
 				this.$store.commit('chatList',chatList)
-				console.log('/pages/tabbar/community/tools/news?userId='+info.targetName+'&chatId='+info.room+'&isNewsList=1')
 				 uni.navigateTo({
 				 //            //保留当前页面，跳转到应用内的某个页面
 				            url: '/pages/tabbar/community/tools/news?userId='+info.targetName+'&chatId='+info.room+'&isNewsList=1'
@@ -193,14 +185,6 @@
 </script>
 
 <style lang="scss" scoped>
-	.container {
-		>>>.u-cell__value{
-			margin-top: -31px;
-		}
-		>>>.u-icon__img{
-			border-radius: 50%;
-		}
-	}
 	.noData{
 		text-align: center;
 		padding: 20upx 0;

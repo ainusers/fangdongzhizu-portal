@@ -121,12 +121,13 @@
 			async resetAddress(){
 				// 检查是否开启位置信息权限
 				let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
+				console.log(result)
 				if (result != 1) {
 					// 打开权限设置界面
 					permision.gotoAppPermissionSetting(); 
 				} else {
 					//手机定位服务（GPS）已授权
-					that.fnGetlocation();
+					this.fnGetlocation();
 				}
 			},
             // 获取设备信息
@@ -136,6 +137,7 @@
             },
 			// 定位获取
 			fnGetlocation() {
+				console.log('获取定位')
 				let that = this;
 				uni.getLocation({
 					type: 'gcj02',

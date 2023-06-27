@@ -14,8 +14,8 @@
 							<view style="display:flex;align-items: center;justify-content: space-between;">
 								<text class="nickname">{{ item.nickname?item.nickname.substring(0, 12):'' }}</text>
 								
-								<view style="float: right;padding-right: 10px;font-size: 18px;">
-									<u-icon name="more-dot-fill" color="rgb(203,203,203)" @click="goReport(index)"></u-icon>
+								<view style="float: right;padding-right: 10px;font-size: 18px;" @click.stop.prevent="goReport(index,$event)">
+									<u-icon name="more-dot-fill" color="rgb(203,203,203)" ></u-icon>
 									<view class="reportText" v-show="item.isReport">
 										<view @click="report" class="item">举报</view>
 										<view @click="deletePost(index,item.id)" class="item"
@@ -225,17 +225,18 @@
 					this.$emit('changeStatus', index, this.isReport,res)
 				})
 				
-				event.stopPropagation()
+				// event.stopPropagation()
 			},
 			//控制举报，删除 显示隐藏
 			goReport(index) {
+				console.log('显示删除')
 				this.currentIndex = index
 				this.isReport ? this.isReport = false : this.isReport = true
 				this.reportUserId = this.list[index].userId
 				this.reportId = this.list[index].id
 				this.$emit('changeStatus', index, this.isReport)
 
-				event.stopPropagation()
+				// event.stopPropagation()
 			},
 			cancelReport() {
 
@@ -243,7 +244,7 @@
 			report() {
 				this.reportShow = true
 				this.$emit('changeStatus', this.currentIndex, false)
-				event.stopPropagation()
+				// event.stopPropagation()
 			},
 			goReportText() {
 				this.isReport = false
@@ -472,7 +473,6 @@
 			font-size: 24rpx;
 			color: #999;
 			margin-top: -16rpx;
-
 			.nickname {
 				font-size: 32rpx;
 				font-weight: 600;

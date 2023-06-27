@@ -1985,25 +1985,29 @@
 					success: (res) => {
 						// #ifdef APP-PLUS
 						//提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
-						compressImg(res.tempFilePaths[0]).then(res => {
-							attachUpload([res]).then(file => {
-								if (type == 'natural') {
-									this.houseModel.naturalImageList = this.houseModel
-										.naturalImageList.concat(
-										file) //非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
-									if (this.isPublish) {
-										this.validateParam()
+						console.log(res.tempFilePaths)
+						res.tempFilePaths.forEach(item=>{
+							compressImg(item).then(res => {
+								attachUpload([res]).then(file => {
+									if (type == 'natural') {
+										this.houseModel.naturalImageList = this.houseModel
+											.naturalImageList.concat(
+											file) //非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
+										if (this.isPublish) {
+											this.validateParam()
+										}
+									} else {
+										this.houseModel.houseImageList = this.houseModel
+											.houseImageList.concat(
+											file) //非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
+										if (this.isPublish2) {
+											this.validateParam3()
+										}
 									}
-								} else {
-									this.houseModel.houseImageList = this.houseModel
-										.houseImageList.concat(
-										file) //非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
-									if (this.isPublish2) {
-										this.validateParam3()
-									}
-								}
+								})
 							})
 						})
+					
 
 
 						// #endif

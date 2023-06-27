@@ -123,6 +123,7 @@
 					</view>
 				</view>
 			</view>
+      <!-- #endif -->
 			<!-- #ifndef H5 -->
 			<view class="more" @tap="showMore">
 				<view class="icon add"></view>

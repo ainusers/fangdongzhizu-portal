@@ -11,7 +11,7 @@
 </style>
 <template>
 	<view class="content">
-		<u-input v-model="value" :type="type" :border="border" placeholder="起一个有趣的名字吧"/>
+		<u-input v-model="value" :type="type" :border="border" placeholder="起一个有趣的名字吧" maxlength="10"/>
 	</view>
 </template>
 <script>

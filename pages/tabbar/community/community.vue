@@ -186,8 +186,8 @@
 				}
 				this.$H.patch('/zf/v1/dynamic/follow',data,true).then(res=>{
 					if(res.status&&res.status!=500){
-						res.data[0].count?this.tuwen_data[index].likes+=1 :this.tuwen_data[index].likes-=1
-						res.data[0].status?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
+						res.data[0].follow?this.tuwen_data[index].likes+=1 :this.tuwen_data[index].likes-=1
+						res.data[0].follow?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
 					}
 				})
 			},

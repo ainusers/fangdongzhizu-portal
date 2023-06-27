@@ -172,7 +172,10 @@ uni-swiper-item{
 				</scroll-view>
 			</swiper-item> -->
 		</swiper>
+		<u-modal v-model="showModel" content="加载中..." width='auto' :content-style="{fontSize:'12rpx'}" :show-title="false" :show-confirm-button="false" >
+		</u-modal>
 	</view>
+	
 </template>
 
 <script>
@@ -206,6 +209,7 @@ export default {
 	},
 	data() {
 		return {
+			showModel:false,
 			updateSearch:0,
 			houseList: [],
 			cityName: '',
@@ -421,11 +425,12 @@ export default {
 		},
 		getHouseList(){
 			if(this.currPage==1){
-				uni.showLoading({
-					icon:'none',
-					mask:false,
-					title:'加载中'
-				})
+				this.showModel=true
+				// uni.showLoading({
+				// 	icon:'none',
+				// 	mask:false,
+				// 	title:'加载中'
+				// })
 			}
 					let data={
 							publish_type:that.publish_type,
@@ -445,6 +450,7 @@ export default {
 								})
 						}
 					this.$H.post('/zf/v1/room/list',data,true).then(res=>{
+						this.showModel=false
 						uni.hideLoading()
 							if(res.status){
 								this.fulling=false

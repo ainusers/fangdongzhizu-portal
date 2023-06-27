@@ -14,7 +14,7 @@
 <template>
 	<view class="news">
 		<view class="content" @touchstart="hideDrawer">
-			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView"  upper-threshold="50" @scrolltoupper="loadHistory">
+			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView"  upper-threshold="50" @scrolltoupper="loadHistory" >
 				<view class="main_con" :style="{paddingBottom:keyHeight+'px'}">
 				<!-- 加载历史数据的滚动动画 -->
 					<view class="loading" v-if="!isHistoryLoading">
@@ -142,7 +142,7 @@
 				<view class="voice-mode" :class="[isVoice?'':'hidden',recording?'recording':'']" @touchstart="voiceBegin" @touchmove.stop.prevent="voiceIng" @touchend="voiceEnd" @touchcancel="voiceCancel">{{voiceTis}}</view>
 				<view class="text-mode"  :class="isVoice?'hidden':''">
 					<view class="box">
-						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus" cursor-spacing="20" ref="textA" :focus="isFocus" :adjust-position="false"/>
+						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus" cursor-spacing="20" ref="textA" :focus="isFocus" :adjust-position="false" :fixed="true" @linechange="changeLine" @input="textInput"/>
 					</view>
 					<view class="em" @tap="chooseEmoji">
 						<view class="icon biaoqing"></view>
@@ -248,7 +248,7 @@ import store from '../../../../store/index.js';
 				screenH:'',
 				inputOffsetTop:0,
 				oldTime:new Date(),
-				keyHeight:0
+				keyHeight:0,
 			};
 		},
 		onLoad(option) {
@@ -264,7 +264,9 @@ import store from '../../../../store/index.js';
 				this.inputOffsetTop=that.screenH-res.height-50
 				console.log(this.inputOffsetTop)
 				this.inputOffsetBottom=res.height
-				this.keyHeight=res.height
+				if(res.height){
+					this.keyHeight=res.height
+				}
 				this.scrollBottom()
 				if(res.height==0){
 					this.isFocus=false
@@ -446,7 +448,19 @@ import store from '../../../../store/index.js';
 				}
 				this.getMsgList()
 			},
-			
+			changeLine(e){
+				if(e.target.lineCount>1){
+					this.keyHeight+=20
+					this.scrollBottom()
+				}
+			},
+			textInput(){
+				uni.getSelectedTextRange({
+				  success: res => {
+				    console.log('getSelectedTextRange res', res.start, res.end)
+				  }
+				})
+			},
 			// 创建websocket连接方法
 			initSocket() {
 				// 打开socket链接
@@ -454,13 +468,6 @@ import store from '../../../../store/index.js';
 				uni.onSocketOpen(res=>{
 					console.log(res)
 				})
-				// this.$socketInstance.onOpen((res) => {
-					
-				// 	console.log("WebSocket连接正常打开中..." + JSON.stringify(res));
-				// 	this.$store.commit('socket_status',true)
-				// 	// 发送认证消息
-				// 	this.authSocket();
-				// });
 				// 监听socket关闭链接
 				this.$socketInstance.onClose(() => {
 					this.$store.commit('isChatStatus',false)
@@ -588,11 +595,14 @@ import store from '../../../../store/index.js';
 				this.popupLayerClass = 'showLayer';
 			},
 			// 隐藏抽屉
-			hideDrawer(){
+			hideDrawer(type){
 				this.popupLayerClass = '';
 				setTimeout(()=>{
 					this.hideMore = true;
 					this.hideEmoji = true;
+					if(type!=1){
+						this.keyHeight=0
+					}
 				},150);
 			},
 			// 选择图片发送
@@ -652,8 +662,35 @@ import store from '../../../../store/index.js';
 			// 选择表情
 			chooseEmoji(){
 				this.hideMore = true;
-				this.isFocus=true
-				uni.hideKeyboard()
+				if(this.hideEmoji){
+					setTimeout(()=>{
+						this.getElementHeight()
+					},100)
+					this.hideEmoji = false;
+					this.openDrawer();
+				}else{
+					this.hideDrawer();
+				}
+			},
+			// 添加表情
+			addEmoji(em){
+				let temp=this.textMsg.split('')
+				// if(temp.length>0){
+				// 	setTimeout(()=>{
+				// 		temp[this.emojLen-1]+=em.alt;
+				// 		this.textMsg=temp.join('')
+				// 		this.hideMore = true;
+				// 	},0)
+				// }else{
+					console.log('这里')
+					this.textMsg+=em.alt
+					this.hideMore = true;
+				// }
+				console.log(this.textMsg)
+				
+			},
+			// 获取焦点，如果不是选表情ing,则关闭抽屉
+			textareaFocus(){
 				this.$nextTick(()=>{
 					uni.getSelectedTextRange({
 						success:res=>{
@@ -662,40 +699,10 @@ import store from '../../../../store/index.js';
 						}
 					})
 				})
-				if(this.hideEmoji){
-					setTimeout(()=>{
-						this.getElementHeight()
-					},0)
-					this.hideEmoji = false;
-					this.openDrawer();
-				}else{
-					this.keyHeight=0
-					this.hideDrawer();
-				}
-			},
-			// 添加表情
-			addEmoji(em){
-				
-				let temp=this.textMsg.split('')
-				if(temp.length>0){
-					setTimeout(()=>{
-						temp[this.emojLen-1]+=em.alt;
-						this.textMsg=temp.join('')
-						this.hideMore = true;
-					},0)
-				}else{
-					this.textMsg=em.alt
-					this.hideMore = true;
-				}
-				console.log(this.textMsg)
-				
-			},
-			// 获取焦点，如果不是选表情ing,则关闭抽屉
-			textareaFocus(){
-				console.log('获取了焦点')
-				
+				this.hideMore =false
 				if(this.popupLayerClass=='showLayer' && this.hideMore == false){
-					this.hideDrawer();
+					this.hideDrawer(1);
+						
 				}
 			},
 			// 发送文字消息

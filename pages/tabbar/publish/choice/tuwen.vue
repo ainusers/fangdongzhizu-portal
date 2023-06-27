@@ -241,17 +241,17 @@
 					console.log('发布图文',data)
 				// 上传动态信息
 				this.$H.post('/zf/v1/dynamic/dynamics',data,true).then(res=>{
+						uni.hideLoading();
 					if(res.status){
-								uni.hideLoading();
-								uni.showToast({
-									icon:'success',
-									title:"发布成功"
-								})
-								setTimeout(()=>{
-									uni.switchTab({
-										url: '/pages/tabbar/community/community'
-									})
-								},2000)
+						uni.showToast({
+							icon:'success',
+							title:"发布成功"
+						})
+						setTimeout(()=>{
+							uni.switchTab({
+								url: '/pages/tabbar/community/community'
+							})
+						},2000)
 					}
 				})
 			},

@@ -224,6 +224,7 @@ export default {
 	},
 	onPullDownRefresh(){
 		this.pageNumOne=1
+		this.commentList=[]
 		this.getOneList()
 		this.getdyDetail()
 		this.tuwen_data=[]
@@ -347,8 +348,16 @@ export default {
 				love:0,
 				parentId:this.parentId? this.parentId:0
 			}
+			let data={
+				words:htmlEncode(this.content),
+				commentUserId:this.$store.state.userInfo.id,//回复用户id，也就是用户本人
+				beCommentUserId:this.beCommentUserId,//被回复id也就别人id
+				dynamicId:this.$store.state.communityInfo.id,//动态id
+				beCommentId:this.beCommentUserId?this.comment_id:0,
+				parentId:this.parentId? this.parentId:0
+			}
 			let that=this
-			this.$H.post('/zf/v1/comment/increase',addComment,true).then(res=>{	
+			this.$H.post('/zf/v1/comment/increase',data,true).then(res=>{	
 				if(res.status&&res.status!=500){
 					addComment['comment_id']=res.data[0].commentId
 					if(res.status&&this.beCommentUserId){

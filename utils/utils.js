@@ -209,16 +209,10 @@ const dateTime1=function(e){
 }
 // 控制时间间隔
 const spaceTime=function(old,now){
-	console.log(old)
 	old=new Date(old)
 	now=new Date(now)
-	console.log(old)
-	console.log(now)
 	var told=old.getTime()
 	var tnow=now.getTime()
-	console.log(told)
-	console.log(tnow+1000*60*5)
-	console.log(told>(tnow+1000*60*5))
 	if(told>(tnow+1000*60*5)){
 		return now
 	}else{
