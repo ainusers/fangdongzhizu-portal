@@ -113,20 +113,21 @@
 			initData(arr){
 				console.log(arr)
 				this.getHistory()
-				arr.forEach(item=>{
-					this.getHistory(item.room,item).then(res=>{
-						if(res){
-							item.data=item.data.concat(res)
-						}
-						
-						if(!item.fromName){
-							item.fromName=this.$store.state.userInfo.nickname
-							item.fromAvatar=this.$store.state.userInfo.avatar
-							
-						}
-					})
-					
+				this.InfoList =arr.filter(item=>{
+					return item.currentName==this.$store.state.userInfo.username
 				})
+				// arr.forEach(item=>{
+				// 	this.getHistory(item.room,item).then(res=>{
+				// 		if(res){
+				// 			item.data=item.data.concat(res)
+				// 		}
+				// 		if(!item.fromName){
+				// 			item.fromName=this.$store.state.userInfo.nickname
+				// 			item.fromAvatar=this.$store.state.userInfo.avatar
+							
+				// 		}
+				// 	})
+				// })
 			},
 			bindClick(e){
 				this.actionShow='none'

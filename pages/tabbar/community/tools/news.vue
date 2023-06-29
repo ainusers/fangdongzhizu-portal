@@ -368,14 +368,16 @@ import store from '../../../../store/index.js';
 								}
 							})
 							that.scrollAnimation = false
-							that.$nextTick(function() {
-								//进入页面滚动到底部
-								that.scrollToView="msg"+that.msgList[that.msgList.length-1].id
+							if(that.msgList[that.msgList.length-1]){
 								that.$nextTick(function() {
-									that.scrollAnimation = true;
+									//进入页面滚动到底部
+									that.scrollToView="msg"+that.msgList[that.msgList.length-1].id
+									that.$nextTick(function() {
+										that.scrollAnimation = true;
+									});
+									
 								});
-								
-							});
+							}
 							that.getMsgList()
 						}
 		

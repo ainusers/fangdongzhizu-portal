@@ -4,6 +4,7 @@ import {getuserInfo,initStorestate,getStoreData,setBarBadgeNum} from '@/utils/ut
 let fromName=''
 let socketInstance=''
 let isChatStatus=''
+let currentName=store.state.userInfo.username
  const createlink=  function  createlink(type){
 			socketInstance=''
 			socketInstance  =  uni.connectSocket({
@@ -32,13 +33,13 @@ let isChatStatus=''
 				// 添加对方的fromName
 					//处理所有类型初次聊天的info数据 //1.直接push，第一次添加都需要类型的判断处理
 				if(!isChatStatus){
-					let targetName=data.target
+					let targetName=data.target  //目标对象的username  fromName为昵称
 					if(data.from != store.state.userInfo.username){
 						targetName=data.from
 					}
 					//初次收到消息要对当前对象添加fromName和fromAvtar  用于消息列表展示	
 					addKey(data).then(res=>{
-						 newchatList.push({room:data.room,fromName:res.fromName,fromAvatar:res.fromAvatar,targetName:targetName,unReadCount:0,data:[]})
+						 newchatList.push({room:data.room,fromName:res.fromName,fromAvatar:res.fromAvatar,targetName:targetName,currentName:currentName,unReadCount:0,data:[]})
 						return newchatList
 					}).then(res=>{
 						addInfoInit(data,res)
@@ -62,15 +63,11 @@ let isChatStatus=''
 					break;
 				case 'voice':
 					tempChatList=addVoiceMsg(data,newchatList);
-					console.log('返回数据')
 					break;
 				case 'img':
 					tempChatList=addImgMsg(data,newchatList);
 					break;
 			}
-					console.log(newchatList)
-					console.log('最后的数据',tempChatList)
-
 							if(data.id&&data.from!=store.state.userInfo.username&&data.msg!='ping'&& data.type!='signal'){
 							if(tempChatList.length>0){
 								tempChatList.forEach(item=>{
@@ -111,7 +108,9 @@ let isChatStatus=''
 			let temp=store.state.chatList
 			if(temp&&temp.length==0){return }
 			let arr=temp.filter(item=>{
-				return item.room==data.room
+				if(item.room==data.room&&item.currentName==currentName){
+					return item
+				}
 			})
 			return arr.length
 		}
@@ -144,7 +143,7 @@ function addTextMsg(data,chatList){
 	let typename=''
 	for(let i=0;i<chatList.length;i++){
 		let item=chatList[i]
-			if(item.room==data.room){
+			if(item.room==data.room&&item.currentName==currentName){
 				if(data.msg.indexOf('alt')!=-1){
 					data.typename=infoImgInit(data)
 				}else{
@@ -159,7 +158,7 @@ function addImgMsg(msg,chatList){
 	msg.msg = setPicSize(msg.msg);
 	if(msg.id&&chatList.length>0){
 		chatList.forEach(item=>{
-			if(item.room==msg.room){
+			if(item.room==msg.room&&item.currentName==currentName){
 				let date=new Date(item.datetime)
 				let y=date.getFullYear()
 				msg.typename="[图片]"
@@ -170,12 +169,9 @@ function addImgMsg(msg,chatList){
 	return chatList
 }
 function addVoiceMsg(data,chatList){
-	// let chatList=store.state.chatList
-	// let isChat=false
-				console.log('添加语音，',data)
 				if(data.id){
 					chatList.forEach(item=>{
-						if(item.room==data.room){
+						if(item.room==data.room&&item.currentName==currentName){
 							let date=new Date(item.datetime)
 							let y=date.getFullYear()
 							data.typename='[语音]'
@@ -185,8 +181,7 @@ function addVoiceMsg(data,chatList){
 				}
 				return chatList
 			}
-			// 处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
-
+// 处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
 function createPromise(data){
 	return new Promise((resolve,reject)=>{
 		setTimeout(function(){
