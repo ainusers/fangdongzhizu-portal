@@ -30,6 +30,7 @@ let currentName=store.state.userInfo.username
 				let newchatList=store.state.chatList ||[]
 				 //之前是否聊过天
 				isChatStatus=isChatBoolean(data) 
+				console.log('有没有聊天过1',isChatStatus)
 				// 添加对方的fromName
 					//处理所有类型初次聊天的info数据 //1.直接push，第一次添加都需要类型的判断处理
 				if(!isChatStatus){
@@ -45,8 +46,6 @@ let currentName=store.state.userInfo.username
 						addInfoInit(data,res)
 					})
 				}else{
-					
-					console.log(newchatList)
 					addInfoInit(data,newchatList)
 				}
 			});
@@ -73,13 +72,10 @@ let currentName=store.state.userInfo.username
 								tempChatList.forEach(item=>{
 									if(item.room==data.room){
 										if(store.state.currentNameChat!=data.from){
-											console.log('++')
 											setUnreadCountAll(data)
 											item.unReadCount+=1
-											console.log(item.unReadCount)
 											getStoreData('unReadCount')
 											let count=store.state.unReadCount+=1
-											console.log(count)
 											store.commit('unReadCount',count)
 											setBarBadgeNum(count)
 										}
@@ -130,7 +126,6 @@ function authSocket(room,type) {
 				},
 			});
 			Vue.prototype.$socketInstance=socketInstance
-			console.log(Vue.prototype.$socketInstance)
 		}
 	}
 function setUnreadCountAll(data){
@@ -141,6 +136,7 @@ function setUnreadCountAll(data){
 }
 function addTextMsg(data,chatList){
 	let typename=''
+	let currentNameChat=store.state.currentNameChat
 	for(let i=0;i<chatList.length;i++){
 		let item=chatList[i]
 			if(item.room==data.room&&item.currentName==currentName){
@@ -151,6 +147,17 @@ function addTextMsg(data,chatList){
 				}
 				item.data.push(data)
 			}
+	}
+	if(currentNameChat){
+		console.log('添加当前')
+		let currentChatList=store.state.currentChatList
+		if(data.msg.indexOf('alt')!=-1){
+			data.typename=infoImgInit(data)
+		}else{
+			data.typename=data.msg
+		}
+		currentChatList.data.push(data)
+		store.commit('currentChatList',currentChatList)	
 	}
 	return chatList	
 }	

@@ -255,14 +255,12 @@ import store from '../../../../store/index.js';
 			that=this
 			uni.getSystemInfo({
 				success: (res) => {
-					console.log(res)
 					that.screenH=res.safeArea.height
 				}
 			})
 			//解决输入框遮挡问题
 			uni.onKeyboardHeightChange(res=>{
 				this.inputOffsetTop=that.screenH-res.height-50
-				console.log(this.inputOffsetTop)
 				this.inputOffsetBottom=res.height
 				if(res.height){
 					this.keyHeight=res.height
@@ -274,6 +272,10 @@ import store from '../../../../store/index.js';
 				}
 			})
 			initStorestate()
+			getStoreData('currentChatList')
+			this.msgList=this.$store.state.currentChatList.data
+			this.otherName=this.$store.state.currentChatList.fromName
+			this.otherAvatar=this.$store.state.currentChatList.fromAvatar	
 			this.Platform=getPlatform()
 			this.chatId=option.chatId
 			this.isNewsList=option.isNewsList
@@ -282,13 +284,7 @@ import store from '../../../../store/index.js';
 			this.currentName=this.$store.state.userInfo.username
 			this.myAvatar=this.$store.state.userInfo.avatar 
 			this.$store.commit('currentNameChat',this.targetUserName)
-			if(this.isNewsList!=1){
-				//处理聊天记录
-				// setTimeout(()=>{
-				// 	console.log('处理聊天记录延迟')
-				// 	this.chatSaveLocal()
-				// },0)
-			}
+			this.chatSaveLocal()
 			
 			
 			// 语音自然播放结束
@@ -319,6 +315,8 @@ import store from '../../../../store/index.js';
 		onUnload(){
 			this.chatList=[]//所有聊天记录的数据
 			this.$store.commit('currentNameChat','')
+			this.$store.commit('currentChatList',[])
+
 			//关闭连接
 			// this.closeSocket()
 			// this.closeSocket()
@@ -329,42 +327,11 @@ import store from '../../../../store/index.js';
 						that.oldTime=new Date()
 						let tempVal=JSON.parse(JSON.stringify(val))
 						that.chatList=tempVal
-						console.log(that.chatList)
 						if(Array.isArray(tempVal)){
 							tempVal.forEach(item=>{
-								if(item.room==that.chatId){
-									let data=item.data
-									for(let i=data.length-1;i>=0;i--){
-										let t=	spaceTime(that.oldTime,data[i].datetime)
-										console.log(t)
-										// if(i<data.length-1){
-											if(t){
-												that.oldTime=t
-											}
-										
-										// }
-											data[i].datetime=t
-											if(data[i].datetime){
-												data[i].datetime=dateTime1(data[i].datetime)	
-											}else{
-												data[i].datetime=''
-											}	
-									}
-									
-									getuserInfo(item.targetName,1).then(res=>{
-										that.otherName=res.nickname
-										that.otherAvatar=res.avatar
-									})
-								if(item.data.length>30){
-									let temp=JSON.parse(JSON.stringify(item.data))
-									that.historyArr=item.data.slice(0,temp.length-29)
-									console.log(that.historyArr)
-									that.msgList=item.data.slice(item.data.length-30)
-									that.isHistoryLoading=false
-								}else{
-									that.msgList= item.data	
-									that.isHistoryLoading=true
-								}
+								if(item.room==that.chatId&&item.currentName==that.$store.state.userInfo.username){
+									that.msgList=item.data
+									that.initMsgList() 
 								}
 							})
 							that.scrollAnimation = false
@@ -380,74 +347,59 @@ import store from '../../../../store/index.js';
 							}
 							that.getMsgList()
 						}
-		
 				},
 				deep:true
 			},
 			"$store.state.isChatStatus":{
 				handler(newval,old){
-					console.log('newVal',newval)
 					initStorestate()
 					if(newval==true){
-					console.log('我要发送消息了')
-					console.log(that.$store.state.isChatStatus)
 						that.sendText()
 					}
+				}
+			},
+			"$store.state.currentChatList":{
+				handler(newval,old){
+					console.log(newval)
 				}
 			}
 		},
 		methods:{
+			initMsgList(){
+				
+				let data=this.msgList
+					that.oldTime=this.msgList[this.msgList.length-1].datetime
+					let currentT=new Date()
+					let lastT=this.msgList[this.msgList.length-1].datetime
+						let f=	spaceTime(currentT,lastT);
+						if(!f){
+							this.msgList[this.msgList.length-1].datetime=''
+						}else{
+							 this.msgList[this.msgList.length-1].datetime=dateTime1(that.oldTime)
+						}
+					for(let i=data.length-2;i>=1;i--){
+						this.oldTime = data[i].datetime;
+						let t=	spaceTime(that.oldTime,data[i-1].datetime);
+							if(!t){
+									data[i].datetime=''
+							}
+							if(data[i].datetime){
+								data[i].datetime=dateTime1(data[i].datetime)	
+							}else{
+								data[i].datetime=''
+							}	
+					}
+				if(data.length>30){
+					that.historyArr=data.slice(0,data.length-29)
+					that.msgList=data.slice(data.length-30)
+					that.isHistoryLoading=false
+				}else{
+					that.isHistoryLoading=true
+				}
+			},
 			//聊天记录初始化
 			chatSaveLocal(){
-				console.log(this.msgList)
-				if(this.msgList.length==0){
-					let chatList=this.$store.state.chatList
-					uni.getStorage({
-						key:'chatList',
-						success: (res) => {
-							console.log(res)
-						}
-					})
-					console.log(chatList instanceof Array)
-					console.log(this.chatList)
-					if(chatList instanceof Object){
-						return
-					}
-					if(chatList instanceof Array){
-						this.chatList=chatList
-					}else{
-						this.chatList=JSON.parse(chatList)
-					}
-					this.chatList.forEach(item=>{
-						if(item.room==that.chatId){
-							console.log(item)
-							let data=item.data
-							for(let i=0;i<data.length;i++){
-								data[i].datetime=dateTime1(data[i].datetime)
-							}
-							if(item.data.length>30){
-								that.msgList=item.data.slice(item.data.length-30)
-								this.isHistoryLoading=false
-							}else{
-								this.msgList= item.data	
-								this.isHistoryLoading=true
-							}
-							
-							getuserInfo(item.targetName,1).then(res=>{
-								console.log(res)
-								this.otherName=res.nickname
-								this.otherAvatar=res.avatar
-							})
-						
-							console.log(that.msgList)
-						}
-					})
-				}
-				if(this.isNewsList!=1){
-					if(!Array.isArray(this.chatList)){
-						this.chatList=JSON.parse(this.chatList)
-					}
-				}
+				this.initMsgList()
 				this.getMsgList()
 			},
 			changeLine(e){
@@ -459,16 +411,15 @@ import store from '../../../../store/index.js';
 			textInput(){
 				uni.getSelectedTextRange({
 				  success: res => {
-				    console.log('getSelectedTextRange res', res.start, res.end)
+				    // console.log('getSelectedTextRange res', res.start, res.end)
 				  }
 				})
 			},
 			// 创建websocket连接方法
 			initSocket() {
 				// 打开socket链接
-				console.log('我要重新连接')
 				uni.onSocketOpen(res=>{
-					console.log(res)
+					// console.log(res)
 				})
 				// 监听socket关闭链接
 				this.$socketInstance.onClose(() => {
@@ -481,7 +432,7 @@ import store from '../../../../store/index.js';
 				this.$socketInstance.close({
 					success(res) {
 						that.$store.commit('isChatStatus',false)
-						console.log("关闭通信服务成功", res)
+						// console.log("关闭通信服务成功", res)
 					},
 					fail(err) {
 						// console.log("关闭通信服务失败", err)
@@ -492,7 +443,6 @@ import store from '../../../../store/index.js';
 			authSocket() {
 				let that=this
 				if (this.$store.state.socket_status) {
-					console.log('我要重新发送')
 					this.$socketInstance.send({
 						data: "{'type':'signal','from':"+that.currentName+","+'room:'+that.chatId+"}",
 						async success() {
@@ -622,7 +572,6 @@ import store from '../../../../store/index.js';
 					sourceType:[type],
 					sizeType: ['original', 'compressed'],
 					success: (res)=>{
-						// console.log('res发送图片',res)
 						for(let i=0;i<res.tempFilePaths.length;i++){
 							uni.uploadFile({
 								name: 'multipartFile',
@@ -655,9 +604,7 @@ import store from '../../../../store/index.js';
 			getElementHeight(){
 				const query=uni.createSelectorQuery().in(this)
 				query.select('.popup-layer').boundingClientRect(data=>{
-					// this.
 					this.keyHeight=data.height
-					console.log(data.height)
 					this.scrollBottom()
 				}).exec()
 			},
@@ -677,19 +624,8 @@ import store from '../../../../store/index.js';
 			// 添加表情
 			addEmoji(em){
 				let temp=this.textMsg.split('')
-				// if(temp.length>0){
-				// 	setTimeout(()=>{
-				// 		temp[this.emojLen-1]+=em.alt;
-				// 		this.textMsg=temp.join('')
-				// 		this.hideMore = true;
-				// 	},0)
-				// }else{
-					console.log('这里')
 					this.textMsg+=em.alt
-					this.hideMore = true;
-				// }
-				console.log(this.textMsg)
-				
+					this.hideMore = true;	
 			},
 			// 获取焦点，如果不是选表情ing,则关闭抽屉
 			textareaFocus(){
@@ -738,7 +674,7 @@ import store from '../../../../store/index.js';
 								//在线表情路径，图文混排必须使用网络路径，请上传一份表情到你的服务器后再替换此路径 
 								//比如你上传服务器后，你的100.gif路径为https://www.xxx.com/emoji/100.gif 则替换onlinePath填写为https://www.xxx.com/emoji/
 								let onlinePath = 'http://81.70.163.240:9090/emoji/'
-								let imgstr = '<img src="'+onlinePath+EM.url+'"  width="30rpx" height="30rpx" alt="'+str+'">';
+								let imgstr = '<img src="'+onlinePath+EM.url+'"  width="18rpx" height="18rpx" alt="'+str+'" >';
 								return imgstr;
 							}
 						}
@@ -751,6 +687,7 @@ import store from '../../../../store/index.js';
 				
 				// 如果socket状态正常连接，则可以发送消息
 				let targetUserName=this.targetUserName
+				console.log(this.$store.state.socket_status)
 				if (this.$store.state.socket_status) {
 					
 					switch (type) {
@@ -763,12 +700,15 @@ import store from '../../../../store/index.js';
 							"from":this.currentName,
 							"room":this.chatId
 							}
-							console.log(this.$socketInstance)
+							console.log(data)
 							this.$socketInstance.send({
 								data: JSON.stringify(data),
 								async success() {
 									console.log("普通消息发送成功");
 								},
+								async fail(err){
+									console.log(err)
+								}
 							});
 							break;
 						case 'voice':
@@ -798,7 +738,6 @@ import store from '../../../../store/index.js';
 								"from":this.currentName,
 								"room":this.chatId
 								}
-								console.log(data2)
 							this.$socketInstance.send({
 								data: JSON.stringify(data2) ,
 								async success() {
@@ -924,9 +863,7 @@ import store from '../../../../store/index.js';
 						fail(err) {
 							console.log(err);
 						}
-					});
-					// console.log("e: " + JSON.stringify(e));
-					
+					});		
 				}else{
 					console.log('取消发送录音');
 				}

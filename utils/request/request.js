@@ -9,7 +9,6 @@ export default {
 			}
 			options.complete = (response) => {
 				uni.hideLoading()
-				console.log(response)
 				if (response.statusCode == 200) {
 					if (response.data.code == 410 || response.data.code == 420) {
 							uni.navigateTo({

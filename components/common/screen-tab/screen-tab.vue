@@ -39,8 +39,8 @@
 								:src="screenFormData.erHouse.more.show ? topIcon : downIcon"></image>
 						</view>
 					</view>
-					<view @click="screenClose" :style="{height: fixedContHeight, top: fixedTcTop}"
-						class="screen_fixed_list" v-if="listTcShow">
+					<view @click="screenClose" :style="{height: fixedContHeight+'px', top: fixedTcTop}"
+						class="screen_fixed_list" v-show="listTcShow">
 						<!-- 区域 -->
 						<view :style="{height: contHeight}" @click.stop="screenContBtn"
 							v-if="currentClickType == 'region'" class="region_list_view f_r_b">
@@ -168,17 +168,16 @@
 		Const
 	} from "@/utils/const/Const.js";
 	export default {
-		props: ["screenFormData", "from", "regionLeftList", "regionRightMap", "enterType", "erHousePriceList", "roomList"],
+		props: ["screenFormData", "from", "regionLeftList", "regionRightMap", "enterType", "erHousePriceList", "roomList","fixedContHeight"],
 		data() {
 			return {
 				areaName: '区域',
 				downIcon:require('../../../static/home/filter_btn_nomal.png'),
 				topIcon: require('../../../static/home/down-active.png'),
 				listTcShow: false, //筛选框显示状态
-				fixedContHeight: "100%", // 弹窗的高度
-				fixedTcTop: "235rpx", // 筛选条件距离顶部高度43px
+				fixedTcTop: "80rpx", // 筛选条件距离顶部高度43px
 				currentClickType: '',
-				contHeight: "50%", // 筛选条件高度
+				contHeight: "800rpx", // 筛选条件高度
 				regionLeftIndex: 0,
 				regionRightIndex: 0,
 				regionRightIndex1: 0,
@@ -259,8 +258,8 @@
 		},
 		methods: {
 			screenBtn(str) {
+				this.listTcShow=this.listTcShow?false:true
 				this.currentClickType = str
-				this.listTcShow = true
 			},
 			// 点击外部空白区域，弹窗关闭
 			screenClose() {
@@ -738,11 +737,12 @@
 	}
 
 	.screen_view {
+		position: relative;
 		height: 80upx;
 		border-bottom: 1upx solid #f6f6f6;
 		box-sizing: border-box;
 		line-height: 80upx;
-
+		
 		.screen_list {
 			width: 100%;
 			height: 100%;

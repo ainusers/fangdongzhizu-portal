@@ -10,10 +10,11 @@
 	.er_house_main {
 		background-color: #f2f2f2
 	}
+	.er_house_item_con{
+		display: flex;
+	}
     .er_house_item{
 		position: relative;
-		display: flex;
-		align-items: center;
         padding: 0px 0px 5px 5px;
         box-sizing: border-box;
         background: #FFFFFF;
@@ -211,41 +212,45 @@
 </style>
 <template>
 	<view class="er_house_main">
-		<view @click="homeDetail(item,index)" class="er_house_item f_r_s">
-			<view class="er_house_img_view">
-				<image mode="scaleToFill" class="er_house_img" :src="item.imgUrl.split(',')[0]" lazy-load></image>
-			</view>
-			<view class="er_house_cont">
-				<!-- 租房类型，小区名称-->
-				<view class="er_house_title">
-					<text v-if="item.layout">{{ item.roomType.split('-')[0] }}</text>
-					<text v-if=" item.communityName">{{ item.communityName }}</text>
+		<view @click="homeDetail(item,index)"  class="er_house_item f_r_s">
+			<view class="er_house_item_con">
+				<view class="er_house_img_view">
+					<image mode="scaleToFill" class="er_house_img" :src="item.imgUrl.split(',')[0]" lazy-load></image>
 				</view>
-				<!-- 租房类型，两室一厅（配比），大小，楼层 -->
-				<view class="er_house_des">
-					<text v-if="item.homeType">{{item.homeType}}</text>
-					<text v-if="item.rentalHouse">{{item.roomType.split('-')[1]}}</text>
-					<text v-if="item.layout">{{ item.size }}m² </text>
-					<text v-if="item.layout">{{ item.floor }}层</text>
-				</view>
-				<!-- 地理位置：距离昌平线沙河地铁站1020米 -->
-				<view class="er_house_tag_info f_r_s">
-					<text> {{item.distanceSubway}}</text>
-				</view>
-		
-				<!-- 房屋价格，朝阳区，酒仙桥 -->
-				<view class="er_house_price_view f_r_s">
-					<view class="er_house_price main_color f_r_s">
-						<text v-if="item.money" class="price">{{ item.money }}</text>
-						<text>元/月</text>
+				<view class="er_house_cont">
+					<!-- 租房类型，小区名称-->
+					<view class="er_house_title">
+						<text v-if="item.roomType">{{ item.roomType.split('-')[0] }}</text>
+						<text v-if=" item.communityName">{{ item.communityName }}</text>
 					</view>
-					<view class="place">
-						<text v-if="item.area">{{item.area}}</text>
+					<!-- 租房类型，两室一厅（配比），大小，楼层 -->
+					<view class="er_house_des">
+						<text v-if="item.homeType">{{item.homeType}}</text>
+						<text v-if="item.roomType.length>2">{{item.roomType.split('-')[1]}}</text>
+						<text v-if="item.size">{{ item.size }}m² </text>
+						<text v-if="item.floor">{{ item.floor }}层</text>
+					</view>
+					<!-- 地理位置：距离昌平线沙河地铁站1020米 -->
+					<view class="er_house_tag_info f_r_s">
+						<text> {{item.distanceSubway}}</text>
+					</view>
+						
+					<!-- 房屋价格，朝阳区，酒仙桥 -->
+					<view class="er_house_price_view f_r_s">
+						<view class="er_house_price main_color f_r_s">
+							<text v-if="item.money" class="price">{{ item.money }}</text>
+							<text>元/月</text>
+						</view>
+						<view class="place">
+							<text v-if="item.area">{{item.area}}</text>
+						</view>
 					</view>
 				</view>
+				
 			</view>
-			
+		<view style="font-size: 26rpx;padding: 10rpx;" v-if="item.checkIdea">审核反馈： <view style="color: #ff002f;display: inline-block;">{{item.checkIdea}}</view></view>
 		</view>
+		
 		<view class="detail_btn" v-show="isUpdate">
 			<view class="btn_item" @click="updateHouse(item)" v-show="current==0">
 				编辑

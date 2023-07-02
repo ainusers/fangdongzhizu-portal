@@ -105,7 +105,7 @@
                 },
                 pageHeight: "100%",
                 hotCityList: [
-                    { cityId: "7", cityNameLess: "北京" },
+                    { cityId: "7", cityNameLess: "北京市" },
                 ],
                 scrollAnimate: true,
 				bindList:{}

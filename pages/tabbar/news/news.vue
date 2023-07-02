@@ -65,10 +65,8 @@
 				handler:(val,oldval)=>{
 					setTimeout(function(){
 						let tempVal=JSON.parse(JSON.stringify(val))
-						console.log(tempVal)
 						if(tempVal instanceof Array){
 							that.InfoList=tempVal.reverse()
-							console.log(that.InfoList)
 							that.initData(that.InfoList)
 						}
 						
@@ -79,6 +77,7 @@
 			}
 		},
 		onShow() {
+			console.log('展示呀')
 			var that=this
 			this.active = true;
 			let chatList=JSON.parse(JSON.stringify(this.$store.state.chatList ))
@@ -116,25 +115,31 @@
 				this.InfoList =arr.filter(item=>{
 					return item.currentName==this.$store.state.userInfo.username
 				})
-				// arr.forEach(item=>{
-				// 	this.getHistory(item.room,item).then(res=>{
-				// 		if(res){
-				// 			item.data=item.data.concat(res)
-				// 		}
-				// 		if(!item.fromName){
-				// 			item.fromName=this.$store.state.userInfo.nickname
-				// 			item.fromAvatar=this.$store.state.userInfo.avatar
-							
-				// 		}
-				// 	})
-				// })
+				console.log(this.InfoList)
+				let narr=this.InfoList
+				narr.forEach(item=>{
+					if(!item.fromName){
+						item.fromName=this.$store.state.userInfo.nickname
+						item.fromAvatar=this.$store.state.userInfo.avatar
+						
+					}
+					// this.getHistory(item.room,item).then(res=>{
+					// 	if(res){
+					// 		item.data=item.data.concat(res)
+					// 	}
+						
+					// })
+				})
 			},
+			//删除消息
 			bindClick(e){
 				this.actionShow='none'
 					let tempT=''
 					tempT=setInterval(()=>{
 						if(this.deleteItem){
 							this.InfoList.splice(this.deleteIndex,1)
+							let chatList=this.InfoList.reverse()
+							this.$store.commit('chatList',chatList)
 							clearInterval(tempT)
 						}
 					},500)
@@ -157,6 +162,8 @@
 				})
 			},
 			goInfo(info){
+				console.log(info)
+				this.$store.commit('currentChatList',info)
 				initStorestate()
 				let count=info.unReadCount
 				let all =Number(this.$store.state.unReadCount)-count

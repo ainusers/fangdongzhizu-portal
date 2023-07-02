@@ -305,26 +305,34 @@
 			<swiper-item v-for=" (item,index) in tabList" :key="index">
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
 					<view v-show="current == index">
-						<block v-if="houseList.length === 0 && pageNum==1">
-							<u-empty  text="暂无数据" mode="favor"></u-empty>
-						</block>
-						<view class="content" v-else>
+						
+						<view class="content" v-show="houseList.length>0">
 							<!-- 列表 -->
 								<block v-for="(item, index) in houseList" :key="index">
 									<house-list-item ref="ListItem" :item="item" :index="index" @updateHouseList="updateHouseList" :current="current"></house-list-item>
 								</block>
 						</view>
+						<view v-show="showModel&&houseList.length==0">
+							<block v-for=" item in houseJia" :key="item">
+								<houseListItemSkeleton/>
+							</block>
+						</view>
+						<block v-if="!showModel&&houseList.length === 0 && pageNum==1">
+							<u-empty  text="暂无数据" mode="favor"></u-empty>
+						</block>
 					</view>
 				</scroll-view>
 			</swiper-item>
         </swiper>
+		<!-- <loadinM :Model="showModel"/> -->
 	</view>
 </template>
 
 <script>
 	
 import houseListItem from '@/components/house-list/house-list-item.vue';
-import screenTab from '@/components/common/screen-tab/screen-tab.vue'
+import houseListItemSkeleton from '@/components/house-list/house-list-item-skeleton.vue'
+import loadinM from '@/components/common/modal/loading_model.vue'
 import { Const } from "@/utils/const/Const.js";
 import {editTitleText} from '@/utils/utils.js'
 let privateData = {
@@ -345,11 +353,18 @@ let that='';
 export default {
 	components: {
 		houseListItem,
-		screenTab
+		loadinM,
+		houseListItemSkeleton
 	},
 	data() {
 		return {
+			showModel:false,
+			houseJia:[1,2,3,4,5,6,7,8],
 			houseList: [],
+			auditList:[],//待审核
+			publishedList:[],//已发布
+			removeList:[],//已下架
+			collectList:[],//收藏
 			cityName: "北京",
 			current: 0,
 			tabList: [
@@ -382,7 +397,11 @@ export default {
 				// #endif
 				
 				if(newVal==3){
-					that.getCollect()
+					that.houseList=that.collectList
+					if(that.collectList.length==0){
+						this.showModel=true
+						that.getCollect()
+					}
 					// #ifdef APP-PLUS
 					webView.setTitleNViewButtonStyle(0,{
 						width: '0'  
@@ -391,6 +410,7 @@ export default {
 					
 				}else{
 					if(newVal==1){ //已发布
+					that.houseList=that.publishedList
 					// #ifdef APP-PLUS
 					webView.setTitleNViewButtonStyle(0,{
 						width: '100px'  
@@ -398,6 +418,7 @@ export default {
 					// #endif
 						
 					}else if(newVal==0){ //待审核
+					that.houseList=that.auditList
 					// #ifdef APP-PLUS
 					webView.setTitleNViewButtonStyle(0,{
 						width: '100px'  
@@ -405,13 +426,19 @@ export default {
 					// #endif
 					}
 					else{
+						that.houseList=that.removeList
 						// #ifdef APP-PLUS
 						webView.setTitleNViewButtonStyle(0,{
 							width: '0px'  
 						});
 						// #endif
 					}
-					that.getstatusHouseList(Number(newVal)+1)
+					if(that.houseList.length==0){
+						console.log('去请求')
+						this.showModel=true
+						that.getstatusHouseList(Number(newVal)+1)
+					}
+					
 				}
 				editTitleText('管理')
 				this.isUpdate=false
@@ -421,6 +448,9 @@ export default {
 	onLoad(options) {
 		that=this
 		this.current=options.index
+	},
+	onPullDownRefresh() {
+		uni.stopPullDownRefresh();
 	},
 	onNavigationBarButtonTap(e){
 		let txt=''
@@ -464,9 +494,11 @@ export default {
 				page:that.pageNum,
 				size:10
 			},true).then(res=>{
+				that.showModel=false
 				if(res.status&&res.code==200){
 					that.houseList=[...that.houseList,...res.data]	
-					if(res.data&&res.data.length<10){
+					that.collectList=that.houseList
+					if(res.data&&res.data.length<10&&that.pageNum>1){
 						this.loadStatus='end'
 						uni.showToast({
 							icon: 'none',
@@ -492,6 +524,7 @@ export default {
 		},
 		//获取不同状态的数据
 		getstatusHouseList(type){	
+			console.log(type)
 			let params={
 				"page":this.pageNum,
 				"size":"10",
@@ -500,8 +533,22 @@ export default {
 			}
 			//1 待审核 2 已发布  3已下架
 				this.$H.post('/zf/v1/room/list',params,true).then(res=>{
+					that.showModel=false
 							if(res.data&&res.status&&res.data.length>0){
+								console.log(that.houseList)
 								that.houseList=[...that.houseList,...res.data]
+								switch(type){
+									case 1 :
+									that.auditList=that.houseList
+									break;
+									case 2:
+									that.publishedList=that.houseList
+									console.log(that.publishedList)
+									break;
+									case 3:
+									that.removeList=that.houseList
+									break;
+								}
 							}else if(res.data.length==0&&that.houseList.length==0){
 								this.houseList=[]
 							}else{

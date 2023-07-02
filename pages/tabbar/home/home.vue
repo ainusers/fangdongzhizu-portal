@@ -102,7 +102,7 @@ uni-swiper-item{
 		<!-- 筛选项 -->
 		<!-- 转租和直租 -->
 		<screenTab ref="screenTab" 
-		v-if="current == 0 || current == 1"
+		v-if="current == 0&&fixedContHeight || current == 1&&fixedContHeight"
 		:screenFormData="screenFormData" 
 		:roomList="roomList"
 		:from="from"
@@ -110,6 +110,7 @@ uni-swiper-item{
 		:regionRightMap="regionRightMap" 
 		:enterType="enterType"  
 		:erHousePriceList="erHousePriceList"
+		:fixedContHeight="fixedContHeight"
 		:key="updateSearch"
 		@screenBtn="screenBtn"  
 		@regionLeftBtn="regionLeftBtn"
@@ -135,7 +136,12 @@ uni-swiper-item{
 								<house-list-item :item="item" :index="index"></house-list-item>
 						    </block>
 						</view>
-						<view  class="home_nodata" v-else>
+						<view v-if="showModel&&houseList.length==0" >
+							<block v-for="item in houseJia" :key="item">
+								<houseListItemSkeleton/>
+							</block>
+						</view>
+						<view  class="home_nodata" v-else-if="!showModel&&houseList.length==0">
 							<u-empty  text="暂无数据" mode="favor"></u-empty>
 						</view>
 					</view>
@@ -150,7 +156,13 @@ uni-swiper-item{
 							<house-list-item :item="item" :index="index"></house-list-item>
 					    </block>
 					</view>
-					<view class="home_nodata" v-else>
+
+					<view v-if="showModel&&houseList.length==0" >
+						<block v-for="item in houseJia" :key="item">
+							<houseListItemSkeleton/>
+						</block>
+					</view>
+					<view  class="home_nodata" v-else-if="!showModel&&houseList.length==0">
 						<u-empty  text="暂无数据" mode="favor"></u-empty>
 					</view>
 					</view>
@@ -172,8 +184,7 @@ uni-swiper-item{
 				</scroll-view>
 			</swiper-item> -->
 		</swiper>
-		<u-modal v-model="showModel" content="加载中..." width='auto' :content-style="{fontSize:'12rpx'}" :show-title="false" :show-confirm-button="false" >
-		</u-modal>
+		<!-- <LodingM :Model="showModel"/> -->
 	</view>
 	
 </template>
@@ -182,8 +193,10 @@ uni-swiper-item{
 import '@/utils/request/createWebsocket.js'
 var that;
 import houseListItem from '@/components/house-list/house-list-item.vue';
+import houseListItemSkeleton from '@/components/house-list/house-list-item-skeleton.vue';
 import screenTab from '@/components/common/screen-tab/screen-tab.vue'
 import screenHuan from '@/components/common/screen-tab/screen_huan.vue'
+import LodingM from '@/components/common/modal/loading_model.vue'
 import { Const } from "@/utils/const/Const.js";
 import {isLoginCheck} from '../../../utils/utils.js'
 
@@ -205,15 +218,20 @@ export default {
 	components: {
 		houseListItem,
 		screenTab,
-		screenHuan
+		screenHuan,
+		LodingM,
+		houseListItemSkeleton
 	},
 	data() {
 		return {
-			showModel:false,
+			houseJia:[1,2,3,4,5,6,7],
+			showModel:true,
 			updateSearch:0,
 			houseList: [],
 			cityName: '',
 			current: 0, //当前tab的下标
+			subleaseList:[],//转租
+			directList:[],//直租
 			tabList: [
 				{
 					name: '转租'
@@ -323,6 +341,7 @@ export default {
 			room_type:'',//筛选主卧，次卧
 			home_type:'',//筛选三居室
 			moreChooseStr:[],//更多选中的筛选
+			fixedContHeight:0, //屏幕的高度
 			moreSubKey:['room_type','has_elevator','heat_type','room_type'],//更多提交接口的key 与screen-tab组件中moreType顺序相同
 		};
 	},
@@ -340,7 +359,6 @@ export default {
 	        default: ""
 	    },
 		isLogin:false ,//是否登录
-		phoneInfo:''
 	},
 	onLoad() {
 		that=this
@@ -350,7 +368,7 @@ export default {
 			key:'phoneInfo',
 			success(res){
 				console.log('手机信息1',res)
-				this.phoneInfo=res.data
+				that.fixedContHeight=res.data.screenHeight
 				that.savePhoneInfo(res.data)
 			}
 		})
@@ -367,9 +385,6 @@ export default {
 		
 	},
 	onPullDownRefresh() {
-		// this.tuwen_default_page = 1;
-		// this.tuwen_data = this.tuwen_data.reverse();
-		// this.getMomentPost();
 		that.currPage=1
 		this.getHouseList()
 		this.houseList=[]
@@ -379,7 +394,6 @@ export default {
 //保存登录人的设备
 			async savePhoneInfo(phoneInfo){
 					var location=await this.getLocation();
-          console.log('房源列表',location)
 					let address=location.address
 					let position=address.province+'-'+address.city+'-'+address.district+'-'+address.street+'-'+address.streetNum+'-'+address.poiName+'-'+address.cityCode
 					let params={
@@ -426,11 +440,7 @@ export default {
 		getHouseList(){
 			if(this.currPage==1){
 				this.showModel=true
-				// uni.showLoading({
-				// 	icon:'none',
-				// 	mask:false,
-				// 	title:'加载中'
-				// })
+				this.isLoad=false
 			}
 					let data={
 							publish_type:that.publish_type,
@@ -455,6 +465,11 @@ export default {
 							if(res.status){
 								this.fulling=false
 								that.houseList=that.houseList.concat(res.data)
+								if(this.publish_type==1){
+									that.subleaseList=that.houseList
+								}else if(this.publish_type==2){
+									that.directList=that.houseList
+								}
 								if(res.data.length<10){
 									this.isLoad=true
 								}
@@ -501,7 +516,19 @@ export default {
 			this.currPage=1
 			this.houseList=[]
 			this.publish_type=this.current+1
-			this.getHouseList()
+			switch(this.publish_type){
+				case 1:
+					this.houseList=this.subleaseList
+				break;
+				case 2:
+					this.houseList=this.directList
+				break;
+			}
+			if(this.houseList.length==0){
+				this.getHouseList()
+			}else{
+				this.fulling=false
+			}
 			this.$refs.screenTab.listTcShow=false
 		},
 		// 搜索

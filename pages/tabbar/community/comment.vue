@@ -251,19 +251,15 @@ export default {
 			}
 		},
 		getdyDetail(){
+			this.load_status_tuwen='loading'
 			let data={
 					  "id": this.dyId,
 					  "page":1 ,
 					  "size": "10",
 					  "userId":this.$store.state.userInfo.id
 				}
-				uni.showLoading({
-					icon:'none',
-					mask:true,
-					title:'加载中'
-				})
 			this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
-				uni.hideLoading()
+				this.load_status_tuwen='nomore'
 					if(res.status){	
 							this.tuwen_data = res.data
 							this.tuwen_data.forEach(item=>{
@@ -294,16 +290,15 @@ export default {
 			this.getTwoList(this.commentList[index].comment_user_id,index,id)
 		},
 		//动态点赞
-		clickLikes(id,isLove,index){
+		clickLikes(id,index){
 			let data={
 				userId:this.$store.state.userInfo.id,
-				id:id?id:0,
-				type:isLove?'plus':'reduce',
+				id:id?id:0
 			}
-			this.$H.patch('/zf/v1/dynamic/follow',data,true).then(res=>{
+			this.$H.patch('/zf/v1/dynamic/like',data,true).then(res=>{
 				if(res.status&&res.status!=500){
-					res.data[0].follow?this.tuwen_data[index].likes+=1 :this.tuwen_data[index].likes-=1
-					res.data[0].follow?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
+					res.data[0].status?this.tuwen_data[index].like+=1 :this.tuwen_data[index].like-=1
+					res.data[0].status?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
 				}
 			})
 		},
@@ -425,6 +420,7 @@ export default {
 		},
 		//获取一级评论的
 		getOneList(){
+			
 			let that=this
 			let data={
 				dynamicId:this.$store.state.communityInfo.id,

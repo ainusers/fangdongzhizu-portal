@@ -5,9 +5,10 @@
 			<myInfoAavtar :userInfo="userInfo" :isShow="false"/>
 			<u-tabs :list="list" :is-scroll="false" :current="current" @change="change"></u-tabs>
 		</view>
-
+		<view class="person_info_ti">
+			
+		</view>
 		<view class="personal_bottom">
-
 			<view v-show="current==0">
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
 					<view>
@@ -162,14 +163,12 @@
 		position: fixed;
 		top: 0;
 		width: 100%;
-		height: auto;
 		z-index: 10;
 	}
-
 	.personal_bottom {
 		position: absolute;
 		width: 100%;
-		height: 70%;
+		height: 65%;
 		bottom: 0;
 		overflow-y: scroll;
 		webkit-overflow-scrolling: touch;

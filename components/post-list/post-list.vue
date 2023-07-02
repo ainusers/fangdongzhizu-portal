@@ -65,8 +65,8 @@
 						<!-- 分享 -->
 						<view class="p-item">
 							<button @click.stop="showShares(index,item.id)" class="u-reset-button" open-type="share">
-								<u-icon name="zhuanfa" size="38"></u-icon>
-								<text class="count">{{ item.transfer }}</text>
+								<u-icon name="eye" size="38"></u-icon>
+								<text class="count">{{ item.look }}</text>
 							</button>
 						</view>
 						<!-- 评论 -->
@@ -78,14 +78,20 @@
 						<view v-show="item.status&&item.status==1" class="p-item"
 							@click.stop="cancelCollection(item.id, index)">
 							<u-icon name="heart-fill" color="#cc0000" size="38"></u-icon>
-							<text class="count">{{ item.likes ?item.likes :'' }}</text>
+							<text class="count">{{ item.like ?item.like :'' }}</text>
 						</view>
 						<view v-show="!item.status" class="p-item" @click.stop="addCollection(item.id, index)">
 							<u-icon name="heart" size="38"></u-icon>
-							<text class="count">{{ item.likes?item.likes:'' }}</text>
+							<text class="count">{{ item.like?item.like:'' }}</text>
 						</view>
 					</view>
 				</view>
+			</view>
+		</block>
+		<!-- 骨架屏  数据正在加载中 -->
+		<block v-if="list.length==0&&loadStatus=='loading'">
+			<view v-for="(key,index) in jiaL">
+				<postListSkeleton/>
 			</view>
 		</block>
 		<!-- 判断是否加载数据 -->
@@ -130,6 +136,7 @@
 <script>
 	let that = null;
 	import zhizuReport from '@/components/common/modal/report.vue'
+	import postListSkeleton from '@/components/post-list/post-list-skeleton.vue'
 	export default {
 		name: 'post-list',
 		props: {
@@ -139,7 +146,8 @@
 			isPersonal: Boolean
 		},
 		components: {
-			zhizuReport
+			zhizuReport,
+			postListSkeleton
 		},
 		data() {
 			return {
@@ -157,7 +165,8 @@
 				reportId: '',
 				currentIndex: '',
 				follow: '' ,//当前是否点赞状态
-				shareId:''
+				shareId:'',
+				jiaL:[1,2,3]
 			};
 		},
 		
@@ -180,6 +189,9 @@
 		},
 		created() {
 			this.isReport = false
+			if(this.isDetail){
+				this.jiaL=[1]
+			}
 		},
 		onLoad(options) {
 			this.isDetail = options.isDetail
@@ -282,11 +294,11 @@
 			},
 			// 点赞
 			addCollection(id, index, isLove) {
-				this.$emit('clickLike', id, 1, index)
+				this.$emit('clickLike', id, index)
 			},
 			// 取消点赞
 			cancelCollection(id, index, isLove) {
-				this.$emit('clickLike', id, 0, index)
+				this.$emit('clickLike', id, index)
 			},
 			// 预览图片
 			previewImage(url, urls, integral, post_id,index) {
@@ -453,8 +465,11 @@
 			z-index: 9999;
 			background-color: #fff;
 			.item {
+				padding:20rpx 0;
+				border-bottom: 1px dashed #aaa;
 				&:last-child {
 					margin-bottom: 0;
+					border-bottom: none;
 				}
 			}
 		}

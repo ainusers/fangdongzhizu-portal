@@ -409,7 +409,7 @@
 			}
 		 return	this.$H.get('/zf/v1/room/list/id',data,true).then(res=>{
 				this.detailData=res.data[0]
-				if(this.detailData.collection==1){
+				if(this.detailData.like){
 					this.startIcon='heart-fill'
 					this.iconColor='#f91e08'
 				}
@@ -482,7 +482,7 @@
 			// 1 举报  2 收藏  3立即沟通
 			switch (index){
 				case 2:
-				this.detailData.collection==0?params['collection']=1:params['collection']=0
+				// this.detailData.collection==0?params['collection']=1:params['collection']=0
 				this.statistics(params)
 				break;
 				case 3:
@@ -496,17 +496,18 @@
 		},
 		statistics(params){
 			this.$H.post('/zf/v1/const/save/statistics',params,true).then(res=>{
-				if(res.status){
-					this.detailData.collection=params.collection
-					// 收藏成功
-					params.collection==0?this.$u.toast('取消收藏'):this.$u.toast('收藏成功')
-					if(params.collection==1){
+				console.log(res)
+				let status=res.data[0].status
+				console.log(status)
+				if(status){
 						this.startIcon='heart-fill'
 						this.iconColor='#f91e08'
-					} else {
+					// 收藏成功
+					this.$u.toast('收藏成功')
+				}else{
+					this.$u.toast('取消收藏')
 						this.startIcon='heart'
 						this.iconColor=''
-					}
 				}
 			})
 		},

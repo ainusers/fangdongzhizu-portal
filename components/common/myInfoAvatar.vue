@@ -97,8 +97,8 @@
 			}
 				
 			/deep/.avatar{
-				width: 180rpx;
-				height: 180rpx;
+				width: 160rpx;
+				height: 160rpx;
 			}
 	      }
 	    }

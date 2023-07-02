@@ -98,9 +98,9 @@ module.exports=()=>({
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light",
 				"backgroundColor":"#fff",
-				"onReachBottomDistance":200,
+				// "onReachBottomDistance":200,
 				"app-plus": {
-					// "scrollIndicator": "none"
+					"scrollIndicator": "none"
 				}
 			},
 			meta:{
@@ -266,7 +266,7 @@ module.exports=()=>({
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light",
 				"backgroundColor":"#fff",
-				"onReachBottomDistance":200,
+				// "onReachBottomDistance":200,
 				"app-plus": {
 					"scrollIndicator": "none",
 					"bounce": "none",

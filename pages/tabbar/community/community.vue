@@ -85,7 +85,7 @@
 		</view>
  -->
 		<!-- 朋友圈 -->
-		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus" @clickLike="clickLike" @deletePost="deletePostFn"></post-list>
+		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus" @clickLike="clickLike"></post-list>
 	</view>
 </template>
 
@@ -159,6 +159,7 @@
 						  'userId':this.$store.state.userInfo.id
 				}
 				this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
+
 					if(res.status){
 						if(this.tuwen_default_page==1){
 							this.tuwen_data = res.data
@@ -174,26 +175,29 @@
 						}else{
 							this.load_status_tuwen = 'nomore';
 						}
-						uni.stopPullDownRefresh();
 					}
 				})
 			},
-			clickLike(id,isLove,index){
+			clickLike(id,index){
 				let data={
 					userId:this.$store.state.userInfo.id,
-					id:id?id:0,
-					type:isLove?'plus':'reduce'
+					id:id?id:0
 				}
-				this.$H.patch('/zf/v1/dynamic/follow',data,true).then(res=>{
-					if(res.status&&res.status!=500){
-						res.data[0].follow?this.tuwen_data[index].likes+=1 :this.tuwen_data[index].likes-=1
-						res.data[0].follow?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
+				this.$H.patch('/zf/v1/dynamic/like',data,true).then(res=>{
+					if(res.status&&res.status!=500){		
+						if(!this.tuwen_data[index].like){
+							this.$set(this.tuwen_data[index],'like',0)
+						}
+						res.data[0].status?this.tuwen_data[index].like+=1 :this.tuwen_data[index].like-=1
+						if(res.data[0].status){
+							this.$set(this.tuwen_data[index],'status',1)
+							
+						}else{
+							this.$set(this.tuwen_data[index],'status',0)
+						}
 					}
 				})
 			},
-			deletePostFn(id){
-				console.log('删除3')
-			}
 		}
 	}
 </script>

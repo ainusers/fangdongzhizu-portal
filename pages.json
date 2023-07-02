@@ -219,10 +219,9 @@
    	{
    		"path": "pages/tabbar/me/tools/check",
    		"style": {
-   			"navigationBarTitleText": "我的动态4",
+   			"navigationBarTitleText": "我的动态",
    			"navigationBarTextStyle": "black",
    			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
    			"enablePullDownRefresh": true,
    			"backgroundTextStyle":"light",
    			"app-plus": {

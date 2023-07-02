@@ -53,7 +53,6 @@ const  compressImg = function(img, res) {
 	// })
 	let that = this
 	return new Promise((res) => {
-		console.log("img",img)
 		// var localPath = plus.io.convertAbsoluteFileSystem(img);
 		plus.io.resolveLocalFileSystemURL(img, (entry) => { //通过URL参数获取目录对象或文件对象
 			entry.file((file) => { // 可通过entry对象操作图片 
@@ -168,7 +167,6 @@ const dateTime1=function(e){
 	let nM=neT.getMonth()+1
 	let nD=neT.getDate()
 	//当天的时间
-	console.log(D==nD&&M==nM&&Y==nY)
 	if(D==nD&&M==nM&&Y==nY){
 		if(h<10){
 			h='0'+h
@@ -209,15 +207,16 @@ const dateTime1=function(e){
 }
 // 控制时间间隔
 const spaceTime=function(old,now){
-	old=new Date(old)
-	now=new Date(now)
-	var told=old.getTime()
-	var tnow=now.getTime()
-	if(told>(tnow+1000*60*5)){
-		return now
-	}else{
-		return ''
-	}
+	console.log(old)
+	console.log(now)
+	old=new Date(old);
+	now=new Date(now);
+	console.log(old)
+	console.log(now)
+	var told=old.getTime();
+	var tnow=now.getTime();
+	
+	return (told>(tnow+1000*60*5))
 }
 //时间转换
 const tranfTime = function(autoTime) {
@@ -246,7 +245,6 @@ const tranfTime = function(autoTime) {
 }
 //根据userid获取userid 信息
 const getuserInfo = function(userId,type) {
-	console.log(type)
 	let url='/zf/v1/user/id'
 	let data=''
 	if(type){
@@ -257,7 +255,6 @@ const getuserInfo = function(userId,type) {
 	}else{
 		data={userId: userId}
 	}
-	console.log(data)
 	return new Promise((resolve, reject) => {
 		
 		request.get(url,data, true).then(res => {
