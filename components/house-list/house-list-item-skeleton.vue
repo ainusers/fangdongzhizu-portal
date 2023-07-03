@@ -49,7 +49,6 @@
 		background: #eee;
 		width:80%
     }
-    /* #endif */
     .er_house_price_view{
 		line-height:30upx;
 		height: 30upx;
