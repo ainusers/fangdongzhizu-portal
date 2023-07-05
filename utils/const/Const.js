@@ -9,7 +9,54 @@
 // caseType = 5 ? 公寓
 
 
+
+
+
 export class Const {
+	
+	// 房源筛选项
+	static CPriceScreen=[
+		{
+			id:1,
+			text:'1500以下',
+			value:'0-1500'
+		},
+		{
+			id:2,
+			text:'1500-2500元',
+			value:'1500-2500'
+		},
+		{
+			id:3,
+			text:'2500-3500元',
+			value:'2500-3500'
+		},
+		{
+			id:4,
+			text:'3000-5000元',
+			value:'3000-5000'
+		},
+		{
+			id:5,
+			text:'5000-8000元',
+			value:'5000-8000'
+		},
+		{
+			id:6,
+			text:'8000-10000元',
+			value:'8000-10000'
+		},
+		{
+			id:7,
+			text:'10000以上',
+			value:'10000'
+		},
+	]
+	
+	
+	
+	
+	
     static success = 200;
 	// cdn图片自定义尺寸
 	static getDealCdnImgUrl(url = this.houseDefaultImg, width = 180, height = 120) {
@@ -61,13 +108,13 @@ export class Const {
 
 	// 户型筛选
 	static roomList =  [
-		{ text: '不限', id: '' },
-		{ text: '1室', id: '1:1' },
-		{ text: '2室', id: '2:2' },
-		{ text: '3室', id: '3:3' },
-		{ text: '4室', id: '4:4' },
-		{ text: '5室', id: '5:5' },
-		{ text: '5室以上', id: '5:100' }
+		{ text: '不限', id: '',val:'' },
+		{ text: '1室', id: '1:1',val:'1' },
+		{ text: '2室', id: '2:2' ,val:'2'},
+		{ text: '3室', id: '3:3',val:'3' },
+		{ text: '4室', id: '4:4',val:'4' },
+		{ text: '5室', id: '5:5' ,val:'5'},
+		{ text: '5室以上', id: '5:100',val:'' }
 	];
 	static bulletRoomList =  [
 		{ text: '不限', id: '' },

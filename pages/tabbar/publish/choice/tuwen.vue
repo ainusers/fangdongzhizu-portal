@@ -199,6 +199,7 @@
 		},
 		methods: {
 			async publish(){
+				uni.showLoading({title:'发布中',mask:false,});
 				this.checkPush().then(async res=>{
 					if(res.status){
 						console.log('fabu ')
@@ -210,7 +211,7 @@
 								});
 								return;
 							}
-							uni.showLoading({title:'发布中',mask:false,});
+							
 							// 获取位置信息
 							// #ifdef APP-PLUS
 							let location = await this.getLocation();

@@ -122,7 +122,7 @@
 		  	</view>
 		  	<view class="name">点赞</view>
 		  </view>
-		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=2')">
+		 <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=2')">
 		  	<view class="icon">
 		  		<image src="../../../static/me/share.png" mode="aspectFit"></image>
 		  	</view>

@@ -31,7 +31,12 @@
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
 					<view v-if="current == 0">
 						<!-- 内容区域 -->
-						<block v-if="tuwen_data.length === 0 && currPage==1">
+						<block v-if="status&& currPage==1">
+							<view v-for="(key,index) in jiaL">
+								<postListSkeleton/>
+							</view>
+						</block>
+						<block v-if="!status&&tuwen_data.length === 0 && currPage==1">
 							<u-empty  text="暂无数据" mode="favor"></u-empty>
 						</block>
 						<view class="content" v-else>
@@ -44,7 +49,13 @@
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
 					<view v-if="current == 1">
-					<block v-if="tuwen_data.length === 0 && currPage==1">
+					<!-- 内容区域 -->
+					<block v-if="status&& currPage==1">
+						<view v-for="(key,index) in jiaL">
+							<postListSkeleton/>
+						</view>
+					</block>
+					<block v-if="!status&&tuwen_data.length === 0 && currPage==1">
 						<u-empty  text="暂无数据" mode="favor"></u-empty>
 					</block>
 					<view class="content" v-else>
@@ -57,8 +68,14 @@
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
 					<view v-if="current == 2">
-						<block v-if="tuwen_data.length === 0 && currPage==1">
-								<u-empty  text="暂无数据" mode="favor"></u-empty>
+						<!-- 内容区域 -->
+						<block v-if="status&& currPage==1">
+							<view v-for="(key,index) in jiaL">
+								<postListSkeleton/>
+							</view>
+						</block>
+						<block v-if="!status&&tuwen_data.length === 0 && currPage==1">
+							<u-empty  text="暂无数据" mode="favor"></u-empty>
 						</block>
 						<view class="content" v-else>
 							<!-- 已下架 -->
@@ -70,7 +87,13 @@
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content">
 					<view v-if="current == 3">
-					<block v-if="tuwen_data.length === 0 && currPage==1">
+					<!-- 内容区域 -->
+					<block v-if="status&& currPage==1">
+						<view v-for="(key,index) in jiaL">
+							<postListSkeleton/>
+						</view>
+					</block>
+					<block v-if="!status&&tuwen_data.length === 0 && currPage==1">
 						<u-empty  text="暂无数据" mode="favor"></u-empty>
 					</block>
 					<view class="content" v-else>
@@ -81,6 +104,7 @@
 				</scroll-view>
 			</swiper-item>
 		</swiper>
+		
 	</view>
 </template>
 
@@ -88,11 +112,13 @@
 import screenTab from '@/components/common/screen-tab/screen-tab.vue'
 import { Const } from "@/utils/const/Const.js";
 import postList from '@/components/post-list/post-list.vue';
+import postListSkeleton from '@/components/post-list/post-list-skeleton.vue'
 import tuwenVue from '../../publish/choice/tuwen.vue';
 export default {
 	components: {
 		screenTab,
-		postList
+		postList,
+		postListSkeleton
 	},
 	data() {
 		return {
@@ -116,6 +142,7 @@ export default {
 			load_status_tuwen: 'loadmore',
 			currPage:1,
 			status:false, //当前是否正在被加载
+			jiaL:[1,2,3]
 		};
 	},
 	props: {
@@ -126,14 +153,14 @@ export default {
 	},
 	methods: {
 		tuwen_init(index){
-			this.current = index;
+			 if(this.status) return
+			 this.current = index;
 			 this.tuwen_data=this.tuwen_dataAll[index]?this.tuwen_dataAll[index]:[]  
 			  if(this.tuwen_dataAll[index]&&this.tuwen_dataAll[index].length==0){
 				   this.status =false
 			  }
-			 if(this.status) return
-			 this.status=true
 			if(this.tuwen_dataAll[index]&&this.tuwen_dataAll[index].length==0 ||!this.tuwen_dataAll[index]){
+					this.status=true
 					this.currPage=1
 					this.tuwen_data=[]
 					this.getShowData()
@@ -141,58 +168,73 @@ export default {
 		},
 		//上拉加载
 		scrolltolower(){
-			this.currPage++
-			this.getShowData()			
+			if(this.load_status_tuwen!='nomore'){
+				this.currPage++
+				this.getShowData()
+			}				
 		},
 		// 获得swiper切换后的current索引
 		swipeIndex(index) {
+			if(this.status) return
 			 let curindex=index.detail.current
 			this.tuwen_init(curindex)
 		},
 		// 切换选项卡
 		tabChange(index) {
+			if(this.status) return
 			this.tuwen_init(index)
 		},
 		//动态点赞
-		clickLike(id,isLove,index){
+		clickLike(id,index){
 			let data={
 				userId:this.$store.state.userInfo.id,
 				id:id?id:0,
-				type:isLove?'plus':'reduce',
 			}
-			this.$H.patch('/zf/v1/dynamic/follow',data,true).then(res=>{
+			this.$H.patch('/zf/v1/dynamic/like',data,true).then(res=>{
 				if(res.status&&res.status!=500){
-					res.data[0].count?this.tuwen_data[index].likes+=1 :this.tuwen_data[index].likes-=1
-					res.data[0].count?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
+				if(res.status&&res.status!=500){
+					if(!this.tuwen_data[index].like){
+						this.$set(this.tuwen_data[index],'like',0)
+					}
+					res.data[0].status?this.tuwen_data[index].like+=1 :this.tuwen_data[index].like-=1
+					if(res.data[0].status){
+						this.$set(this.tuwen_data[index],'status',1)
+						
+					}else{
+						this.$set(this.tuwen_data[index],'status',0)
+					}
+				}
 				}
 			})
 		},
 		changeStatus(index,statu){
-			console.log(index)
-			console.log(statu)
 			this.tuwen_data[index].isReport=statu
-			console.log(this.tuwen_data)
 		},
 		getShowData(){
+			this.status=true
 			let data={}
 			let url=''
 			let type=null
-			
 			url='/zf/v1/dynamic/list'
 			if(this.current==0){
 				data['way']='user'	
+			}else{
+				data['way']=null
 			}
-			if(this.current==1) type='likes'; 
+			if(this.current==1) type='like'; 
 			if(this.current==2) type='transfer' ; 
 			if(this.current==3) type="look"; 
 			data={
 				userId:this.$store.state.userInfo.id, 
 				page:this.currPage,
 				size:10,
-				way:'user',
 				type:type
 			}
+			
 			this.$H.post(url,data,true).then(res=>{
+				if(this.currPage==1){
+					 this.tuwen_data=[]
+				}
 				this.status=false
 				this.getRestus(res,this.current)
 			})
@@ -200,7 +242,7 @@ export default {
 			
 		getRestus(res,type){
 			if(res.status){
-				if(res.data.length==0 &&this.currPage!=1){
+				if(res.data.length==0 &&this.currPage!=1 || res.data.length<10&&this.currPage!=1){
 					this.load_status_tuwen='nomore'
 					uni.showToast({
 						icon: 'none',

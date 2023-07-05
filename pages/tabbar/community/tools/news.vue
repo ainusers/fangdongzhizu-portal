@@ -330,6 +330,10 @@ import store from '../../../../store/index.js';
 						if(Array.isArray(tempVal)){
 							tempVal.forEach(item=>{
 								if(item.room==that.chatId&&item.currentName==that.$store.state.userInfo.username){
+									if(!that.otherAvatar|| !that.otherAvatar){
+										that.otherName=item.fromName
+										that.otherAvatar=item.fromAvatar
+									}
 									that.msgList=item.data
 									that.initMsgList() 
 								}
@@ -368,6 +372,9 @@ import store from '../../../../store/index.js';
 			initMsgList(){
 				
 				let data=this.msgList
+				if(!data||data&&data.length==0){
+					return
+				}
 					that.oldTime=this.msgList[this.msgList.length-1].datetime
 					let currentT=new Date()
 					let lastT=this.msgList[this.msgList.length-1].datetime
@@ -377,18 +384,21 @@ import store from '../../../../store/index.js';
 						}else{
 							 this.msgList[this.msgList.length-1].datetime=dateTime1(that.oldTime)
 						}
-					for(let i=data.length-2;i>=1;i--){
-						this.oldTime = data[i].datetime;
-						let t=	spaceTime(that.oldTime,data[i-1].datetime);
-							if(!t){
+					if(data.length>=2){
+						for(let i=data.length-2;i>=1;i--){
+							this.oldTime = data[i].datetime;
+							let t=	spaceTime(that.oldTime,data[i-1].datetime);
+								if(!t){
+										data[i].datetime=''
+								}
+								if(data[i].datetime){
+									data[i].datetime=dateTime1(data[i].datetime)	
+								}else{
 									data[i].datetime=''
-							}
-							if(data[i].datetime){
-								data[i].datetime=dateTime1(data[i].datetime)	
-							}else{
-								data[i].datetime=''
-							}	
+								}	
+						}
 					}
+					
 				if(data.length>30){
 					that.historyArr=data.slice(0,data.length-29)
 					that.msgList=data.slice(data.length-30)
@@ -495,6 +505,9 @@ import store from '../../../../store/index.js';
 				// 消息列表
 				// 获取消息中的图片,并处理显示尺寸
 				let list=this.msgList
+				if(!list){
+					return
+				}
 				for(let i=0;i<list.length;i++){
 					if(list[i].type=='user' || list[i].type=="img"){
 						if(JSON.parse(list[i].msg) instanceof Array){
@@ -575,7 +588,7 @@ import store from '../../../../store/index.js';
 						for(let i=0;i<res.tempFilePaths.length;i++){
 							uni.uploadFile({
 								name: 'multipartFile',
-								url: 'http://81.70.163.240:11001/zf/v1/file/uploads',
+								url: 'http://www.fangdongzhizu.top:31001/zf/v1/file/uploads',
 								// buketName: 'asiatrip',
 								filePath: res.tempFilePaths[i],
 									name:'file',
@@ -674,7 +687,7 @@ import store from '../../../../store/index.js';
 								//在线表情路径，图文混排必须使用网络路径，请上传一份表情到你的服务器后再替换此路径 
 								//比如你上传服务器后，你的100.gif路径为https://www.xxx.com/emoji/100.gif 则替换onlinePath填写为https://www.xxx.com/emoji/
 								let onlinePath = 'http://81.70.163.240:9090/emoji/'
-								let imgstr = '<img src="'+onlinePath+EM.url+'"  width="18rpx" height="18rpx" alt="'+str+'" >';
+								let imgstr = '<img src="'+onlinePath+EM.url+'"  width="18rpx" height="18rpx" alt="'+str+'">';
 								return imgstr;
 							}
 						}
@@ -839,7 +852,7 @@ import store from '../../../../store/index.js';
 				if(!this.willStop){
 					uni.uploadFile({
 						name: 'multipartFile',
-						url: 'http://81.70.163.240:11001/zf/v1/file/uploads',
+						url: 'http://www.fangdongzhizu.top:31001/zf/v1/file/uploads',
 						buketName: 'zufang-chat',
 						filePath: res.tempFilePath,
 						header: {

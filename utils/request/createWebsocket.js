@@ -67,24 +67,26 @@ let currentName=store.state.userInfo.username
 					tempChatList=addImgMsg(data,newchatList);
 					break;
 			}
-							if(data.id&&data.from!=store.state.userInfo.username&&data.msg!='ping'&& data.type!='signal'){
-							if(tempChatList.length>0){
-								tempChatList.forEach(item=>{
-									if(item.room==data.room){
-										if(store.state.currentNameChat!=data.from){
-											setUnreadCountAll(data)
-											item.unReadCount+=1
-											getStoreData('unReadCount')
-											let count=store.state.unReadCount+=1
-											store.commit('unReadCount',count)
-											setBarBadgeNum(count)
-										}
-									}
-								})		
-							}	
-								uni.vibrateLong();
+			if(data.id&&data.from!=store.state.userInfo.username&&data.msg!='ping'&& data.type!='signal'){
+				if(tempChatList.length>0){
+					tempChatList.forEach(item=>{
+						if(item.room==data.room&&item.currentName==currentName){
+							console.log('添加未读数')
+							if(store.state.currentNameChat!=data.from){
+								setUnreadCountAll(data)
+								item.unReadCount+=1
+								getStoreData('unReadCount')
+								let count=store.state.unReadCount+=1
+								store.commit('unReadCount',count)
+								setBarBadgeNum(count)
 							}
-							store.commit('chatList',tempChatList)	
+						}
+					})		
+				}	
+				uni.vibrateLong();
+			}
+			console.log(tempChatList)
+			store.commit('chatList',tempChatList)	
 		}
 		function addKey(data){
 			let target=data.target
@@ -139,6 +141,7 @@ function addTextMsg(data,chatList){
 	let currentNameChat=store.state.currentNameChat
 	for(let i=0;i<chatList.length;i++){
 		let item=chatList[i]
+		console.log(item.room==data.room&&item.currentName==currentName)
 			if(item.room==data.room&&item.currentName==currentName){
 				if(data.msg.indexOf('alt')!=-1){
 					data.typename=infoImgInit(data)
@@ -147,17 +150,6 @@ function addTextMsg(data,chatList){
 				}
 				item.data.push(data)
 			}
-	}
-	if(currentNameChat){
-		console.log('添加当前')
-		let currentChatList=store.state.currentChatList
-		if(data.msg.indexOf('alt')!=-1){
-			data.typename=infoImgInit(data)
-		}else{
-			data.typename=data.msg
-		}
-		currentChatList.data.push(data)
-		store.commit('currentChatList',currentChatList)	
 	}
 	return chatList	
 }	
@@ -202,7 +194,7 @@ function infoImgInit(data){
 	let	name=''
 	let alttext=data.msg.split('alt="')[1]
 	if(alttext){
-		name=alttext.slice(0,alttext.length-2).split('"><img')[0]
+		name=alttext.slice(0,alttext.length-2).split('">')[0]
 	} 
 	return name
 }

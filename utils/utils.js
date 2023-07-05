@@ -207,15 +207,10 @@ const dateTime1=function(e){
 }
 // 控制时间间隔
 const spaceTime=function(old,now){
-	console.log(old)
-	console.log(now)
 	old=new Date(old);
 	now=new Date(now);
-	console.log(old)
-	console.log(now)
 	var told=old.getTime();
 	var tnow=now.getTime();
-	
 	return (told>(tnow+1000*60*5))
 }
 //时间转换

@@ -255,10 +255,10 @@
 .price_bottom_view .price_input_val:last-child{
 	margin-left: 50upx;
 }
-.f_r_s {
-	display: flex;
-	flex-direction: row;
-}
+// .f_r_s {
+// 	display: flex;
+// 	flex-direction: row;
+// }
 .price_bottom_confirm{
 	width:200upx;
 	height:74upx;

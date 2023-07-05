@@ -101,7 +101,7 @@
 				</view>
 				<view class="txt_con">
 					<view class="txt">
-						<view class="high">《注册协议》</view>和<view class="high">《隐私政策》</view>
+						<view class="high" @click="goto('/pages/tabbar/me/text/register')">《注册协议》</view>和<view class="high" @click="goto('/pages/tabbar/me/text/privacy')">《隐私政策》</view>
 					</view>
 					<view class="txt1">版权所有&nbsp;&nbsp;违法必究 </view>
 				</view>
@@ -117,6 +117,12 @@
         onLoad() {},
         onShow() {},
         onUnload() {},
-        methods: {}
+        methods: {
+			goto(uri){
+					uni.navigateTo({
+						url: uri
+					})
+			},
+		}
     }
 </script>

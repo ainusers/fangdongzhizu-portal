@@ -11,6 +11,7 @@
 		background-color: #f2f2f2
 	}
 	.er_house_item_con{
+		width: 100%;
 		display: flex;
 	}
     .er_house_item{
@@ -246,11 +247,9 @@
 						</view>
 					</view>
 				</view>
-				
 			</view>
-		<view style="font-size: 26rpx;padding: 10rpx;" v-if="item.checkIdea">审核反馈： <view style="color: #ff002f;display: inline-block;">{{item.checkIdea}}</view></view>
+			<view style="font-size: 26rpx;padding: 10rpx;display: block;" v-if="item.checkIdea">审核反馈： <view style="color: #ff002f;display: inline-block;">{{item.checkIdea}}</view></view>
 		</view>
-		
 		<view class="detail_btn" v-show="isUpdate">
 			<view class="btn_item" @click="updateHouse(item)" v-show="current==0">
 				编辑

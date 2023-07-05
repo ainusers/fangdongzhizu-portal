@@ -657,7 +657,7 @@
 				if(!this.willStop){
 					uni.uploadFile({
 						name: 'multipartFile',
-						url: 'http://81.70.163.240:11001/uploadFile?buketName=asiatrip',
+						url: 'http://www.fangdongzhizu.top:31001/uploadFile?buketName=asiatrip',
 						buketName: 'zufang-chat',
 						filePath: res.tempFilePath,
 						success: uploadFileRes => {

@@ -287,15 +287,7 @@ export default {
 				region:[]
 			},
 			// 二手房价格
-			erHousePriceList: [
-				{text:'1500元以下',id:1},
-				{text:'1500-2500元',id:2},
-				{text:'2500-3500元',id:3},
-				{text:'3000-5000元',id:4},
-				{text:'5000-8000元',id:5},
-				{text:'8000-10000元',id:6},
-				{text:'10000元以上',id:7},
-			],
+			erHousePriceList: Const.CPriceScreen,
 			// 户型筛选
 			roomList: Const.roomList,
 			// 公寓出租方式
@@ -512,19 +504,25 @@ export default {
 				this.init()
 			}
 		},
-		init(){
+		/**
+		 * @param {Object} status  当前是否需要重新请求接口   供筛选
+		 */
+		init(status){	
 			this.currPage=1
 			this.houseList=[]
 			this.publish_type=this.current+1
-			switch(this.publish_type){
-				case 1:
-					this.houseList=this.subleaseList
-				break;
-				case 2:
-					this.houseList=this.directList
-				break;
+			if(!status){
+				switch(this.publish_type){
+					case 1:
+						this.houseList=this.subleaseList
+					break;
+					case 2:
+						this.houseList=this.directList
+					break;
+				}
 			}
-			if(this.houseList.length==0){
+			if(this.houseList.length==0 || status){
+				this.houseList=[]
 				this.getHouseList()
 			}else{
 				this.fulling=false
@@ -564,13 +562,13 @@ export default {
 		},
 		confirmPrice(val) {
 			this.screenMoney=val
-			this.init()
+			this.init(true)
 		},
 		
 		// 更多选项卡 - 确定按钮
 		confirmBtn(arr) {
 			this.moreChooseStr=arr
-			this.init()
+			this.init(true)
 		},
 		//获取该城市的所有区
 		getArea(){
@@ -597,35 +595,39 @@ export default {
 			})
 		},
 		regionLeftBtn(item,index){
+			console.log(item)
 			switch(index){
 				case 0:
 					this.getArea()
 				break;
 				case 1:
-				this.getStation()
+					this.getStation()
 				break
 			}
 		},
 		// 区域筛选
 		regionRightBtn(item){
+			console.log(item)
 			if(item.name){
+				console.log('name',item.name)
 				this.screenArea=item.name
 			}else{
 				this.subway=item
 				this.screenArea=''
 			}
-			this.init()
+			this.init(true)
 		},
 		//户型的确认
 		roomConfirm(item,index){
+			console.log(item)
 			let screenFormData = this.screenFormData;
 			let enterType = this.enterType;
 			if(!item.id) {
 				this.home_type=''
-				this.init()
+				this.init(true)
 				 return
 			} 
-			 this.home_type=item.text
+			 this.home_type=item.val
 			screenFormData[enterType].room.id = item.id;
 			screenFormData[enterType].room.show = true;
 			screenFormData[enterType].room.text = item.text;
@@ -634,7 +636,7 @@ export default {
 				screenFormData[enterType].room.show = false
 			}	  
 			this.screenFormData = screenFormData;
-			this.init()
+			this.init(true)
 		}
 	}
 }

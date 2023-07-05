@@ -122,6 +122,7 @@
 			uni.stopPullDownRefresh();
 		},
 		onReachBottom() {
+			console.log(this.load_status_tuwen)
 			if(this.load_status_tuwen!='nomore'){
 				this.tuwen_default_page++;
 				this.getMomentPost();

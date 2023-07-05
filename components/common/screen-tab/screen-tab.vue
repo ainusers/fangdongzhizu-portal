@@ -90,7 +90,7 @@
 									<block v-for="(item, index) in erHousePriceList" :key="index">
 										<view hover-class="none" form-type="submit"
 											:class="{screen_active: item.text == priceItem.text}" v-if="item.id"
-											@click="priceBtn(item.id,item.text, index)" class="region_new_list_item">{{ item.text }}
+											@click="priceBtn(item.id,item.text,item.value, index)" class="region_new_list_item">{{ item.text }}
 										</view>
 									</block>
 								</view>
@@ -246,19 +246,29 @@
 				},
 				priceItem: {
 					id:'',
-					text:''
+					text:'',
+					val:''
 				}
 			}
 		},
 		onShow() {
 
 		},
+		mounted() {
+			console.log(this.erHousePriceList)
+		},
 		onLoad() {
 			console.log('页面加载')
 		},
 		methods: {
 			screenBtn(str) {
-				this.listTcShow=this.listTcShow?false:true
+				console.log(str)
+				if(this.currentClickType==str){
+					this.listTcShow=this.listTcShow?false:true
+				}else{
+					this.listTcShow=true
+				}
+				
 				this.currentClickType = str
 			},
 			// 点击外部空白区域，弹窗关闭
@@ -299,6 +309,7 @@
 								screenFormData.erHouse.price.show=true
 								this.priceItem.id=''
 								this.priceItem.text=''
+								this.priceItem.val=''
 								screenFormData.erHouse.price.text =this.minPriceVal+'-'+this.maxPriceVal
 								return
 							}
@@ -392,15 +403,15 @@
 				this.screenFormData[this.enterType].price.text = '不限'
 				this.maxPriceVal = e.detail.value;
 			},
-			//选择价格
 			// 价格选择
-			priceBtn(id,text, index, isInput = false) {
+			priceBtn(id,text,val, index, isInput = false) {
 				if (!isInput) {
 					this.minPriceVal = "";
 					this.maxPriceVal = "";
 				}
 				this.priceItem.id=id
 				this.priceItem.text=text
+				this.priceItem.val=val
 			},
 			//更多提交
 			confirmBtn() {
@@ -494,24 +505,9 @@
 					return;
 				}
 				let screenFormData = this.screenFormData;
-				let val = this.priceItem.text
-				switch (this.priceItem.id) {
-					case 1:
-						val = '0-1000'
-						break;
-					case 2:
-						val = '2000-4000'
-						break;
-					case 3:
-						val = '4000-6000'
-						break;
-					case 4:
-						val = "6000-8000"
-						break;
-					case 5:
-						val = "8000-10000"
-						break;
-				}
+				let val = this.priceItem.val
+				console.log(this.priceItem)
+console.log(val)
 				let enterType = this.enterType;
 				screenFormData[enterType].price.id = this.priceItem.id;
 				screenFormData[enterType].price.show = false;
@@ -520,11 +516,9 @@
 					screenFormData[enterType].price.text = this.priceApiDataMap[this.from].defaultText;
 				}
 				this.screenFormData = screenFormData
-				console.log(screenFormData[this.enterType].price.text)
 				if (this.minPriceVal || this.maxPriceVal) {
 					this.priceItem.id=''
 					this.priceItem.text=''
-					console.log('设置价格区间值')
 					val = this.minPriceVal + '-' + this.maxPriceVal
 					uni.setStorage({
 						key:'priceArea',
@@ -560,7 +554,8 @@
 				screenFormData[this.enterType].price.text = '价格'
 				this.priceItem = {
 					id: '',
-					text: ''
+					text: '',
+					val:''
 				}
 				this.minPriceVal = ''
 				this.maxPriceVal = ''

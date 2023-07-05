@@ -626,7 +626,8 @@ module.exports=()=>({
 				// 	"scrollIndicator": "none"
 				// }
 			}
-		},{
+		},
+		{
 			"path": "pages/tabbar/me/personal",
 			"style": {
 				"navigationBarTitleText": "个人主页",
@@ -641,6 +642,22 @@ module.exports=()=>({
 				// "app-plus": {
 				// 	"scrollIndicator": "none"
 				// }
+			}
+		},
+		{
+			"path": "pages/tabbar/me/text/register",
+			"style": {
+				"navigationBarTitleText": "注册协议",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
+			}
+		},
+		{
+			"path": "pages/tabbar/me/text/privacy",
+			"style": {
+				"navigationBarTitleText": "隐私协议",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
 			}
 		},
 		{

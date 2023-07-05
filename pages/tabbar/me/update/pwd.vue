@@ -64,7 +64,7 @@
 			}
 			// 向后端发送请求，修改用户昵称
 			uni.request({
-				url: 'http://81.70.163.240:11001/zf/v1/user/pwd',
+				url: 'http://www.fangdongzhizu.top:31001/zf/v1/user/pwd',
 				method: 'PATCH',
 				data: {
 					userId: htmlEncode(this.$store.state.userInfo.id),
