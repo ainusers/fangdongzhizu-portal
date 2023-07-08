@@ -61,14 +61,14 @@
 }
 .scroll-view-height {
 	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
-	height: calc(100vh - var(--status-bar-height) - 88rpx);
+	height: calc(100vh - var(--status-bar-height) - 176rpx);
 	background-color: #ffffff;
 }
 .list-content{
-	height: calc(100vh - var(--status-bar-height) - 88rpx);
+	height: calc(100vh - var(--status-bar-height) - 176rpx);
 }
 .list-swiper{
-	height: calc(100vh - var(--status-bar-height) - 88rpx);
+	height: calc(100vh - var(--status-bar-height) - 176rpx);
 	background: #ffffff;
 }
 uni-swiper-item{
@@ -353,6 +353,8 @@ export default {
 		isLogin:false ,//是否登录
 	},
 	onLoad() {
+		const appAuthorizeSetting = uni.getAppAuthorizeSetting()
+		console.log(appAuthorizeSetting)
 		that=this
 		this.cityName=this.$store.state.currentCity
 		this.regionLeftList[0].text=this.cityName

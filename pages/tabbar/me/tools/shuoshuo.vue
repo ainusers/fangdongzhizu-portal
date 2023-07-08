@@ -131,7 +131,7 @@ export default {
 					name: '点赞'
 				},
 				{
-					name: '转发'
+					name: '举报'
 				},
 				{
 					name: '浏览'
@@ -214,22 +214,21 @@ export default {
 			this.status=true
 			let data={}
 			let url=''
-			let type=null
 			url='/zf/v1/dynamic/list'
 			if(this.current==0){
 				data['way']='user'	
 			}else{
 				data['way']=null
 			}
-			if(this.current==1) type='like'; 
-			if(this.current==2) type='transfer' ; 
-			if(this.current==3) type="look"; 
 			data={
 				userId:this.$store.state.userInfo.id, 
 				page:this.currPage,
 				size:10,
-				type:type
 			}
+			if(this.current==1) data[type]='like'; 
+			if(this.current==2) data[type]='transfer' ; 
+			if(this.current==3) data[type]="look"; 
+			
 			
 			this.$H.post(url,data,true).then(res=>{
 				if(this.currPage==1){
@@ -241,6 +240,7 @@ export default {
 		},
 			
 		getRestus(res,type){
+			this.load_status_tuwen='loading'
 			if(res.status){
 				if(res.data.length==0 &&this.currPage!=1 || res.data.length<10&&this.currPage!=1){
 					this.load_status_tuwen='nomore'

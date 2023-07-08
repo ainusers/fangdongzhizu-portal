@@ -3,7 +3,7 @@
 		<!-- <image class="logo" :class="{'active':active}" src="../../../static/logo.png"  mode="aspectFit"></image> -->
 		<view class="tabbar-box-wrap">
 			<view class="tabbar-box">
-				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/tuwen')">
+				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/tuwen','tuwen')">
 					<image class="box-image" src="../../../static/publish/release.png" mode="aspectFit"></image>
 					<text class="explain">发布图文</text>
 				</view>
@@ -11,7 +11,7 @@
 					<image class="box-image" src="../../../static/publish/video.png" mode="aspectFit"></image>
 					<text class="explain">发布视频</text>
 				</view> -->
-				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/fangyuan')">
+				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/fangyuan','fangyuan')">
 					<image class="box-image" src="../../../static/publish/qa.png" mode="aspectFit"></image>
 					<text class="explain">发布房源</text>
 				</view>
@@ -22,6 +22,7 @@
 </template> 
 
 <script>
+import {getCount,checkPush} from '@/utils/utils.js'
 export default {
 	data() {
 		return {
@@ -40,15 +41,37 @@ export default {
 		this.active = false;
 	},
 	methods: {
-		goToPage(url) {
+		goToPage(url,type) {
 			if(!this.$store.state.userInfo.auth){
 				this.show=true
 				return
 			}
 			if (!url) return;
-			uni.navigateTo({
-				url
-			});
+			//房源
+			if(type=='fangyuan'){
+				getCount().then(res=>{
+					if (res.code == 200 && res.data[0].status) {
+						uni.navigateTo({
+							url
+						});
+					}else{
+						uni.$u.toast('每个用户只能发布三个房源')
+					}
+				})
+			}else if(type=='tuwen'){
+				checkPush().then(res=>{
+					if(res.status){
+						uni.navigateTo({
+							url
+						})
+					}else{
+						uni.$u.toast('每天发布动态不能超过三个!')
+					}
+				})
+			}
+			
+			
+			
 		},
 		confirm(){
 			uni.navigateTo({

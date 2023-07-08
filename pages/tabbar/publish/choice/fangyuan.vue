@@ -290,8 +290,9 @@
 		width:100%;
 	}
 	.tipTxt{
-		font-size: 24rpx;
-		font-weight: normal;
+		font-size: 28rpx;
+		margin-left: 10rpx;
+		color: #878585;
 	}
 </style>
 <template>
@@ -306,7 +307,7 @@
 			</view>
 			<view class="step_1" v-show="stepNum==1||setpAll">
 				<!-- 资质上传 -->
-				<view class="region_new_title">资质上传  <text class="tipTxt">({{tipTxt}})</text></view>
+				<view class="region_new_title">资质上传  <text class="tipTxt">(&nbsp;{{tipTxt}}&nbsp;)</text></view>
 				<u-form-item prop="naturalImageList" required :border-bottom="false">
 					<view class="uni-list list-pd">
 						<view class="uni-list-cell cell-pd">
@@ -336,7 +337,7 @@
 				</u-form-item>
 
 				<!-- 房屋位置 -->
-				<view class="region_new_title">您的房间位置</view>
+				<view class="region_new_title">房间位置</view>
 				<u-form-item :label-position="labelPosition" prop="region1" label-width="150" borderBottom required>
 					<u-input :border="border" type="select" v-model="houseModel.region1" placeholder="请选择所属区域"
 						@click="showPickerArea"></u-input>
@@ -363,7 +364,7 @@
 		<u-form labelPosition="left" :model="houseModel" ref="form2">
 			<view class="step_2" v-show="stepNum==2 ||setpAll">
 				<!-- 费用信息 -->
-				<view class="region_new_title">您的房间费用信息<text class="tipTxt">(客观地评估价格有助于更快出租)</text></view>
+				<view class="region_new_title">房间费用信息<text class="tipTxt">(&nbsp;客观地评估价格有助于更快出租&nbsp;)</text></view>
 				<u-form-item :label-position="labelPosition" label="房间布局 :" prop="layout" label-width="150">
 					<u-input :border="border" placeholder="请选择房间结构" v-model="houseModel.layout" type="select"
 						@click="layoutShowFn" :disabled="setpAll"></u-input>
@@ -438,7 +439,7 @@
 		<u-form labelPosition="left" :model="houseModel" ref="form3">
 			<view class="step_3" v-show="stepNum==3 || setpAll">
 				<!-- 费用信息 -->
-				<view class="region_new_title">您的房间信息（必填项）</view>
+				<view class="region_new_title">房间信息</view>
 				<!-- 出租房屋 -->
 				<u-form-item :label-position="labelPosition" label="出租房间:" prop="lease" label-width="150">
 					<u-input :border="border" placeholder="请选择房间结构" v-model="houseModel.lease" type="select"
@@ -489,7 +490,7 @@
 					<!-- <view @click="showTimeFn" :class="[{'select_btn':houseModel.live_time?houseModel.live_time.indexOf('请选择')!=-1:''}]">{{houseModel.live_time}}</view> -->
 				</u-form-item>
 				<!-- 房源照片 -->
-				<view class="region_new_title">房间照片 <text class="tipTxt">(不允许虚假和合成图片)</text></view>
+				<view class="region_new_title">房间照片 <text class="tipTxt">(&nbsp;不允许虚假和合成图片&nbsp;)</text></view>
 				<u-form-item prop="houseImageList" :border-bottom="false" required>
 					<view class="uni-list list-pd">
 						<view class="uni-list-cell cell-pd">
@@ -599,7 +600,8 @@
 	import {
 		attachUpload,
 		htmlEncode,
-		compressImg
+		compressImg,
+		getCount
 	} from '../../../../utils/utils';
 
 	var sourceType = [
@@ -1818,114 +1820,113 @@
 
 			},
 			async publish() {
-				this.getCount().then(async res => {
-					if (res.code == 200 && res.data[0].status) {
-						this.homeArrIndex = this.houseModel.chekcNum
-						if (!this.isCheck) {
-							return
+				if(this.isEdit){
+						this.publishApi()
+				}else{
+					getCount().then(async res => {
+						if (res.code == 200 && res.data[0].status) {
+							this.publishApi()
+						}else{
+							uni.$u.toast('每个用户只能发布三个房源')
 						}
-						uni.showLoading({
-							title: '发布中',
-							mask: true,
-						});
-						let imagesNatureArr = ''
-						let imagesHouseArr = ''
-						// #ifdef APP-PLUS
-						var location = await this.getLocation(); //位置信息,可删除,主要想记录一下异步转同步处理
-            console.log('房源录入',location)
-						let address = location.address
-						let position = address.province + '-' + address.city + '-' + address.district + '-' +
-							address.street + '-' + address.streetNum + '-' + address.poiName + '-' + address.cityCode
-						// #endif
-						imagesNatureArr = this.houseModel.naturalImageList
-						imagesHouseArr = this.houseModel.houseImageList
-						let params = {
-							userId: this.userInfo.id,
-							username: this.userInfo.username,
-							imgUrl: imagesHouseArr.toString(), //房源图片
-							condition: imagesNatureArr.toString(), //资质图片
-							publishType: this.houseModel.publishType, //1 个人转租  2.房东直租  3.个人换租
-							province: this.houseModel.province,
-							city: this.houseModel.city,
-							area: this.houseModel.area,
-							communityName: htmlEncode(this.houseModel.communityName),
-							roomName: htmlEncode(this.houseModel.roomName),
-							layout: this.houseModel.layout, //房屋布局
-							orientation: this.houseModel.orientation,
-							size: htmlEncode(this.houseModel.homesize), //房屋面积
-							floor: this.houseModel.floor,
-							// distanceSubway:'距离西二旗地铁站600米',
-							// subway:'西二旗',
-							// rentalHouse:this.houseModel.roomType,
-							payType: this.houseModel.payType,
-							heatType: this.houseModel.heatType, //供暖方式
-							hasElevator: this.houseModel.hasElevatorStr,
-							money: htmlEncode(this.houseModel.money), //月度租金
-							mortgageMoney: htmlEncode(this.houseModel.mortgageMoney), //押金
-							serviceMoney: htmlEncode(this.houseModel.serviceMoney),
-							proxyMoney: this.houseModel.proxyMoney, //代理
-							heatMoney: this.houseModel.warmType, //取暖费用
-							wifiMoney: this.houseModel.wirelessType, //无线费用
-							manageMoney: this.houseModel.propertyType, //物业费用
-							waterElectricMoney: this.houseModel.hydropowerType,
-							support: this.houseModel.houseConfigStr,
-							status: 1,
-							liveTime: this.houseModel.live_time
-						}
-						// #ifdef APP-PLUS
-						params['longitude'] = location.longitude
-						params['latitude'] = location.latitude
-						params['position'] = location.position
-						// #endif
-						let roommate = []
-						this.houseModel.homeArr.forEach(item => {
-							if (item.tenantStr) {
-								roommate.push(item)
-							}
-						})
-						if (this.houseModel.lease) { //出租房屋
-							params['roomType'] = this.houseModel.lease
-							params['roommate'] = roommate
-						}
-						let url = '/zf/v1/room/increase'
-						if (this.isEdit) {
-							url = '/zf/v1/room/status'
-							params['id'] = this.houseModel.id
-							params['status'] = 1
-						}
-						this.$H.post(url, params, true).then(res => {
-							uni.hideLoading();
-							if (res.data && res.status) {
-								uni.$u.toast('发布成功')
-								uni.removeStorage({
-									key: 'houseModel'
-								})
-								uni.removeStorage({
-									key: 'currentObj'
-								})
-								uni.removeStorage({
-									key: 'houseConfigList'
-								})
-								setTimeout(() => {
-									uni.switchTab({
-										url: '/pages/tabbar/home/home'
-									})
-								}, 2000)
-							} else {
-								uni.$u.toast('发布失败')
-							}
-						})
-					}else{
-						uni.$u.toast('每个用户只能发布三个房源')
+					})
+				}
+				
+			},
+			async publishApi(){
+				this.homeArrIndex = this.houseModel.chekcNum
+				if (!this.isCheck) {
+					return
+				}
+				uni.showLoading({
+					title: '发布中',
+					mask: true,
+				});
+				let imagesNatureArr = ''
+				let imagesHouseArr = ''
+				// #ifdef APP-PLUS
+				var location = await this.getLocation(); //位置信息,可删除,主要想记录一下异步转同步处理
+				let address = location.address
+				let position = address.province + '-' + address.city + '-' + address.district + '-' +
+					address.street + '-' + address.streetNum + '-' + address.poiName + '-' + address.cityCode
+				// #endif
+				imagesNatureArr = this.houseModel.naturalImageList
+				imagesHouseArr = this.houseModel.houseImageList
+				let params = {
+					userId: this.userInfo.id,
+					username: this.userInfo.username,
+					imgUrl: imagesHouseArr.toString(), //房源图片
+					condition: imagesNatureArr.toString(), //资质图片
+					publishType: this.houseModel.publishType, //1 个人转租  2.房东直租  3.个人换租
+					province: this.houseModel.province,
+					city: this.houseModel.city,
+					area: this.houseModel.area,
+					communityName: htmlEncode(this.houseModel.communityName),
+					roomName: htmlEncode(this.houseModel.roomName),
+					layout: this.houseModel.layout, //房屋布局
+					orientation: this.houseModel.orientation,
+					size: htmlEncode(this.houseModel.homesize), //房屋面积
+					floor: this.houseModel.floor,
+					// distanceSubway:'距离西二旗地铁站600米',
+					// subway:'西二旗',
+					// rentalHouse:this.houseModel.roomType,
+					payType: this.houseModel.payType,
+					heatType: this.houseModel.heatType, //供暖方式
+					hasElevator: this.houseModel.hasElevatorStr,
+					money: htmlEncode(this.houseModel.money), //月度租金
+					mortgageMoney: htmlEncode(this.houseModel.mortgageMoney), //押金
+					serviceMoney: htmlEncode(this.houseModel.serviceMoney),
+					proxyMoney: this.houseModel.proxyMoney, //代理
+					heatMoney: this.houseModel.warmType, //取暖费用
+					wifiMoney: this.houseModel.wirelessType, //无线费用
+					manageMoney: this.houseModel.propertyType, //物业费用
+					waterElectricMoney: this.houseModel.hydropowerType,
+					support: this.houseModel.houseConfigStr,
+					status: 1,
+					live_time: this.houseModel.live_time
+				}
+				// #ifdef APP-PLUS
+				params['longitude'] = location.longitude
+				params['latitude'] = location.latitude
+				params['position'] = location.position
+				// #endif
+				let roommate = []
+				this.houseModel.homeArr.forEach(item => {
+					if (item.tenantStr) {
+						roommate.push(item)
 					}
 				})
-			},
-			getCount() {
-				let data = {
-					userId: this.$store.state.userInfo.id
+				if (this.houseModel.lease) { //出租房屋
+					params['roomType'] = this.houseModel.lease
+					params['roommate'] = roommate
 				}
-				return this.$H.get('/zf/v1/const/community/user/count', data, true).then(res => {
-					return res
+				let url = '/zf/v1/room/increase'
+				if (this.isEdit) {
+					url = '/zf/v1/room/status'
+					params['id'] = this.houseModel.id
+					params['status'] = 1
+				}
+				this.$H.post(url, params, true).then(res => {
+					uni.hideLoading();
+					if (res.data && res.status) {
+						uni.$u.toast('发布成功')
+						uni.removeStorage({
+							key: 'houseModel'
+						})
+						uni.removeStorage({
+							key: 'currentObj'
+						})
+						uni.removeStorage({
+							key: 'houseConfigList'
+						})
+						setTimeout(() => {
+							uni.switchTab({
+								url: '/pages/tabbar/home/home'
+							})
+						}, 2000)
+					} else {
+						uni.$u.toast('发布失败')
+					}
 				})
 			},
 			getLocation() { //h5中可能不支持,自己选择

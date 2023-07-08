@@ -127,8 +127,7 @@
 		</u-popup>
 		<!-- //举报模态框 -->
 		<view v-show="reportShow">
-			<zhizuReport @cancelReport="cancelReport" @goReport="goReportText" :typeStr="reportType"
-				:userId="reportUserId" :reportId="reportId" />
+			<zhizuReport @cancelReport="cancelReport" @goReport="goReportText" :typeStr="reportType" :reportId="reportId" />
 		</view>
 	</view>
 </template>
@@ -161,7 +160,6 @@
 				dyId: '',
 				isReport: false,
 				reportType: '动态',
-				reportUserId: '',
 				reportId: '',
 				currentIndex: '',
 				follow: '' ,//当前是否点赞状态
@@ -241,10 +239,8 @@
 			},
 			//控制举报，删除 显示隐藏
 			goReport(index) {
-				console.log('显示删除')
 				this.currentIndex = index
 				this.isReport ? this.isReport = false : this.isReport = true
-				this.reportUserId = this.list[index].userId
 				this.reportId = this.list[index].id
 				this.$emit('changeStatus', index, this.isReport)
 
@@ -466,8 +462,8 @@
 			background-color: #fff;
 			.item {
 				padding:20rpx 0;
-				border-bottom: 1px dashed #aaa;
 				&:last-child {
+					border-top: 1px solid #d5d5d6;
 					margin-bottom: 0;
 					border-bottom: none;
 				}

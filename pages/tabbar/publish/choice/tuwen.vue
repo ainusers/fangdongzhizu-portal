@@ -156,7 +156,7 @@
 
 <script>
 	import image from '@/store/image.js';
-	import {attachUpload,htmlEncode,compressImg} from '@/utils/utils.js'
+	import {attachUpload,htmlEncode,compressImg,checkPush} from '@/utils/utils.js'
 	var sourceType = [
 		['camera'],
 		['album'],
@@ -200,7 +200,7 @@
 		methods: {
 			async publish(){
 				uni.showLoading({title:'发布中',mask:false,});
-				this.checkPush().then(async res=>{
+				checkPush().then(async res=>{
 					if(res.status){
 						console.log('fabu ')
 							if (!this.input_content) {
@@ -354,12 +354,6 @@
 					uni.navigateBack();
 				}
 			},
-			checkPush(){
-				return this.$H.get('/zf/v1/dynamic/push',{userId:that.$store.state.userInfo.id},true).then(res=>{
-					console.log(res)
-					return res.data[0]
-				})
-			}
 		}
 	}
 </script>

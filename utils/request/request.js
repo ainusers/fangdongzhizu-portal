@@ -10,7 +10,10 @@ export default {
 			options.complete = (response) => {
 				uni.hideLoading()
 				if (response.statusCode == 200) {
-					if (response.data.code == 410 || response.data.code == 420) {
+					if (response.data.code == 10010) {
+							uni.removeStorage({
+								key:'token'
+							})
 							uni.navigateTo({
 								url: '/pages/auth/login'
 							})

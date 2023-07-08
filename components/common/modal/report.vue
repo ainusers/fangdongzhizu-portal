@@ -24,9 +24,6 @@
 			typeStr:{
 				type:String
 			},
-			userId:{
-				type:String|Number
-			},
 			reportId:{
 				type:Number|String
 			}
@@ -92,14 +89,12 @@
 				this.$emit('cancelReport')
 			},
 			goReport(){
-				console.log(this.userId)
-				console.log(this.typeStr)
 				if(!this.tipcontent) {
 					this.$u.toast('请选择举报类型')
 					return
 				}
 				let data={
-					userId:this.userId,
+					userId:this.$store.state.userInfo.id,
 					type:this.typeStr,
 					typeId:this.reportId,
 					content:this.tipcontent

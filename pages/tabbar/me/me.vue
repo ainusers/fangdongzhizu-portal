@@ -124,9 +124,9 @@
 		  </view>
 		 <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=2')">
 		  	<view class="icon">
-		  		<image src="../../../static/me/share.png" mode="aspectFit"></image>
+		  		<image src="../../../static/me/report.png" mode="aspectFit"></image>
 		  	</view>
-		  	<view class="name">转发</view>
+		  	<view class="name">举报</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=3')">
 		  	<view class="icon">

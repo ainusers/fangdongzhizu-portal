@@ -257,6 +257,21 @@ const getuserInfo = function(userId,type) {
 		})
 	})
 }
+// 限制发布房源个数
+const getCount=function(){
+	let data = {
+		userId: store.state.userInfo.id
+	}
+	return request.get('/zf/v1/const/community/user/count', data, true).then(res => {
+		return res
+	})
+}
+//限制发布图文个数
+const checkPush=function(){
+				return request.get('/zf/v1/dynamic/push',{userId:store.state.userInfo.id},true).then(res=>{
+					return res.data[0]
+				})
+			}
 const showToastTit=function(tit){
 	uni.showToast({
 		title: tit,
@@ -278,5 +293,6 @@ export {
 	setBarBadgeNum,
 	showToastTit,
 	dateTime1,
-	spaceTime
+	spaceTime,
+	getCount
 }

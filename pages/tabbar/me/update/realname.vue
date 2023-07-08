@@ -108,9 +108,18 @@
 			},
 		},
 		onNavigationBarButtonTap(e){
-			if(!this.form.straightUrl&&!this.form.reverseUrl){
+
+			if(!this.form.straightUrl){
 				uni.showToast({
-					title: '请上传身份证，正反面',
+					title: '请上传身份证人像面',
+					icon: 'none',
+					duration: 2000
+				})
+				return
+			}
+			if(!this.form.reverseUrl){
+				uni.showToast({
+					title: '请上传身份证国徽面',
 					icon: 'none',
 					duration: 2000
 				})
