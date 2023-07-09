@@ -127,7 +127,13 @@ uni-swiper-item{
 		<swiper class="list-swiper" @change="swipeIndex" :current="current" :duration="300" ref="listSwiper">
 		
 			<swiper-item>
-				<scroll-view scroll-y="true" class=" list-content" @scrolltolower="scrolltolower">
+				<scroll-view scroll-y="true" class=" list-content" @scrolltolower="scrolltolower"
+				:refresher-triggered="triggered"
+				:refresher-enabled="true"
+				:refresher-threshold="100"
+				@refresherpulling="onPulling"
+				@refresherrestore="onRestore"
+				>
 					<view v-if="current === 0">
 						<!-- 内容区域 -->
 						<view class="content" v-if="houseList.length>0">
@@ -224,6 +230,7 @@ export default {
 	},
 	data() {
 		return {
+			triggered:false, //下拉刷新是否触发
 			houseJia:[1,2,3,4,5,6,7],
 			showModel:true,
 			updateSearch:0,
@@ -353,8 +360,6 @@ export default {
 		isLogin:false ,//是否登录
 	},
 	onLoad() {
-		const appAuthorizeSetting = uni.getAppAuthorizeSetting()
-		console.log(appAuthorizeSetting)
 		that=this
 		this.cityName=this.$store.state.currentCity
 		this.regionLeftList[0].text=this.cityName
@@ -379,12 +384,29 @@ export default {
 		
 	},
 	onPullDownRefresh() {
+		console.log('shangla')
 		that.currPage=1
 		this.getHouseList()
 		this.houseList=[]
 		uni.stopPullDownRefresh();
 	},
-	methods: {	
+	methods: {
+		//自定义下拉刷新
+		 onPulling(e) {
+			if(!this.triggered){
+				this.triggered=true
+				setTimeout(()=>{
+					that.currPage=1
+					this.houseList=[]
+					this.getHouseList(1)
+				},1000)
+				
+			}		
+		},
+		onRestore() {
+			this.triggered = false ; // 需要重置
+			console.log("onRestore");
+		},
 //保存登录人的设备
 			async savePhoneInfo(phoneInfo){
 					var location=await this.getLocation();
@@ -431,7 +453,8 @@ export default {
 			this.currPage++
 			this.getHouseList()
 		},
-		getHouseList(){
+		getHouseList(type){
+			console.log('请求了接口了')
 			if(this.currPage==1){
 				this.showModel=true
 				this.isLoad=false
@@ -455,6 +478,7 @@ export default {
 						}
 					this.$H.post('/zf/v1/room/list',data,true).then(res=>{
 						this.showModel=false
+						this.triggered=false
 						uni.hideLoading()
 							if(res.status){
 								this.fulling=false

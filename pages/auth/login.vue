@@ -1,7 +1,7 @@
 <style lang="scss">
 	/* 每个页面公共css */
 	@import "@/style/login/weex.scss";
-	@import "@/style/login/skin.scss";
+	@import "@/style/login/skin.scss";                          
 </style>
 <template>
 	<view class="abslrtb flex-column a-center wrap">
@@ -29,11 +29,27 @@
 			<!-- 验证码 -->
 			<yzmCode ref="yzmCode" />
 		</view>
-
+		
 		<view class="btns">
 			<button @click="bindLogin" class="qbtn">
 				<view class="btn-text-color fs30">登录</view>
 			</button>
+			<view class="blue_link" :class="{'animShake':isShow}">
+				<u-checkbox-group>
+							<u-checkbox 
+								@change="checkboxChange" 
+								v-model="checked" 
+								name="隐私协议"
+								shape="circle"
+								active-color="#7dc3f2"
+							>
+							</u-checkbox>
+				</u-checkbox-group>
+				<view class="blue" @click="goUrl">
+					隐私协议
+				</view>
+			</view>
+				
 			<view class="flex ptb30 mlr20 space-between">
 				<view @click="goRegister" class="">
 					<text class="fs28 nav-text-color underline">注册用户</text>
@@ -69,7 +85,9 @@
 				phone: '',
 				code: '',
 				codeDuration: 0,
-				phoneInfo:''
+				phoneInfo:'',
+				checked:false,
+				isShow:false
 			}
 		},
 		components:{
@@ -89,6 +107,7 @@
 						}
 					}
 				})
+			//这里去获取权限了
 			uni.getSystemInfo({
 				success(res){
 					uni.setStorage({
@@ -103,7 +122,23 @@
 			clearInterval(timer);
 		},
 		methods: {
+			checkboxChange(e){
+				console.log(e)
+				console.log(this.checked)
+			},
+			goUrl(){
+				uni.navigateTo({
+					url:'/pages/tabbar/me/text/privacy'
+				})
+			},
 			bindLogin() {
+				if(!this.checked){
+					this.isShow=true
+					setTimeout(()=>{
+						this.isShow=false
+					},500)
+					return
+				}
 				switch (this.tabIndex) {
 					case 0:
 						this.loginByUser()

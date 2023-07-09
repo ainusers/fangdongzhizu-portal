@@ -28,7 +28,13 @@
 		<!-- 内容区域 -->
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
 			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
+				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
+				:refresher-triggered="triggered"
+				:refresher-enabled="true"
+				:refresher-threshold="100"
+				@refresherpulling="onPulling"
+				@refresherrestore="onRestore"
+				>
 					<view v-if="current == 0">
 						<!-- 内容区域 -->
 						<block v-if="status&& currPage==1">
@@ -47,7 +53,13 @@
 				</scroll-view>
 			</swiper-item>
 			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content">
+				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
+				:refresher-triggered="triggered"
+				:refresher-enabled="true"
+				:refresher-threshold="100"
+				@refresherpulling="onPulling"
+				@refresherrestore="onRestore"
+				>
 					<view v-if="current == 1">
 					<!-- 内容区域 -->
 					<block v-if="status&& currPage==1">
@@ -66,7 +78,13 @@
 				</scroll-view>
 			</swiper-item>
 			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content">
+				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
+				:refresher-triggered="triggered"
+				:refresher-enabled="true"
+				:refresher-threshold="100"
+				@refresherpulling="onPulling"
+				@refresherrestore="onRestore"
+				>
 					<view v-if="current == 2">
 						<!-- 内容区域 -->
 						<block v-if="status&& currPage==1">
@@ -85,7 +103,13 @@
 				</scroll-view>
 			</swiper-item>
 			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content">
+				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
+					:refresher-triggered="triggered"
+					:refresher-enabled="true"
+					:refresher-threshold="100"
+					@refresherpulling="onPulling"
+					@refresherrestore="onRestore"
+				>
 					<view v-if="current == 3">
 					<!-- 内容区域 -->
 					<block v-if="status&& currPage==1">
@@ -122,6 +146,7 @@ export default {
 	},
 	data() {
 		return {
+			triggered:false,
 			current: 0,//0 圈子 1 互动 2 转发  3 浏览
 			tabList: [
 				{
@@ -152,6 +177,22 @@ export default {
 		 this.getShowData()
 	},
 	methods: {
+		//自定义刷新
+		onPulling(e) {
+			console.log(this.triggered)
+			if(!this.triggered){
+				this.triggered=true
+				setTimeout(()=>{
+					this.currPage=1
+					this.tuwen_data=[]
+					this.getShowData()
+				},1000)
+				
+			}		
+		},
+		onRestore() {
+			this.triggered = false; // 需要重置
+		},
 		tuwen_init(index){
 			 if(this.status) return
 			 this.current = index;
@@ -225,12 +266,13 @@ export default {
 				page:this.currPage,
 				size:10,
 			}
-			if(this.current==1) data[type]='like'; 
-			if(this.current==2) data[type]='transfer' ; 
-			if(this.current==3) data[type]="look"; 
+			if(this.current==1) data['type']='like'; 
+			if(this.current==2) data['type']='transfer' ; 
+			if(this.current==3) data['type']="look"; 
 			
 			
 			this.$H.post(url,data,true).then(res=>{
+				console.log('请求完成')
 				if(this.currPage==1){
 					 this.tuwen_data=[]
 				}
@@ -240,7 +282,9 @@ export default {
 		},
 			
 		getRestus(res,type){
+			console.log(res)
 			this.load_status_tuwen='loading'
+			this.triggered=false
 			if(res.status){
 				if(res.data.length==0 &&this.currPage!=1 || res.data.length<10&&this.currPage!=1){
 					this.load_status_tuwen='nomore'

@@ -52,6 +52,21 @@
 			<view class="qbtn" @tap="bindRegister">
 				<text class="btn-text-color fs30">立即注册</text>
 			</view>
+			<view class="blue_link" :class="{'animShake':isShow}">
+				<u-checkbox-group>
+							<u-checkbox 
+								@change="checkboxChange" 
+								v-model="checked" 
+								name="注册协议"
+								shape="circle"
+								active-color="#7dc3f2"
+							>
+							</u-checkbox>
+				</u-checkbox-group>
+				<view class="blue" @click="goUrl">
+					注册协议
+				</view>
+			</view>
 			<view class="flex ptb30 mlr20 aj-center">
 				<view @click="goLogin()" class="">
 					<text class="fs28 nav-text-color underline">返回登录</text>
@@ -70,13 +85,18 @@
 				phone: '',
 				code: '', //验证码
 				password: '',
-				codeDuration: 0
+				codeDuration: 0,
+				checked:false,
+				isShow:false
 			}
 		},
 		onLoad(){
 			that=this
 		},
 		methods: {
+			checkboxChange(){
+				
+			},
 			sendCode() {
 				if (this.phone.length < 1) {
 				  uni.showToast({
@@ -106,6 +126,7 @@
 				});
 			},
 			bindRegister() {
+				
 				if (!/^1\d{10}$/.test(this.phone)) {
 					uni.showToast({
 						icon: 'none',
@@ -126,6 +147,13 @@
 						title: '请输入密码'
 					});
 					return;
+				}
+				if(!this.checked){
+					this.isShow=true
+					setTimeout(()=>{
+						this.isShow=false
+					},500)
+					return
 				}
 				this.$H.post('/zf/v1/user/register',{
 					username: this.phone,
@@ -158,6 +186,11 @@
 			goForget() {
 				uni.navigateTo({
 					url: '/pages/auth/forget'
+				})
+			},
+			goUrl(){
+				uni.navigateTo({
+					url:'/pages/tabbar/me/text/register'
 				})
 			}
 		}

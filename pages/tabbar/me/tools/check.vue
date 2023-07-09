@@ -303,7 +303,13 @@
 		<!-- 内容区域 -->
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300"  >
 			<swiper-item v-for=" (item,index) in tabList" :key="index">
-				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
+				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
+				:refresher-triggered="triggered"
+				:refresher-enabled="true"
+				:refresher-threshold="100"
+				@refresherpulling="onPulling"
+				@refresherrestore="onRestore"
+				>
 					<view v-show="current == index">
 						
 						<view class="content" v-show="houseList.length>0">
@@ -358,6 +364,7 @@ export default {
 	},
 	data() {
 		return {
+			triggered:false,
 			showModel:false,
 			houseJia:[1,2,3,4,5,6,7,8],
 			houseList: [],
@@ -434,7 +441,6 @@ export default {
 						// #endif
 					}
 					if(that.houseList.length==0){
-						console.log('去请求')
 						this.showModel=true
 						that.getstatusHouseList(Number(newVal)+1)
 					}
@@ -470,6 +476,25 @@ export default {
 			
 	},
 	methods: {
+		//自定义刷新
+		onPulling(e) {
+			if(!this.triggered){
+				this.triggered=true
+				setTimeout(()=>{
+					this.pageNum=1
+					this.houseList=[]
+					if(this.current!=3){
+						this.getstatusHouseList(Number(this.current)+1)
+					}else{
+						this.getCollect()
+					}
+				},1000)
+				
+			}		
+		},
+		onRestore() {
+			this.triggered = false; // 需要重置
+		},
 		//滚动
 		scrolltolower(){
 			if(this.loadStatus=='loadmore'){
@@ -482,7 +507,7 @@ export default {
 				
 			}
 		},
-		//下架刷新
+		//下架  接口成功之后的刷新
 		updateHouseList(){
 			this.pageNum=1
 			this.getstatusHouseList(2)
@@ -495,6 +520,7 @@ export default {
 				size:10
 			},true).then(res=>{
 				that.showModel=false
+				that.triggered=false
 				if(res.status&&res.code==200){
 					that.houseList=[...that.houseList,...res.data]	
 					that.collectList=that.houseList
@@ -533,7 +559,10 @@ export default {
 			}
 			//1 待审核 2 已发布  3已下架
 				this.$H.post('/zf/v1/room/list',params,true).then(res=>{
+					console.log(res)
+					that.triggered=false
 					that.showModel=false
+					console.log('请求结束')
 							if(res.data&&res.status&&res.data.length>0){
 								console.log(that.houseList)
 								that.houseList=[...that.houseList,...res.data]

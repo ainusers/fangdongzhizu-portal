@@ -109,12 +109,12 @@ export class Const {
 	// 户型筛选
 	static roomList =  [
 		{ text: '不限', id: '',val:'' },
-		{ text: '1室', id: '1:1',val:'1' },
-		{ text: '2室', id: '2:2' ,val:'2'},
-		{ text: '3室', id: '3:3',val:'3' },
-		{ text: '4室', id: '4:4',val:'4' },
-		{ text: '5室', id: '5:5' ,val:'5'},
-		{ text: '5室以上', id: '5:100',val:'' }
+		{ text: '一居室', id: '1:1',val:'一居室' },
+		{ text: '二居室', id: '2:2' ,val:'二居室'},
+		{ text: '三居室', id: '3:3',val:'三居室' },
+		{ text: '四居室', id: '4:4',val:'四居室' },
+		{ text: '五居室', id: '5:5' ,val:'五居室'},
+		{ text: '五居室以上', id: '5:100',val:'五居室+' }
 	];
 	static bulletRoomList =  [
 		{ text: '不限', id: '' },
