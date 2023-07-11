@@ -183,7 +183,7 @@
 
 <script>
 	import myInfoAvatar from '@/components/common/myInfoAvatar.vue'
-	import {isLoginCheck} from '../../../utils/utils.js'
+	import {isLoginCheck,getUserInfo} from '../../../utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -196,11 +196,26 @@
 		},
 		onShow() {
 			this.userInfo=this.$store.state.userInfo
+			if(!this.userInfo || !this.userInfo.nickname){
+				this.getUserInfo()
+			}
 		},
 		methods: {
 			goto(uri){
 				uni.navigateTo({
 					url: uri
+				})
+			},
+			getUserInfo() {
+				this.$H.get('/zf/v1/user/attr/token',{},true).then(res=>{
+					if(res.status){
+						this.userInfo = res.data[0].user;
+						this.$store.commit('userInfo',this.userInfo)
+						uni.setStorage({
+							key:'userInfo',
+							data:this.userInfo
+						})
+					}
 				})
 			}
 		}
