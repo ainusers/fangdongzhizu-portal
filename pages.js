@@ -583,7 +583,8 @@ module.exports=()=>({
 			}
             
         }
-        ,{
+        ,
+		{
             "path" : "pages/tabbar/me/update/updatephone",
             "style" :                                                                                    
             {
@@ -613,6 +614,22 @@ module.exports=()=>({
 			}
             
         },
+		{
+		    "path" : "pages/tabbar/me/upgra",
+		    "style" :                                                                                    
+		    {
+		      "navigationBarTitleText": "",
+		      "navigationStyle": "custom",//导航栏自定义
+		      "app-plus": {
+		       	"bounce": "none",
+				"animationType":"none",//取消窗口动画
+				"background": "transparent" // 设置背景透明
+		       }
+		    },
+			meta:{
+				needLogin:true
+			} 
+		},
 		{
 			"path": "pages/auth/binding",
 			"style": {

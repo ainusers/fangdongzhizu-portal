@@ -164,6 +164,7 @@ export default {
 			],
 			tuwen_data: [],
 			tuwen_dataAll:[], //存储四个tab所有数据
+			reportList:[],
 			load_status_tuwen: 'loadmore',
 			currPage:1,
 			status:false, //当前是否正在被加载
@@ -174,7 +175,11 @@ export default {
 	},
 	onLoad(options) {
 		this.current=options.id
-		 this.getShowData()
+		if(this.current==2){
+			this.getDynamics()
+		}else{
+			 this.getShowData()
+		}	
 	},
 	methods: {
 		//自定义刷新
@@ -185,7 +190,7 @@ export default {
 				setTimeout(()=>{
 					this.currPage=1
 					this.tuwen_data=[]
-					this.getShowData()
+					this.current!=2?this.getShowData():this.getDynamics()
 				},1000)
 				
 			}		
@@ -194,24 +199,29 @@ export default {
 			this.triggered = false; // 需要重置
 		},
 		tuwen_init(index){
+			console.log(index)
 			 if(this.status) return
 			 this.current = index;
-			 this.tuwen_data=this.tuwen_dataAll[index]?this.tuwen_dataAll[index]:[]  
-			  if(this.tuwen_dataAll[index]&&this.tuwen_dataAll[index].length==0){
-				   this.status =false
-			  }
-			if(this.tuwen_dataAll[index]&&this.tuwen_dataAll[index].length==0 ||!this.tuwen_dataAll[index]){
-					this.status=true
-					this.currPage=1
-					this.tuwen_data=[]
-					this.getShowData()
-			}	
+			 if(index!=2){
+				 this.tuwen_data=this.tuwen_dataAll[index]?this.tuwen_dataAll[index]:[]
+				   if(this.tuwen_dataAll[index]&&this.tuwen_dataAll[index].length==0){
+				 	   this.status =false
+				   }
+			 }else{
+				 this.tuwen_data=this.reportList
+			 } 
+			 if(this.tuwen_data&&this.tuwen_data.length==0 ||!this.tuwen_data){
+			 		this.status=true
+			 		this.currPage=1
+			 		this.tuwen_data=[]
+			 		index!=2?this.getShowData():this.getDynamics()
+			 }	
 		},
 		//上拉加载
 		scrolltolower(){
 			if(this.load_status_tuwen!='nomore'){
 				this.currPage++
-				this.getShowData()
+				this.current!=2?this.getShowData():this.getDynamics()
 			}				
 		},
 		// 获得swiper切换后的current索引
@@ -267,22 +277,17 @@ export default {
 				size:10,
 			}
 			if(this.current==1) data['type']='like'; 
-			if(this.current==2) data['type']='transfer' ; 
+			if(this.current==2) data['type']='transfer'; 
 			if(this.current==3) data['type']="look"; 
-			
-			
 			this.$H.post(url,data,true).then(res=>{
-				console.log('请求完成')
 				if(this.currPage==1){
 					 this.tuwen_data=[]
 				}
 				this.status=false
 				this.getRestus(res,this.current)
 			})
-		},
-			
+		},	
 		getRestus(res,type){
-			console.log(res)
 			this.load_status_tuwen='loading'
 			this.triggered=false
 			if(res.status){
@@ -301,6 +306,35 @@ export default {
 						})
 				this.tuwen_data=this.tuwen_dataAll[type]
 			}
+		},
+		getDynamics(){
+			this.load_status_tuwen='loading'
+			let type=this.current
+			let data={
+				userId:this.$store.state.userInfo.id,
+				page:this.currPage,
+				size:10
+			}
+			this.$H.get('/zf/v1/tip/dynamics',data,true).then(res=>{
+				this.triggered=false
+				if(res.status&&res.code==200){
+					this.tuwen_data=[...res.data,...this.tuwen_data]
+					this.reportList=this.tuwen_data
+					this.tuwen_data.forEach(item=>{
+						if(item.imgurl){
+							item.image=item.imgurl.split(',')
+						}
+						this.$set(item,'isReport',false)
+					})
+					if(res.data.length==0 &&this.currPage!=1 || res.data.length<10&&this.currPage!=1){
+						this.load_status_tuwen='nomore'
+						uni.showToast({
+							icon: 'none',
+							title: '已加载完成'
+						});
+					}
+				}
+			})
 		}
 	}
 }

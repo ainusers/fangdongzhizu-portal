@@ -34,7 +34,7 @@
 					<!-- 列表内容 -->
 					<view class="post-content" >
 						<rich-text class="post-text" :nodes="item.words"></rich-text>
-						<view v-show="item.image[0]!=''">
+						<view v-show="item.image&&item.image[0]!=''">
 							<block>
 								<!--一张图片-->
 								<block v-if="item.image&&item.image.length == 1">
@@ -186,6 +186,7 @@
 			},
 		},
 		created() {
+			console.log(this.list)
 			this.isReport = false
 			if(this.isDetail){
 				this.jiaL=[1]

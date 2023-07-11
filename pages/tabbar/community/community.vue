@@ -98,11 +98,7 @@
 		},
 		data() {
 			return {
-				swiperList: [
-					'../../../static/community/banner/banner-1.png',
-					'../../../static/community/banner/banner-2.png',
-					'../../../static/community/banner/banner-3.png',
-				],
+				swiperList: [],
 				tuwen_data: [],
 				load_status_tuwen: 'loadmore',
 				tuwen_default_page: 1
@@ -112,6 +108,7 @@
 			
 		},
 		onLoad() {
+			this.getBanner()
 		},
 		onShow() {
 			this.getMomentPost();
@@ -137,6 +134,15 @@
 			}	
 		},
 		methods: {
+			getBanner(){
+				this.$H.get('/zf/v1/const/banner',{},true).then(res=>{
+					console.log(res)
+					if(res.status&&res.code==200){
+						this.swiperList=res.data
+						console.log(this.swiperList)
+					}
+				})
+			},
 			changeStatus(index,statu,isDelete){
 				this.tuwen_data[index].isReport=statu
 				if(isDelete){
