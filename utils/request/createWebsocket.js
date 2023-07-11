@@ -9,7 +9,7 @@ let currentName=store.state.userInfo.username
 			socketInstance=''
 			socketInstance  =  uni.connectSocket({
 				// 确保你的服务器是运行态
-				url: "ws://81.70.163.240:17180/websocket",
+				url: "ws://www.fangdongzhizu.top:17180/websocket",
 				success(data) {
 					// console.log("websocket连接状态：" + JSON.stringify(data.errMsg));
 				}
