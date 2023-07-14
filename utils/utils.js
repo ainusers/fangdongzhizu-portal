@@ -294,5 +294,6 @@ export {
 	showToastTit,
 	dateTime1,
 	spaceTime,
-	getCount
+	getCount,
+	checkPush,
 }

@@ -1,4 +1,12 @@
 <style scope lang="scss" scoped>
+	.upgra_modal{
+		position: fixed;
+		top:0;
+		bottom:0;
+		width: 100%;
+		background: rgba(0, 0, 0, 0.5);
+		z-index: 999;
+	}
 .main {
 	background:#5199ff;
 }
@@ -190,6 +198,10 @@ uni-swiper-item{
 				</scroll-view>
 			</swiper-item> -->
 		</swiper>
+		<view class="upgra_modal" v-if="isUpdateVersion">
+			<upgra @cancelVersion="cancelVersion"></upgra>
+		</view>
+		
 		<!-- <LodingM :Model="showModel"/> -->
 	</view>
 	
@@ -205,7 +217,7 @@ import screenHuan from '@/components/common/screen-tab/screen_huan.vue'
 import LodingM from '@/components/common/modal/loading_model.vue'
 import { Const } from "@/utils/const/Const.js";
 import {isLoginCheck} from '../../../utils/utils.js'
-
+import upgra from '../../auth/upgra.vue'
 let privateData = {
 	room: {
 		height: ""
@@ -226,10 +238,12 @@ export default {
 		screenTab,
 		screenHuan,
 		LodingM,
-		houseListItemSkeleton
+		houseListItemSkeleton,
+		upgra
 	},
 	data() {
 		return {
+			isUpdateVersion:false,//是否需要更新
 			triggered:false, //下拉刷新是否触发
 			houseJia:[1,2,3,4,5,6,7],
 			showModel:true,
@@ -371,6 +385,7 @@ export default {
 				that.savePhoneInfo(res.data)
 			}
 		})
+		
 		this.getArea()
 		this.getHouseList()
 	},
@@ -391,6 +406,9 @@ export default {
 		uni.stopPullDownRefresh();
 	},
 	methods: {
+		cancelVersion(){
+			this.isUpdateVersion=false
+		},
 		//自定义下拉刷新
 		 onPulling(e) {
 			if(!this.triggered){
@@ -473,7 +491,10 @@ export default {
 								data['home_type']=this.home_type?this.home_type:null
 								//更多筛选赋值
 								this.moreChooseStr.forEach((item,index)=>{
-									data[this.moreSubKey[index]]=item?item:null
+									if(item){
+										data[this.moreSubKey[index]]=item?item:null
+									}
+									
 								})
 						}
 					this.$H.post('/zf/v1/room/list',data,true).then(res=>{

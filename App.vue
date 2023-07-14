@@ -1,7 +1,9 @@
 <script>
 import {initStorestate,setBarBadgeNum} from '@/utils/utils.js'
+import {heartCheck} from '@/utils/request/createWebsocket.js'
 export default {
 	onLaunch: function() {
+		
 		console.log('App Launch');
 	
 				// initStorestate()
@@ -21,13 +23,10 @@ export default {
 				}
 			}
 		})
-		
-		
-			
-
 	},
 	onHide: function() {
 		console.log('App Hide');
+		clearInterval(heartCheck)
 	}
 };
 </script>

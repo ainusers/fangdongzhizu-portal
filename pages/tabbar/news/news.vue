@@ -111,7 +111,7 @@
 		methods: {
 			initData(arr){
 				console.log(arr)
-				this.getHistory()
+				// this.getHistory()
 				this.InfoList =arr.filter(item=>{
 					return item.currentName==this.$store.state.userInfo.username
 				})

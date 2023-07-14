@@ -615,15 +615,17 @@ module.exports=()=>({
             
         },
 		{
-		    "path" : "pages/tabbar/me/upgra",
+		    "path" : "pages/auth/upgra",
 		    "style" :                                                                                    
 		    {
 		      "navigationBarTitleText": "",
 		      "navigationStyle": "custom",//导航栏自定义
 		      "app-plus": {
 		       	"bounce": "none",
-				"animationType":"none",//取消窗口动画
-				"background": "transparent" // 设置背景透明
+		       	"animationType": "fade-in",
+		       	"background": "transparent",
+		       	"backgroundColor": "transparent",   
+		       	"popGesture": "none"
 		       }
 		    },
 			meta:{

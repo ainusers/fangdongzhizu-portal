@@ -4,25 +4,45 @@ import {getuserInfo,initStorestate,getStoreData,setBarBadgeNum} from '@/utils/ut
 let fromName=''
 let socketInstance=''
 let isChatStatus=''
-let currentName=store.state.userInfo.username
+let currentName=''
+			uni.getStorage({
+					key:'userInfo',
+					success(res) {
+						if(res.data){
+							currentName=res.data.username
+							console.log(currentName)
+						}
+					}
+				})
+let heartCheck=''
  const createlink=  function  createlink(type){
 			socketInstance=''
 			socketInstance  =  uni.connectSocket({
 				// 确保你的服务器是运行态
 				url: "ws://www.fangdongzhizu.top:17180/websocket",
 				success(data) {
+					console.log('链接成功')
 					// console.log("websocket连接状态：" + JSON.stringify(data.errMsg));
 				}
 			});
 			// 打开socket链接
 			socketInstance.onOpen((res) => {
+				console.log('打开链接')
 				// 发送认证消息
 					store.commit('socket_status',true)
 				setTimeout(function() {
 					authSocket(type);
 				}, 10);
 			});
+			socketInstance.onClose(() => {
+				clearInterval(heartCheck);
+				this.$store.commit('isChatStatus',false)
+			})
 			socketInstance.onMessage( async (res) => {
+				// clearInterval(heartCheck);
+					// heartCheck = setInterval(function() {
+				 //    socketInstance.send('HeartBeat');
+				 //  }, 5000);
 				console.log("收到服务器内容：" + res.data);
 				let data = eval("(" + res.data + ")");
 				//当前是否有过聊天记录 ，有直接push ，不需要添加fromName  没有就创建一个新的对象  
@@ -104,12 +124,15 @@ let currentName=store.state.userInfo.username
 		}
 		function isChatBoolean(data){
 			let temp=store.state.chatList
-			if(temp&&temp.length==0){return }
+			console.log(temp)
+			console.log(currentName)
+			if(temp&&temp.length==0){return}
 			let arr=temp.filter(item=>{
 				if(item.room==data.room&&item.currentName==currentName){
 					return item
 				}
 			})
+			console.log(arr)
 			return arr.length
 		}
 		//消息认证
@@ -124,9 +147,16 @@ function authSocket(room,type) {
 					if(type){
 						console.log('我要发送消息了')
 					}
-					
 				},
 			});
+			// heartCheck = setInterval(function() {
+			// 	  if(store.state.token){
+			// 		   socketInstance.send("{type:'signal'}");
+			// 	  }else{
+			// 		  clearInterval(heartCheck)
+			// 	  }
+			   
+			//   }, 5000);
 			Vue.prototype.$socketInstance=socketInstance
 		}
 	}
@@ -143,6 +173,8 @@ function addTextMsg(data,chatList){
 		let item=chatList[i]
 		console.log(item.room==data.room&&item.currentName==currentName)
 			if(item.room==data.room&&item.currentName==currentName){
+				console.log(item)
+				
 				if(data.msg.indexOf('alt')!=-1){
 					data.typename=infoImgInit(data)
 				}else{
@@ -210,10 +242,11 @@ function setPicSize(content){
 				}
 				return content;
 			}
-createlink()
-
-
+			if(currentName){
+				createlink()
+			}
 
 export {
-	createlink
+	createlink,
+	heartCheck
 }

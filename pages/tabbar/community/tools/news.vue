@@ -339,7 +339,7 @@ import store from '../../../../store/index.js';
 								}
 							})
 							that.scrollAnimation = false
-							if(that.msgList[that.msgList.length-1]){
+							if(that.msgList&&that.msgList[that.msgList.length-1]){
 								that.$nextTick(function() {
 									//进入页面滚动到底部
 									that.scrollToView="msg"+that.msgList[that.msgList.length-1].id
@@ -452,10 +452,12 @@ import store from '../../../../store/index.js';
 			// 发送认证消息
 			authSocket() {
 				let that=this
+				console.log(this.$store.state.socket_status)
 				if (this.$store.state.socket_status) {
 					this.$socketInstance.send({
 						data: "{'type':'signal','from':"+that.currentName+","+'room:'+that.chatId+"}",
 						async success() {
+							console.log('成功')
 							that.$store.commit('isChatStatus',true)
 						},
 						fail(err){
