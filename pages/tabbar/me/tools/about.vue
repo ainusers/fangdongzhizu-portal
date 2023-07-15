@@ -15,10 +15,10 @@
 			width:100%;
 			height:50%;
 			image{
-				width:400rpx;
-				height:400rpx;
-				margin-bottom: 20rpx;
-				margin-top:150rpx;
+				width:240rpx;
+				height:240rpx;
+				margin-bottom: 40rpx;
+				margin-top:100rpx;
 			}
 		}
 		.bottom{
@@ -71,7 +71,7 @@
 <template>
 	<view class="content">
 		<view class="top">
-			<image src="../../../../static/me/about.jpg" mode=""></image>
+			<image src="../../../../static/me/logo.png" mode=""></image>
 			<view class="mb20 about_tit">
 				房东直租
 			</view>
@@ -101,8 +101,9 @@
 				</view>
 				<view class="txt_con">
 					<view class="txt">
-						<view class="high" @click="goto('/pages/tabbar/me/text/register')">《注册协议》</view>和<view class="high" @click="goto('/pages/tabbar/me/text/privacy')">《隐私政策》</view>
+						<view class="high" @click="goto('/pages/tabbar/me/text/register')">《注册协议》</view><view class="high" @click="goto('/pages/tabbar/me/text/privacy')">《隐私政策》</view>
 					</view>
+					<view class="txt1">北京灵感边界科技有限公司 </view>
 					<view class="txt1">版权所有&nbsp;&nbsp;违法必究 </view>
 				</view>
 			</view>
