@@ -97,16 +97,6 @@
 		},
 		onLoad() {
 			that = this;
-			uni.getStorage({
-					key:'token',
-					success(res) {
-						if(res.data){
-							uni.switchTab({
-								url: '/pages/tabbar/home/home'
-							})
-						}
-					}
-				})
 			//这里去获取权限了
 			uni.getSystemInfo({
 				success(res){
