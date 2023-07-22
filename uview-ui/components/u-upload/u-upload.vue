@@ -374,7 +374,8 @@ export default {
 			this.lists[index].error = false;
 			this.lists[index].response = null;
 			uni.showLoading({
-				title: '重新上传'
+				title: '重新上传',
+        mask:true,
 			});
 			this.uploadFile(index);
 		},

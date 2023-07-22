@@ -12,6 +12,7 @@ export const downloadApp = (downloadUrl, progressCallBack = () => {}, ) => {
 		}, (task, status) => {
 			console.log(status,'status')
 			if (status == 200) { //下载成功
+			console.log(task)
 				resolve(task.filename)
  
 			} else {
@@ -25,6 +26,7 @@ export const downloadApp = (downloadUrl, progressCallBack = () => {}, ) => {
 		})
 		//监听下载过程
 		downloadTask.addEventListener("statechanged", (task, status) => {
+			console.log(task)
 			switch (task.state) {
 				case 1: // 开始  
 					break;
@@ -34,6 +36,7 @@ export const downloadApp = (downloadUrl, progressCallBack = () => {}, ) => {
 					let hasProgress = task.totalSize && task.totalSize > 0 //是否能获取到App大小
 					if (hasProgress) {
 						let current = parseInt(100 * task.downloadedSize / task.totalSize); //获取下载进度百分比
+						console.log(current)
 						progressCallBack(current)
 					}
 					break;
@@ -56,7 +59,7 @@ export const installApp = (fileName, callBack = () => {}) => {
 	//注册广播监听app安装情况
 	onInstallListening(callBack);
 	//开始安装
-	plus.runtime.install(plus.io.convertLocalFileSystemURL(fileName), {}, () => {
+	plus.runtime.install(plus.io.convertLocalFileSystemURL(fileName+'.apk'), {}, () => {
 		//成功跳转到安装界面
 	}, function(error) {
 		console.log(error)

@@ -3,10 +3,16 @@ import {initStorestate,setBarBadgeNum} from '@/utils/utils.js'
 import {heartCheck} from '@/utils/request/createWebsocket.js'
 export default {
 	onLaunch: function() {
-		
-		console.log('App Launch');
-	
-				// initStorestate()
+		uni.getStorage({
+			key:'token',
+			success(res) {
+				if(res.data){
+					uni.switchTab({
+						url: '/pages/tabbar/home/home'
+					})
+				}
+			}
+		})
 	},
 	onShow: function() {
 		initStorestate()
