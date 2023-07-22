@@ -42,7 +42,7 @@
 					});
 					return;
 				}
-				this.checkExist().then(res=>[
+				this.checkExist().then(res=>{
 					if(res.status){
 						// 获取验证码
 						this.$H.get('/zf/v1/code/sendCode', {
@@ -65,8 +65,7 @@
 							}
 						});
 					}
-				])
-				
+				})
 			},
 			checkExist(){
 				return this.$H.get('/zf/v1/user/exist',{username:that.username},false).then(res=>{

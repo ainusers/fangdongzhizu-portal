@@ -64,7 +64,7 @@
                 "maps" : {}
             },
             "splashscreen" : {
-                "useOriginalMsgbox" : true
+                "useOriginalMsgbox" : true,
                 "androidStyle" : "common"
             },
             "icons" : {
