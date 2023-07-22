@@ -7,7 +7,7 @@
 		<view class="label_fgs"></view>
 		<view class="flex-1">
 			<input placeholder-class="placeholder"  class="qui-input" type="number" value=""
-				v-model="code" placeholder="请输入验证码" />
+				v-model="code" placeholder="请输入验证码" maxlength="6"/>
 		</view>
 		<view>
 			<view style="opacity: 0.8;" class="yzm fs28 ptb20 main-color" @click="sendCode">
@@ -42,27 +42,40 @@
 					});
 					return;
 				}
-				if (this.codeDuration > 0) {
-					return;
-				}
-				this.codeDuration = 60;
-				// 倒计时
-				timer = setInterval(function() {
-					that.codeDuration--;
-					if (that.codeDuration == 0) {
-						clearInterval(timer);
+				this.checkExist().then(res=>[
+					if(res.status){
+						// 获取验证码
+						this.$H.get('/zf/v1/code/sendCode', {
+							phone: this.username
+						},false).then(res => {
+							console.log(res)
+							if (res.code === 200) {
+								this.$u.toast('发送成功！');
+								if (this.codeDuration > 0) {
+									return;
+								}
+								this.codeDuration = 60;
+								// 倒计时
+								timer = setInterval(function() {
+									that.codeDuration--;
+									if (that.codeDuration == 0) {
+										clearInterval(timer);
+									}
+								}, 1000)
+							}
+						});
 					}
-				}, 1000)
-				// 获取验证码
-				this.$H.get('http://sc.tujingzg.com/api/user/phoneReg', {
-					phone: this.username
-				}).then(res => {
-					if (res.code === 200) {
-						this.$u.toast(res.msg);
-					}
-				});
+				])
+				
 			},
-			
+			checkExist(){
+				return this.$H.get('/zf/v1/user/exist',{username:that.username},false).then(res=>{
+					console.log(res)
+					if(res.code==200){
+						return res.data[0]
+					}
+				})
+			}
 		}
 	}
 </script>

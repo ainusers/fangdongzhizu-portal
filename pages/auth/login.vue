@@ -1,7 +1,12 @@
 <style lang="scss">
 	/* 每个页面公共css */
 	@import "@/style/login/weex.scss";
-	@import "@/style/login/skin.scss";                          
+	@import "@/style/login/skin.scss";     
+	.forget_btn{
+		position: absolute;
+		bottom:100rpx;
+		width: $boxWidth
+	}
 </style>
 <template>
 	<view class="abslrtb flex-column a-center wrap">
@@ -50,12 +55,13 @@
 				</view>
 			</view>
 				
-			<view class="flex ptb30 mlr20 space-between">
+			<view class="flex ptb30 mlr20 space-between forget_btn">
 				<view @click="goRegister" class="">
-					<text class="fs28 nav-text-color underline">注册用户</text>
+					<text class="fs28 nav-text-color ">注册用户</text>
 				</view>
 				<view @click="goForget" class="">
-					<text class="fs28 nav-text-color underline">忘记密码</text>
+					 <!-- underline -->
+					<text class="fs28 nav-text-color">忘记密码</text>
 				</view>
 			</view>
 		</view>
@@ -133,6 +139,10 @@
 			},
 			bindLogin() {
 				if(!this.checked){
+					uni.showToast({
+						icon: 'none',
+						title: '请选择隐私协议！'
+					});
 					this.isShow=true
 					setTimeout(()=>{
 						this.isShow=false
@@ -207,6 +217,7 @@
 								uni.switchTab({
 									url: '/pages/tabbar/home/home'
 								})
+								
 							}
 				})
 			},

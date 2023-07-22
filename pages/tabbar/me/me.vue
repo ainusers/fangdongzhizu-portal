@@ -138,7 +138,7 @@
 	  
 	  <!-- 横条区域 -->
 	  <view class="list-card">
-		  <view class="card">
+		 <!-- <view class="card">
 		    <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/reward')">
 		      <view class="left flex-center">
 		        <image mode="aspectFit" src="../../../static/me/money.png"></image>
@@ -150,7 +150,7 @@
 		        <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
 		      </view>
 		    </view>
-		  </view>
+		  </view> -->
 	    <view class="card">
 	      <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/advise')">
 	        <view class="left flex-center">

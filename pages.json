@@ -19,6 +19,19 @@
    		}
 
    	},
+	{
+	    "path" : "pages/auth/upgra",
+	    "style" :                                                                                    
+	    {
+	      "navigationBarTitleText": "",
+	      "navigationStyle": "custom",//导航栏自定义
+	      "app-plus": {
+	       	"bounce": "none",
+			"animationType":"none",//取消窗口动画
+			"background": "transparent" // 设置背景透明
+	       }
+	    }
+	},
    	{
    		"path": "pages/tabbar/home/homeDetail",
    		"style": {

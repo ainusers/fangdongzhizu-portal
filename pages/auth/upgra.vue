@@ -57,7 +57,7 @@
 				isForceUpdate:false,//是否强制更新
 				versionName:'',//版本名称
 				versionDesc:'',//更新说明
-				downloadUrl:'https://wwqr.lanzouw.com/iL5C211ig82h',//下载链接
+				downloadUrl:'https://wwqr.lanzouw.com/ieyeT12i8y3c',//下载链接
 				isStartDownload:false, //是否开始下载
 				hasProgress:false, //是否能显示进度条
 				currentPercent: 0, //当前下载百分比
@@ -90,9 +90,10 @@
 							//下载进度监听
 							this.hasProgress = true
 							this.currentPercent = current
-	 
+							console.log(this.currentPercent)
 						}).then(fileName => {
 							//下载完成
+							console.log('去安装了')
 							this.isDownloadFinish = true
 							this.fileName = fileName
 							if (fileName) {

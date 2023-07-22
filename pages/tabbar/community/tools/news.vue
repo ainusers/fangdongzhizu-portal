@@ -302,7 +302,7 @@ import store from '../../../../store/index.js';
 			})
 			// #endif
 			// 进入页面聊天链接
-			createlink()
+			// createlink()
 			
 		},
 		onShow(){
@@ -370,7 +370,6 @@ import store from '../../../../store/index.js';
 		},
 		methods:{
 			initMsgList(){
-				
 				let data=this.msgList
 				if(!data||data&&data.length==0){
 					return
@@ -385,6 +384,7 @@ import store from '../../../../store/index.js';
 							 this.msgList[this.msgList.length-1].datetime=dateTime1(that.oldTime)
 						}
 					if(data.length>=2){
+						data[0].datetime=dateTime1(data[0].datetime)
 						for(let i=data.length-2;i>=1;i--){
 							this.oldTime = data[i].datetime;
 							let t=	spaceTime(that.oldTime,data[i-1].datetime);

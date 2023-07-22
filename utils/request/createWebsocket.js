@@ -5,6 +5,7 @@ let fromName=''
 let socketInstance=''
 let isChatStatus=''
 let currentName=''
+let heartCheck=''
 			uni.getStorage({
 					key:'userInfo',
 					success(res) {
@@ -14,7 +15,7 @@ let currentName=''
 						}
 					}
 				})
-let heartCheck=''
+
  const createlink=  function  createlink(type){
 			socketInstance=''
 			socketInstance  =  uni.connectSocket({
@@ -36,21 +37,26 @@ let heartCheck=''
 			});
 			socketInstance.onClose(() => {
 				clearInterval(heartCheck);
-				this.$store.commit('isChatStatus',false)
+				store.commit('isChatStatus',false)
 			})
 			socketInstance.onMessage( async (res) => {
-				// clearInterval(heartCheck);
-					// heartCheck = setInterval(function() {
-				 //    socketInstance.send('HeartBeat');
-				 //  }, 5000);
-				console.log("收到服务器内容：" + res.data);
+				clearInterval(heartCheck);
+					heartCheck = setInterval(function() {
+						 socketInstance.send(
+						 {
+							 data:"{'type':'signal'}",
+							 async success() {
+								console.log('心跳检测')
+							 }
+						 }
+					   );
+				  }, 6000);
 				let data = eval("(" + res.data + ")");
 				//当前是否有过聊天记录 ，有直接push ，不需要添加fromName  没有就创建一个新的对象  
 				let tempChatList=''
 				let newchatList=store.state.chatList ||[]
 				 //之前是否聊过天
 				isChatStatus=isChatBoolean(data) 
-				console.log('有没有聊天过1',isChatStatus)
 				// 添加对方的fromName
 					//处理所有类型初次聊天的info数据 //1.直接push，第一次添加都需要类型的判断处理
 				if(!isChatStatus){
@@ -72,7 +78,6 @@ let heartCheck=''
 		}
 		function addInfoInit(data,newchatList){
 			let tempChatList=''
-			console.log(newchatList)
 			switch (data.type) {
 				// case 'system':
 				// 	this.addSystemTextMsg(data);
@@ -91,7 +96,6 @@ let heartCheck=''
 				if(tempChatList.length>0){
 					tempChatList.forEach(item=>{
 						if(item.room==data.room&&item.currentName==currentName){
-							console.log('添加未读数')
 							if(store.state.currentNameChat!=data.from){
 								setUnreadCountAll(data)
 								item.unReadCount+=1
@@ -124,15 +128,12 @@ let heartCheck=''
 		}
 		function isChatBoolean(data){
 			let temp=store.state.chatList
-			console.log(temp)
-			console.log(currentName)
 			if(temp&&temp.length==0){return}
 			let arr=temp.filter(item=>{
 				if(item.room==data.room&&item.currentName==currentName){
 					return item
 				}
 			})
-			console.log(arr)
 			return arr.length
 		}
 		//消息认证
@@ -149,14 +150,18 @@ function authSocket(room,type) {
 					}
 				},
 			});
-			// heartCheck = setInterval(function() {
-			// 	  if(store.state.token){
-			// 		   socketInstance.send("{type:'signal'}");
-			// 	  }else{
-			// 		  clearInterval(heartCheck)
-			// 	  }
-			   
-			//   }, 5000);
+			heartCheck = setInterval(function() {
+				  if(store.state.token){
+					   socketInstance.send({
+						   data:"{'type':'signal'}",
+						   async success() {
+									 console.log('心跳检测')
+						   }
+					   });
+				  }else{
+					  clearInterval(heartCheck)
+				  }
+			  }, 60000);
 			Vue.prototype.$socketInstance=socketInstance
 		}
 	}

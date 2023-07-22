@@ -5,6 +5,23 @@ module.exports=()=>({
 	},
 	"pages": [
 		{
+			"path": "pages/auth/logintemp",
+			"style": {
+				"transparentTitle":  "always"
+				// "navigationBarTitleText": "登录页",
+				// "navigationBarTextStyle": "black",
+				// "navigationBarBackgroundColor": "#fafafa",
+				// "enablePullDownRefresh": false,
+				// "backgroundTextStyle":"light",
+				// "app-plus": {
+				// 	"scrollIndicator": "none"
+				// }
+			},
+			meta:{
+				needLogin:false
+			}
+		},
+		{
 			"path": "pages/auth/login",
 			"style": {
 				"transparentTitle":  "always"
@@ -180,7 +197,7 @@ module.exports=()=>({
 				"navigationBarTitleText": "消息",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light",
 				"backgroundColor":"#fff",
 				"app-plus": {

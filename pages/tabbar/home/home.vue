@@ -356,6 +356,7 @@ export default {
 			moreChooseStr:[],//更多选中的筛选
 			fixedContHeight:0, //屏幕的高度
 			moreSubKey:['room_type','has_elevator','heat_type','room_type'],//更多提交接口的key 与screen-tab组件中moreType顺序相同
+			curVersion:'1.0.0'
 		};
 	},
 	props: {
@@ -388,6 +389,7 @@ export default {
 		
 		this.getArea()
 		this.getHouseList()
+		this.getLatest()
 	},
 	onShow(){
 		// this.currPage=1
@@ -406,6 +408,17 @@ export default {
 		uni.stopPullDownRefresh();
 	},
 	methods: {
+		getLatest(){
+			this.$H.get('/zf/v1/version/latest',{},true).then(res=>{
+				console.log(res)
+				if(res.code==200){
+					let data=res.data[0]
+					if(data.version!=this.curVersion){
+						this.isUpdateVersion=true
+					}
+				}
+			})
+		},
 		cancelVersion(){
 			this.isUpdateVersion=false
 		},
