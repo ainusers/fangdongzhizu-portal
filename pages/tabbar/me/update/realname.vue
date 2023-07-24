@@ -80,14 +80,11 @@
 					success: (res) => {
 						// #ifdef APP-PLUS
 						//提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
-						// var compressd = cp_images=> {
-						// 	this.form[type+'Url']=cp_images
-						// }
-						// image.compress(res.tempFilePaths,compressd);
 						res.tempFilePaths.forEach(item=>{
 							compressImg(item).then(cp_images=>{
-								console.log(cp_images)
-								this.form[type+'Url']=cp_images
+								attachUpload([cp_images]).then(res=>{
+									this.form[type+'Url']=res[0]
+								})
 							})
 						})
 						// #endif
@@ -130,7 +127,6 @@
 					imageUrl:this.form.straightUrl,
 					reverseImageUrl:this.form.reverseUrl
 				}
-				
 			this.$H.post('/zf/v1/card/verifi',data,true).then(res=>{
 				if(res.status&&res.data[0].indexOf('失败')==-1){
 					uni.showToast({

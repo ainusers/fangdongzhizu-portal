@@ -141,7 +141,7 @@
 					way:'user'
 				}
 				let url = '/zf/v1/dynamic/list'
-				this.$H.post(url, data, true).then(res => {
+				this.$H.get(url, data, true).then(res => {
 					if (res.status) {
 						that.tuwen_data = [...that.tuwen_data, ...res.data]
 						this.tuwen_data.forEach(item=>{

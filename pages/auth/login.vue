@@ -128,17 +128,6 @@
 				})
 			},
 			bindLogin() {
-				if(!this.checked){
-					uni.showToast({
-						icon: 'none',
-						title: '请选择隐私协议！'
-					});
-					this.isShow=true
-					setTimeout(()=>{
-						this.isShow=false
-					},500)
-					return
-				}
 				switch (this.tabIndex) {
 					case 0:
 						this.loginByUser()
@@ -153,6 +142,13 @@
 				}
 			},
 			loginByMsg() {
+				if(!this.$refs.userName.username){
+					uni.showToast({
+						icon: 'none',
+						title: '请填写手机号'
+					});
+					return;
+				}
 				if (!/^1\d{10}$/.test(this.$refs.phone.username)) {
 					uni.showToast({
 						icon: 'none',
@@ -167,10 +163,22 @@
 					});
 					return;
 				}
+				uni.showToast({
+					icon: 'none',
+					title: this.checkXie()
+				});
+				if(!this.checkXie()){
+					return
+				}
+			
 				let data={
 					username: this.$refs.phone.username,
 					code: this.$refs.yzmCode.code
 				}
+				uni.showToast({
+					icon: 'none',
+					title: data
+				});
 				this.$H.post('/zf/v1/user/login',data,false).then(res=>{
 							if (res.status) {
 								this.$store.commit('token',res.data[0].token)
@@ -182,6 +190,13 @@
 				})
 			},
 			loginByUser() {
+				if(!this.$refs.userName.username){
+					uni.showToast({
+						icon: 'none',
+						title: '请填写账号'
+					});
+					return;
+				}
 				if (!/^1\d{10}$/.test(this.$refs.userName.username)) {
 					uni.showToast({
 						icon: 'none',
@@ -196,6 +211,11 @@
 					});
 					return;
 				}
+					
+				if(!this.checkXie()){
+					return
+				}
+				
 				let data={
 				    	username: this.$refs.userName.username,
 				    	password: this.$refs.passWord.password
@@ -210,6 +230,23 @@
 								
 							}
 				})
+			},
+			checkXie(){
+				let statu=false
+				if(!this.checked){
+					uni.showToast({
+						icon: 'none',
+						title: '请选择隐私协议！'
+					});
+					this.isShow=true
+					setTimeout(()=>{
+						this.isShow=false
+					},500)
+					statu=false
+				}else{
+					statu=true
+				}
+				return statu
 			},
 			getUserInfo() {
 				this.$H.get('/zf/v1/user/attr/token',{},true).then(res=>{

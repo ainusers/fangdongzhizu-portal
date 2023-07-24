@@ -40,7 +40,6 @@ const attachUpload = function(imageList) {
 			files.push(imgAttr);
 		}
 		request.fileUpload('/zf/v1/file/uploads',files).then(res=>{
-			uni.hideLoading();
 			resolve(res);
 		})
 	})
@@ -279,6 +278,14 @@ const showToastTit=function(tit){
 		duration: 2000
 	})
 }
+//检测是否注册过
+const checkExist=function(username){
+				return request.get('/zf/v1/user/exist',{username:username},false).then(res=>{
+					if(res.code==200){
+						return res.data[0]
+					}
+				})
+			}
 export {
 	getStoreData,
 	initStorestate,
@@ -296,4 +303,5 @@ export {
 	spaceTime,
 	getCount,
 	checkPush,
+	checkExist
 }

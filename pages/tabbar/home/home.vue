@@ -218,6 +218,7 @@ import LodingM from '@/components/common/modal/loading_model.vue'
 import { Const } from "@/utils/const/Const.js";
 import {isLoginCheck} from '../../../utils/utils.js'
 import upgra from '../../auth/upgra.vue'
+import { createlink } from '@/utils/request/createWebsocket.js';
 let privateData = {
 	room: {
 		height: ""
@@ -381,21 +382,18 @@ export default {
 		uni.getStorage({
 			key:'phoneInfo',
 			success(res){
-				console.log('手机信息1',res)
 				that.fixedContHeight=res.data.screenHeight
 				that.savePhoneInfo(res.data)
 			}
 		})
-		
 		this.getArea()
 		this.getHouseList()
 		this.getLatest()
 	},
 	onShow(){
-		// this.currPage=1
-		
-		// this.houseList=[]
-		
+		if(!this.$store.state.isChatStatus){
+			createlink()
+		}
 	},
 	onReady(){
 		

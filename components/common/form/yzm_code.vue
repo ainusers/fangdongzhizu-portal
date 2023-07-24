@@ -18,6 +18,7 @@
 
 <script>
 	var that, timer;
+	import {checkExist} from '../../../utils/utils.js'
 	export default{
 		data(){
 			return {
@@ -36,19 +37,15 @@
 		methods:{
 			sendCode() {
 				if (this.username.length < 1) {
-					uni.showToast({
-						icon: 'none',
-						title: '请填写正确的手机号'
-					});
+					this.$u.toast('请填写正确的手机号');
 					return;
 				}
-				this.checkExist().then(res=>[
+				checkExist(this.username).then(res=>{
 					if(res.status){
 						// 获取验证码
 						this.$H.get('/zf/v1/code/sendCode', {
 							phone: this.username
 						},false).then(res => {
-							console.log(res)
 							if (res.code === 200) {
 								this.$u.toast('发送成功！');
 								if (this.codeDuration > 0) {
@@ -64,18 +61,11 @@
 								}, 1000)
 							}
 						});
-					}
-				])
-				
-			},
-			checkExist(){
-				return this.$H.get('/zf/v1/user/exist',{username:that.username},false).then(res=>{
-					console.log(res)
-					if(res.code==200){
-						return res.data[0]
+					}else{
+						this.$u.toast('请先注册在登录！');
 					}
 				})
-			}
+			},
 		}
 	}
 </script>

@@ -150,7 +150,7 @@ export default {
 			current: 0,//0 圈子 1 互动 2 转发  3 浏览
 			tabList: [
 				{
-					name: '圈子'
+					name: '动态'
 				},
 				{
 					name: '点赞'
@@ -184,7 +184,6 @@ export default {
 	methods: {
 		//自定义刷新
 		onPulling(e) {
-			console.log(this.triggered)
 			if(!this.triggered){
 				this.triggered=true
 				setTimeout(()=>{
@@ -199,7 +198,6 @@ export default {
 			this.triggered = false; // 需要重置
 		},
 		tuwen_init(index){
-			console.log(index)
 			 if(this.status) return
 			 this.current = index;
 			 if(index!=2){
@@ -265,7 +263,7 @@ export default {
 			this.status=true
 			let data={}
 			let url=''
-			url='/zf/v1/dynamic/list'
+			url='/zf/v1/dynamic/statistic'
 			if(this.current==0){
 				data['way']='user'	
 			}else{
@@ -277,9 +275,8 @@ export default {
 				size:10,
 			}
 			if(this.current==1) data['type']='like'; 
-			if(this.current==2) data['type']='transfer'; 
 			if(this.current==3) data['type']="look"; 
-			this.$H.post(url,data,true).then(res=>{
+			this.$H.get(url,data,true).then(res=>{
 				if(this.currPage==1){
 					 this.tuwen_data=[]
 				}
@@ -293,10 +290,7 @@ export default {
 			if(res.status){
 				if(res.data.length==0 &&this.currPage!=1 || res.data.length<10&&this.currPage!=1){
 					this.load_status_tuwen='nomore'
-					uni.showToast({
-						icon: 'none',
-						title: '已加载完成'
-					});
+					this.$u.toast('已加载完成')
 				}
 				this.tuwen_dataAll[type]=(this.tuwen_dataAll[type]?this.tuwen_dataAll[type]:[])
 				this.tuwen_dataAll[type]=[...this.tuwen_data,...res.data]
@@ -310,6 +304,7 @@ export default {
 		getDynamics(){
 			this.load_status_tuwen='loading'
 			let type=this.current
+			this.status=true
 			let data={
 				userId:this.$store.state.userInfo.id,
 				page:this.currPage,
@@ -317,6 +312,7 @@ export default {
 			}
 			this.$H.get('/zf/v1/tip/dynamics',data,true).then(res=>{
 				this.triggered=false
+				this.status=false
 				if(res.status&&res.code==200){
 					this.tuwen_data=[...res.data,...this.tuwen_data]
 					this.reportList=this.tuwen_data
@@ -328,10 +324,7 @@ export default {
 					})
 					if(res.data.length==0 &&this.currPage!=1 || res.data.length<10&&this.currPage!=1){
 						this.load_status_tuwen='nomore'
-						uni.showToast({
-							icon: 'none',
-							title: '已加载完成'
-						});
+						this.$u.toast('已加载完成')
 					}
 				}
 			})

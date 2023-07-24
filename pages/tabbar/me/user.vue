@@ -268,54 +268,26 @@
 					 }
 				
 				})
-				// uni.request({
-				// 	method: 'patch',
-				// 	data: {
-				// 		id: that.userInfo.id,
-				// 		avatar: imgAvtar
-				// 	},
-				// 	header: {
-				// 		'content-type': 'application/json',
-				// 		'Authorization': 'Bearer ' +  that.$store.state.token
-				// 	},
-				// 	url: 'http://81.70.163.240:11001/zf/v1/user/attr',
-				// 	success: (res) => {
-				// 		console.log(res)
-				// 		console.log(res.data)
-				// 		 uni.hideLoading();
-				// 		if(res.data.status){
-				// 			uni.showToast({
-				// 				title: '修改成功',
-				// 				icon: 'none',
-				// 				duration: 2000
-				// 			})
-				// 			that.userInfo.avatar=imgAvtar
-				// 			that.$store.commit('userInfo',that.userInfo)
-				// 		}
-				// 	}
-				// })
 			},
 			// 退出登录
 			logout() {
-				
 				uni.removeStorage({
 					key: 'token',
 					success: function (res) {
-						console.log('success');
 						that.$store.commit('token','')
-						console.log(that.$store.state.token)
+						that.$store.commit('isChatStatus',false)
 					}
 				});
 				uni.removeStorage({
 					key: 'userInfo',
 					success: function (res) {
-						console.log('success');
+						// console.log('success');
 					}
 				});
 				uni.removeStorage({
 					key: 'houseInfo',
 					success: function (res) {
-						console.log('success');
+						// console.log('success');
 					}
 				});
 					uni.navigateTo({

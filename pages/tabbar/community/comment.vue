@@ -246,6 +246,7 @@ export default {
 		},
 		changeStatus(index,status,isDelete){
 			this.tuwen_data[index].isReport=status
+			console.log(this.tuwen_data)
 			if(isDelete){
 				uni.navigateBack()
 			}
@@ -258,7 +259,7 @@ export default {
 					  "size": "10",
 					  "userId":this.$store.state.userInfo.id
 				}
-			this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
+			this.$H.get('/zf/v1/dynamic/detail',data,true).then(res=>{
 				this.load_status_tuwen='nomore'
 					if(res.status){	
 							this.tuwen_data = res.data

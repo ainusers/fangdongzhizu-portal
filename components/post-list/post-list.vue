@@ -126,8 +126,8 @@
 			</view>
 		</u-popup>
 		<!-- //举报模态框 -->
-		<view v-show="reportShow">
-			<zhizuReport @cancelReport="cancelReport" @goReport="goReportText" :typeStr="reportType" :reportId="reportId" />
+		<view v-show="reportShows">
+			<zhizuReport @cancelReport="cancelReport" @goReport="goReportText" :typeStr="reportType" :reportId="reportId" ref="report" />
 		</view>
 	</view>
 </template>
@@ -150,7 +150,7 @@
 		},
 		data() {
 			return {
-				reportShow: false,
+				reportShows: false,
 				showShare: false,
 				loadText: {
 					loadmore: '轻轻上拉加载更多...',
@@ -221,7 +221,7 @@
 			//删除动态
 			deletePost(index,id) {
 				this.isReport ? this.isReport = false : this.isReport = true
-				this.reportShow = false
+				this.reportShows = false
 				let data={
 					id:id,
 					status:0
@@ -235,8 +235,6 @@
 				}).then(res=>{
 					this.$emit('changeStatus', index, this.isReport,res)
 				})
-				
-				// event.stopPropagation()
 			},
 			//控制举报，删除 显示隐藏
 			goReport(index) {
@@ -244,22 +242,21 @@
 				this.isReport ? this.isReport = false : this.isReport = true
 				this.reportId = this.list[index].id
 				this.$emit('changeStatus', index, this.isReport)
-
-				// event.stopPropagation()
 			},
 			cancelReport() {
 
 			},
 			report() {
-				this.reportShow = true
+				this.reportShows = true
+				this.$refs.report.reportShow=true
+				this.$refs.report.reportValue=''
+				this.$refs.report.otherReport=''
 				this.$emit('changeStatus', this.currentIndex, false)
-				// event.stopPropagation()
 			},
 			goReportText() {
 				this.isReport = false
-				this.reportShow = false
+				this.reportShows=false
 			},
-
 			// 跳转详情页
 			toDetail(data,index) {
 					this.isReport = false

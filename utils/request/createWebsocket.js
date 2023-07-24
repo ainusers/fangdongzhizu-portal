@@ -11,7 +11,6 @@ let heartCheck=''
 					success(res) {
 						if(res.data){
 							currentName=res.data.username
-							console.log(currentName)
 						}
 					}
 				})

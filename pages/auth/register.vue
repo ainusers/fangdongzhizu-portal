@@ -79,6 +79,7 @@
 
 <script>
 	var that=''
+	import {checkExist} from '../../utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -108,25 +109,33 @@
 				if (this.codeDuration > 0) {
 				  return;
 				}
-				this.codeDuration = 60;
-				// 倒计时
-				let timer = setInterval(function() {
-				  that.codeDuration--;
-				  if (that.codeDuration == 0) {
-				    clearInterval(timer);
-				  }
-				}, 1000)
-				// 获取验证码
-				this.$H.get('http://sc.tujingzg.com/api/user/phoneReg',{
-					phone:this.phone
-				}).then(res => {
-					if (res.code === 200) {
-						this.$u.toast(res.msg);
+				checkExist(this.phone).then(res=>{
+					console.log(res)
+					if(!res.status){
+						// 获取验证码
+						this.$H.get('/zf/v1/code/sendCode',{
+							phone:this.phone
+						}).then(res => {
+							if (res.code === 200) {
+								this.$u.toast('短信发送成功');
+								this.codeDuration = 60;
+								// 倒计时
+								let timer = setInterval(function() {
+								  that.codeDuration--;
+								  if (that.codeDuration <= 0) {
+								    clearInterval(timer);
+								  }
+								}, 1000)
+							}
+						});
+					}else{
+						this.$u.toast('当前手机号已注册，可直接登录！');
+						return
 					}
-				});
+				})
+				
 			},
 			bindRegister() {
-				
 				if (!/^1\d{10}$/.test(this.phone)) {
 					uni.showToast({
 						icon: 'none',
@@ -172,6 +181,7 @@
 								url: '/pages/auth/login'
 							})
 						},2000)
+						 clearInterval(timer);
 					}else if(res.code!=200){
 						this.$u.toast(res.message);
 					}
@@ -196,7 +206,7 @@
 				uni.navigateTo({
 					url:'/pages/tabbar/me/text/register'
 				})
-			}
+			},
 		}
 	}
 </script>

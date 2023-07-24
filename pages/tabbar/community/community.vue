@@ -165,7 +165,7 @@
 						  "size": "10",
 						  'userId':this.$store.state.userInfo.id
 				}
-				this.$H.post('/zf/v1/dynamic/list',data,true).then(res=>{
+				this.$H.get('/zf/v1/dynamic/list',data,true).then(res=>{
 
 					if(res.status){
 						if(this.tuwen_default_page==1){

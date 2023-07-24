@@ -89,10 +89,13 @@
 				this.$emit('cancelReport')
 			},
 			goReport(){
+				let statu=true
 				if(!this.tipcontent) {
 					this.$u.toast('请选择举报类型')
+					statu=false
 					return
 				}
+				
 				let data={
 					userId:this.$store.state.userInfo.id,
 					type:this.typeStr,
@@ -104,7 +107,10 @@
 						this.$u.toast('举报成功')
 					}
 				})
-				this.$emit('goReport')
+				if(statu){
+					this.$emit('goReport')
+				}
+				
 			}
 		}
 	}
