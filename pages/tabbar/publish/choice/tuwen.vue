@@ -119,6 +119,10 @@
 </style>
 <template>
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
+		<u-alert-tips type="warning" title="地址" :description="location"></u-alert-tips>
+		<u-alert-tips type="warning" title="data" :description="data"></u-alert-tips>
+		<u-alert-tips type="warning" title="res" :description="res"></u-alert-tips>
+		<u-alert-tips type="warning" title="res1" :description="res1"></u-alert-tips>
 		<form>
 			<view class="uni-textarea">
 				<textarea placeholder="说点什么吧..." v-model="input_content" />
@@ -184,6 +188,11 @@
 				startX: 0, //点击屏幕起始位置
 				movedX: 0, //横向移动的距离
 				endX: 0, //接触屏幕后移开时的位置
+				isLoading:false,
+				location:'',
+				data:'',
+				res:'',
+				res1:''
 			}
 		},
 		onLoad(){
@@ -199,10 +208,12 @@
 		},
 		methods: {
 			async publish(){
-				uni.showLoading({title:'发布中',mask:false,});
+				// uni.showLoading({title:'发布中',mask:false,});
+				if(this.isLoading) return
+				this.isLoading=true
 				checkPush().then(async res=>{
+					this.res1=res
 					if(res.status){
-						console.log('fabu ')
 							if (!this.input_content) {
 								uni.showToast({
 									title: '文字内容不能为空',
@@ -216,14 +227,15 @@
 							// #ifdef APP-PLUS
 							let location = await this.getLocation();
 							// #endif
-							
+							this.location=location
+							this.data=data
+							console.log(location)
 							// 获取上传图片地址
 							let images;
 							if(this.imageList.length == 0) {
 								images = [];
 							} else {
 								images = await attachUpload(this.imageList);
-								console.log(images)
 							}
 							let data= {
 									'imgUrl': images.toString(),
@@ -241,9 +253,13 @@
 								data['address']=location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName
 								data['type']=location.type
 								// #endif
+								
+								
+								// return
 							// 上传动态信息
 							this.$H.post('/zf/v1/dynamic/dynamics',data,true).then(res=>{
 									uni.hideLoading();
+									this.res=res
 								if(res.status){
 									uni.showToast({
 										icon:'success',
@@ -253,6 +269,7 @@
 										uni.switchTab({
 											url: '/pages/tabbar/community/community'
 										})
+										this.isLoading=false
 									},2000)
 								}
 							})
@@ -303,8 +320,8 @@
 						// }
 						res.tempFilePaths.forEach(item=>{
 							compressImg(item).then(cp_images=>{
-								console.log(cp_images)
 									this.imageList = this.imageList.concat(cp_images)
+									console.log(this.imageList)
 							})
 						})
 						
