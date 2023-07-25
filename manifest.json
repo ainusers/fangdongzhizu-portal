@@ -52,13 +52,8 @@
                 "geolocation" : {
                     "amap" : {
                         "__platform__" : [ "ios", "android" ],
-                        "appkey_ios" : "f3d3f268a033e23f372e1408adc0a33b",
-                        "appkey_android" : "f3d3f268a033e23f372e1408adc0a33b"
-                    },
-                    "baidu" : {
-                        "__platform__" : [ "ios", "android" ],
-                        "appkey_ios" : "5rLOmcbAeV7AOmNwmrAZo3C5HfDkRLz8",
-                        "appkey_android" : "5rLOmcbAeV7AOmNwmrAZo3C5HfDkRLz8"
+                        "appkey_ios" : "c48afbdf469abda4ae4515e52d4e6ee4",
+                        "appkey_android" : "c48afbdf469abda4ae4515e52d4e6ee4"
                     }
                 },
                 "oauth" : {},
