@@ -778,8 +778,6 @@
 						{
 							validator: (rule, value, callback) => {
 								let isT = true
-								console.log(this.homeArrIndex)
-								console.log(this.homeArrIndex == this.houseModel.chekcNum - 1)
 								if (this.homeArrIndex == this.houseModel.chekcNum - 1 && this.isHomeArr) {
 									value.forEach((item, index) => {
 										if (index < this.houseModel.chekcNum && item.tenantStr == "") {
@@ -1306,13 +1304,18 @@
 			}
 		},
 		onLoad(options) {
-			this.isEdit = options.isUpdate
-			that = this
-			// 其他选项值
-			uni.getStorage({
-				key: 'houseModel',
-				success: function(data) {
-					that.houseModel = JSON.parse(data.data)
+					this.isEdit = options.isUpdate
+					that = this
+					// 其他选项值
+					uni.getStorage({
+						key: 'houseModel',
+						success: function(data) {
+					  try{
+						that.houseModel = JSON.parse(data.data)
+					  }catch(e){
+						console.log(e)
+					  }
+					
 					if (that.houseModel.heatType == '自供暖') {
 						that.heatActiveVar = 1
 					}
@@ -1467,7 +1470,6 @@
 				this.$refs.calendar.open();
 			},
 			confirm(e) {
-				console.log(e)
 			},
 			nextStep() {
 				if (this.stepNum == 1) {
@@ -1695,7 +1697,6 @@
 				this.houseModel.lease = result;
 			},
 			leaseCancel(e) {
-				console.log(e);
 			},
 			// 供暖方式
 			heatTypeFn(item, index) {
@@ -1996,7 +1997,6 @@
 					success: (res) => {
 						// #ifdef APP-PLUS
 						//提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
-						console.log(res.tempFilePaths)
 						res.tempFilePaths.forEach(item=>{
 							compressImg(item).then(res => {
 								attachUpload([res]).then(file => {

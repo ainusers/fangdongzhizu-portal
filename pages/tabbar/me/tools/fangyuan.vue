@@ -291,7 +291,11 @@ export default {
 	},
 	// 初始加载和页面传值
 	onLoad(options) {
-		this.current = JSON.parse(options.id);
+    try{
+      this.current = JSON.parse(options.id);
+    }catch(e){
+      console.log(e)
+    }
 		this.getOrderList(0);
 		this.getOrderList(1);
 		this.getOrderList(3);

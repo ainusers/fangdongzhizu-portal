@@ -421,11 +421,9 @@
 		},
 		swiperImgInit(){
 			let imgUrl=this.detailData.imgUrl
-			console.log(imgUrl)
 			if(imgUrl){
 				imgUrl=imgUrl.split(',')
 			}
-			console.log(imgUrl)
 			for(let i=0;i<imgUrl.length;i++){
 				let obj={
 					url:'',
@@ -496,18 +494,16 @@
 		},
 		statistics(params){
 			this.$H.post('/zf/v1/const/save/statistics',params,true).then(res=>{
-				console.log(res)
 				let status=res.data[0].status
-				console.log(status)
 				if(status){
-						this.startIcon='heart-fill'
-						this.iconColor='#f91e08'
+					this.startIcon='heart-fill'
+					this.iconColor='#f91e08'
 					// 收藏成功
 					this.$u.toast('收藏成功')
 				}else{
 					this.$u.toast('取消收藏')
-						this.startIcon='heart'
-						this.iconColor=''
+					this.startIcon='heart'
+					this.iconColor=''
 				}
 			})
 		},

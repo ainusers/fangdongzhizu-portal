@@ -218,7 +218,6 @@
                 uni.showActionSheet({
                     itemList: ['拍照', '从手机相册选择'],
                     success: (res) => {
-						console.log(res)
                         this.uploadImg(res.tapIndex === 0 ? "camera" : "album")
                     }
                 });
@@ -233,11 +232,18 @@
                     success: function (res) {
 						console.log(res)
                         uni.showLoading({title: '上传中...'});
-									compressImg(res.tempFilePaths[0]).then(file=>{
-										attachUpload([file]).then(res=>{
-											that.updateImg(res[0])
-										})
-									})
+						// #ifdef APP-PLUS
+							compressImg(res.tempFilePaths[0]).then(file=>{
+								attachUpload([file]).then(res=>{
+									that.updateImg(res[0])
+								})
+							})
+						//#endif
+						// #ifndef APP-PLUS
+								attachUpload(res.tempFilePaths).then(res=>{
+									that.updateImg(res[0])
+								})
+						// #endif
                     }
                 });
             },

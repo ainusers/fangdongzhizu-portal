@@ -126,8 +126,6 @@
 		<!-- 评论区 -->
 		<view class="comment_main">
 					<block v-show="commentList.length > 0&&commentListShow" >
-						<!-- @tap.stop="onReply(res, index)" -->
-					
 							<view class="comment_con">
 								<view   class="comment" v-for="(res, index1) in commentList" :key="res.id">
 									<view class="left">
@@ -246,7 +244,6 @@ export default {
 		},
 		changeStatus(index,status,isDelete){
 			this.tuwen_data[index].isReport=status
-			console.log(this.tuwen_data)
 			if(isDelete){
 				uni.navigateBack()
 			}
@@ -284,13 +281,13 @@ export default {
 				}
 			})
 			this.commentList[index].AllReply=true
-			if(Number(this.beforeIndex)!=Number(index)){
+			if(Number(this.beforeIndex)!=Number(index) ||this.commentList[index].replyList.length<10 ){
 				this.pageNum=1
 			}else{
 				this.pageNum++
 			}
 			this.beforeIndex=index
-			this.getTwoList(this.commentList[index].comment_user_id,index,id)
+			this.getTwoList(this.commentList[index].comment_user_id,index,id,this.commentList[index])
 		},
 		//动态点赞
 		clickLikes(id,index){
@@ -314,6 +311,7 @@ export default {
 			}
 			if(type==1){
 				this.beforeIndex=index
+				this.expand=0
 			}
 			this.placeholder = '回复' + e.username + '：';
 			if(e.comment_user_id){
@@ -359,7 +357,12 @@ export default {
 				if(res.status&&res.status!=500){
 					addComment['comment_id']=res.data[0].commentId
 					if(res.status&&this.beCommentUserId){
-						//回复二级评论
+						//回复二级评论  expand 当前没有展开不去添加
+						if(!this.commentList[this.beforeIndex].replyList && this.expand==0){
+							this.$set(this.commentList[this.beforeIndex],'replyList',[])
+							this.$set(this.commentList[this.beforeIndex],'commentText','展开查看更多')
+							this.expand=1
+						}
 						this.expand>0?this.commentList[this.beforeIndex].replyList.unshift(addComment):''
 						let time=new Date()
 						let y=time.getFullYear()
@@ -423,7 +426,6 @@ export default {
 		},
 		//获取一级评论的
 		getOneList(){
-			
 			let that=this
 			let data={
 				dynamicId:this.$store.state.communityInfo.id,
@@ -458,7 +460,7 @@ export default {
 										item.create_time=tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm)
 										that.commentList.push(item)
 										item.likeNum=0
-										that.getTwoList(item.comment_user_id,index,item.comment_id)
+										that.getTwoList(item.comment_user_id,index,item.comment_id,item)
 									})
 								
 							}
@@ -466,7 +468,7 @@ export default {
 			})
 
 		},
-		getTwoList(beCommentUserId,index,id){
+		getTwoList(beCommentUserId,index,id,item){
 			let that=this
 			let data={
 				pageNum:this.pageNum,
@@ -477,16 +479,16 @@ export default {
 			}
 			this.$H.post('/zf/v1/comment/second/list',data,true).then(res=>{
 				if(res.status){
-					if(this.commentList[index].AllReply &&res.data.length<10){
-						this.commentList[index].commentText=''
+					if(item.AllReply &&res.data.length<10){
+						item.commentText=''
 					}
 					if(this.pageNum>1){
-						this.commentList[index].replyList=[...this.commentList[index].replyList,...res.data]
+						item.replyList=[...item.replyList,...res.data]
 					}else{
-						this.commentList[index].replyList=res.data
+						item.replyList=res.data
 					}
 					if(res.data.length>0){
-						this.commentList[index].replyList.forEach(item=>{
+						item.replyList.forEach(item=>{
 							if(item.create_time.length>10){
 								item.create_time=tranfTime(item.create_time)
 							}
@@ -521,7 +523,7 @@ export default {
 				status:0
 			}
 			this.$H.patch('/zf/v1/dynamic/dynamics',data,true).then(res=>{
-				console.log(res)
+				// console.log(res)
 			})
 		},
 		lookCount(id){
@@ -531,7 +533,7 @@ export default {
 				type:'plus'
 			}
 			this.$H.patch('/zf/v1/dynamic/look',data,true).then(res=>{
-				console.log(res)
+				// console.log(res)
 			})
 		}
 	}

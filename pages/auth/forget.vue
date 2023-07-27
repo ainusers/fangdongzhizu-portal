@@ -71,6 +71,9 @@
 		onLoad(){
 			that=this
 		},
+		onHide(){
+			clearInterval(timer);
+		},
 		methods: {
 			sendCode() {
 				if (this.phone.length < 1) {
@@ -83,20 +86,22 @@
 				if (this.codeDuration > 0) {
 				  return;
 				}
-				this.codeDuration = 60;
-				// 倒计时
-				let timer = setInterval(function() {
-				  that.codeDuration--;
-				  if (that.codeDuration == 0) {
-				    clearInterval(timer);
-				  }
-				}, 1000)
 				// 获取验证码
 				this.$H.get('http://sc.tujingzg.com/api/user/phoneReg',{
 					phone:this.phone
 				}).then(res => {
 					if (res.code === 200) {
 						this.$u.toast(res.msg);
+						this.codeDuration = 60;
+						// 倒计时
+						let timer = setInterval(function() {
+							if(that.codeDuration>0){
+								that.codeDuration--;
+							}
+						  if (that.codeDuration == 0) {
+						    clearInterval(timer);
+						  }
+						}, 1000)
 					}
 				});
 			},

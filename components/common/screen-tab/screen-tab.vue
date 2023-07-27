@@ -215,7 +215,6 @@
 						currentStr: ''
 					},
 				],
-				moreChooseStr: [], //更多选项中选中的值
 				// 面积
 				areaLsit: Const.areaList,
 				areaLsitIndex: -1,
@@ -255,14 +254,11 @@
 
 		},
 		mounted() {
-			console.log(this.erHousePriceList)
 		},
 		onLoad() {
-			console.log('页面加载')
 		},
 		methods: {
 			screenBtn(str) {
-				console.log(str)
 				if(this.currentClickType==str){
 					this.listTcShow=this.listTcShow?false:true
 				}else{
@@ -285,19 +281,18 @@
 						}
 						continue;
 					}
-			 	if (key === "more") {
-					console.log(this.moreType)
-					uni.getStorage({
-						key:'moreType',
-						success: (res) => {
-							this.moreType=res.data
-							return
-						}
-					})
-						if (this.screenFormData.erHouse.more.text == '更多') {
-							this.moreScreenInit(key)
-						}
-			  	continue;
+					if (key === "more") {
+						uni.getStorage({
+							key:'moreType',
+							success: (res) => {
+								this.moreType=res.data
+								return
+							}
+						})
+							if (this.screenFormData.erHouse.more.text == '更多') {
+								this.moreScreenInit(key)
+							}
+						continue;
 					}
 					if (key == 'price') {
 						uni.getStorage({
@@ -325,6 +320,8 @@
 						})
 						if (screenFormData[enterType].price.text == '价格') {
 							screenFormData[enterType][key].show = false;
+							this.priceItem.id=''
+							this.priceItem.text=''
 						}
 					}
 					if (key == 'room') {
@@ -334,7 +331,6 @@
 									this.roomItem=res.data
 									screenFormData[enterType][key].show = true;
 									screenFormData[this.enterType].room.text =this.roomItem.text
-									console.log(res.data)
 									return
 								}
 							})
@@ -342,6 +338,8 @@
 							screenFormData[enterType].room.text='户型'
 							screenFormData[enterType][key].show = false;
 							this.roomListIndex = -1
+							this.roomItem.id=''
+							this.roomItem.text=''
 						}
 					}
 				}
@@ -351,6 +349,10 @@
 				let screenFormData = this.screenFormData;
 				let enterType = this.enterType;
 				screenFormData[enterType][key].show = false;
+				this.moreType.forEach(item => {
+					item.currentIndex = -1
+					item.currentStr = ''
+				})
 			},
 			// 选项卡点击事件
 			screenContBtn() {},
@@ -506,14 +508,17 @@
 				}
 				let screenFormData = this.screenFormData;
 				let val = this.priceItem.val
-				console.log(this.priceItem)
-console.log(val)
 				let enterType = this.enterType;
 				screenFormData[enterType].price.id = this.priceItem.id;
 				screenFormData[enterType].price.show = false;
 				screenFormData[enterType].price.text = this.priceItem.text;
 				if (!this.priceItem.id) {
 					screenFormData[enterType].price.text = this.priceApiDataMap[this.from].defaultText;
+					uni.removeStorage({
+						key:'price'
+					})
+					this.priceItem.id=''
+					this.priceItem.text=''
 				}
 				this.screenFormData = screenFormData
 				if (this.minPriceVal || this.maxPriceVal) {
@@ -529,6 +534,9 @@ console.log(val)
 					})
 					uni.removeStorage({
 						key:'price'
+					})
+					uni.removeStorage({
+						key:'priceArea'
 					})
 					screenFormData[this.enterType].price.text = this.minPriceVal + '-' + this.maxPriceVal
 				}

@@ -164,11 +164,11 @@
 				console.log('获取定位')
 				let that = this;
 				uni.getLocation({
-					type: 'wgs84',
+					type: 'gcj02',
 					// isHighAccuracy:true,
-					// geocode: true,
+					geocode: true,
 					success: function (res) {
-						console.log('获取成功')
+						console.log('获取成功',res)
 						let platform = uni.getSystemInfoSync().platform;
 						if (platform == "ios") {
 							that.bindList.long = res.longitude.toFixed(6);

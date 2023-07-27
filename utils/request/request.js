@@ -99,7 +99,12 @@ export default {
 					files: files,
 					header: header,
 					success:(res)=>{
-						resolve(JSON.parse(res.data).data);
+            try{
+              resolve(JSON.parse(res.data).data);
+            }catch(e){
+              console.log(e)
+            }
+						
 					},
 					fail: (e) => {
 						uni.hideLoading();

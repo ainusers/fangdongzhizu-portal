@@ -119,10 +119,6 @@
 </style>
 <template>
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
-		<u-alert-tips type="warning" title="地址" :description="location"></u-alert-tips>
-		<u-alert-tips type="warning" title="data" :description="data"></u-alert-tips>
-		<u-alert-tips type="warning" title="res" :description="res"></u-alert-tips>
-		<u-alert-tips type="warning" title="res1" :description="res1"></u-alert-tips>
 		<form>
 			<view class="uni-textarea">
 				<textarea placeholder="说点什么吧..." v-model="input_content" />
@@ -189,10 +185,6 @@
 				movedX: 0, //横向移动的距离
 				endX: 0, //接触屏幕后移开时的位置
 				isLoading:false,
-				location:'',
-				data:'',
-				res:'',
-				res1:''
 			}
 		},
 		onLoad(){
@@ -222,14 +214,10 @@
 								});
 								return;
 							}
-							
 							// 获取位置信息
 							// #ifdef APP-PLUS
 							let location = await this.getLocation();
 							// #endif
-							this.location=location
-							this.data=data
-							console.log(location)
 							// 获取上传图片地址
 							let images;
 							if(this.imageList.length == 0) {
@@ -253,13 +241,10 @@
 								data['address']=location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName
 								data['type']=location.type
 								// #endif
-								
-								
 								// return
 							// 上传动态信息
 							this.$H.post('/zf/v1/dynamic/dynamics',data,true).then(res=>{
 									uni.hideLoading();
-									this.res=res
 								if(res.status){
 									uni.showToast({
 										icon:'success',
@@ -303,7 +288,6 @@
 			chooseImage: async function() {
 				if (this.imageList.length === 9) {
 					let isContinue = await this.isFullImg();
-					console.log("是否继续?", isContinue);
 					if (!isContinue) {
 						return;
 					}
@@ -321,11 +305,8 @@
 						res.tempFilePaths.forEach(item=>{
 							compressImg(item).then(cp_images=>{
 									this.imageList = this.imageList.concat(cp_images)
-									console.log(this.imageList)
 							})
 						})
-						
-						// image.compress(res.tempFilePaths,compressd);
 						// #endif
 						
 						// #ifndef APP-PLUS

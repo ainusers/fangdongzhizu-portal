@@ -10,7 +10,7 @@
 				v-model="code" placeholder="请输入验证码" maxlength="6"/>
 		</view>
 		<view>
-			<view style="opacity: 0.8;" class="yzm fs28 ptb20 main-color" @click="sendCode">
+			<view style="opacity: 0.8;" class="yzm fs28  main-color" @click="sendCode">
 				{{codeDuration ? codeDuration + 's' : '获取验证码' }}</view>
 		</view>
 	</view>
@@ -34,6 +34,9 @@
 				this.username=val
 			})
 		},
+		onHide(){
+			clearInterval(timer);
+		},
 		methods:{
 			sendCode() {
 				if (this.username.length < 1) {
@@ -54,8 +57,10 @@
 								this.codeDuration = 60;
 								// 倒计时
 								timer = setInterval(function() {
-									that.codeDuration--;
-									if (that.codeDuration == 0) {
+									if(that.codeDuration>0){
+										that.codeDuration--;
+									}
+									if (that.codeDuration <= 0) {
 										clearInterval(timer);
 									}
 								}, 1000)

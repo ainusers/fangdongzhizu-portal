@@ -69,18 +69,20 @@
 							that.InfoList=tempVal.reverse()
 							that.initData(that.InfoList)
 						}
-						
-					},100)
-					
+					},100)	
 				},
 				deep:true
 			}
 		},
 		onShow() {
-			console.log('展示呀')
 			var that=this
 			this.active = true;
-			let chatList=JSON.parse(JSON.stringify(this.$store.state.chatList ))
+      let chatList=''
+      try{
+        chatList=JSON.parse(JSON.stringify(this.$store.state.chatList ))
+      }catch(e){
+        console.log(e)
+      }
 			if(chatList.length==0){
 				uni.getStorage({
 					key:'chatList',
@@ -90,7 +92,11 @@
 				})
 			}
 			if(!Array.isArray(chatList)){
-				chatList=JSON.parse(chatList)
+        try{
+          chatList=JSON.parse(chatList)
+        }catch(e){
+          console.log(e)
+        }
 			}
 			that.InfoList=chatList.reverse()
 			this.initData(that.InfoList)

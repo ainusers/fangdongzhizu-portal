@@ -12,6 +12,7 @@
 		padding: 10upx;
 		border:1px solid #dcdcdc;
 		border-radius: 10upx;
+		margin-bottom:10rpx;
 	}
 	.pei_icon{
 		width: 50upx;

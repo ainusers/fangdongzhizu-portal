@@ -325,7 +325,12 @@ import store from '../../../../store/index.js';
 			"$store.state.chatList":{
 				handler:(val,oldval)=>{
 						that.oldTime=new Date()
-						let tempVal=JSON.parse(JSON.stringify(val))
+            let tempVal='';
+             try{
+              tempVal=JSON.parse(JSON.stringify(val))
+             }catch(e){
+               console.log(e)
+             }
 						that.chatList=tempVal
 						if(Array.isArray(tempVal)){
 							tempVal.forEach(item=>{
@@ -863,7 +868,13 @@ import store from '../../../../store/index.js';
 								},
 						success: uploadFileRes => {
 							// console.log('录音结束',uploadFileRes)
-							let voice = JSON.parse(uploadFileRes.data).data[0];
+              let voice ='';
+              try{
+                voice = JSON.parse(uploadFileRes.data).data[0];
+              }catch(e){
+                console.log(e)
+              }
+						
 							let msg = {
 								length:0,
 								url:voice

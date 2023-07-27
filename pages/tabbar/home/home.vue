@@ -399,7 +399,6 @@ export default {
 		
 	},
 	onPullDownRefresh() {
-		console.log('shangla')
 		that.currPage=1
 		this.getHouseList()
 		this.houseList=[]
@@ -408,7 +407,6 @@ export default {
 	methods: {
 		getLatest(){
 			this.$H.get('/zf/v1/version/latest',{},true).then(res=>{
-				console.log(res)
 				if(res.code==200){
 					let data=res.data[0]
 					if(data.version!=this.curVersion){
@@ -434,9 +432,8 @@ export default {
 		},
 		onRestore() {
 			this.triggered = false ; // 需要重置
-			console.log("onRestore");
 		},
-//保存登录人的设备
+		//保存登录人的设备
 			async savePhoneInfo(phoneInfo){
 					var location=await this.getLocation();
 					let address=location.address
@@ -457,7 +454,6 @@ export default {
 					  "position":position
 				}
 				this.$H.post('/zf/v1/const/user/device',params,true).then(res=>{
-					console.log('传送手机信息',res)
 				})
 			},
 			getLocation(){//h5中可能不支持,自己选择
@@ -483,7 +479,6 @@ export default {
 			this.getHouseList()
 		},
 		getHouseList(type){
-			console.log('请求了接口了')
 			if(this.currPage==1){
 				this.showModel=true
 				this.isLoad=false
@@ -501,12 +496,14 @@ export default {
 								data['money']=this.screenMoney?this.screenMoney:null
 								data['home_type']=this.home_type?this.home_type:null
 								//更多筛选赋值
-								this.moreChooseStr.forEach((item,index)=>{
-									if(item){
-										data[this.moreSubKey[index]]=item?item:null
-									}
-									
-								})
+								if(this.moreChooseStr){
+									this.moreChooseStr.forEach((item,index)=>{
+										if(item){
+											data[this.moreSubKey[index]]=item?item:null
+										}	
+									})
+								}
+								
 						}
 					this.$H.post('/zf/v1/room/list',data,true).then(res=>{
 						this.showModel=false
@@ -653,7 +650,6 @@ export default {
 			})
 		},
 		regionLeftBtn(item,index){
-			console.log(item)
 			switch(index){
 				case 0:
 					this.getArea()
@@ -665,9 +661,7 @@ export default {
 		},
 		// 区域筛选
 		regionRightBtn(item){
-			console.log(item)
 			if(item.name){
-				console.log('name',item.name)
 				this.screenArea=item.name
 			}else{
 				this.subway=item
@@ -677,7 +671,6 @@ export default {
 		},
 		//户型的确认
 		roomConfirm(item,index){
-			console.log(item)
 			let screenFormData = this.screenFormData;
 			let enterType = this.enterType;
 			if(!item.id) {
