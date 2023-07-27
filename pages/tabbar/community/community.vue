@@ -119,7 +119,6 @@
 			uni.stopPullDownRefresh();
 		},
 		onReachBottom() {
-			console.log(this.load_status_tuwen)
 			if(this.load_status_tuwen!='nomore'){
 				this.tuwen_default_page++;
 				this.getMomentPost();
@@ -136,10 +135,8 @@
 		methods: {
 			getBanner(){
 				this.$H.get('/zf/v1/const/banner',{},true).then(res=>{
-					console.log(res)
 					if(res.status&&res.code==200){
 						this.swiperList=res.data
-						console.log(this.swiperList)
 					}
 				})
 			},

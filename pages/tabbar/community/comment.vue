@@ -264,6 +264,8 @@ export default {
 					if(res.status){	
 							this.tuwen_data = res.data
 							this.tuwen_data.forEach(item=>{
+								this.$set(item,'status',false)
+								this.$set(item,'like',0)
 								item.image=item.imgurl.split(',')
 								this.$set(item,'isReport',false)
 							})
@@ -514,7 +516,6 @@ export default {
 			})
 		},
 		deletePostFn(id){
-			console.log('删除')
 			let data={
 				id:id,
 				status:0
