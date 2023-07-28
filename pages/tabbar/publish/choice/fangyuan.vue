@@ -1894,7 +1894,7 @@
 					waterElectricMoney: this.houseModel.hydropowerType,
 					support: this.houseModel.houseConfigStr,
 					status: 1,
-					live_time: this.houseModel.live_time
+					liveTime: this.houseModel.live_time
 				}
 				// #ifdef APP-PLUS
 				params['longitude'] = location.longitude

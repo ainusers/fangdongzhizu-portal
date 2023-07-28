@@ -296,6 +296,8 @@
 						// console.log('success');
 					}
 				});
+				//断开链接
+				store.commit('isChatStatus',false)
 					uni.navigateTo({
 						url: '/pages/auth/login'
 					})

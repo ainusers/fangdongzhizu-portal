@@ -92,8 +92,9 @@
 		-webkit-line-clamp:2;
 		-webkit-box-orient:vertical;
 		margin-top: -4upx;
-		display: flex;
-		justify-content: space-between;
+		.item{
+			margin-right: 20rpx;
+		}
     }
     .er_house_des{
 		height: 30upx;
@@ -210,19 +211,36 @@
 			color: #18acf0;
 		}
 	}
+	.type_icon{
+		display: inline-block;
+		// position: absolute;
+		// top:0rpx;
+		// left:10rpx;
+		z-index: 20;
+		padding:5rpx 10rpx;
+		font-weight: normal;
+		background: rgba(81, 153, 255,0.7);
+		color:#fff;
+		font-size: 12rpx;
+	}
 </style>
 <template>
 	<view class="er_house_main">
 		<view @click="homeDetail(item,index)"  class="er_house_item f_r_s">
+			
 			<view class="er_house_item_con">
 				<view class="er_house_img_view">
 					<image mode="scaleToFill" class="er_house_img" :src="item.imgUrl.split(',')[0]" lazy-load></image>
 				</view>
 				<view class="er_house_cont">
+					
 					<!-- 租房类型，小区名称-->
 					<view class="er_house_title">
-						<text v-if="item.roomType">{{ item.roomType.split('-')[0] }}</text>
-						<text v-if=" item.communityName">{{ item.communityName }}</text>
+						<view class="type_icon item">
+							{{item.publishType==1?'转租':'直租'}}
+						</view>
+						<text v-if="item.roomType" class="item">{{ item.roomType.split('-')[0] }}</text>
+						<text v-if=" item.communityName" class="item">{{ item.communityName }}</text>
 					</view>
 					<!-- 租房类型，两室一厅（配比），大小，楼层 -->
 					<view class="er_house_des">
