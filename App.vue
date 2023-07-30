@@ -33,6 +33,7 @@ export default {
 	onHide: function() {
 		console.log('App Hide');
 		clearInterval(heartCheck)
+		this.store.commit('isChatStatus',false)
 	}
 };
 </script>

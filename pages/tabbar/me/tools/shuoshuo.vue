@@ -265,7 +265,7 @@ export default {
 			let url=''
 			url='/zf/v1/dynamic/statistic'
 			if(this.current==0){
-				data['way']='user'	
+				url='/zf/v1/dynamic/user'
 			}else{
 				data['way']=null
 			}
