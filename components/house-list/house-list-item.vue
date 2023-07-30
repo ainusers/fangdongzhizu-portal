@@ -237,7 +237,7 @@
 					<!-- 租房类型，小区名称-->
 					<view class="er_house_title">
 						<view class="type_icon item">
-							{{item.publishType==1?'转租':'直租'}}
+							{{item.publishType==1?'转':'直'}}
 						</view>
 						<text v-if="item.roomType" class="item">{{ item.roomType.split('-')[0] }}</text>
 						<text v-if=" item.communityName" class="item">{{ item.communityName }}</text>

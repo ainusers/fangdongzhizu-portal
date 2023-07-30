@@ -188,19 +188,6 @@
    		}
    	},
    	{
-   		"path": "pages/tabbar/community/tools/newsMore",
-   		"style": {
-   			"navigationBarTitleText": "",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none"
-   			}
-   		}
-   	},
-   	{
    		"path": "pages/tabbar/me/me",
    		"style": {
    			"transparentTitle":  "always"

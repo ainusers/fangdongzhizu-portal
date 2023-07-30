@@ -15,7 +15,7 @@ let heartCheck=''
 					}
 				})
 
- const createlink=  function  createlink(type){
+ const createlink=  function  createlink(){
 			socketInstance=''
 			socketInstance  =  uni.connectSocket({
 				// 确保你的服务器是运行态
@@ -31,7 +31,7 @@ let heartCheck=''
 				// 发送认证消息
 					store.commit('socket_status',true)
 				setTimeout(function() {
-					authSocket(type);
+					authSocket();
 				}, 10);
 			});
 			socketInstance.onClose(() => {
@@ -51,6 +51,7 @@ let heartCheck=''
 					   );
 				  }, 6000);
 				let data = eval("(" + res.data + ")");
+				console.log('收到服务器的消息',data)
 				//当前是否有过聊天记录 ，有直接push ，不需要添加fromName  没有就创建一个新的对象  
 				let tempChatList=''
 				let newchatList=store.state.chatList ||[]
@@ -136,7 +137,7 @@ let heartCheck=''
 			return arr.length
 		}
 		//消息认证
-function authSocket(room,type) {
+function authSocket(room) {
 		if (store.state.socket_status) {
 			socketInstance.send({
 				data: "{'type':'signal','from':"+store.state.userInfo.username+"}",
@@ -144,9 +145,7 @@ function authSocket(room,type) {
 					store.commit('isChatStatus',true)
 					// that.isChatStatus=true
 					console.log("认证消息发送成功");
-					if(type){
-						console.log('我要发送消息了')
-					}
+					console.log('我要发送消息了')
 				},
 			});
 			heartCheck = setInterval(function() {
@@ -155,10 +154,14 @@ function authSocket(room,type) {
 						   data:"{'type':'signal'}",
 						   async success() {
 									 console.log('心跳检测')
+						   },
+						   fail(e){
+							   console.log(e)
 						   }
 					   });
 				  }else{
 					  clearInterval(heartCheck)
+					  store.commit('isChatStatus',false)
 				  }
 			  }, 60000);
 			Vue.prototype.$socketInstance=socketInstance
@@ -246,9 +249,9 @@ function setPicSize(content){
 				}
 				return content;
 			}
-			if(currentName){
-				createlink()
-			}
+			// if(currentName){
+			// 	createlink()
+			// }
 
 export {
 	createlink,

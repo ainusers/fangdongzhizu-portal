@@ -138,9 +138,9 @@
 					userId: this.userId,
 					page: this.currPage,
 					size: 10,
-					way:'user'
+					// way:'user'
 				}
-				let url = '/zf/v1/dynamic/list'
+				let url = '/zf/v1/dynamic/user'
 				this.$H.get(url, data, true).then(res => {
 					if (res.status) {
 						that.tuwen_data = [...that.tuwen_data, ...res.data]

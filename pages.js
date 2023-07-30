@@ -225,22 +225,6 @@ module.exports=()=>({
 			}
 		},
 		{
-			"path": "pages/tabbar/community/tools/newsMore",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#fafafa",
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle":"light",
-				"app-plus": {
-					"scrollIndicator": "none"
-				}
-			},
-			meta:{
-				needLogin:true
-			}
-		},
-		{
 			"path": "pages/tabbar/me/me",
 			"style": {
 				"transparentTitle":  "always"
