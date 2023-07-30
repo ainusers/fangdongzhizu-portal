@@ -595,7 +595,7 @@ import store from '../../../../store/index.js';
 						for(let i=0;i<res.tempFilePaths.length;i++){
 							uni.uploadFile({
 								name: 'multipartFile',
-								url: 'http://www.fangdongzhizu.top:31001/zf/v1/file/uploads',
+								url: 'http://43.143.148.105:31001/zf/v1/file/uploads',
 								// buketName: 'asiatrip',
 								filePath: res.tempFilePaths[i],
 									name:'file',
@@ -859,7 +859,7 @@ import store from '../../../../store/index.js';
 				if(!this.willStop){
 					uni.uploadFile({
 						name: 'multipartFile',
-						url: 'http://www.fangdongzhizu.top:31001/zf/v1/file/uploads',
+						url: 'http://43.143.148.105:31001/zf/v1/file/uploads',
 						buketName: 'zufang-chat',
 						filePath: res.tempFilePath,
 						header: {

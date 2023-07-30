@@ -49,7 +49,7 @@
 							'content-type': 'application/json',
 							'Authorization': 'Bearer ' + that.$store.state.token
 						},
-						url: 'http://www.fangdongzhizu.top:31001/zf/v1/user/attr',
+						url: 'http://43.143.148.105:31001/zf/v1/user/attr',
 						success: (res) => {
 							if(res.data.status){
 								uni.showToast({

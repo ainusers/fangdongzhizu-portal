@@ -177,7 +177,7 @@
 						// 		'content-type': 'application/json',
 						// 		'Authorization': 'Bearer ' + that.$store.state.token
 						// 	},
-						// 	url: 'http://81.70.163.240:11001/zf/v1/user/phone',
+						// 	url: 'http://43.143.148.105:11001/zf/v1/user/phone',
 						// 	success: (res) => {
 						// 		console.log(res)
 				

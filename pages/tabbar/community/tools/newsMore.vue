@@ -240,7 +240,7 @@
 				// 创建socketInstance对象实例，进行所有操作
 				this.socketInstance = uni.connectSocket({
 					// 确保你的服务器是运行态
-					url: "ws://81.70.163.240:17180/websocket",
+					url: "ws://43.143.148.105:17180/websocket",
 					success(data) {
 						// console.log("websocket连接状态：" + JSON.stringify(data.errMsg));
 					}
@@ -449,7 +449,7 @@
 						for(let i=0;i<res.tempFilePaths.length;i++){
 							uni.uploadFile({
 								name: 'multipartFile',
-								url: 'http://81.70.163.240:15329/uploadFile?buketName=asiatrip',
+								url: 'http://43.143.148.105:15329/uploadFile?buketName=asiatrip',
 								buketName: 'asiatrip',
 								filePath: res.tempFilePaths[i],
 								success: uploadFileRes => {
@@ -657,7 +657,7 @@
 				if(!this.willStop){
 					uni.uploadFile({
 						name: 'multipartFile',
-						url: 'http://www.fangdongzhizu.top:31001/uploadFile?buketName=asiatrip',
+						url: 'http://43.143.148.105:31001/uploadFile?buketName=asiatrip',
 						buketName: 'zufang-chat',
 						filePath: res.tempFilePath,
 						success: uploadFileRes => {
