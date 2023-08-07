@@ -62,6 +62,7 @@
 			}
 			// 向后端发送请求，修改用户密码
       let data={
+			// 向后端发送请求，修改用户昵称
 					userId: htmlEncode(this.$store.state.userInfo.id),
 					oldPassword:htmlEncode(this.pwd) , //原有密码
 					newPassword:htmlEncode(this.newpwd),  //新密码

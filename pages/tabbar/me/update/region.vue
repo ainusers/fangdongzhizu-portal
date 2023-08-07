@@ -56,33 +56,33 @@
 		onNavigationBarButtonTap(e) {
 			// 向后端发送请求，设置地区
 			var that = this;
-      let data= {
-							id: that.userInfo.id,
-							province: that.model.region
-						}
+			let data= {
+				id: that.userInfo.id,
+				province: that.model.region
+			}
       this.$H.patch('/zf/v1/user/attr',data,true).then(res=>{
         			if(res.status&&res.code==200){
-								uni.showToast({
-									title: '修改成功',
-									icon: 'none',
-									duration: 2000
-								})
-								that.userInfo.province=that.model.region
-								that.$store.commit('userInfo',that.userInfo)
-								// 返回上一页
-								setTimeout(() => {
-									uni.navigateBack({
-									    delta: 1
-									});
-								},2000)
-							}else{
-								uni.showToast({
-									title: res.message,
-									icon: 'none',
-									duration: 2000
-								})
-							}
-      })
+							uni.showToast({
+								title: '修改成功',
+								icon: 'none',
+								duration: 2000
+							})
+							that.userInfo.province=that.model.region
+							that.$store.commit('userInfo',that.userInfo)
+							// 返回上一页
+							setTimeout(() => {
+								uni.navigateBack({
+									delta: 1
+								});
+							},2000)
+					}else{
+						uni.showToast({
+							title: res.message,
+							icon: 'none',
+							duration: 2000
+						})
+					}
+				})
 		}
     }
 </script>

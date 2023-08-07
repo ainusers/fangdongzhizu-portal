@@ -66,27 +66,27 @@
                 id: that.userInfo.id,
                 sex: that.model.sex == '男' ? 1 : 0
               }
-        this.$H.patch('/zf/v1/user/attr',data,true).then(res=>{
-              if(res.status){
-                uni.showToast({
-                  title: '修改成功',
-                  icon: 'none',
-                  duration: 2000
-                })
-                that.userInfo.sex=that.model.sex == '男' ? 1 : 0
-                that.$store.commit('userInfo',that.userInfo)
-                // 返回上一页
-                setTimeout(() => {
-                  uni.navigateBack();
-                },2000)
-              }else{
-                uni.showToast({
-                  title: res.message,
-                  icon: 'none',
-                  duration: 2000
-                })
-              }
-        })
+			this.$H.patch('/zf/v1/user/attr',data,true).then(res=>{
+						if(res.status&&res.code==200){
+							uni.showToast({
+								title: '修改成功',
+								icon: 'none',
+								duration: 2000
+							})
+							that.userInfo.sex=that.model.sex == '男' ? 1 : 0
+							that.$store.commit('userInfo',that.userInfo)
+							// 返回上一页
+							setTimeout(() => {
+								uni.navigateBack();
+							},2000)
+						}else{
+							uni.showToast({
+								title: res.message,
+								icon: 'none',
+								duration: 2000
+							})
+						}
+			})
 		}
     }
 </script>

@@ -87,7 +87,6 @@
 				// 获取验证码
 				
 			},
-		},
 		onNavigationBarButtonTap(e) {
 				if(!that.oldPhone) {
 					uni.showToast({
@@ -149,30 +148,31 @@
 						code:that.Verification
 					}
 						this.$H.patch('/zf/v1/user/phone',data,true).then(res=>{
-									if(res.code==200){
-										uni.showToast({
-											title: '修改成功',
-											icon: 'none',
-											duration: 2000
-										})
-										this.userInfo.username=that.newphone;
-										that.$store.commit('userInfo',that.userInfo)
-										clearInterval(timer);
-										// 返回上一页
-										setTimeout(() => {
-											uni.navigateBack({
-											    delta: 1
-											});
-										},2000)
-									}else{
-										uni.showToast({
-											title: res.message,
-											icon: 'none',
-											duration: 2000
-										})
-									}
+							if(res.code==200){
+								uni.showToast({
+									title: '修改成功',
+									icon: 'none',
+									duration: 2000
+								})
+								this.userInfo.username=that.newphone;
+								that.$store.commit('userInfo',that.userInfo)
+								clearInterval(timer);
+								// 返回上一页
+								setTimeout(() => {
+									uni.navigateBack({
+										delta: 1
+									});
+								},2000)
+							}else{
+								uni.showToast({
+									title: res.message,
+									icon: 'none',
+									duration: 2000
+								})
+							}
 						})
 			}	
+			}
 	}
 </script>
 
