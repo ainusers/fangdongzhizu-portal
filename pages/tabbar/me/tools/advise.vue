@@ -127,7 +127,6 @@
 				var regPhone = /^1[358497]\d{9}$/;  //手机号
 				var regWx = /^[a-zA-Z][-_a-zA-Z0-9]{5,19}$/;  //微信号
 				var regEmail=/^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(\.[0-9A-Za-z]+)+$/
-				console.log(words.toString())
 				if(!words.toString()){
 					showToastTit('请选择反馈建议')
 					return

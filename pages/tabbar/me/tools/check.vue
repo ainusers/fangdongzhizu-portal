@@ -550,7 +550,6 @@ export default {
 		},
 		//获取不同状态的数据
 		getstatusHouseList(type){	
-			console.log(type)
 			let params={
 				"page":this.pageNum,
 				"size":"10",
@@ -559,12 +558,9 @@ export default {
 			}
 			//1 待审核 2 已发布  3已下架
 				this.$H.post('/zf/v1/room/list',params,true).then(res=>{
-					console.log(res)
 					that.triggered=false
 					that.showModel=false
-					console.log('请求结束')
 							if(res.data&&res.status&&res.data.length>0){
-								console.log(that.houseList)
 								that.houseList=[...that.houseList,...res.data]
 								switch(type){
 									case 1 :
@@ -572,7 +568,6 @@ export default {
 									break;
 									case 2:
 									that.publishedList=that.houseList
-									console.log(that.publishedList)
 									break;
 									case 3:
 									that.removeList=that.houseList

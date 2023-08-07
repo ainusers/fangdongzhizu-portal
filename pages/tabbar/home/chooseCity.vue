@@ -121,7 +121,6 @@
 			async resetAddress(){
 				// 检查是否开启位置信息权限
 					let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
-								console.log(result)
 								if (result != 1) {
 									// 打开权限设置界面
 									permision.gotoAppPermissionSetting(); 

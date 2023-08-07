@@ -103,25 +103,21 @@
 		},
 			
 		onPullDownRefresh(){
-			console.log('页面下拉数显了')
 			setTimeout(function(){
 				uni.stopPullDownRefresh();
 			},2000)
 		},
 		onReachBottom(){
-			console.log('滚动到底部了')
 		},
 		onHide() {
 			this.active = false;
 		},
 		methods: {
 			initData(arr){
-				console.log(arr)
 				// this.getHistory()
 				this.InfoList =arr.filter(item=>{
 					return item.currentName==this.$store.state.userInfo.username
 				})
-				console.log(this.InfoList)
 				let narr=this.InfoList
 				narr.forEach(item=>{
 					if(!item.fromName){
@@ -129,12 +125,6 @@
 						item.fromAvatar=this.$store.state.userInfo.avatar
 						
 					}
-					// this.getHistory(item.room,item).then(res=>{
-					// 	if(res){
-					// 		item.data=item.data.concat(res)
-					// 	}
-						
-					// })
 				})
 			},
 			//删除消息
@@ -168,7 +158,6 @@
 				})
 			},
 			goInfo(info){
-				console.log(info)
 				this.$store.commit('currentChatList',info)
 				initStorestate()
 				let count=info.unReadCount

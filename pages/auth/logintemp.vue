@@ -15,15 +15,18 @@
 						}
 					}
 				})
-			if(isLogin){
-				uni.switchTab({
-					url: '/pages/tabbar/home/home'
-				})
-			}else{
-				uni.navigateTo({
-					url: '/pages/auth/login'
-				})
-			}	
+			setTimeout(function(){
+				if(isLogin){
+					uni.switchTab({
+						url: '/pages/tabbar/home/home'
+					})
+				}else{
+					uni.navigateTo({
+						url: '/pages/auth/login'
+					})
+				}	
+				plus.navigator.closeSplashscreen()
+			},100)
 		}
 	}
 </script>

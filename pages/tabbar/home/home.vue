@@ -198,9 +198,9 @@ uni-swiper-item{
 				</scroll-view>
 			</swiper-item> -->
 		</swiper>
-		<view class="upgra_modal" v-if="isUpdateVersion">
+		<!-- <view class="upgra_modal" v-if="isUpdateVersion">
 			<upgra @cancelVersion="cancelVersion"></upgra>
-		</view>
+		</view> -->
 		
 		<!-- <LodingM :Model="showModel"/> -->
 	</view>
@@ -216,9 +216,8 @@ import screenTab from '@/components/common/screen-tab/screen-tab.vue'
 import screenHuan from '@/components/common/screen-tab/screen_huan.vue'
 import LodingM from '@/components/common/modal/loading_model.vue'
 import { Const } from "@/utils/const/Const.js";
-import {isLoginCheck} from '../../../utils/utils.js'
-import upgra from '../../auth/upgra.vue'
 import { createlink } from '@/utils/request/createWebsocket.js';
+import {MycheckUpdate} from '@/utils/utils.js'
 let privateData = {
 	room: {
 		height: ""
@@ -240,11 +239,10 @@ export default {
 		screenHuan,
 		LodingM,
 		houseListItemSkeleton,
-		upgra
 	},
 	data() {
 		return {
-			isUpdateVersion:false,//是否需要更新
+			// isUpdateVersion:true,//是否需要更新
 			triggered:false, //下拉刷新是否触发
 			houseJia:[1,2,3,4,5,6,7],
 			showModel:true,
@@ -357,7 +355,6 @@ export default {
 			moreChooseStr:[],//更多选中的筛选
 			fixedContHeight:0, //屏幕的高度
 			moreSubKey:['room_type','has_elevator','heat_type','room_type'],//更多提交接口的key 与screen-tab组件中moreType顺序相同
-			curVersion:'1.0.0'
 		};
 	},
 	props: {
@@ -388,7 +385,7 @@ export default {
 		})
 		this.getArea()
 		this.getHouseList()
-		this.getLatest()
+		MycheckUpdate()
 	},
 	onShow(){
 		if(!this.$store.state.isChatStatus){
@@ -405,19 +402,6 @@ export default {
 		uni.stopPullDownRefresh();
 	},
 	methods: {
-		getLatest(){
-			this.$H.get('/zf/v1/version/latest',{},true).then(res=>{
-				if(res.code==200){
-					let data=res.data[0]
-					if(data.version!=this.curVersion){
-						this.isUpdateVersion=true
-					}
-				}
-			})
-		},
-		cancelVersion(){
-			this.isUpdateVersion=false
-		},
 		//自定义下拉刷新
 		 onPulling(e) {
 			if(!this.triggered){
@@ -427,50 +411,49 @@ export default {
 					this.houseList=[]
 					this.getHouseList(1)
 				},1000)
-				
 			}		
 		},
 		onRestore() {
 			this.triggered = false ; // 需要重置
 		},
 		//保存登录人的设备
-			async savePhoneInfo(phoneInfo){
-					var location=await this.getLocation();
-					let address=location.address
-					let position=address.province+'-'+address.city+'-'+address.district+'-'+address.street+'-'+address.streetNum+'-'+address.poiName+'-'+address.cityCode
-					let params={
-					  "userId": this.$store.state.userInfo.id,
-					  "appName": phoneInfo.appName,
-					  "appVersion": phoneInfo.appVersion,
-					  "appLanguage":phoneInfo.appLanguage,
-					  "deviceId": phoneInfo.deviceId,
-					  "deviceBrand":phoneInfo.deviceBrand,
-					  "deviceModel":phoneInfo.deviceModel,
-					  "deviceType": phoneInfo.deviceType,
-					  "osName": phoneInfo.osName,
-					  "osVersion": phoneInfo.osVersion,
-					  "osLanguage": phoneInfo.osLanguage,
-					  "osTheme":phoneInfo.osTheme,
-					  "position":position
-				}
-				this.$H.post('/zf/v1/const/user/device',params,true).then(res=>{
-				})
-			},
-			getLocation(){//h5中可能不支持,自己选择
-				return new Promise((resolve, reject) => {
-					uni.getLocation({
-						type: 'gcj02',
-						geocode:true,
-						// isHighAccuracy:true,
-						success: function (res) {
-							resolve(res);
-						},
-						fail: (e) => {  
-							reject(e);
-						}
-					});
-				} )
-			},
+		async savePhoneInfo(phoneInfo){
+				var location=await this.getLocation();
+				let address=location.address
+				let position=address.province+'-'+address.city+'-'+address.district+'-'+address.street+'-'+address.streetNum+'-'+address.poiName+'-'+address.cityCode
+				let params={
+				  "userId": this.$store.state.userInfo.id,
+				  "appName": phoneInfo.appName,
+				  "appVersion": phoneInfo.appVersion,
+				  "appLanguage":phoneInfo.appLanguage,
+				  "deviceId": phoneInfo.deviceId,
+				  "deviceBrand":phoneInfo.deviceBrand,
+				  "deviceModel":phoneInfo.deviceModel,
+				  "deviceType": phoneInfo.deviceType,
+				  "osName": phoneInfo.osName,
+				  "osVersion": phoneInfo.osVersion,
+				  "osLanguage": phoneInfo.osLanguage,
+				  "osTheme":phoneInfo.osTheme,
+				  "position":position
+			}
+			this.$H.post('/zf/v1/const/user/device',params,true).then(res=>{
+			})
+		},
+		getLocation(){//h5中可能不支持,自己选择
+			return new Promise((resolve, reject) => {
+				uni.getLocation({
+					type: 'gcj02',
+					geocode:true,
+					// isHighAccuracy:true,
+					success: function (res) {
+						resolve(res);
+					},
+					fail: (e) => {  
+						reject(e);
+					}
+				});
+			} )
+		},
 		scrolltolower(){
 			if(this.isLoad){
 				return;

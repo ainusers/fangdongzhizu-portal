@@ -26,6 +26,7 @@
 </template>
 
 <script>
+	import {checkExist} from '@/utils/utils.js'
 	var that, timer;
 	export default {
 		data() {
@@ -43,7 +44,6 @@
 		onLoad(options){
 			that=this
 			this.userInfo=this.$store.state.userInfo
-			// console.log(this.userInfo)
 		},
 		methods: {
 			sendCode() {
@@ -62,23 +62,30 @@
 					});
 					return;
 				}
-				this.codeDuration = 60;
 				
-				// 获取验证码
-				this.$H.get('/zf/v1/code/sendCode', {
-					phone: this.newphone
-				},false).then(res => {
-					if (res.code === 200) {
-						this.$u.toast('发送成功');
-						// 倒计时
-						timer = setInterval(function() {
-							that.codeDuration--;
-							if (that.codeDuration <=0) {
-								clearInterval(timer);
+				checkExist(this.newphone).then(res=>{
+					if(!res.status){
+						this.codeDuration = 60;
+						this.$H.get('/zf/v1/code/sendCode', {
+							phone: this.newphone
+						},false).then(res => {
+							if (res.code === 200) {
+								this.$u.toast('发送成功');
+								// 倒计时
+								timer = setInterval(function() {
+									that.codeDuration--;
+									if (that.codeDuration <=0) {
+										clearInterval(timer);
+									}
+								}, 1000)
 							}
-						}, 1000)
+						});
+					}else{
+						this.$u.toast('当前手机号已被注册！');
 					}
-				});
+				})
+				// 获取验证码
+				
 			},
 		},
 		onNavigationBarButtonTap(e) {
@@ -141,54 +148,31 @@
 						newPhone:that.newphone,
 						code:that.Verification
 					}
-				this.$H.patch('/zf/v1/user/phone',data,true).then(res=>{
-							if(res.code==200){
-								uni.showToast({
-									title: '修改成功',
-									icon: 'none',
-									duration: 2000
-								})
-								this.userInfo.username=that.newphone;
-								that.$store.commit('userInfo',that.userInfo)
-								clearInterval(timer);
-								// 返回上一页
-								setTimeout(() => {
-									uni.navigateBack({
-									    delta: 1
-									});
-								},2000)
-							}else{
-								uni.showToast({
-									title: res.message,
-									icon: 'none',
-									duration: 2000
-								})
-							}
-				})
-						// uni.request({
-						// 	method: 'patch',
-						// 	data: {
-						// 		userId: that.userInfo.id,
-						// 		oldPhone: that.oldPhone,
-						// 		newPhone:that.newphone,
-						// 		code:that.Verification
-						// 	},
-						// 	header: {
-						// 		'content-type': 'application/json',
-						// 		'Authorization': 'Bearer ' + that.$store.state.token
-						// 	},
-						// 	url: 'http://81.70.163.240:11001/zf/v1/user/phone',
-						// 	success: (res) => {
-						// 		console.log(res)
-				
-						// 	},
-						// 	fail(e) {
-						// 		console.log(e)
-						// 	}
-						// })
-			
-			}
-		
+						this.$H.patch('/zf/v1/user/phone',data,true).then(res=>{
+									if(res.code==200){
+										uni.showToast({
+											title: '修改成功',
+											icon: 'none',
+											duration: 2000
+										})
+										this.userInfo.username=that.newphone;
+										that.$store.commit('userInfo',that.userInfo)
+										clearInterval(timer);
+										// 返回上一页
+										setTimeout(() => {
+											uni.navigateBack({
+											    delta: 1
+											});
+										},2000)
+									}else{
+										uni.showToast({
+											title: res.message,
+											icon: 'none',
+											duration: 2000
+										})
+									}
+						})
+			}	
 	}
 </script>
 

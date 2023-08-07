@@ -213,11 +213,10 @@
 	}
 	.type_icon{
 		display: inline-block;
-		// position: absolute;
-		// top:0rpx;
-		// left:10rpx;
+		height: 40rpx;
+		line-height: 40rpx;
 		z-index: 20;
-		padding:5rpx 10rpx;
+		padding:0rpx 10rpx;
 		font-weight: normal;
 		background: rgba(81, 153, 255,0.7);
 		color:#fff;
@@ -333,7 +332,6 @@
 					floor:item.floor, //楼层位置
 					live_time:item.live_time|| ''
 				}
-				console.log('房源信息',houseModel)
 				uni.setStorage({
 					key:'houseModel',
 					data:JSON.stringify(houseModel)

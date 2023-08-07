@@ -306,13 +306,9 @@
 	onShow() {
 		that=this
 		this.initData()
-		this.markers.push(
-				{latitude: this.detailData.latitude,
-				longitude:this.detailData.longitude,
-				title:this.detailData.communityName,
-				iconPath: require('../../../static/address.png'),
-				width:25,
-				height:25})
+		console.log(this.detailData.latitude)
+		console.log(this.detailData.longitude)
+		
 	},
     data() {
       return {
@@ -409,6 +405,16 @@
 			}
 		 return	this.$H.get('/zf/v1/room/list/id',data,true).then(res=>{
 				this.detailData=res.data[0]
+				this.markers.push(
+						{
+							latitude: this.detailData.latitude,
+							longitude:this.detailData.longitude,
+							title:this.detailData.communityName,
+							iconPath: require('../../../static/address.png'),
+							width:25,
+							height:25,
+						}
+						)
 				if(this.detailData.like){
 					this.startIcon='heart-fill'
 					this.iconColor='#f91e08'

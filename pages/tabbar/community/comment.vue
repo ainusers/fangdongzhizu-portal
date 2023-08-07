@@ -261,8 +261,8 @@ export default {
 					if(res.status){	
 							this.tuwen_data = res.data
 							this.tuwen_data.forEach(item=>{
-								this.$set(item,'status',false)
-								this.$set(item,'like',0)
+								this.$set(item,'status',item.status)
+								this.$set(item,'like',item.like)
 								item.image=item.imgurl.split(',')
 								this.$set(item,'isReport',false)
 							})
@@ -523,7 +523,6 @@ export default {
 				status:0
 			}
 			this.$H.patch('/zf/v1/dynamic/dynamics',data,true).then(res=>{
-				// console.log(res)
 			})
 		},
 		lookCount(id){
@@ -533,7 +532,6 @@ export default {
 				type:'plus'
 			}
 			this.$H.patch('/zf/v1/dynamic/look',data,true).then(res=>{
-				// console.log(res)
 			})
 		}
 	}

@@ -59,6 +59,8 @@
 
 <script>
 	var that='';
+	let timer =''
+	import {checkExist} from '@/utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -86,24 +88,31 @@
 				if (this.codeDuration > 0) {
 				  return;
 				}
-				// 获取验证码
-				this.$H.get('http://sc.tujingzg.com/api/user/phoneReg',{
-					phone:this.phone
-				}).then(res => {
-					if (res.code === 200) {
-						this.$u.toast(res.msg);
-						this.codeDuration = 60;
-						// 倒计时
-						let timer = setInterval(function() {
-							if(that.codeDuration>0){
-								that.codeDuration--;
-							}
-						  if (that.codeDuration == 0) {
-						    clearInterval(timer);
-						  }
-						}, 1000)
-					}
-				});
+			checkExist(this.phone).then(res=>{
+				if(res.status){
+					// 获取验证码
+					this.$H.get('/zf/v1/code/sendCode',{
+						phone:this.phone
+					}).then(res => {
+						if (res.code === 200) {
+							this.$u.toast('发送成功');
+							this.codeDuration = 60;
+							// 倒计时
+							timer = setInterval(function() {
+								if(that.codeDuration>0){
+									that.codeDuration--;
+								}
+							  if (that.codeDuration == 0) {
+							    clearInterval(timer);
+							  }
+							}, 1000)
+						}
+					});
+				}else{
+					this.$u.toast('当前手机号还没注册，请填写正确手机号！');
+				}
+			})
+				
 			},
 			bindOk() {
 				if (!/^1\d{10}$/.test(this.phone)) {

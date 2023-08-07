@@ -60,70 +60,33 @@
 			}
 		},
 		onNavigationBarButtonTap(e) {
-			console.log(this.model.sex);
 			// 向后端发送请求，修改用户性別
-			var that = this;
-			let data={
-							id: that.userInfo.id,
-							sex: that.model.sex == '男' ? 1 : 0
-						}
-			this.$H.patch('/zf/v1/user/attr',data,true).then(res=>{
-						console.log(res)
-						if(res.status){
-							uni.showToast({
-								title: '修改成功',
-								icon: 'none',
-								duration: 2000
-							})
-							that.userInfo.sex=that.model.sex == '男' ? 1 : 0
-							that.$store.commit('userInfo',that.userInfo)
-							// 返回上一页
-							setTimeout(() => {
-								uni.navigateBack();
-							},2000)
-						}else{
-							uni.showToast({
-								title: res.message,
-								icon: 'none',
-								duration: 2000
-							})
-						}
-			})
-					// uni.request({
-					// 	method: 'patch',
-					// 	data: {
-					// 		id: that.userInfo.id,
-					// 		sex: that.model.sex == '男' ? 1 : 0
-					// 	},
-					// 	header: {
-					// 		'content-type': 'application/json',
-					// 		'Authorization': 'Bearer ' +that.$store.state.token
-					// 	},
-					// 	url: 'http://81.70.163.240:11001/zf/v1/user/attr',
-					// 	success: (res) => {
-					// 		console.log(res)
-					// 		if(res.data.status){
-					// 			uni.showToast({
-					// 				title: '修改成功',
-					// 				icon: 'none',
-					// 				duration: 2000
-					// 			})
-					// 			that.userInfo.sex=that.model.sex == '男' ? 1 : 0
-					// 			that.$store.commit('userInfo',that.userInfo)
-					// 			// 返回上一页
-					// 			setTimeout(() => {
-					// 				uni.navigateBack();
-					// 			},2000)
-					// 		}else{
-					// 			uni.showToast({
-					// 				title: res.data.message,
-					// 				icon: 'none',
-					// 				duration: 2000
-					// 			})
-					// 		}
-					// 	}
-					// })
-		
+        var that = this;
+        let data={
+                id: that.userInfo.id,
+                sex: that.model.sex == '男' ? 1 : 0
+              }
+        this.$H.patch('/zf/v1/user/attr',data,true).then(res=>{
+              if(res.status){
+                uni.showToast({
+                  title: '修改成功',
+                  icon: 'none',
+                  duration: 2000
+                })
+                that.userInfo.sex=that.model.sex == '男' ? 1 : 0
+                that.$store.commit('userInfo',that.userInfo)
+                // 返回上一页
+                setTimeout(() => {
+                  uni.navigateBack();
+                },2000)
+              }else{
+                uni.showToast({
+                  title: res.message,
+                  icon: 'none',
+                  duration: 2000
+                })
+              }
+        })
 		}
     }
 </script>

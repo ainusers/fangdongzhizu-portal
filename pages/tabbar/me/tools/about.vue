@@ -67,6 +67,15 @@
 	.about_tit{
 		font-size: 36upx;
 	}
+	.icon{
+		display: inline-flex;
+		align-items: center;
+		width:10rpx;
+		height:10rpx;
+		background-color: red;
+		border-radius: 50%;
+		margin-left: 10rpx;
+	}
 </style>
 <template>
 	<view class="content">
@@ -82,13 +91,17 @@
 		<view class="bottom">
 			<view class="text">
 				<view class="app_info">
-					<view class="item">
+					<view class="item" @click="update">
 						<view>
 							版本号
 						</view>
 						<view>
 							1.0.0
+							<view class="icon" v-show="isShow">
+								
+							</view>
 						</view>
+						
 					</view>
 					<view class="item">
 						<view>
@@ -111,11 +124,20 @@
 	</view>
 </template>
 <script>
+	import {getLatest,MycheckUpdate} from '@/utils/utils.js'
     export default {
         data() {
-			return {}
+			return {
+				isShow:false
+			}
 		},
-        onLoad() {},
+        onLoad() {
+			getLatest().then(res=>{
+				if(res.version==this.$store.state.version){
+					this.isShow=true
+				}
+			})
+		},
         onShow() {},
         onUnload() {},
         methods: {
@@ -124,6 +146,11 @@
 						url: uri
 					})
 			},
+			update(){
+				if(this.isShow){
+					MycheckUpdate(1)
+				}
+			}
 		}
     }
 </script>

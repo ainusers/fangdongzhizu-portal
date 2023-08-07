@@ -54,22 +54,14 @@
 			}
 		},
 		onNavigationBarButtonTap(e) {
-			console.log(this.model.region);
 			// 向后端发送请求，设置地区
 			var that = this;
-					uni.request({
-						method: 'patch',
-						data: {
+      let data= {
 							id: that.userInfo.id,
 							province: that.model.region
-						},
-						header: {
-							'content-type': 'application/json',
-							'Authorization': 'Bearer '+ that.$store.state.token
-						},
-						url: 'http://www.fangdongzhizu.top:31001/zf/v1/user/attr',
-						success: (res) => {
-							if(res.data.status){
+						}
+      this.$H.patch('/zf/v1/user/attr',data,true).then(res=>{
+        			if(res.status&&res.code==200){
 								uni.showToast({
 									title: '修改成功',
 									icon: 'none',
@@ -85,14 +77,12 @@
 								},2000)
 							}else{
 								uni.showToast({
-									title: res.data.message,
+									title: res.message,
 									icon: 'none',
 									duration: 2000
 								})
 							}
-						}
-					})
-		
+      })
 		}
     }
 </script>

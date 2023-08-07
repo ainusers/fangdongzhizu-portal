@@ -40,22 +40,13 @@
 		onNavigationBarButtonTap(e) {
 			// 向后端发送请求，修改用户昵称
 			var that = this;
-			console.log(that.userInfo)
-					uni.request({
-						method: 'patch',
-						data: {
+      let data=	{
 							id: that.userInfo.id,
 							nickname: htmlEncode(that.value)
-						},
-						header: {
-							'content-type': 'application/json',
-							'Authorization': 'Bearer ' + that.$store.state.token
-						},
-						url: 'http://www.fangdongzhizu.top:31001/zf/v1/user/attr',
-						success: (res) => {
-							console.log(res)
-							if(res.data.status){
-								uni.showToast({
+						}
+      this.$H.patch('/zf/v1/user/attr',data,true).then(res=>{
+        if(res.code==200){
+          				uni.showToast({
 									title: '修改成功',
 									icon: 'none',
 									duration: 2000
@@ -68,16 +59,14 @@
 									    delta: 1
 									});
 								},2000)
-							}else{
-								uni.showToast({
-									title: res.data.message,
+        }else{
+          uni.showToast({
+									title: res.message,
 									icon: 'none',
 									duration: 2000
 								})
-							}
-						}
-					})
-		
+        }
+      })
 		}
     }
 </script>

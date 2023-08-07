@@ -44,8 +44,6 @@
         methods: {
 		},
 		onNavigationBarButtonTap(e) {
-			console.log(this.pwd +  " - " + this.newpwd + " - " + this.newpwd2);
-			
 			if(this.pwd==this.newpwd){
 				uni.showToast({
 					title: '原密码与新密码相同',
@@ -62,23 +60,15 @@
 				})
 				return
 			}
-			// 向后端发送请求，修改用户昵称
-			uni.request({
-				url: 'http://www.fangdongzhizu.top:31001/zf/v1/user/pwd',
-				method: 'PATCH',
-				data: {
+			// 向后端发送请求，修改用户密码
+      let data={
 					userId: htmlEncode(this.$store.state.userInfo.id),
 					oldPassword:htmlEncode(this.pwd) , //原有密码
 					newPassword:htmlEncode(this.newpwd),  //新密码
 					secondPassword:htmlEncode(this.newpwd2)
-				},
-				header:{
-					'content-type': 'application/json',
-					'Authorization': 'Bearer ' + that.$store.state.token
-				},
-				success: (res) => {
-					console.log(res)
-					if(res.data.status){
+				}
+      this.$H.patch('/zf/v1/user/pwd',data,true).then(res=>{
+        if(res.status&&res.code==200){
 						uni.showToast({
 							title: '修改成功',
 							icon: 'none',
@@ -92,13 +82,12 @@
 						},2000)
 					}else{
 						uni.showToast({
-							title: res.data.message,
+							title: res.message,
 							icon: 'none',
 							duration: 2000
 						})
 					}
-				}
-			})
+      })
 		}
     }
 </script>

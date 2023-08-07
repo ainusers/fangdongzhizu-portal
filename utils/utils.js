@@ -1,6 +1,8 @@
 import store from '@/store/index.js';
 import {get,post} from '@/utils/request/request.js'
 import request from './request/request.js'
+import checkUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update.js'
+let updateOnly=false
 //获取本地存储中的数据
 const initKey = ['token', 'userInfo', 'houseInfo', 'communityInfo', 'ThreeInfo','chatList','currentChatList','otherName','otherAvtar','unReadCount'] //防止刷新vuex丢失数据 
 const getStoreData = function(key) {
@@ -286,6 +288,23 @@ const checkExist=function(username){
 					}
 				})
 			}
+//获取最新版本
+const getLatest= function(){
+			return request.get('/zf/v1/version/latest',{},true).then(res=>{
+				if(res.code==200){
+					let data=res.data[0]
+					return data
+				}
+			})
+		}
+const MycheckUpdate=function(type){
+	// type =1 从关于我们点击的更新
+		if(!updateOnly||type==1){
+			updateOnly=true
+			checkUpdate()
+		}
+		
+}
 export {
 	getStoreData,
 	initStorestate,
@@ -303,5 +322,7 @@ export {
 	spaceTime,
 	getCount,
 	checkPush,
-	checkExist
+	checkExist,
+	getLatest,
+	MycheckUpdate
 }

@@ -169,9 +169,9 @@
 
 <script>
 	let that=''
-import store from '../../../../store/index.js';
 	import {getPlatform,initStorestate,getStoreData,getuserInfo,dateTime1,spaceTime} from '../../../../utils/utils.js'
 	import {createlink} from '../../../../utils/request/createWebsocket.js'
+  import config from '@/utils/request/config.js'
 	export default {
 		data() {
 			return {
@@ -369,7 +369,6 @@ import store from '../../../../store/index.js';
 			},
 			"$store.state.currentChatList":{
 				handler(newval,old){
-					console.log(newval)
 				}
 			}
 		},
@@ -426,7 +425,6 @@ import store from '../../../../store/index.js';
 			textInput(){
 				uni.getSelectedTextRange({
 				  success: res => {
-				    // console.log('getSelectedTextRange res', res.start, res.end)
 				  }
 				})
 			},
@@ -434,7 +432,6 @@ import store from '../../../../store/index.js';
 			initSocket() {
 				// 打开socket链接
 				uni.onSocketOpen(res=>{
-					// console.log(res)
 				})
 				// 监听socket关闭链接
 				this.$socketInstance.onClose(() => {
@@ -447,22 +444,18 @@ import store from '../../../../store/index.js';
 				this.$socketInstance.close({
 					success(res) {
 						that.$store.commit('isChatStatus',false)
-						// console.log("关闭通信服务成功", res)
 					},
 					fail(err) {
-						// console.log("关闭通信服务失败", err)
 					}
 				})
 			},
 			// 发送认证消息
 			authSocket() {
 				let that=this
-				console.log(this.$store.state.socket_status)
 				if (this.$store.state.socket_status) {
 					this.$socketInstance.send({
 						data: "{'type':'signal','from':"+that.currentName+","+'room:'+that.chatId+"}",
 						async success() {
-							console.log('成功')
 							that.$store.commit('isChatStatus',true)
 						},
 						fail(err){
@@ -587,6 +580,7 @@ import store from '../../../../store/index.js';
 			},
 			// 选照片 or 拍照
 			getImage(type){
+				console.log(config)
 				this.hideDrawer();
 				uni.chooseImage({
 					sourceType:[type],
@@ -595,7 +589,7 @@ import store from '../../../../store/index.js';
 						for(let i=0;i<res.tempFilePaths.length;i++){
 							uni.uploadFile({
 								name: 'multipartFile',
-								url: 'http://www.fangdongzhizu.top:31001/zf/v1/file/uploads',
+								url: config.domain+'/zf/v1/file/uploads',
 								// buketName: 'asiatrip',
 								filePath: res.tempFilePaths[i],
 									name:'file',
@@ -652,7 +646,6 @@ import store from '../../../../store/index.js';
 				this.$nextTick(()=>{
 					uni.getSelectedTextRange({
 						success:res=>{
-							console.log(res.start,res.end)
 							this.emojLen=res.start
 						}
 					})
@@ -666,19 +659,17 @@ import store from '../../../../store/index.js';
 			// 发送文字消息
 			async sendText(){
 				getStoreData('isChatStatus')
-				console.log(this.$store.state.isChatStatus)
 				if(this.$store.state.isChatStatus){
 					this.hideDrawer(); // 隐藏抽屉
-					console.log(this.textMsg)
 					if(!this.textMsg){
-						return;
+						return
 					}
 					let content = this.replaceEmoji(this.textMsg);
 					let msg = {text:content}
 					this.sendMsg(msg,'text');
 					this.textMsg = ''; // 清空输入框
 				}else{
-					await createlink(1)
+					// await createlink(1)
 					 // this.sendText()
 				}
 				
@@ -704,10 +695,7 @@ import store from '../../../../store/index.js';
 			},
 			// 发送消息
 			sendMsg(content,type){
-				
 				// 如果socket状态正常连接，则可以发送消息
-				let targetUserName=this.targetUserName
-				console.log(this.$store.state.socket_status)
 				if (this.$store.state.socket_status) {
 					
 					switch (type) {
@@ -720,7 +708,6 @@ import store from '../../../../store/index.js';
 							"from":this.currentName,
 							"room":this.chatId
 							}
-							console.log(data)
 							this.$socketInstance.send({
 								data: JSON.stringify(data),
 								async success() {
@@ -859,7 +846,7 @@ import store from '../../../../store/index.js';
 				if(!this.willStop){
 					uni.uploadFile({
 						name: 'multipartFile',
-						url: 'http://www.fangdongzhizu.top:31001/zf/v1/file/uploads',
+						url: config.domain+'/zf/v1/file/uploads',
 						buketName: 'zufang-chat',
 						filePath: res.tempFilePath,
 						header: {
@@ -867,7 +854,6 @@ import store from '../../../../store/index.js';
 									'Authorization': 'Bearer ' + this.$store.state.token
 								},
 						success: uploadFileRes => {
-							// console.log('录音结束',uploadFileRes)
               let voice ='';
               try{
                 voice = JSON.parse(uploadFileRes.data).data[0];

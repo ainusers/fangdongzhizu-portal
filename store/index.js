@@ -22,6 +22,7 @@ const store = new Vuex.Store({
 		lock:0,//让watch监听只走一次
 		currentNameChat:'',//当前和谁正在聊天
 		unReadCount:0,//未读消息总数
+		version:'1.0.0'
 	},
 	mutations: {
 		currentNameChat(state,obj){
@@ -83,7 +84,6 @@ const store = new Vuex.Store({
 				})
 		},
 		chatList(state,obj){
-			console.log(obj)
 			if(obj){
 				state.chatList=obj
 				uni.setStorage({

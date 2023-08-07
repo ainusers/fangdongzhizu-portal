@@ -621,7 +621,6 @@ export default {
 		},
 		// 搜索
 		searchBtn() {
-		  console.log("搜索房源ing")
 		  uni.navigateTo({
 		    url: "/pagesHouse/search/search?from=index"
 		  });

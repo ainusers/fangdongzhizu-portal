@@ -147,7 +147,7 @@
             <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/updatephone`)">
                 <view class="item_text">手机号</view>
                 <view class="item_val">
-					{{ this.userInfo.username.replace(/^(.{3})(?:\d+)(.{4}$)/,"$1****$2") }}
+					{{ this.userInfo.username?this.userInfo.username.replace(/^(.{3})(?:\d+)(.{4}$)/,"$1****$2"):'' }}
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
             </view>
@@ -200,12 +200,10 @@
        onShow(){
 		   that=this
 			this.userInfo =this.$store.state.userInfo
-			console.log(this.userInfo)
        },
 
         methods: {
 			goto(uri,type){
-				console.log(type)
 				if(type=='auth'&&!this.userInfo.auth || type!='auth'){
 					uni.navigateTo({
 						url: uri
@@ -214,7 +212,6 @@
 			},
             // 更新头像
             chooseAvatar() {
-				console.log('更新了')
                 uni.showActionSheet({
                     itemList: ['拍照', '从手机相册选择'],
                     success: (res) => {
@@ -224,28 +221,27 @@
             },
             // 上传图片
             uploadImg(sourceType = "camera") {
-				var that = this;
+				        var that = this;
                 uni.chooseImage({
                     count: 1,
                     // sizeType: ['compressed'],
                     sourceType: [sourceType],
                     success: function (res) {
-						console.log(res)
                         uni.showLoading({title: '上传中...'});
-						// #ifdef APP-PLUS
-							compressImg(res.tempFilePaths[0]).then(file=>{
-								attachUpload([file]).then(res=>{
-									that.updateImg(res[0])
-								})
-							})
-						//#endif
-						// #ifndef APP-PLUS
-								attachUpload(res.tempFilePaths).then(res=>{
-									that.updateImg(res[0])
-								})
-						// #endif
-                    }
-                });
+                  // #ifdef APP-PLUS
+                    compressImg(res.tempFilePaths[0]).then(file=>{
+                      attachUpload([file]).then(res=>{
+                        that.updateImg(res[0])
+                      })
+                    })
+                  //#endif
+                  // #ifndef APP-PLUS
+                      attachUpload(res.tempFilePaths).then(res=>{
+                        that.updateImg(res[0])
+                      })
+                  // #endif
+                          }
+                      });
             },
 			//更改头像
 			updateImg(imgAvtar){
@@ -256,7 +252,6 @@
 					}
 				this.$H.patch('/zf/v1/user/attr',data,true).then(res=>{
 					 uni.hideLoading();
-					 console.log(res)
 					 if(res.status&&res.code==200){
 							uni.showToast({
 								title: '修改成功',
@@ -287,21 +282,18 @@
 				uni.removeStorage({
 					key: 'userInfo',
 					success: function (res) {
-						// console.log('success');
 					}
 				});
 				uni.removeStorage({
 					key: 'houseInfo',
 					success: function (res) {
-						// console.log('success');
 					}
 				});
 				//断开链接
-				store.commit('isChatStatus',false)
+				this.$store.commit('isChatStatus',false)
 					uni.navigateTo({
 						url: '/pages/auth/login'
 					})
-				
 			}
         }
     }

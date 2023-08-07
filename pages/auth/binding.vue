@@ -92,22 +92,18 @@
 					  "password": userInfo.password,
 					  "code": userInfo.code
 				}
-				console.log(this.$store.state)
 				let isWx=this.$store.state.isWx
-				console.log(isWx)
 				if(isWx){
 					params["wxid"]=this.ThreeInfo.openId
 				}else{
 					params["qqid"]=this.ThreeInfo.openId
 				}
-				console.log(params)
 				this.$H.post('/zf/v1/user/third/login',params,false).then(res=>{
 					if(res.status&&res.code==200){
 						let token=res.data[0].token	
 						if(token){
 							that.$store.commit('token',token)	
 							this.getUserInfo()
-							console.log('获取userINfo')
 							uni.switchTab({
 								url: '/pages/tabbar/home/home'
 							})
@@ -117,7 +113,6 @@
 			},
 			getUserInfo() {
 				this.$H.get('/zf/v1/user/attr/token',{},true).then(res=>{
-					console.log(res)
 					if(res.status){
 						that.userInfo = res.data[0].user;
 						that.$store.commit('userInfo',that.userInfo)

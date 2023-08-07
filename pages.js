@@ -22,6 +22,22 @@ module.exports=()=>({
 			}
 		},
 		{
+			"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
+			"style": {
+				"disableScroll": true,
+				"app-plus": {
+					"backgroundColorTop": "transparent",
+					"background": "transparent",
+					"titleNView": false,
+					"scrollIndicator": false,
+					"popGesture": "none",
+					"animationType": "fade-in",
+					"animationDuration": 200
+		
+				}
+			}
+		},
+		{
 			"path": "pages/auth/login",
 			"style": {
 				"transparentTitle":  "always"
@@ -615,24 +631,6 @@ module.exports=()=>({
 			}
             
         },
-		{
-		    "path" : "pages/auth/upgra",
-		    "style" :                                                                                    
-		    {
-		      "navigationBarTitleText": "",
-		      "navigationStyle": "custom",//导航栏自定义
-		      "app-plus": {
-		       	"bounce": "none",
-		       	"animationType": "fade-in",
-		       	"background": "transparent",
-		       	"backgroundColor": "transparent",   
-		       	"popGesture": "none"
-		       }
-		    },
-			meta:{
-				needLogin:true
-			} 
-		},
 		{
 			"path": "pages/auth/binding",
 			"style": {

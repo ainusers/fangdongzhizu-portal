@@ -90,7 +90,6 @@
 			},
 			getHead(userId) {
 				getuserInfo(this.userId).then(res => {
-					console.log(res)
 					this.userInfo = res
 				})
 			},
@@ -112,10 +111,8 @@
 				}
 				//1 待审核 2 已发布  3已下架
 				this.$H.post('/zf/v1/room/list', params, true).then(res => {
-					console.log(res)
 					if (res.data && res.status && res.data.length > 0) {
 						that.houseList = [...that.houseList, ...res.data]
-						console.log(that.houseList)
 					} else if (res.data.length == 0 && that.houseList.length == 0) {
 						this.houseList = []
 					} else {

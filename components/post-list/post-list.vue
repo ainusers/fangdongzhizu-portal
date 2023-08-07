@@ -186,7 +186,6 @@
 			},
 		},
 		created() {
-			console.log(this.list)
 			this.isReport = false
 			if(this.isDetail){
 				this.jiaL=[1]
@@ -296,7 +295,6 @@
 			},
 			// 预览图片
 			previewImage(url, urls, integral, post_id,index) {
-				console.log('预览图片')
 				this.isReport=false
 				this.$emit('changeStatus', index, false)
 				uni.previewImage({
@@ -313,7 +311,6 @@
 			// 分享至微信
 			shareWX(scene) {
 				let imgURL = (imgURL = this.postDetail.imgUrl);
-				console.log(this.postDetail)
 				let that = this
 				let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
 				let curRoute = routes[routes.length - 1].$page.fullPath // 获取当前页面路由，也就是最后一个打开的页面路由
@@ -383,7 +380,6 @@
 					type:'plus'
 				}
 				this.$H.patch('/zf/v1/dynamic/transfer',data,true).then(res=>{
-					console.log(res)
 				})
 			}
 		}

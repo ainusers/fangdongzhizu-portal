@@ -20,30 +20,26 @@
 
    	},
 	{
-	    "path" : "pages/auth/upgra",
-	    "style" :                                                                                    
-	    {
-	      "navigationBarTitleText": "",
-	      "navigationStyle": "custom",//导航栏自定义
-	      "app-plus": {
-	       	"bounce": "none",
-			"animationType":"none",//取消窗口动画
-			"background": "transparent" // 设置背景透明
-	       }
-	    }
+		"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
+		"style": {
+			"disableScroll": true,
+			"app-plus": {
+				"backgroundColorTop": "transparent",
+				"background": "transparent",
+				"titleNView": false,
+				"scrollIndicator": false,
+				"popGesture": "none",
+				"animationType": "fade-in",
+				"animationDuration": 200
+
+			}
+		}
 	},
    	{
    		"path": "pages/tabbar/home/homeDetail",
    		"style": {
    			"transparentTitle":  "always",
    			"navigationBarTitleText": "房屋详情页"
-   			// "navigationBarTextStyle": "black",
-   			// "navigationBarBackgroundColor": "#fafafa",
-   			// "enablePullDownRefresh": false,
-   			// "backgroundTextStyle":"light",
-   			// "app-plus": {
-   			// 	"scrollIndicator": "none"
-   			// }
    		}
    	},
    	{
@@ -63,28 +59,12 @@
    		"path": "pages/auth/forget",
    		"style": {
    			"transparentTitle":  "always"
-   			// "navigationBarTitleText": "忘记",
-   			// "navigationBarTextStyle": "black",
-   			// "navigationBarBackgroundColor": "#fafafa",
-   			// "enablePullDownRefresh": false,
-   			// "backgroundTextStyle":"light",
-   			// "app-plus": {
-   			// 	"scrollIndicator": "none"
-   			// }
    		}
    	},
    	{
    		"path": "pages/auth/register",
    		"style": {
    			"transparentTitle":  "always"
-   			// "navigationBarTitleText": "注册",
-   			// "navigationBarTextStyle": "black",
-   			// "navigationBarBackgroundColor": "#fafafa",
-   			// "enablePullDownRefresh": false,
-   			// "backgroundTextStyle":"light",
-   			// "app-plus": {
-   			// 	"scrollIndicator": "none"
-   			// }
    		}
    	},
    	{
@@ -106,44 +86,22 @@
    		"path": "pages/tabbar/community/community",
    		"style": {
    			"transparentTitle":  "always",
-   			// "navigationBarTitleText": "社区",
-   			// "navigationBarTextStyle": "black",
-   			// "navigationBarBackgroundColor": "#fafafa",
    			"enablePullDownRefresh": true
-   			// "backgroundTextStyle":"light",
-   			// "app-plus": {
-   			// 	"scrollIndicator": "none"
-   			// }
    		}
    	},
    	{
    		"path": "pages/tabbar/community/comment",
    		"style": {
-   			// "transparentTitle":  "always",
    			"enablePullDownRefresh": true,
    			"navigationBarTitleText": "图文详情",
    			"navigationBarTextStyle": "black",
 			"backgroundTextStyle":"light"
-   			// "navigationBarBackgroundColor": "#fafafa",
-   			// "enablePullDownRefresh": false,
-   			// "backgroundTextStyle":"light",
-   			// "app-plus": {
-   			// 	"scrollIndicator": "none"
-   			// }
    		}
    	},
    	{
    		"path": "pages/tabbar/community/commentDetail",
    		"style": {
    			"transparentTitle":  "always"
-   			// "navigationBarTitleText": "评论详情页",
-   			// "navigationBarTextStyle": "black",
-   			// "navigationBarBackgroundColor": "#fafafa"
-   			// "enablePullDownRefresh": false,
-   			// "backgroundTextStyle":"light",
-   			// "app-plus": {
-   			// 	"scrollIndicator": "none"
-   			// }
    		}
    	},
    	{
@@ -191,14 +149,6 @@
    		"path": "pages/tabbar/me/me",
    		"style": {
    			"transparentTitle":  "always"
-   			// "navigationBarTitleText": "我的",
-   			// "navigationBarTextStyle": "black",
-   			// "navigationBarBackgroundColor": "#fafafa",
-   			// "enablePullDownRefresh": false,
-   			// "backgroundTextStyle":"light",
-   			// "app-plus": {
-   			// 	"scrollIndicator": "none"
-   			// }
    		}
 
    	},
@@ -206,14 +156,6 @@
    		"path": "pages/tabbar/aftersales/index",
    		"style": {
    			"transparentTitle":  ""
-   			// "navigationBarTitleText": "我的",
-   			// "navigationBarTextStyle": "black",
-   			// "navigationBarBackgroundColor": "#fafafa",
-   			// "enablePullDownRefresh": false,
-   			// "backgroundTextStyle":"light",
-   			// "app-plus": {
-   			// 	"scrollIndicator": "none"
-   			// }
    		}
    	},
    	{

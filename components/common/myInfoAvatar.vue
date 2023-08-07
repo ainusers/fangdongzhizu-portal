@@ -42,7 +42,6 @@
 		},
 		props:['userInfo','isShow'],
 		mounted(){
-			console.log(this.userInfo)
 		},
 		methods:{
 			goto(url){

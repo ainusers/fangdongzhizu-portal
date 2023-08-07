@@ -81,6 +81,7 @@
 	import phoneTab from '../../components/common/form/phone_tab.vue'
 	import pwdTab from '../../components/common/form/pwd_tab.vue'
 	import yzmCode from'../../components/common/form/yzm_code.vue'
+	import {MycheckUpdate} from '@/utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -93,7 +94,8 @@
 				codeDuration: 0,
 				phoneInfo:'',
 				checked:false,
-				isShow:false
+				isShow:false,
+				onlyOne:false
 			}
 		},
 		components:{
@@ -113,14 +115,17 @@
 					
 				}
 			})
+			MycheckUpdate ()
+		},
+		onShow(){
+			
 		},
 		onUnload() {
 			clearInterval(timer);
 		},
 		methods: {
 			checkboxChange(e){
-				console.log(e)
-				console.log(this.checked)
+
 			},
 			goUrl(){
 				uni.navigateTo({
@@ -142,7 +147,7 @@
 				}
 			},
 			loginByMsg() {
-				if(!this.$refs.userName.username){
+				if(!this.$refs.phone.username){
 					uni.showToast({
 						icon: 'none',
 						title: '请填写手机号'
@@ -221,6 +226,7 @@
 				    	password: this.$refs.passWord.password
 				    }
 				this.$H.post('/zf/v1/user/login',data,false).then(res=>{
+					console.log(res)
 							if(res.status) {
 								this.$store.commit('token',res.data[0].token)
 								this.getUserInfo()

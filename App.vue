@@ -1,6 +1,7 @@
 <script>
 import {initStorestate,setBarBadgeNum} from '@/utils/utils.js'
 import {heartCheck} from '@/utils/request/createWebsocket.js'
+
 export default {
 	onLaunch: function() {
 		uni.getStorage({
@@ -31,9 +32,8 @@ export default {
 		})
 	},
 	onHide: function() {
-		console.log('App Hide');
 		clearInterval(heartCheck)
-		this.store.commit('isChatStatus',false)
+		this.$store.commit('isChatStatus',false)
 	}
 };
 </script>

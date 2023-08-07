@@ -110,7 +110,6 @@
 				  return;
 				}
 				checkExist(this.phone).then(res=>{
-					console.log(res)
 					if(!res.status){
 						// 获取验证码
 						this.$H.get('/zf/v1/code/sendCode',{

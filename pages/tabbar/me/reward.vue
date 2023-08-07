@@ -80,10 +80,8 @@
 				    provider:this.payType,
 				    orderInfo: 'orderInfo', //微信、支付宝订单数据 【注意微信的订单信息，键值应该全部是小写，不能采用驼峰命名】
 				    success: function (res) {
-				        console.log('success:' + JSON.stringify(res));
 				    },
 				    fail: function (err) {
-				        console.log('fail:' + JSON.stringify(err));
 				    }
 				});
 			}
