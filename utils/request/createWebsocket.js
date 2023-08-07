@@ -43,7 +43,7 @@ let heartCheck=''
 					heartCheck = setInterval(function() {
 						 socketInstance.send(
 						 {
-							 data:"{'type':'signal'}",
+							data: "{'type':'keep','from':"+store.state.userInfo.username+"}",
 							 async success() {
 								console.log('心跳检测')
 							 }
@@ -140,7 +140,7 @@ let heartCheck=''
 function authSocket(room) {
 		if (store.state.socket_status) {
 			socketInstance.send({
-				data: "{'type':'signal','from':"+store.state.userInfo.username+"}",
+				data: "{'type':'keep','from':"+store.state.userInfo.username+"}",
 				async success() {
 					store.commit('isChatStatus',true)
 					// that.isChatStatus=true
@@ -151,7 +151,7 @@ function authSocket(room) {
 			heartCheck = setInterval(function() {
 				  if(store.state.token){
 					   socketInstance.send({
-						   data:"{'type':'signal'}",
+						  data: "{'type':'keep','from':"+store.state.userInfo.username+"}",
 						   async success() {
 									 console.log('心跳检测')
 						   },

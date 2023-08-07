@@ -96,7 +96,7 @@
 							版本号
 						</view>
 						<view>
-							1.0.0
+							{{$store.state.version}}
 							<view class="icon" v-show="isShow">
 								
 							</view>
@@ -133,7 +133,7 @@
 		},
         onLoad() {
 			getLatest().then(res=>{
-				if(res.version==this.$store.state.version){
+				if(res.version!=this.$store.state.version){
 					this.isShow=true
 				}
 			})
