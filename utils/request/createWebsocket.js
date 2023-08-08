@@ -140,7 +140,7 @@ let heartCheck=''
 function authSocket(room) {
 		if (store.state.socket_status) {
 			socketInstance.send({
-				data: "{'type':'keep','from':"+store.state.userInfo.username+"}",
+				data: "{'type':'signal','from':"+store.state.userInfo.username+"}",
 				async success() {
 					store.commit('isChatStatus',true)
 					// that.isChatStatus=true
