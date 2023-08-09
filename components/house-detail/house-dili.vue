@@ -46,7 +46,7 @@
 			click() {
 				uni.getLocation({
 					type: 'gcj02',
-					// isHighAccuracy:true,
+					isHighAccuracy:true,
 					success: function (res) {
 						const latitude = res.latitude;
 						const longitude = res.longitude;

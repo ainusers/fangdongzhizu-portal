@@ -92,7 +92,6 @@
 
 <script>
 	import permision from "@/sdk/wa-permission/permission.js";
-	
 	export default {
 		data() {
 			return {
@@ -120,14 +119,14 @@
         methods: {
 			async resetAddress(){
 				// 检查是否开启位置信息权限
-					let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
-								if (result != 1) {
-									// 打开权限设置界面
-									permision.gotoAppPermissionSetting(); 
-								} else {
-									//手机定位服务（GPS）已授权
-									this.fnGetlocation();
-								}
+                let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
+                if (result != 1) {
+                    // 打开权限设置界面
+                    // permision.gotoAppPermissionSetting();
+                } else {
+                    //手机定位服务（GPS）已授权
+                    this.fnGetlocation();
+                }
 				// let result=uni.getAppAuthorizeSetting()
 				// console.log(result)
 				// if(result.locationAuthorized=='authorized'){
@@ -151,7 +150,6 @@
 				// 	//请打开授权
 				// 	this.fnGetlocation();
 				// }
-				
 			},
             // 获取设备信息
             getPhoneInfo() {
@@ -164,7 +162,7 @@
 				let that = this;
 				uni.getLocation({
 					type: 'gcj02',
-					// isHighAccuracy:true,
+					isHighAccuracy:true,
 					geocode: true,
 					success: function (res) {
 						console.log('获取成功',res)
