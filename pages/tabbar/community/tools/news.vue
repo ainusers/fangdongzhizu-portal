@@ -285,8 +285,7 @@
 			this.myAvatar=this.$store.state.userInfo.avatar 
 			this.$store.commit('currentNameChat',this.targetUserName)
 			this.chatSaveLocal()
-			
-			
+
 			// 语音自然播放结束
 			this.AUDIO.onEnded((res)=>{
 				this.playMsgid=null;
@@ -303,59 +302,53 @@
 			// #endif
 			// 进入页面聊天链接
 			// createlink()
-			
 		},
 		onShow(){
 			// this.scrollTop = 99999;
 		},
 		onHide(){
 			//关闭连接
-			
 		},
 		onUnload(){
 			this.chatList=[]//所有聊天记录的数据
 			this.$store.commit('currentNameChat','')
 			this.$store.commit('currentChatList',[])
-
-			//关闭连接
-			// this.closeSocket()
-			// this.closeSocket()
 		},
 		watch:{
 			"$store.state.chatList":{
 				handler:(val,oldval)=>{
 						that.oldTime=new Date()
             let tempVal='';
-             try{
+            try{
               tempVal=JSON.parse(JSON.stringify(val))
              }catch(e){
                console.log(e)
              }
-						that.chatList=tempVal
-						if(Array.isArray(tempVal)){
-							tempVal.forEach(item=>{
-								if(item.room==that.chatId&&item.currentName==that.$store.state.userInfo.username){
-									if(!that.otherAvatar|| !that.otherAvatar){
-										that.otherName=item.fromName
-										that.otherAvatar=item.fromAvatar
-									}
-									that.msgList=item.data
-									that.initMsgList() 
-								}
-							})
-							that.scrollAnimation = false
-							if(that.msgList&&that.msgList[that.msgList.length-1]){
-								that.$nextTick(function() {
-									//进入页面滚动到底部
-									that.scrollToView="msg"+that.msgList[that.msgList.length-1].id
-									that.$nextTick(function() {
-										that.scrollAnimation = true;
-									});
-									
-								});
-							}
-							that.getMsgList()
-						}
+                    that.chatList=tempVal
+                    if(Array.isArray(tempVal)){
+                        tempVal.forEach(item=>{
+                            if(item.room==that.chatId&&item.currentName==that.$store.state.userInfo.username){
+                                if(!that.otherAvatar|| !that.otherAvatar){
+                                    that.otherName=item.fromName
+                                    that.otherAvatar=item.fromAvatar
+                                }
+                                that.msgList=item.data
+                                that.initMsgList()
+                            }
+                        })
+                        that.scrollAnimation = false
+                        if(that.msgList&&that.msgList[that.msgList.length-1]){
+                            that.$nextTick(function() {
+                                //进入页面滚动到底部
+                                that.scrollToView="msg"+that.msgList[that.msgList.length-1].id
+                                that.$nextTick(function() {
+                                    that.scrollAnimation = true;
+                                });
+
+                            });
+                        }
+                        that.getMsgList()
+                    }
 				},
 				deep:true
 			},
@@ -402,7 +395,6 @@
 								}	
 						}
 					}
-					
 				if(data.length>30){
 					that.historyArr=data.slice(0,data.length-29)
 					that.msgList=data.slice(data.length-30)
@@ -529,7 +521,6 @@
 					this.$nextTick(function() {
 						this.scrollAnimation = true;
 					});
-					
 				});
 			},
 			// 处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
@@ -580,7 +571,6 @@
 			},
 			// 选照片 or 拍照
 			getImage(type){
-				console.log(config)
 				this.hideDrawer();
 				uni.chooseImage({
 					sourceType:[type],
@@ -653,7 +643,6 @@
 				this.hideMore =false
 				if(this.popupLayerClass=='showLayer' && this.hideMore == false){
 					this.hideDrawer(1);
-						
 				}
 			},
 			// 发送文字消息
@@ -672,7 +661,6 @@
 					// await createlink(1)
 					 // this.sendText()
 				}
-				
 			},
 			// 替换表情符号为图片
 			replaceEmoji(str){
@@ -697,7 +685,6 @@
 			sendMsg(content,type){
 				// 如果socket状态正常连接，则可以发送消息
 				if (this.$store.state.socket_status) {
-					
 					switch (type) {
 						case 'text':
 						let data={
@@ -751,7 +738,6 @@
 									console.log("图片发送成功");
 								},
 							});
-							
 							break;
 					}
 				}
@@ -860,7 +846,6 @@
               }catch(e){
                 console.log(e)
               }
-						
 							let msg = {
 								length:0,
 								url:voice

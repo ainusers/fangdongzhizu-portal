@@ -22,7 +22,6 @@ let heartCheck=''
 				url: "ws://43.143.148.105:17180/websocket",
 				success(data) {
 					console.log('链接成功')
-					// console.log("websocket连接状态：" + JSON.stringify(data.errMsg));
 				}
 			});
 			// 打开socket链接

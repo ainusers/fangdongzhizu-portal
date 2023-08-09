@@ -306,9 +306,6 @@
 	onShow() {
 		that=this
 		this.initData()
-		console.log(this.detailData.latitude)
-		console.log(this.detailData.longitude)
-		
 	},
     data() {
       return {

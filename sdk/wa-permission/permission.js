@@ -16,7 +16,6 @@ function judgeIosPermissionPush() {
 	if (app.currentUserNotificationSettings) {
 		var settings = app.currentUserNotificationSettings();
 		enabledTypes = settings.plusGetAttribute("types");
-		console.log("enabledTypes1:" + enabledTypes);
 		if (enabledTypes == 0) {
 			console.log("推送权限没有开启");
 		} else {
@@ -32,7 +31,6 @@ function judgeIosPermissionPush() {
 			result = true;
 			console.log("已经开启推送功能!")
 		}
-		console.log("enabledTypes2:" + enabledTypes);
 	}
 	plus.ios.deleteObject(app);
 	plus.ios.deleteObject(UIApplication);

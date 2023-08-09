@@ -127,29 +127,6 @@
                     //手机定位服务（GPS）已授权
                     this.fnGetlocation();
                 }
-				// let result=uni.getAppAuthorizeSetting()
-				// console.log(result)
-				// if(result.locationAuthorized=='authorized'){
-				// 	//允许使用位置
-				// 	uni.getSystemInfo({
-				// 		success: (res) => {
-				// 			console.log(res)
-				// 			let locationEnabled=res.locationEnabled
-				// 			if(!locationEnabled){
-				// 				uni.showToast({
-				// 					title:'请打开手机GPS',
-				// 					icon:'none'
-				// 				})
-				// 			}else{
-				// 				this.fnGetlocation();
-				// 			}
-				// 		}
-				// 	})
-				// }else{
-				// 	console.log('请打开授权')
-				// 	//请打开授权
-				// 	this.fnGetlocation();
-				// }
 			},
             // 获取设备信息
             getPhoneInfo() {
@@ -158,14 +135,12 @@
             },
 			// 定位获取
 			fnGetlocation() {
-				console.log('获取定位')
 				let that = this;
 				uni.getLocation({
 					type: 'gcj02',
 					isHighAccuracy:true,
 					geocode: true,
 					success: function (res) {
-						console.log('获取成功',res)
 						let platform = uni.getSystemInfoSync().platform;
 						if (platform == "ios") {
 							that.bindList.long = res.longitude.toFixed(6);
@@ -188,22 +163,6 @@
 					},
 					fail: (e) => {
 						console.log('获取失败',e)
-						// 检查是否开启位置信息服务
-						// let server = permision.checkSystemEnableLocation();
-						// if(!server) {
-						// 	uni.showModal({
-						// 		title: '提示',
-						// 		content: '请打开定位服务功能',
-						// 		showCancel: false,
-						// 		success() {
-						// 			var main = plus.android.runtimeMainActivity();
-						// 			var Intent = plus.android.importClass('android.content.Intent');
-						// 			var Settings = plus.android.importClass('android.provider.Settings');
-						// 			var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-						// 			main.startActivity(intent); // 打开系统设置GPS服务页面
-						// 		}
-						// 	});
-						// }
 					}
 				});
 			},
