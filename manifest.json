@@ -59,6 +59,9 @@
                         "__platform__" : [ "ios", "android" ],
                         "appkey_ios" : "XUS7rr7tfF8FNcrNqroqkczFvpWtLpcY",
                         "appkey_android" : "XUS7rr7tfF8FNcrNqroqkczFvpWtLpcY"
+                    },
+                    "system" : {
+                        "__platform__" : [ "ios", "android" ]
                     }
                 },
                 "oauth" : {},
