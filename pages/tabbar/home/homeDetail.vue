@@ -444,7 +444,7 @@
 		coseDataInit(){
 			this.feiyongData[0].value=this.detailData.payType//支付方式
 			this.feiyongData[1].value=this.detailData.money+'元/月'//租金
-			this.feiyongData[2].value=this.detailData.mortgageMoney//押金
+			this.feiyongData[2].value=this.detailData.mortgageMoney+'元/月'//押金
 			this.feiyongData[3].value=this.detailData.serviceMoney+'元/月'//维修费
 			this.feiyongData[4].value=this.detailData.proxyMoney+'元/月'//中介费
 			this.feiyongData[6].value=this.detailData.heatMoney+'元/月' //取暖费

@@ -217,7 +217,7 @@ import screenHuan from '@/components/common/screen-tab/screen_huan.vue'
 import LodingM from '@/components/common/modal/loading_model.vue'
 import { Const } from "@/utils/const/Const.js";
 import { createlink } from '@/utils/request/createWebsocket.js';
-import {MycheckUpdate} from '@/utils/utils.js'
+import {MycheckUpdate,getLatest} from '@/utils/utils.js'
 let privateData = {
 	room: {
 		height: ""
@@ -385,7 +385,11 @@ export default {
 		})
 		this.getArea()
 		this.getHouseList()
-		MycheckUpdate()
+		getLatest().then(res=>{
+			if(res.version!=this.$store.state.version){
+				MycheckUpdate ()
+			}
+		})
 	},
 	onShow(){
 		if(!this.$store.state.isChatStatus){
