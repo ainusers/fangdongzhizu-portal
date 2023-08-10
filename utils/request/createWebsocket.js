@@ -19,10 +19,9 @@ let heartCheck=''
 			socketInstance=''
 			socketInstance  =  uni.connectSocket({
 				// 确保你的服务器是运行态
-				url: "ws://43.143.148.105:17180/websocket",
+				url: "ws://localhost:17180/websocket",
 				success(data) {
 					console.log('链接成功')
-					// console.log("websocket连接状态：" + JSON.stringify(data.errMsg));
 				}
 			});
 			// 打开socket链接
@@ -140,7 +139,7 @@ let heartCheck=''
 function authSocket(room) {
 		if (store.state.socket_status) {
 			socketInstance.send({
-				data: "{'type':'keep','from':"+store.state.userInfo.username+"}",
+				data: "{'type':'signal','from':"+store.state.userInfo.username+"}",
 				async success() {
 					store.commit('isChatStatus',true)
 					// that.isChatStatus=true

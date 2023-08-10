@@ -216,25 +216,22 @@
 					});
 					return;
 				}
-					
 				if(!this.checkXie()){
 					return
 				}
-				
 				let data={
-				    	username: this.$refs.userName.username,
-				    	password: this.$refs.passWord.password
-				    }
+                    username: this.$refs.userName.username,
+                    password: this.$refs.passWord.password
+                }
 				this.$H.post('/zf/v1/user/login',data,false).then(res=>{
-					console.log(res)
-							if(res.status) {
-								this.$store.commit('token',res.data[0].token)
-								this.getUserInfo()
-								uni.switchTab({
-									url: '/pages/tabbar/home/home'
-								})
-								
-							}
+                    if(res.status) {
+                        this.$store.commit('token',res.data[0].token)
+                        this.getUserInfo()
+                        uni.switchTab({
+                            url: '/pages/tabbar/home/home'
+                        })
+
+                    }
 				})
 			},
 			checkXie(){
@@ -272,16 +269,15 @@
 					success(loginRes) {
 						let obj=loginRes.authResult
 						uni.getUserInfo({
-						      provider: 'weixin',
-						      success: function (infoRes) {
-								  that.$store.commit('isWx',true)
-								  that.$store.commit('ThreeInfo',infoRes.userInfo)
-								  that.checkUser(infoRes.userInfo)
-						      }
-						    });
+                          provider: 'weixin',
+                          success: function (infoRes) {
+                              that.$store.commit('isWx',true)
+                              that.$store.commit('ThreeInfo',infoRes.userInfo)
+                              that.checkUser(infoRes.userInfo)
+                          }
+                        });
 					}
 				});
-				
 			},
 			useQQ() {
 				
@@ -296,7 +292,6 @@
 								that.$store.commit('isWx',false)
 								that.$store.commit('ThreeInfo',infoRes.userInfo)
 								that.checkUser(infoRes.userInfo)
-								
 				 		}
 				 	});
 					}
@@ -321,7 +316,6 @@
 					}
 				})			
 			},
-
 			tab(index) {
 				this.tabIndex = index;
 			},
