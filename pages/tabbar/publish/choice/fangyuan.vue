@@ -368,7 +368,7 @@
 				<u-form labelPosition="left" :model="houseModel" ref="form2">
 					<view class="step_2" v-show="stepNum==2 ||setpAll">
 						<!-- 费用信息 -->
-						<view class="region_new_title">房间费用信息<text class="tipTxt">(&nbsp;客观地评估价格有助于更快出租&nbsp;)</text></view>
+						<view class="region_new_title">费用信息<text class="tipTxt">(&nbsp;客观地评估价格,有助于更快出租&nbsp;)</text></view>
 						<u-form-item :label-position="labelPosition" label="房间布局 :" prop="layout" label-width="150">
 							<u-input :border="border" placeholder="请选择房间结构" v-model="houseModel.layout" type="select"
 								@click="layoutShowFn" :disabled="setpAll"></u-input>
@@ -494,7 +494,7 @@
 							<!-- <view @click="showTimeFn" :class="[{'select_btn':houseModel.live_time?houseModel.live_time.indexOf('请选择')!=-1:''}]">{{houseModel.live_time}}</view> -->
 						</u-form-item>
 						<!-- 房源照片 -->
-						<view class="region_new_title">房间照片 <text class="tipTxt">(&nbsp;不允许虚假和合成图片&nbsp;)</text></view>
+						<view class="region_new_title">房间照片 <text class="tipTxt">(&nbsp;横屏照片效果更佳,不允许虚假和合成图片&nbsp;)</text></view>
 						<u-form-item prop="houseImageList" :border-bottom="false" required>
 							<view class="uni-list list-pd">
 								<view class="uni-list-cell cell-pd">
