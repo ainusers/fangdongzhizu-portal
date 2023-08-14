@@ -19,7 +19,7 @@ let heartCheck=''
 			socketInstance=''
 			socketInstance  =  uni.connectSocket({
 				// 确保你的服务器是运行态
-				url: "ws://localhost:17180/websocket",
+				url: "ws://43.143.148.105:17180/websocket",
 				success(data) {
 					console.log('链接成功')
 				}
@@ -35,20 +35,28 @@ let heartCheck=''
 			});
 			socketInstance.onClose(() => {
 				clearInterval(heartCheck);
+				console.log('我被关闭了1')
 				store.commit('isChatStatus',false)
 			})
 			socketInstance.onMessage( async (res) => {
 				clearInterval(heartCheck);
-					heartCheck = setInterval(function() {
-						 socketInstance.send(
-						 {
-							data: "{'type':'keep','from':"+store.state.userInfo.username+"}",
-							 async success() {
-								console.log('心跳检测')
-							 }
-						 }
-					   );
-				  }, 6000);
+				heartCheck=	setInterval(function() {
+						  if(store.state.token){
+							   socketInstance.send({
+								  data: "{'type':'keep','from':"+store.state.userInfo.username+"}",
+								   async success() {
+											 console.log('心跳检测')
+								   },
+								   fail(e){
+									   console.log(e)
+								   }
+							   });
+						  }else{
+							  clearInterval(heartCheck)
+							  console.log('我被关闭了3')
+							  store.commit('isChatStatus',false)
+						  }
+					  }, 6000);
 				let data = eval("(" + res.data + ")");
 				console.log('收到服务器的消息',data)
 				//当前是否有过聊天记录 ，有直接push ，不需要添加fromName  没有就创建一个新的对象  
@@ -159,10 +167,11 @@ function authSocket(room) {
 						   }
 					   });
 				  }else{
+					  console.log('我被关闭了')
 					  clearInterval(heartCheck)
 					  store.commit('isChatStatus',false)
 				  }
-			  }, 60000);
+			  }, 6000);
 			Vue.prototype.$socketInstance=socketInstance
 		}
 	}

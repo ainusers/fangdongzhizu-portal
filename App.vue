@@ -30,6 +30,10 @@ export default {
 				}
 			}
 		})
+	},
+	onUnload(){
+		clearInterval(heartCheck)
+		this.$store.commit('isChatStatus',false)
 	}
 };
 </script>

@@ -71,7 +71,7 @@
 						</button>
 						<view class="dingwei">
 							<image class="gps_icon" src="@/static/home/position.svg"></image>
-							<view class="reset"  @click="resetAddress">
+							<view class="reset"  @click="resetAddress(1)">
 								重新定位
 							</view>
 						</view>
@@ -117,7 +117,7 @@
         	this.getPhoneInfo();
         },
         methods: {
-			async resetAddress(){
+			async resetAddress(type){
 				// 检查是否开启位置信息权限
                 let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
                 if (result != 1) {
@@ -125,7 +125,7 @@
                     // permision.gotoAppPermissionSetting();
                 } else {
                     //手机定位服务（GPS）已授权
-                    this.fnGetlocation();
+                    this.fnGetlocation(type);
                 }
 			},
             // 获取设备信息
@@ -134,7 +134,7 @@
                 this.pageHeight = res.screenHeight + "px";
             },
 			// 定位获取
-			fnGetlocation() {
+			fnGetlocation(type) {
 				let that = this;
 				uni.getLocation({
 					type: 'gcj02',
@@ -160,6 +160,14 @@
 							"纬度" +
 							that.changeTwoDecimal_f(that.bindList.lat);
 						// TODO 上报用户设备信息
+							
+						if(type){ //只有点击重新定位的时候出来
+							uni.showToast({
+								title: "已更新定位",
+								icon: 'none',
+								duration: 2000
+							})
+						}
 					},
 					fail: (e) => {
 						console.log('获取失败',e)
@@ -168,6 +176,12 @@
 			},
 			changeTwoDecimal_f(num){
 				return num.toFixed(2)
+			},
+			cityBtn(item){
+				this.$store.commit('currentCity',item.cityNameLess)
+				uni.navigateBack({
+					delta: 1
+				});
 			}
         }
 	}

@@ -162,7 +162,13 @@ uni-swiper-item{
 				</scroll-view>
 			</swiper-item>
 			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
+				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
+				:refresher-triggered="triggered"
+				:refresher-enabled="true"
+				:refresher-threshold="100"
+				@refresherpulling="onPulling"
+				@refresherrestore="onRestore"
+				>
 					<view v-if="current === 1">
 					<view class="content" v-if="houseList.length>0">
 						<!-- 租房列表 -->
@@ -372,6 +378,16 @@ export default {
 	    },
 		isLogin:false ,//是否登录
 	},
+	watch:{
+		"$store.state.currentCity":{
+			handler(val,oldval){
+				console.log(val)
+				this.cityName=val
+				this.regionLeftList[0].text=val
+				this.getHouseList()
+			}
+		}
+	},
 	onLoad() {
 		that=this
 		this.cityName=this.$store.state.currentCity
@@ -408,6 +424,7 @@ export default {
 	methods: {
 		//自定义下拉刷新
 		 onPulling(e) {
+			 console.log(this.triggered)
 			if(!this.triggered){
 				this.triggered=true
 				setTimeout(()=>{

@@ -220,7 +220,7 @@
 		font-weight: normal;
 		background: rgba(81, 153, 255,0.7);
 		color:#fff;
-		font-size: 12rpx;
+		font-size: 24rpx;
 	}
 </style>
 <template>
@@ -265,7 +265,7 @@
 					</view>
 				</view>
 			</view>
-			<view style="font-size: 26rpx;padding: 10rpx;display: block;" v-if="item.checkIdea">审核反馈： <view style="color: #ff002f;display: inline-block;">{{item.checkIdea}}</view></view>
+			<view style="font-size: 26rpx;padding: 10rpx;display: block;" v-if="item.checkIdea&&current==0">审核反馈： <view style="color: #ff002f;display: inline-block;">{{item.checkIdea}}</view></view>
 		</view>
 		<view class="detail_btn" v-show="isUpdate">
 			<view class="btn_item" @click="updateHouse(item)" v-show="current==0">
@@ -330,7 +330,7 @@
 					layout:item.layout, //房屋布局
 					orientation:item.orientation ,//房屋朝向
 					floor:item.floor, //楼层位置
-					live_time:item.live_time|| ''
+					live_time:item.liveTime|| ''
 				}
 				uni.setStorage({
 					key:'houseModel',
