@@ -19,7 +19,7 @@ let heartCheck=''
 			socketInstance=''
 			socketInstance  =  uni.connectSocket({
 				// 确保你的服务器是运行态
-				url: "ws://43.143.148.105:17180/websocket",
+				url: "ws://43.143.148.105:31780/websocket",
 				success(data) {
 					console.log('链接成功')
 				}
@@ -116,7 +116,6 @@ let heartCheck=''
 				}	
 				uni.vibrateLong();
 			}
-			console.log(tempChatList)
 			store.commit('chatList',tempChatList)	
 		}
 		function addKey(data){
@@ -186,10 +185,7 @@ function addTextMsg(data,chatList){
 	let currentNameChat=store.state.currentNameChat
 	for(let i=0;i<chatList.length;i++){
 		let item=chatList[i]
-		console.log(item.room==data.room&&item.currentName==currentName)
 			if(item.room==data.room&&item.currentName==currentName){
-				console.log(item)
-				
 				if(data.msg.indexOf('alt')!=-1){
 					data.typename=infoImgInit(data)
 				}else{
