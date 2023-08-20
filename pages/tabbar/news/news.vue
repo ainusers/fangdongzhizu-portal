@@ -1,6 +1,6 @@
 <template>
 	<view class="container" :class="{'active':active}">
-		<u-cell-group v-if="InfoList.length>0">
+		<u-cell-group v-if="InfoList&&InfoList.length>0">
 			<uni-swipe-action>
 				<uni-list>
 					<block v-for="(item,index) in InfoList" :key="index">

@@ -13,6 +13,9 @@
 								</u-radio>
 					</u-radio-group>
 					<u-input v-model="otherReport" :type="typeStr" :border="border" :height="height" :auto-height="autoHeight" v-show="isOtherR"/>
+					<view class="hink">
+						注：举报次数大于10次，将自动屏蔽该记录 
+					</view>
 				</view>
 			</u-modal> 
 	</view>
@@ -105,6 +108,8 @@
 				this.$H.post('/zf/v1/tip/tips',data,true).then(res=>{
 					if(res.status){
 						this.$u.toast('举报成功')
+					}else{
+						this.$u.toast(res.message)
 					}
 				})
 				if(statu){
@@ -124,5 +129,10 @@
 			  width: 50%;
 			  margin-bottom: 30upx;
 		  }
+	}
+	.hink{
+		font-size: 26upx;
+		color: #aaa;
+		margin: 15upx 0;
 	}
 </style>

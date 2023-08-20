@@ -4,16 +4,10 @@ import {getuserInfo,initStorestate,getStoreData,setBarBadgeNum} from '@/utils/ut
 let fromName=''
 let socketInstance=''
 let isChatStatus=''
-let currentName=''
+let currentName=store.state.userInfo.username
+console.log(currentName)
 let heartCheck=''
-			uni.getStorage({
-					key:'userInfo',
-					success(res) {
-						if(res.data){
-							currentName=res.data.username
-						}
-					}
-				})
+let isCreate=false
 
  const createlink=  function  createlink(){
 			socketInstance=''
@@ -35,7 +29,6 @@ let heartCheck=''
 			});
 			socketInstance.onClose(() => {
 				clearInterval(heartCheck);
-				console.log('我被关闭了1')
 				store.commit('isChatStatus',false)
 			})
 			socketInstance.onMessage( async (res) => {
@@ -45,7 +38,7 @@ let heartCheck=''
 							   socketInstance.send({
 								  data: "{'type':'keep','from':"+store.state.userInfo.username+"}",
 								   async success() {
-											 console.log('心跳检测')
+											 // console.log('心跳检测')
 								   },
 								   fail(e){
 									   console.log(e)
@@ -53,12 +46,11 @@ let heartCheck=''
 							   });
 						  }else{
 							  clearInterval(heartCheck)
-							  console.log('我被关闭了3')
 							  store.commit('isChatStatus',false)
 						  }
-					  }, 6000);
+					  }, 5000);
 				let data = eval("(" + res.data + ")");
-				console.log('收到服务器的消息',data)
+				// console.log('收到服务器的消息',data)
 				//当前是否有过聊天记录 ，有直接push ，不需要添加fromName  没有就创建一个新的对象  
 				let tempChatList=''
 				let newchatList=store.state.chatList ||[]
@@ -73,7 +65,7 @@ let heartCheck=''
 					}
 					//初次收到消息要对当前对象添加fromName和fromAvtar  用于消息列表展示	
 					addKey(data).then(res=>{
-						 newchatList.push({room:data.room,fromName:res.fromName,fromAvatar:res.fromAvatar,targetName:targetName,currentName:currentName,unReadCount:0,data:[]})
+						 newchatList.push({room:data.room,fromName:res.fromName,fromAvatar:res.fromAvatar,targetName:targetName,currentName:store.state.userInfo.username,unReadCount:0,data:[]})
 						return newchatList
 					}).then(res=>{
 						addInfoInit(data,res)
@@ -84,6 +76,7 @@ let heartCheck=''
 			});
 		}
 		function addInfoInit(data,newchatList){
+			console.log(newchatList)
 			let tempChatList=''
 			switch (data.type) {
 				// case 'system':
@@ -102,7 +95,7 @@ let heartCheck=''
 			if(data.id&&data.from!=store.state.userInfo.username&&data.msg!='ping'&& data.type!='signal'){
 				if(tempChatList.length>0){
 					tempChatList.forEach(item=>{
-						if(item.room==data.room&&item.currentName==currentName){
+						if(item.room==data.room&&item.currentName==store.state.userInfo.username){
 							if(store.state.currentNameChat!=data.from){
 								setUnreadCountAll(data)
 								item.unReadCount+=1
@@ -127,6 +120,7 @@ let heartCheck=''
 				
 			}
 			return getuserInfo(target,1).then(res=>{
+				console.log(res)
 				obj.fromName=res.nickname
 				obj.fromAvatar=res.avatar
 				return obj
@@ -136,7 +130,7 @@ let heartCheck=''
 			let temp=store.state.chatList
 			if(temp&&temp.length==0){return}
 			let arr=temp.filter(item=>{
-				if(item.room==data.room&&item.currentName==currentName){
+				if(item.room==data.room&&item.currentName==store.state.userInfo.username){
 					return item
 				}
 			})
@@ -144,33 +138,33 @@ let heartCheck=''
 		}
 		//消息认证
 function authSocket(room) {
+	let that=this
+	console.log(store.state.socket_status)
 		if (store.state.socket_status) {
 			socketInstance.send({
 				data: "{'type':'signal','from':"+store.state.userInfo.username+"}",
 				async success() {
 					store.commit('isChatStatus',true)
 					// that.isChatStatus=true
-					console.log("认证消息发送成功");
-					console.log('我要发送消息了')
 				},
 			});
+			clearInterval(heartCheck);
 			heartCheck = setInterval(function() {
 				  if(store.state.token){
 					   socketInstance.send({
 						  data: "{'type':'keep','from':"+store.state.userInfo.username+"}",
 						   async success() {
-									 console.log('心跳检测')
+									 // console.log('心跳检测')
 						   },
 						   fail(e){
 							   console.log(e)
 						   }
 					   });
 				  }else{
-					  console.log('我被关闭了')
 					  clearInterval(heartCheck)
 					  store.commit('isChatStatus',false)
 				  }
-			  }, 6000);
+			  }, 5000);
 			Vue.prototype.$socketInstance=socketInstance
 		}
 	}
@@ -185,7 +179,7 @@ function addTextMsg(data,chatList){
 	let currentNameChat=store.state.currentNameChat
 	for(let i=0;i<chatList.length;i++){
 		let item=chatList[i]
-			if(item.room==data.room&&item.currentName==currentName){
+			if(item.room==data.room&&item.currentName==store.state.userInfo.username){
 				if(data.msg.indexOf('alt')!=-1){
 					data.typename=infoImgInit(data)
 				}else{
@@ -200,7 +194,7 @@ function addImgMsg(msg,chatList){
 	msg.msg = setPicSize(msg.msg);
 	if(msg.id&&chatList.length>0){
 		chatList.forEach(item=>{
-			if(item.room==msg.room&&item.currentName==currentName){
+			if(item.room==msg.room&&item.currentName==store.state.userInfo.username){
 				let date=new Date(item.datetime)
 				let y=date.getFullYear()
 				msg.typename="[图片]"
@@ -213,7 +207,7 @@ function addImgMsg(msg,chatList){
 function addVoiceMsg(data,chatList){
 				if(data.id){
 					chatList.forEach(item=>{
-						if(item.room==data.room&&item.currentName==currentName){
+						if(item.room==data.room&&item.currentName==store.state.userInfo.username){
 							let date=new Date(item.datetime)
 							let y=date.getFullYear()
 							data.typename='[语音]'
@@ -253,11 +247,16 @@ function setPicSize(content){
 				}
 				return content;
 			}
+const clearT=function clearT(){
+	 clearInterval(heartCheck)
+}
 			// if(currentName){
 			// 	createlink()
 			// }
 
 export {
 	createlink,
-	heartCheck
+	heartCheck,
+	isCreate,
+	clearT
 }

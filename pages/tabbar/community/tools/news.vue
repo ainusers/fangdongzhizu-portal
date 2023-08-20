@@ -27,83 +27,86 @@
 						</view>
 					</view>
 				<!-- 判断展示的内容类型 -->
-					<view class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
-						<!-- 系统消息 -->
-						<block v-if="row.type=='system'">
-							<view class="system">
-								<!-- 文字消息 -->
-								<view v-if="row.type=='system'" class="text">
-									{{row.msg}}
+					<view v-if="msgList&&msgList.length>0">
+						<view class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
+							<!-- 系统消息 -->
+							<block v-if="row.type=='system'">
+								<view class="system">
+									<!-- 文字消息 -->
+									<view v-if="row.type=='system'" class="text">
+										{{row.msg}}
+									</view>
 								</view>
-							</view>
-						</block>
-						<!-- 用户消息 -->
-						<block v-if="row.type == 'text' || row.type == 'img' || row.type == 'voice'">
-							<!-- 1. 自己发出的消息 -->
-							<view class="my" v-if="row.from==currentName">
-								<!-- 左-消息 -->
-								<view class="time" v-if="row.datetime">{{row.datetime}}</view>
-								<view class="my_item">
-									<view class="left">
-											<!-- 文字消息 -->
-											<view v-if="row.type=='text'" class="bubble">
-												<rich-text :nodes="row.msg" ></rich-text>
+							</block>
+							<!-- 用户消息 -->
+							<block v-if="row.type == 'text' || row.type == 'img' || row.type == 'voice'">
+								<!-- 1. 自己发出的消息 -->
+								<view class="my" v-if="row.from==currentName">
+									<!-- 左-消息 -->
+									<view class="time" v-if="row.datetime">{{row.datetime}}</view>
+									<view class="my_item">
+										<view class="left">
+												<!-- 文字消息 -->
+												<view v-if="row.type=='text'" class="bubble">
+													<rich-text :nodes="row.msg" ></rich-text>
+												</view>
+												<!-- 语言消息 -->
+												<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
+													<view class="length">{{JSON.parse(row.msg).length}}</view>
+													<view class="icon my-voice"></view>
+												</view>
+												<!-- 图片消息 -->
+												<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
+													<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}" mode="widthFix"></image>
+												</view>
 											</view>
-											<!-- 语言消息 -->
-											<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
-												<view class="length">{{JSON.parse(row.msg).length}}</view>
-												<view class="icon my-voice"></view>
+											<!-- 右-头像 -->
+											<view class="right">
+												<view class="userImage">
+												  <u-avatar class="avatar" :src="$store.state.userInfo.avatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
+												
+												</view>
 											</view>
-											<!-- 图片消息 -->
-											<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
-												<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}" mode="widthFix"></image>
+										
+									</view>
+									</view>
+								<!-- 2. 别人发出的消息 -->
+								<view class="other" v-else>
+									<!-- 左-头像 -->
+									<view class="time" v-if="row.datetime">{{row.datetime}}</view>
+									<view class="other_item">
+										<view class="left">
+												<view class="userImage">
+												  <u-avatar class="avatar" :src="otherAvatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
+												</view>
+												<!-- <image :src="otherAvatar"></image> -->
 											</view>
-										</view>
-										<!-- 右-头像 -->
-										<view class="right">
-											<view class="userImage">
-											  <u-avatar class="avatar" :src="$store.state.userInfo.avatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
-											
+											<!-- 右-用户名称-时间-消息 -->
+											<view class="right">
+												<view class="username">
+													<view class="name">{{otherName}}</view> 
+												</view>
+												<!-- 文字消息 -->
+												<view v-if="row.type=='text'" class="bubble">
+													<rich-text :nodes="row.msg"></rich-text>
+												</view>
+												<!-- 语音消息 -->
+												<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
+													<view class="icon other-voice"></view>
+													<view class="length">{{JSON.parse(row.msg).length}}</view>
+												</view>
+												<!-- 图片消息 -->
+												<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
+													<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}"></image>
+												</view>
 											</view>
-										</view>
-									
+										
+									</view>
 								</view>
-								</view>
-							<!-- 2. 别人发出的消息 -->
-							<view class="other" v-else>
-								<!-- 左-头像 -->
-								<view class="time" v-if="row.datetime">{{row.datetime}}</view>
-								<view class="other_item">
-									<view class="left">
-											<view class="userImage">
-											  <u-avatar class="avatar" :src="otherAvatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
-											</view>
-											<!-- <image :src="otherAvatar"></image> -->
-										</view>
-										<!-- 右-用户名称-时间-消息 -->
-										<view class="right">
-											<view class="username">
-												<view class="name">{{otherName}}</view> 
-											</view>
-											<!-- 文字消息 -->
-											<view v-if="row.type=='text'" class="bubble">
-												<rich-text :nodes="row.msg"></rich-text>
-											</view>
-											<!-- 语音消息 -->
-											<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
-												<view class="icon other-voice"></view>
-												<view class="length">{{JSON.parse(row.msg).length}}</view>
-											</view>
-											<!-- 图片消息 -->
-											<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
-												<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}"></image>
-											</view>
-										</view>
-									
-								</view>
-							</view>
-						</block>
+							</block>
+						</view>
 					</view>
+					
 				</view>
 			</scroll-view>
 		</view>
@@ -273,7 +276,8 @@
 			})
 			initStorestate()
 			getStoreData('currentChatList')
-			this.msgList=this.$store.state.currentChatList.data
+			console.log(this.$store.state.currentChatList.data)
+			this.msgList=this.$store.state.currentChatList.data || []
 			this.otherName=this.$store.state.currentChatList.fromName
 			this.otherAvatar=this.$store.state.currentChatList.fromAvatar	
 			this.Platform=getPlatform()
@@ -333,10 +337,12 @@
                                     that.otherAvatar=item.fromAvatar
                                 }
                                 that.msgList=item.data
+								console.log(that.msgList)
                                 that.initMsgList()
                             }
                         })
                         that.scrollAnimation = false
+						console.log(that.msgList)
                         if(that.msgList&&that.msgList[that.msgList.length-1]){
                             that.$nextTick(function() {
                                 //进入页面滚动到底部
@@ -648,6 +654,8 @@
 			// 发送文字消息
 			async sendText(){
 				getStoreData('isChatStatus')
+				console.log('我要发送消息')
+				console.log(this.$store.state.isChatStatus)
 				if(this.$store.state.isChatStatus){
 					this.hideDrawer(); // 隐藏抽屉
 					if(!this.textMsg){
@@ -658,7 +666,7 @@
 					this.sendMsg(msg,'text');
 					this.textMsg = ''; // 清空输入框
 				}else{
-					// await createlink(1)
+					 await createlink(1)
 					 // this.sendText()
 				}
 			},
@@ -840,12 +848,13 @@
 									'Authorization': 'Bearer ' + this.$store.state.token
 								},
 						success: uploadFileRes => {
-              let voice ='';
-              try{
-                voice = JSON.parse(uploadFileRes.data).data[0];
-              }catch(e){
-                console.log(e)
-              }
+							
+							  let voice ='';
+							  try{
+								voice = JSON.parse(uploadFileRes.data).data[0];
+							  }catch(e){
+								console.log(e)
+							  }
 							let msg = {
 								length:0,
 								url:voice
@@ -880,7 +889,9 @@
 				that.scrollAnimation = false
 				that.$nextTick(function() {
 					//进入页面滚动到底部
-					that.scrollToView="msg"+that.msgList[that.msgList.length-1].id
+					if(that.msgList&&that.msgList.length>0){
+						that.scrollToView="msg"+that.msgList[that.msgList.length-1].id
+					}
 					that.$nextTick(function() {
 						that.scrollAnimation = true;
 					});

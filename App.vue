@@ -1,6 +1,6 @@
 <script>
 import {initStorestate,setBarBadgeNum} from '@/utils/utils.js'
-import {heartCheck} from '@/utils/request/createWebsocket.js'
+import {createlink,clearT} from '@/utils/request/createWebsocket.js'
 
 export default {
 	onLaunch: function() {
@@ -17,6 +17,21 @@ export default {
 	},
 	onShow: function() {
 		initStorestate()
+		var isLogin=false
+		uni.getStorage({
+				key:'token',
+				success(res) {
+					if(res.data){
+						isLogin=true
+					}
+				}
+			})
+		setTimeout(function(){
+			if(isLogin){
+				createlink()
+			}
+		},100)
+		
 		uni.getStorage({
 			key:'unReadCount',
 			success(res){
@@ -31,8 +46,11 @@ export default {
 			}
 		})
 	},
+	onHide(){
+		clearT()
+	},
 	onUnload(){
-		clearInterval(heartCheck)
+		clearT()
 		this.$store.commit('isChatStatus',false)
 	}
 };

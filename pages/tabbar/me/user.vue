@@ -188,6 +188,7 @@
 <script>
 	var that;
 	import {compressImg,attachUpload} from '@/utils/utils.js'
+	import {clearT} from '@/utils/request/createWebsocket.js'
     export default {
         data() {
             return {
@@ -260,6 +261,13 @@
 							})
 							that.userInfo.avatar=imgAvtar
 							that.$store.commit('userInfo',that.userInfo) 
+							let chatList=that.$store.state.chatList
+							chatList.forEach(item=>{
+								if(item.targetName==that.userInfo.username){
+									item.fromAvatar=imgAvtar
+								}
+							})
+							that.$store.commit('chatList',chatList) 
 					 }else{
 						 uni.showToast({
 						 	title:res.message,
@@ -290,6 +298,7 @@
 					}
 				});
 				//断开链接
+				clearT()
 				this.$store.commit('isChatStatus',false)
 					uni.navigateTo({
 						url: '/pages/auth/login'

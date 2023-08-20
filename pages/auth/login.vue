@@ -115,7 +115,6 @@
 					
 				}
 			})
-			MycheckUpdate ()
 		},
 		onShow(){
 			
