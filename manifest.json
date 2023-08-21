@@ -13,7 +13,8 @@
         "compilerVersion" : 3,
         /* 5+App特有相关 */
         "modules" : {
-            "Geolocation" : {}
+            "Geolocation" : {},
+            "Record" : {}
         },
         /* 模块配置 */
         "distribute" : {
