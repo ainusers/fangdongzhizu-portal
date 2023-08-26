@@ -221,8 +221,6 @@
 		width: 100%;
 		padding: 24rpx;
 		overflow: hidden;
-		height:calc(100vh - var(--status-bar-height) - 176rpx);
-		position:relative;
 		.main{
 			overflow-y: scroll;
 		}
