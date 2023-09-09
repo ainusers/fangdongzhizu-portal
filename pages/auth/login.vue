@@ -112,7 +112,6 @@
 						key:'phoneInfo',
 						data:res
 					})
-					
 				}
 			})
 		},
@@ -229,12 +228,11 @@
                         uni.switchTab({
                             url: '/pages/tabbar/home/home'
                         })
-
                     }
 				})
 			},
 			checkXie(){
-				let statu=false
+				let status=false
 				if(!this.checked){
 					uni.showToast({
 						icon: 'none',
@@ -244,11 +242,11 @@
 					setTimeout(()=>{
 						this.isShow=false
 					},500)
-					statu=false
+					status=false
 				}else{
-					statu=true
+					status=true
 				}
-				return statu
+				return status
 			},
 			getUserInfo() {
 				this.$H.get('/zf/v1/user/attr/token',{},true).then(res=>{
@@ -279,7 +277,6 @@
 				});
 			},
 			useQQ() {
-				
 				uni.login({
 					provider: 'qq',
 					success: function(loginRes) {

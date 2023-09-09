@@ -152,8 +152,7 @@
 							</scroll-view>
 							<view class="f_r_b more_btn_view">
 								<view hover-class="none" form-type="submit" @click="resetBtn" class="resetBtn">重置</view>
-								<view hover-class="none" form-type="submit" @click="confirmBtn" class="confirmBtn">确认
-								</view>
+								<view hover-class="none" form-type="submit" @click="confirmBtn" class="confirmBtn">确认</view>
 							</view>
 						</view>
 					</view>
@@ -164,9 +163,7 @@
 </template>
 
 <script>
-	import {
-		Const
-	} from "@/utils/const/Const.js";
+	import {Const} from "@/utils/const/Const.js";
 	export default {
 		props: ["screenFormData", "from", "regionLeftList", "regionRightMap", "enterType", "erHousePriceList", "roomList","fixedContHeight"],
 		data() {
@@ -250,13 +247,9 @@
 				}
 			}
 		},
-		onShow() {
-
-		},
-		mounted() {
-		},
-		onLoad() {
-		},
+		onShow() {},
+		mounted() {},
+		onLoad() {},
 		methods: {
 			screenBtn(str) {
 				if(this.currentClickType==str){
@@ -264,7 +257,6 @@
 				}else{
 					this.listTcShow=true
 				}
-				
 				this.currentClickType = str
 			},
 			// 点击外部空白区域，弹窗关闭
@@ -289,9 +281,9 @@
 								return
 							}
 						})
-							if (this.screenFormData.erHouse.more.text == '更多') {
-								this.moreScreenInit(key)
-							}
+						if (this.screenFormData.erHouse.more.text == '更多') {
+							this.moreScreenInit(key)
+						}
 						continue;
 					}
 					if (key == 'price') {
@@ -325,15 +317,15 @@
 						}
 					}
 					if (key == 'room') {
-							uni.getStorage({
-								key:'roomItem',
-								success: (res) => {
-									this.roomItem=res.data
-									screenFormData[enterType][key].show = true;
-									screenFormData[this.enterType].room.text =this.roomItem.text
-									return
-								}
-							})
+						uni.getStorage({
+							key:'roomItem',
+							success: (res) => {
+								this.roomItem=res.data
+								screenFormData[enterType][key].show = true;
+								screenFormData[this.enterType].room.text =this.roomItem.text
+								return
+							}
+						})
 						if (screenFormData[enterType].room.text == '户型' || screenFormData[enterType].room.text == '不限') {
 							screenFormData[enterType].room.text='户型'
 							screenFormData[enterType][key].show = false;
@@ -395,7 +387,6 @@
 					this.regionRightIndex1 = 0
 				}
 			},
-
 			// 价格选项卡
 			minPriceBlur(e) {
 				this.screenFormData[this.enterType].price.text = '不限'
@@ -489,9 +480,7 @@
 				})
 				this.$emit('roomConfirm', item)
 			},
-			formSubmit() {
-
-			},
+			formSubmit() {},
 			// 价格确认
 			confirmPrice() {
 				if (!this.minPriceVal && this.priceItem.text == '不限' || !this.maxPriceVal && this.priceItem.text == '不限') {
@@ -552,10 +541,8 @@
 						key:'priceArea'
 					})
 				}
-				
 				this.$emit('confirmPrice', val)
 			},
-
 			priceReset() {
 				let screenFormData = this.screenFormData
 				screenFormData[this.enterType].price.show = false
@@ -590,7 +577,6 @@
 		width: 100%;
 		transform: translateX(-50%);
 		left: 50%;
-		// top:250rpx !important;
 	}
 
 	/* #endif */
@@ -650,7 +636,6 @@
 
 	.region_scroll_right .screen_active {
 		background: #F8F8F9;
-		// border: none;
 		color: #5199ff;
 	}
 
@@ -668,10 +653,6 @@
 		padding-left: 30upx;
 		box-sizing: border-box;
 		padding-bottom: 190upx;
-	}
-
-	.more_list {
-		/* border-bottom:1px solid #f3f3f3; */
 	}
 
 	.more_title {

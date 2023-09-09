@@ -15,34 +15,29 @@
 		    <view class="bottom">
 		      <view class="left">
 		        <view class="user-text">
-		          <view class="userNickName">{{ userInfo.nickname }}
-								<image mode="aspectFit" src="../../static/me/boy_icon.png" class="sex_con" v-if="this.userInfo.sex == 1"></image>
-								<image mode="aspectFit" src="../../static/me/girl.svg" class="sex_con" v-else></image>
-								
-						</view>
+					<view class="userNickName">{{ userInfo.nickname }}
+						<image mode="aspectFit" src="../../static/me/boy_icon.png" class="sex_con" v-if="this.userInfo.sex == 1"></image>
+						<image mode="aspectFit" src="../../static/me/girl.svg" class="sex_con" v-else></image>
+					</view>
 						<view class="option" v-if="isShow">
-							<u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
-						</view>
+						<u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
+					</view>
 		        </view>
 		        <view class="user-phone">{{ userInfo.signature }}</view>
 		      </view>
 		    </view>
 		  </view>
 		</view>
-		
 	</view>
 </template>
 
 <script>
 	export default{
 		data(){
-			return{
-				
-			}
+			return{}
 		},
 		props:['userInfo','isShow'],
-		mounted(){
-		},
+		mounted(){},
 		methods:{
 			goto(url){
 				if(!this.isShow)  return

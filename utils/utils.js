@@ -66,7 +66,7 @@ const  compressImg = function(img, res) {
 							.replace('.JPG', '2222.JPG'),
 						width: '40%', //dst: (String 类型 )压缩转换目标图片的路径，这里先在后面原始名后面加一个2222区分一下
 						height: '40%', //width,height: (String 类型 )缩放图片的宽度,高度
-						quality: 10, //quality: (Number 类型 )压缩图片的质量
+						quality: 60, //quality: (Number 类型 )压缩图片的质量
 						overwrite: true, //overwrite: (Boolean 类型 )覆盖生成新文件
 						// format:'jpg'   //format: (String 类型 )压缩转换后的图片格式
 					}, (event) => {

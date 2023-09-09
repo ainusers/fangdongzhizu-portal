@@ -338,34 +338,34 @@
 				})
 				let currentObj={
 					 //所有picker选中的内容
-						warm:{
-							valueName:item.heatMoney,
-							valueCode:''
-						},
-						wireless:{
-							valueName:item.wifiMoney,
-							valueCode:''
-						},
-						property:{
-							valueName:item.manageMoney,
-							valueCode:''
-						},
-						hydropower:{
-							valueName:item.waterElectricMoney,
-							valueCode:''
-						},
-						pay:{
-							valueName:item.payType,
-							valueCode:''
-						},
-						hire:{
-							valueName:'',
-							valueCode:''
-						},
-						sex:{
-							valueName:'请选择性别',
-							valueCode:''
-						}
+					warm:{
+						valueName:item.heatMoney,
+						valueCode:''
+					},
+					wireless:{
+						valueName:item.wifiMoney,
+						valueCode:''
+					},
+					property:{
+						valueName:item.manageMoney,
+						valueCode:''
+					},
+					hydropower:{
+						valueName:item.waterElectricMoney,
+						valueCode:''
+					},
+					pay:{
+						valueName:item.payType,
+						valueCode:''
+					},
+					hire:{
+						valueName:'',
+						valueCode:''
+					},
+					sex:{
+						valueName:'请选择性别',
+						valueCode:''
+					}
 				}
 				uni.setStorage({
 					key:'currentObj',

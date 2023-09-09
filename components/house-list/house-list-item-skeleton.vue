@@ -91,11 +91,8 @@
 						
 					<!-- 房屋价格，朝阳区，酒仙桥 -->
 					<view class="er_house_price_view f_r_s">
-						<view class="er_house_price main_color f_r_s">
-						</view>
-						<view class="place">
-
-						</view>
+						<view class="er_house_price main_color f_r_s"></view>
+						<view class="place"></view>
 					</view>
 				</view>
 				
@@ -110,14 +107,10 @@
 	export default {
 		name: 'house-list-item',
 		data(){
-			return{
-			}
+			return{}
 		},
         computed:{},
-		onLoad() {
-		},
-		
-        methods: {
-        },
+		onLoad() {},
+        methods: {},
 	}
 </script>

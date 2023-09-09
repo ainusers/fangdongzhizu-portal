@@ -14,7 +14,7 @@
 					</u-radio-group>
 					<u-input v-model="otherReport" :type="typeStr" :border="border" :height="height" :auto-height="autoHeight" v-show="isOtherR"/>
 					<view class="hink">
-						注：举报次数大于10次，将自动屏蔽该记录 
+						注：举报次数大于100次，将自动屏蔽该记录
 					</view>
 				</view>
 			</u-modal> 
@@ -75,8 +75,7 @@
 						name:'其它',
 						checked:false
 					}
-				],
-				
+				]
 			}
 		},
 		methods:{
@@ -98,7 +97,6 @@
 					statu=false
 					return
 				}
-				
 				let data={
 					userId:this.$store.state.userInfo.id,
 					type:this.typeStr,

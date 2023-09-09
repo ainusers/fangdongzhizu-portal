@@ -10,6 +10,3 @@
 		props:['Model']
 	}
 </script>
-
-<style>
-</style>

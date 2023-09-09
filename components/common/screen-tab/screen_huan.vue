@@ -23,7 +23,6 @@
 				startValue:'',
 				endValue:'',
 				broder:true
-				
 			}
 		}
 	}
@@ -34,7 +33,6 @@
 		display: flex;
 		padding:10upx 20upx;
 		align-items: center;
-		// background: #fff;
 		img{
 			width:50upx;
 			height: 30upx;
