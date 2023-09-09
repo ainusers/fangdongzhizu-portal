@@ -64,7 +64,7 @@
 	}
 	.user-card {
 	  height: 200rpx;
-	  padding: 0 15px;
+	  padding: 15px 15px 15px 15px;
 	  .card {
 	    position: relative;
 	    bottom: 40px;

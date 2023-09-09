@@ -157,17 +157,14 @@
 
 <style lang="scss" scoped>
 	.person_info {
-		position: fixed;
-		top: 0;
+		position: relative;
 		width: 100%;
 		z-index: 10;
 	}
 	.personal_bottom {
-		position: absolute;
 		width: 100%;
-		height: 65%;
-		bottom: 0;
 		overflow-y: scroll;
+		padding-top: 10px;
 		webkit-overflow-scrolling: touch;
 	}
 

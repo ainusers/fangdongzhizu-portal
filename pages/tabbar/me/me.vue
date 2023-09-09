@@ -48,7 +48,7 @@
 		align-items: center;
 		background-color: #ffffff;
 		flex-wrap: wrap;
-		margin: 0 15px;
+		margin: 15px 15px 15px 15px;
 		border-radius: 5px;
 		box-shadow: 0 0 15px 1px rgba(224, 224, 224, 50%);
 		.option {
