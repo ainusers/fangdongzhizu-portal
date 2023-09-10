@@ -164,7 +164,6 @@
 	.personal_bottom {
 		width: 100%;
 		overflow-y: scroll;
-		padding-top: 10px;
 		webkit-overflow-scrolling: touch;
 	}
 

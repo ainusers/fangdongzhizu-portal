@@ -51,7 +51,7 @@
 
 <style lang="scss" scoped>
 	.shadow_top{
-	  height: 250rpx;
+	  height: 180rpx;
 	  position: relative;
 	  .background {
 	    background-color: #5199ff;

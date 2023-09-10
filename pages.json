@@ -8,16 +8,7 @@
    		"path": "pages/auth/login",
    		"style": {
    			"transparentTitle":  "always"
-   			// "navigationBarTitleText": "登录页",
-   			// "navigationBarTextStyle": "black",
-   			// "navigationBarBackgroundColor": "#fafafa",
-   			// "enablePullDownRefresh": false,
-   			// "backgroundTextStyle":"light",
-   			// "app-plus": {
-   			// 	"scrollIndicator": "none"
-   			// }
    		}
-
    	},
 	{
 		"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
@@ -31,7 +22,6 @@
 				"popGesture": "none",
 				"animationType": "fade-in",
 				"animationDuration": 200
-
 			}
 		}
 	},
@@ -77,9 +67,7 @@
    			"backgroundTextStyle":"light",
    			"backgroundColor":"#fff",
    			"onReachBottomDistance":200,
-   			"app-plus": {
-   				// "scrollIndicator": "none"
-   			}
+   			"app-plus": {}
    		}
    	},
    	{

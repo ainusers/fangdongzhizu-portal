@@ -2,7 +2,7 @@
     .swiper_view{
         position:relative;
         width:100%;
-		height: 400upx;
+		height: 420upx;
         background:url(http://cdn.haofang.net/static/wxPlusApp/yjk/house/house_detail_default.png) no-repeat center center;
         background-size:60%;
         background-color:#F7F7F9;

@@ -424,7 +424,6 @@ export default {
 	methods: {
 		//自定义下拉刷新
 		 onPulling(e) {
-			 console.log(this.triggered)
 			if(!this.triggered){
 				this.triggered=true
 				setTimeout(()=>{
@@ -465,7 +464,7 @@ export default {
 				uni.getLocation({
 					type: 'gcj02',
 					geocode:true,
-					isHighAccuracy:true,
+					// isHighAccuracy:true,
 					success: function (res) {
 						resolve(res);
 					},
@@ -487,47 +486,45 @@ export default {
 				this.showModel=true
 				this.isLoad=false
 			}
-					let data={
-							publish_type:that.publish_type,
-							page:that.currPage,
-							size:that.size,
-							city:that.cityName,
-							status:2
+			let data={
+					publish_type:that.publish_type,
+					page:that.currPage,
+					size:that.size,
+					city:that.cityName,
+					status:2
+				}
+				if(this.isScreen){
+					data['subway']=this.subway?this.subway:null
+					data['area']=this.screenArea?this.screenArea:null
+					data['money']=this.screenMoney?this.screenMoney:null
+					data['home_type']=this.home_type?this.home_type:null
+					//更多筛选赋值
+					if(this.moreChooseStr){
+						this.moreChooseStr.forEach((item,index)=>{
+							if(item){
+								data[this.moreSubKey[index]]=item?item:null
+							}	
+						})
+					}
+				}
+			this.$H.post('/zf/v1/room/list',data,true).then(res=>{
+				this.showModel=false
+				this.triggered=false
+				uni.hideLoading()
+					if(res.status){
+						this.fulling=false
+						that.houseList=that.houseList.concat(res.data)
+						if(this.publish_type==1){
+							that.subleaseList=that.houseList
+						}else if(this.publish_type==2){
+							that.directList=that.houseList
 						}
-						if(this.isScreen){
-								data['subway']=this.subway?this.subway:null
-								data['area']=this.screenArea?this.screenArea:null
-								data['money']=this.screenMoney?this.screenMoney:null
-								data['home_type']=this.home_type?this.home_type:null
-								//更多筛选赋值
-								if(this.moreChooseStr){
-									this.moreChooseStr.forEach((item,index)=>{
-										if(item){
-											data[this.moreSubKey[index]]=item?item:null
-										}	
-									})
-								}
-								
+						if(res.data.length<10){
+							this.isLoad=true
 						}
-					this.$H.post('/zf/v1/room/list',data,true).then(res=>{
-						this.showModel=false
-						this.triggered=false
-						uni.hideLoading()
-							if(res.status){
-								this.fulling=false
-								that.houseList=that.houseList.concat(res.data)
-								if(this.publish_type==1){
-									that.subleaseList=that.houseList
-								}else if(this.publish_type==2){
-									that.directList=that.houseList
-								}
-								if(res.data.length<10){
-									this.isLoad=true
-								}
-								that.$store.commit('houseInfo',that.houseList)
-							}
-					})
-			
+						that.$store.commit('houseInfo',that.houseList)
+					}
+			})
 		},
 		// 获取选择城市返回的城市名称
 		getValue(cityNameLess){
