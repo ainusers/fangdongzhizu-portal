@@ -259,8 +259,8 @@
 		   </block>
 		</view>
 		<!-- //举报模态框 -->
-		<view v-show="reportShow">
-			<zhizuReport @cancelReport="cancelReport" @goReport="goReport" :typeStr="reportType" :userId="detailData.userId" :reportId="detailData.id"/>
+		<view>
+			<zhizuReport @cancelReport="cancelReport" @goReport="goReport" :typeStr="reportType" :userId="detailData.userId" :reportId="detailData.id" ref="reportS"/>
 		</view>
 		<!-- 详情页 - 立即沟通 -->
 		<view class="final">
@@ -313,7 +313,6 @@
 		  detailData:'',
 		  markers:[],
 		  isMap:true,
-		reportShow:false,
 		isOtherR:false,
         sourceTypeId: 2201, // 数据采集 - lh
         shareOption: {},
@@ -379,7 +378,9 @@
         },
 		tipcontent:'',
 		startIcon:'heart',
-		iconColor:''
+		iconColor:'',
+		reportStatu:false
+		
       };
     },
 	methods:{
@@ -419,8 +420,15 @@
 			})
 		},
 		reportShowFn(){
-			this.isMap=false
-			this.reportShow=true
+			if(!this.reportStatu){
+				this.reportStatu=true
+				setTimeout(()=>{
+					this.reportStatu=false
+				},500)
+				this.isMap=false
+				this.$refs.reportS.reportShow=true
+			}
+			
 		},
 		swiperImgInit(){
 			let imgUrl=this.detailData.imgUrl
@@ -524,9 +532,11 @@
 		},
 		goReport(){
 			this.isMap=true
+			this.reportStatu=false
 		},
 		cancelReport(){
 			this.isMap=true
+			this.reportStatu=false
 		},
 	}
 }

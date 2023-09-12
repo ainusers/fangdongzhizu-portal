@@ -139,7 +139,7 @@ uni-swiper-item{
 				:refresher-triggered="triggered"
 				:refresher-enabled="true"
 				:refresher-threshold="100"
-				@refresherpulling="onPulling"
+				@refresherrefresh="onRefresh"
 				@refresherrestore="onRestore"
 				>
 					<view v-if="current === 0">
@@ -166,7 +166,7 @@ uni-swiper-item{
 				:refresher-triggered="triggered"
 				:refresher-enabled="true"
 				:refresher-threshold="100"
-				@refresherpulling="onPulling"
+				@refresherrefresh="onRefresh"
 				@refresherrestore="onRestore"
 				>
 					<view v-if="current === 1">
@@ -423,7 +423,7 @@ export default {
 	},
 	methods: {
 		//自定义下拉刷新
-		 onPulling(e) {
+		 onRefresh(e) {
 			if(!this.triggered){
 				this.triggered=true
 				setTimeout(()=>{

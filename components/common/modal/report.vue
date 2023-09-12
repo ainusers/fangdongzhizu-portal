@@ -33,7 +33,7 @@
 		},
 		data(){
 			return{
-				reportShow:true,
+				reportShow:false,
 				isOtherR:false,
 				type:'textarea',
 				otherReport:'',
