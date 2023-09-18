@@ -114,7 +114,9 @@
 				</view>
 				<view class="txt_con">
 					<view class="txt">
-						<view class="high" @click="goto('/pages/tabbar/me/text/register')">《注册协议》</view><view class="high" @click="goto('/pages/tabbar/me/text/privacy')">《隐私政策》</view>
+						<view class="high" @click="goto('/pages/tabbar/me/text/register')">《注册协议》</view>
+						<view class="high" @click="goto('/pages/tabbar/me/text/privacy')">《隐私协议》</view>
+						<view class="high" @click="goto('/pages/tabbar/me/text/server')">《服务协议》</view>
 					</view>
 					<view class="txt1">版权所有&nbsp;&nbsp;违法必究 </view>
 				</view>
