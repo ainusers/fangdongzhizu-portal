@@ -209,6 +209,9 @@ uni-swiper-item{
 		</view> -->
 		
 		<!-- <LodingM :Model="showModel"/> -->
+		<u-popup v-model="showNotice" mode="center" border-radius="17" :closeable="true">
+			<notice :content="noticeStr"/>
+		</u-popup>
 	</view>
 	
 </template>
@@ -221,6 +224,7 @@ import houseListItemSkeleton from '@/components/house-list/house-list-item-skele
 import screenTab from '@/components/common/screen-tab/screen-tab.vue'
 import screenHuan from '@/components/common/screen-tab/screen_huan.vue'
 import LodingM from '@/components/common/modal/loading_model.vue'
+import notice from '@/components/common/noticeModel.vue'
 import { Const } from "@/utils/const/Const.js";
 import { createlink } from '@/utils/request/createWebsocket.js';
 import {MycheckUpdate,getLatest} from '@/utils/utils.js'
@@ -245,10 +249,13 @@ export default {
 		screenHuan,
 		LodingM,
 		houseListItemSkeleton,
+		notice
 	},
 	data() {
 		return {
 			// isUpdateVersion:true,//是否需要更新
+			showNotice:false,
+			noticeStr:'',
 			triggered:false, //下拉刷新是否触发
 			houseJia:[1,2,3,4,5,6,7],
 			showModel:true,
@@ -401,6 +408,7 @@ export default {
 		})
 		this.getArea()
 		this.getHouseList()
+		console.log(this.getNotice())
 		getLatest().then(res=>{
 			if(res.version!=this.$store.state.version){
 				MycheckUpdate ()
@@ -422,6 +430,16 @@ export default {
 		uni.stopPullDownRefresh();
 	},
 	methods: {
+		//获取公告
+		getNotice(){
+			this.$H.get('/zf/v1/notice',{},true).then(res=>{
+				console.log(res)
+				this.noticeStr=res.data[0].notice
+				if(this.noticeStr){
+					this.showNotice=true
+				}
+			})
+		},
 		//自定义下拉刷新
 		 onRefresh(e) {
 			if(!this.triggered){

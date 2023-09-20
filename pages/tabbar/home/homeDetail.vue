@@ -481,6 +481,14 @@
 				}
 				this.zulinData.push(obj)
 			})
+			let currentHome={
+				house:'当前房源',
+				status:'未出租',
+				sex:'-',
+				money:this.detailData.money+'元/月',
+				size:this.detailData.size+'m²'
+			}
+			this.zulinData.push(currentHome)
 		},
 		//举报，收藏，
 		report(index){

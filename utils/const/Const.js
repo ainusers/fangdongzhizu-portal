@@ -53,8 +53,102 @@ export class Const {
 		},
 	]
 	
-	
-	
+	static Blist= [
+        {
+          label: "北京市",
+          value: "1",
+          children: [
+            {
+              id: "1022",
+              label: "市辖区",
+              value: "110100",
+              children: [
+                {
+                  id: "44",
+                  label: "东城区",
+                  value: "110101",
+                },
+                {
+                  id: "45",
+                  label: "西城区",
+                  value: "110102",
+                },
+                {
+                  id: "46",
+                  label: "朝阳区",
+                  value: "110105",
+                },
+                {
+                  id: "47",
+                  label: "丰台区",
+                  value: "110106",
+                },
+                {
+                  id: "48",
+                  label: "石景山区",
+                  value: "110107",
+                },
+                {
+                  id: "49",
+                  label: "海淀区",
+                  value: "110108",
+                },
+                {
+                  id: "50",
+                  label: "门头沟区",
+                  value: "110109",
+                },
+                {
+                  id: "51",
+                  label: "房山区",
+                  value: "110111",
+                },
+                {
+                  id: "52",
+                  label: "通州区",
+                  value: "110112",
+                },
+                {
+                  id: "53",
+                  label: "顺义区",
+                  value: "110113",
+                },
+                {
+                  id: "54",
+                  label: "昌平区",
+                  value: "110114"
+                },
+                {
+                  id: "55",
+                  label: "大兴区",
+                  value: "110115",
+                },
+                {
+                  id: "56",
+                  label: "怀柔区",
+                  value: "110116",
+                },
+                {
+                  id: "57",
+                  label: "平谷区",
+                  value: "110117",
+                },
+				{
+				  id: "58",
+				  label: "密云区",
+				  value: "110228",
+				},
+				{
+				  id: "59",
+				  label: "延庆区",
+				  value: "110229",
+				}
+              ]
+            },
+		
+          ]
+	},
+	]
 	
 	
     static success = 200;

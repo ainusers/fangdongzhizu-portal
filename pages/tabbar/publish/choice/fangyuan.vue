@@ -346,7 +346,15 @@
 							<u-input :border="border" type="select" v-model="houseModel.region1" placeholder="请选择所属区域"
 								@click="showPickerArea"></u-input>
 						</u-form-item>
-						<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
+						<!-- 适用全国 -->
+						<view v-if="!onlyBei">
+							<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm" 
+							></u-picker>
+						</view>
+						
+						<view v-else>
+							<u-select v-model="pickerShow" mode="mutil-column-auto" :list="Blist" @confirm="regionConfirm"></u-select>
+						</view>
 						<!-- 小区名称 -->
 						<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150"
 							:label-position="labelPosition" label="小区名称 :" prop="communityName" ref="item1" required>
@@ -602,7 +610,9 @@
 </template>
 
 <script>
+	import permision from "@/sdk/wa-permission/permission.js";
 	import image from '@/store/image.js';
+	import {Const} from "@/utils/const/Const.js";
 	import {
 		attachUpload,
 		htmlEncode,
@@ -624,7 +634,9 @@
 	export default {
 		data() {
 			return {
+				Blist:Const.Blist,
 				quarList: [],
+				onlyBei:true,
 				communityArr: [],
 				modalShow: false,
 				content: '是否保存为草稿',
@@ -1654,11 +1666,26 @@
 			},
 			// 选择地区回调
 			regionConfirm(e) {
-				this.getCommunit(e.province.label, e.area.label)
-				this.houseModel.region1 = e.province.label + '-' + e.city.label + '-' + e.area.label;
-				this.houseModel.province = e.province.label
-				this.houseModel.city = e.city.label == '市辖区' ? this.houseModel.province : e.city.label
-				this.houseModel.area = e.area.label
+				console.log(e)
+				let province=''
+				let city=''
+				let area=''
+				if(this.onlyBei){
+					province=e[0].label
+					city=e[1].label
+					area=e[2].label
+				}else{
+					province=e.province.label
+					city=e.city.label
+					area=e.area.label
+				}
+				
+				
+				this.getCommunit(province, area)
+				this.houseModel.region1 = province+ '-' + city + '-' +area;
+				this.houseModel.province = province
+				this.houseModel.city = city == '市辖区' ? this.houseModel.province : city
+				this.houseModel.area = area
 			},
 			// 房屋概况
 			layoutConfirm(e) {
@@ -1951,6 +1978,8 @@
 							resolve(res);
 						},
 						fail: (e) => {
+							  let result = permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
+							  console.log(result)
 							reject(e);
 						}
 					});

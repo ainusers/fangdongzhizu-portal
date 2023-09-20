@@ -201,11 +201,14 @@
 		methods: {
 			async publish(){
 				// uni.showLoading({title:'发布中',mask:false,});
+				console.log('发布房源')
 				if(this.isLoading) return
 				this.isLoading=true
 				checkPush().then(async res=>{
+					console.log(res)
 					this.res1=res
 					if(res.status){
+						console.log('可以凡发布')
 							if (!this.input_content) {
 								uni.showToast({
 									title: '文字内容不能为空',
@@ -233,13 +236,15 @@
 									'words': htmlEncode(this.input_content),
 								}
 								// #ifdef APP-PLUS
-								data['longitude']=location.longitude// 经度
-								data['latitude']=location.latitude// 纬度
-								data['country']=location.address.country
-								data['province']=location.address.province
-								data['city']=location.address.city
-								data['address']=location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName
-								data['type']=location.type
+								if(location!='未知'){
+									data['longitude']=location.longitude// 经度
+									data['latitude']=location.latitude// 纬度
+									data['country']=location.address.country
+									data['province']=location.address.province
+									data['city']=location.address.city
+									data['address']=location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName
+									data['type']=location.type
+								}
 								// #endif
 								// return
 							// 上传动态信息
@@ -277,7 +282,9 @@
 							resolve(res);
 						},
 						fail: (e) => {  
-							reject(e);
+							console.log(e)
+							// reject(e);
+							resolve('未知');
 						}
 					});
 				})
