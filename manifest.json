@@ -113,7 +113,7 @@
             }
         },
         "uniStatistics" : {
-            "enable" : false
+            "enable" : true
         },
         "splashscreen" : {
             "waiting" : false
@@ -144,5 +144,8 @@
                 "enable" : true
             }
         }
+    },
+    "uniStatistics" : {
+        "version" : "2"
     }
 }
