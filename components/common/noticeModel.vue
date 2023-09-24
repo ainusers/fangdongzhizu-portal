@@ -18,7 +18,6 @@
 		position: absolute;
 		top: 15px;
 		left: 40%;
-		color: black;
 	}
 	.main_notice{
 		width:280px;
@@ -26,7 +25,7 @@
 		background: url('../../static/home/notice.png') no-repeat;
 		background-size: 600rpx 710rpx;
 		overflow: hidden;
-		padding:100rpx 20rpx 0rpx 20rpx;
+		padding: 65px 15px 0px 15px;
 		font-size: 14px;
 		letter-spacing: 3rpx;
 		line-height: 150%;
