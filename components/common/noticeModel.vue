@@ -1,5 +1,6 @@
 <template>
 	<view class="main_notice">
+		<h2>通知</h2>
 		<view class="con">
 			{{content}}
 		</view>
@@ -13,21 +14,26 @@
 </script>
 
 <style>
+	h2{
+		position: absolute;
+		top: 15px;
+		left: 40%;
+	}
 	.main_notice{
-		width:630rpx;
-		height:710rpx;
+		width:280px;
+		height:370px;
 		background: url('../../static/home/notice.png') no-repeat;
-		background-size: 630rpx 710rpx;
+		background-size: 600rpx 710rpx;
 		overflow: hidden;
-		padding:100rpx 20rpx;
-		font-size: 30rpx;
+		padding: 65px 15px 0px 15px;
+		font-size: 14px;
 		letter-spacing: 3rpx;
-		line-height: 200%;
+		line-height: 150%;
 		color: #5199ff;
 		font-weight: bold;
 		.con{
-			padding: 10rpx;
-			box-shadow: 3px 3px 10px #aaa;
+			padding: 5rpx;
+			box-shadow: 1px 1px 1px #eee;
 		}
 	}
 </style>

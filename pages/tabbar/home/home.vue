@@ -209,7 +209,7 @@ uni-swiper-item{
 		</view> -->
 		
 		<!-- <LodingM :Model="showModel"/> -->
-		<u-popup v-model="showNotice" mode="center" border-radius="17" :closeable="true">
+		<u-popup v-model="showNotice" mode="center" border-radius="17" :closeable="true" :overlay="false" :overlayOpacity="0.3">
 			<notice :content="noticeStr"/>
 		</u-popup>
 	</view>
