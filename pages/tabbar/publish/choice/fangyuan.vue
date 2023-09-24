@@ -611,6 +611,7 @@
 
 <script>
 	import permision from "@/sdk/wa-permission/permission.js";
+	import {checkOpenGPSServiceByAndroid } from '@/utils/openSettings.js'
 	import image from '@/store/image.js';
 	import {Const} from "@/utils/const/Const.js";
 	import {
@@ -1316,6 +1317,14 @@
 				isLoading:false
 			}
 		},
+		onShow(){
+			const systemSetting = uni.getSystemSetting()
+			console.log(!systemSetting.locationEnabled&&this.$store.state.ispublishSub)
+			if(!systemSetting.locationEnabled&&this.$store.state.ispublishSub){
+				this.$store.state['ispublishSub'] =false
+				checkOpenGPSServiceByAndroid()
+			}
+		},
 		onLoad(options) {
 					this.isEdit = options.isUpdate
 					that = this
@@ -1856,7 +1865,6 @@
 
 			},
 			async publish() {
-				
 				if(this.isLoading) return
 				this.isLoading=true
 				if(this.isEdit){
@@ -1877,15 +1885,47 @@
 				if (!this.isCheck) {
 					return
 				}
+				console.log('重新发布')
 				uni.showLoading({
 					title: '发布中',
 					mask: true,
 				});
+				
 				let imagesNatureArr = ''
 				let imagesHouseArr = ''
 				// #ifdef APP-PLUS
-				var location = await this.getLocation(); //位置信息,可删除,主要想记录一下异步转同步处理
-				let address = location.address
+				var location=''
+				let address =''
+				if(this.$store.state.address&&this.$store.state.address.province){
+					address=this.$store.state.address
+				}else { 
+					// 先判断是否授权  再判断是否开启定位服务
+					let result =await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
+					console.log(result)
+					if(result!=1){
+						uni.showToast({
+							title: "发布失败，未开启定位权限",
+							icon: 'none',
+							duration: 2000
+						})
+						uni.hideLoading();
+						this.isLoading=false
+						return 
+					}else{
+						//没开启定位服务就弹窗
+						const systemSetting = uni.getSystemSetting()
+						if(!systemSetting.locationEnabled){
+							checkOpenGPSServiceByAndroid()
+							uni.hideLoading();
+							this.isLoading=false
+							return 
+						}else{
+							 location = await this.getLocation();
+							 address=location.address
+							 this.$store.commit('address',location.address)
+						}
+					}
+				}
 				let position = address.province + '-' + address.city + '-' + address.district + '-' +
 					address.street + '-' + address.streetNum + '-' + address.poiName + '-' + address.cityCode
 				// #endif
@@ -1976,11 +2016,12 @@
 						isHighAccuracy: true,
 						success: function(res) {
 							resolve(res);
+							console.log(res)
 						},
 						fail: (e) => {
-							  let result = permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
-							  console.log(result)
-							reject(e);
+							// checkOpenGPSServiceByAndroid()
+							console.log(e)
+							reject(e)
 						}
 					});
 				})

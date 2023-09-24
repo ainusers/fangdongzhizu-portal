@@ -218,6 +218,8 @@ uni-swiper-item{
 
 <script>
 import '@/utils/request/createWebsocket.js'
+import {checkOpenGPSServiceByAndroid } from '@/utils/openSettings.js'
+import permision from "@/sdk/wa-permission/permission.js";
 var that;
 import houseListItem from '@/components/house-list/house-list-item.vue';
 import houseListItemSkeleton from '@/components/house-list/house-list-item-skeleton.vue';
@@ -253,6 +255,7 @@ export default {
 	},
 	data() {
 		return {
+			isGps:false,
 			// isUpdateVersion:true,//是否需要更新
 			showNotice:false,
 			noticeStr:'',
@@ -419,6 +422,35 @@ export default {
 		if(!this.$store.state.isChatStatus){
 			createlink()
 		}
+		const systemSetting = uni.getSystemSetting()
+		if(!systemSetting.locationEnabled){
+			var context = plus.android.importClass("android.content.Context")
+			 var locationManager = plus.android.importClass("android.location.LocationManager")
+			 var main = plus.android.runtimeMainActivity()
+			 var mainSvr = main.getSystemService(context.LOCATION_SERVICE)
+			if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+			 uni.showModal({
+			  title: '温馨提示',
+			  content: '开启定位权限后，将为您精准推荐附近房源',
+				success(res) {
+					if (res.confirm) {
+					  if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+						var Intent = plus.android.importClass('android.content.Intent');
+						var Settings = plus.android.importClass('android.provider.Settings')
+						var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+						main.startActivity(intent) // 打开系统设置GPS服务页面
+					 } 
+					}
+					else if(res.cancel) {
+						that.cityName='北京市'
+						that.$store.state.currentCity='北京市'
+				   }
+					}
+			    });
+				}
+		}else{
+				this.resetAddress()
+		}
 	},
 	onReady(){
 		
@@ -430,6 +462,39 @@ export default {
 		uni.stopPullDownRefresh();
 	},
 	methods: {
+		async resetAddress(type){
+			// 检查是否开启位置信息权限
+		    let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
+		    if (result != 1) {
+		        // 打开权限设置界面
+		        // permision.gotoAppPermissionSetting();
+		    } else {
+		        //手机定位服务（GPS）已授权
+		        this.fnGetlocation(type);
+		    }
+		},
+		fnGetlocation(type) {
+			let that = this;
+			uni.getLocation({
+				type: 'gcj02',
+				isHighAccuracy:false,
+				geocode: true,
+				success: function (res) {
+					console.log(res)
+					that.cityName=res.address.province
+					that.$store.state.address=res.address
+				},
+				fail: (e) => {
+					if(!that.isGps){
+						that.isGps=true
+						checkOpenGPSServiceByAndroid()
+						console.log('获取失败',e)
+					}
+					
+				}
+			});
+		},
+		
 		//获取公告
 		getNotice(){
 			this.$H.get('/zf/v1/notice',{},true).then(res=>{

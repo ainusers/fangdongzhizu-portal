@@ -111,7 +111,12 @@
 			};
 		},
         onLoad() {
-			this.resetAddress()
+			if(this.$store.state.address&&this.$store.state.address.province){
+				this.gpsCityInfo.cityName=this.$store.state.address.province
+				this.gpsCityInfo.cityId=this.$store.state.address.cityCode
+			}else if(this.$store.state.currentCity!='定位中...'){
+				this.gpsCityInfo.cityName='北京市'
+			}
         },
         onReady() {
         	this.getPhoneInfo();
@@ -170,7 +175,11 @@
 						}
 					},
 					fail: (e) => {
-						console.log('获取失败',e)
+						uni.showToast({
+							title: "定位失败，未开启定位服务",
+							icon: 'none',
+							duration: 2000
+						})
 					}
 				});
 			},
