@@ -93,7 +93,7 @@ uni-swiper-item{
 		<u-sticky offset-top="0">
 		<view class="home_top">
 		  <!-- 城市 -->
-		  <view class="city" @click.stop="chooseCity">
+		  <view class="city">
 		    <view>{{ cityName }}</view>
 		    <view class="city_icon"></view>
 		  </view>
@@ -422,6 +422,7 @@ export default {
 		if(!this.$store.state.isChatStatus){
 			createlink()
 		}
+		// #ifdef APP-PLUS
 		const systemSetting = uni.getSystemSetting()
 		if(!systemSetting.locationEnabled){
 			var context = plus.android.importClass("android.content.Context")
@@ -451,6 +452,11 @@ export default {
 		}else{
 				this.resetAddress()
 		}
+		// #endif
+		// #ifndef APP-PLUS
+		that.cityName='北京市'
+		that.$store.state.currentCity='北京市'
+		// #endif
 	},
 	onReady(){
 		
@@ -676,9 +682,10 @@ export default {
 		},
 		// 选择城市
 		chooseCity() {
-		  uni.navigateTo({
-		    url: "/pages/tabbar/home/chooseCity"
-		  });
+			return
+		  // uni.navigateTo({
+		  //   url: "/pages/tabbar/home/chooseCity"
+		  // });
 		},
 	
 		// 选项卡点击 - 弹出div

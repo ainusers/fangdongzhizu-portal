@@ -1318,12 +1318,14 @@
 			}
 		},
 		onShow(){
+			// #ifdef APP-PLUS
 			const systemSetting = uni.getSystemSetting()
-			console.log(!systemSetting.locationEnabled&&this.$store.state.ispublishSub)
 			if(!systemSetting.locationEnabled&&this.$store.state.ispublishSub){
 				this.$store.state['ispublishSub'] =false
 				checkOpenGPSServiceByAndroid()
 			}
+			// #endif
+			
 		},
 		onLoad(options) {
 					this.isEdit = options.isUpdate
