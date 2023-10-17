@@ -43,7 +43,7 @@
 								<!-- 1. 自己发出的消息 -->
 								<view class="my" v-if="row.from==currentName">
 									<!-- 左-消息 -->
-									<view class="time" v-if="row.datetime">{{row.datetime}}</view>
+									<view class="time" v-if="row.datetime1">{{row.datetime1}}</view>
 									<view class="my_item">
 										<view class="left">
 												<!-- 文字消息 -->
@@ -73,7 +73,7 @@
 								<!-- 2. 别人发出的消息 -->
 								<view class="other" v-else>
 									<!-- 左-头像 -->
-									<view class="time" v-if="row.datetime">{{row.datetime}}</view>
+									<view class="time" v-if="row.datetime1">{{row.datetime1}}</view>
 									<view class="other_item">
 										<view class="left">
 												<view class="userImage">
@@ -276,7 +276,6 @@
 			})
 			initStorestate()
 			getStoreData('currentChatList')
-			console.log(this.$store.state.currentChatList.data)
 			this.msgList=this.$store.state.currentChatList.data || []
 			this.otherName=this.$store.state.currentChatList.fromName
 			this.otherAvatar=this.$store.state.currentChatList.fromAvatar	
@@ -321,13 +320,13 @@
 		watch:{
 			"$store.state.chatList":{
 				handler:(val,oldval)=>{
-						that.oldTime=new Date()
-            let tempVal='';
-            try{
-              tempVal=JSON.parse(JSON.stringify(val))
-             }catch(e){
-               console.log(e)
-             }
+					that.oldTime=new Date()
+				let tempVal='';
+				try{
+				  tempVal=JSON.parse(JSON.stringify(val))
+				 }catch(e){
+				   console.log(e)
+				 }
                     that.chatList=tempVal
                     if(Array.isArray(tempVal)){
                         tempVal.forEach(item=>{
@@ -337,12 +336,10 @@
                                     that.otherAvatar=item.fromAvatar
                                 }
                                 that.msgList=item.data
-								console.log(that.msgList)
                                 that.initMsgList()
                             }
                         })
                         that.scrollAnimation = false
-						console.log(that.msgList)
                         if(that.msgList&&that.msgList[that.msgList.length-1]){
                             that.$nextTick(function() {
                                 //进入页面滚动到底部
@@ -377,30 +374,22 @@
 				if(!data||data&&data.length==0){
 					return
 				}
+				 //聊天记录大于两条 当前 聊天记录和上一条聊天记录比较   如果小于两条聊天记录，与当前时间比较
 					that.oldTime=this.msgList[this.msgList.length-1].datetime
-					let currentT=new Date()
-					let lastT=this.msgList[this.msgList.length-1].datetime
-						let f=	spaceTime(currentT,lastT);
-						if(!f){
-							this.msgList[this.msgList.length-1].datetime=''
-						}else{
-							 this.msgList[this.msgList.length-1].datetime=dateTime1(that.oldTime)
+					let currentT='';
+					let lastT='';
+					for(let i=0;i<=data.length-1;i++){
+						if(i-1<0){
+							data[i].datetime1=dateTime1(data[i].datetime)
+						}else {
+							currentT=data[i].datetime;
+							lastT=data[i-1].datetime;
+							let f=	spaceTime(currentT,lastT);
+							if(f){
+								data[i].datetime1=dateTime1(data[i].datetime)
+							}
 						}
-					if(data.length>=2){
-						data[0].datetime=dateTime1(data[0].datetime)
-						for(let i=data.length-2;i>=1;i--){
-							this.oldTime = data[i].datetime;
-							let t=	spaceTime(that.oldTime,data[i-1].datetime);
-								if(!t){
-										data[i].datetime=''
-								}
-								if(data[i].datetime){
-									data[i].datetime=dateTime1(data[i].datetime)	
-								}else{
-									data[i].datetime=''
-								}	
-						}
-					}
+					};
 				if(data.length>30){
 					that.historyArr=data.slice(0,data.length-29)
 					that.msgList=data.slice(data.length-30)
@@ -654,8 +643,6 @@
 			// 发送文字消息
 			async sendText(){
 				getStoreData('isChatStatus')
-				console.log('我要发送消息')
-				console.log(this.$store.state.isChatStatus)
 				if(this.$store.state.isChatStatus){
 					this.hideDrawer(); // 隐藏抽屉
 					if(!this.textMsg){

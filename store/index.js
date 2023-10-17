@@ -10,7 +10,7 @@ const store = new Vuex.Store({
 		messegeNum:[],
 		houseInfo:[],
 		communityInfo:{},
-		currentCity:'北京市',//当前城市
+		currentCity:'定位中...',//当前城市
 		ThreeInfo:{},
 		isWx:false, //是否是微信授权
 		chatList:[],//聊天记录
@@ -22,7 +22,9 @@ const store = new Vuex.Store({
 		lock:0,//让watch监听只走一次
 		currentNameChat:'',//当前和谁正在聊天
 		unReadCount:0,//未读消息总数
-		version:'1.0.0'
+		version:'1.0.1',
+		address:{},
+		ispublishSub:false, //是否点击到过开启定位服务界面
 	},
 	mutations: {
 		currentNameChat(state,obj){
@@ -160,6 +162,20 @@ const store = new Vuex.Store({
 			uni.setStorage({
 				key:'isWx',
 				data:isWx
+			})
+		},
+		address(state,address){
+			state.address=address
+			uni.setStorage({
+				key:'address',
+				data:address
+			})
+		},
+		ispublishSub(state,address){
+			state.ispublishSub=ispublishSub
+			uni.setStorage({
+				key:'ispublishSub',
+				data:ispublishSub
 			})
 		}
 	},
