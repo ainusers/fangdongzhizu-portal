@@ -48,7 +48,7 @@ let isCreate=false
 							  clearInterval(heartCheck)
 							  store.commit('isChatStatus',false)
 						  }
-					  }, 15000);
+					  }, 10000);
 				let data = eval("(" + res.data + ")");
 				// console.log('收到服务器的消息',data)
 				//当前是否有过聊天记录 ，有直接push ，不需要添加fromName  没有就创建一个新的对象  
@@ -164,7 +164,7 @@ function authSocket(room) {
 					  clearInterval(heartCheck)
 					  store.commit('isChatStatus',false)
 				  }
-			  }, 15000);
+			  }, 10000);
 			Vue.prototype.$socketInstance=socketInstance
 		}
 	}
