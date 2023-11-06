@@ -61,7 +61,6 @@
 	display: flex;
 	flex-direction: row;
 }
-
 .home_nodata{
 	text-align: center;
 	color:#aaa;
@@ -85,55 +84,48 @@ uni-swiper-item{
 .screen_fixed_list{
 	z-index: 100 !important;
 }
-
 </style>
 <template>
 	<view class="main">
 		<!-- 顶部区域 -->
 		<u-sticky offset-top="0">
-		<view class="home_top">
-		  <!-- 城市 -->
-		  <view class="city">
-		    <view>{{ cityName }}</view>
-		    <view class="city_icon"></view>
-		  </view>
-		  <!-- 选项卡 -->
-		  <view class="type">
-			  <!-- tabs -->
-			  <u-tabs :list="tabList" barWidth="50" gutter="10" font-size="30" bg-color="#f2f2f2" :current="current" @change="tabChange"></u-tabs>
-		  </view>
-		  <!-- <view></view> -->
-		  <!-- 搜索按钮 -->
-		  <!-- <view class="search" @click.stop="searchBtn"></view> -->
-		</view>
-		
-		<!-- 筛选项 -->
-		<!-- 转租和直租 -->
-		<screenTab ref="screenTab" 
-		v-if="current == 0&&fixedContHeight || current == 1&&fixedContHeight"
-		:screenFormData="screenFormData" 
-		:roomList="roomList"
-		:from="from"
-		:regionLeftList="regionLeftList" 
-		:regionRightMap="regionRightMap" 
-		:enterType="enterType"  
-		:erHousePriceList="erHousePriceList"
-		:fixedContHeight="fixedContHeight"
-		:key="updateSearch"
-		@screenBtn="screenBtn"  
-		@regionLeftBtn="regionLeftBtn"
-		@regionRightBtn="regionRightBtn" 
-		@confirmBtn="confirmBtn"
-		@roomConfirm="roomConfirm"
-		@confirmPrice="confirmPrice"
-		 >
-		</screenTab>
-		<!-- 换租的筛选 -->
-		<screenHuan v-if="current==2"></screenHuan>
+			<view class="home_top">
+			  <!-- 城市 -->
+			  <view class="city">
+				<view>{{ cityName }}</view>
+				<view class="city_icon"></view>
+			  </view>
+			  <!-- 选项卡 -->
+			  <view class="type">
+				  <!-- tabs -->
+				  <u-tabs :list="tabList" barWidth="50" gutter="10" font-size="30" bg-color="#f2f2f2" :current="current" @change="tabChange"></u-tabs>
+			  </view>
+			</view>
+			<!-- 筛选项 -->
+			<!-- 转租和直租 -->
+			<screenTab ref="screenTab" 
+			v-if="current == 0&&fixedContHeight || current == 1&&fixedContHeight"
+			:screenFormData="screenFormData" 
+			:roomList="roomList"
+			:from="from"
+			:regionLeftList="regionLeftList" 
+			:regionRightMap="regionRightMap" 
+			:enterType="enterType"  
+			:erHousePriceList="erHousePriceList"
+			:fixedContHeight="fixedContHeight"
+			:key="updateSearch"
+			@screenBtn="screenBtn"  
+			@regionLeftBtn="regionLeftBtn"
+			@regionRightBtn="regionRightBtn" 
+			@confirmBtn="confirmBtn"
+			@roomConfirm="roomConfirm"
+			@confirmPrice="confirmPrice">
+			</screenTab>
+			<!-- 换租的筛选 -->
+			<screenHuan v-if="current==2"></screenHuan>
 		</u-sticky>
 		<!-- 内容区域 -->
 		<swiper class="list-swiper" @change="swipeIndex" :current="current" :duration="300" ref="listSwiper">
-		
 			<swiper-item>
 				<scroll-view scroll-y="true" class=" list-content" @scrolltolower="scrolltolower"
 				:refresher-triggered="triggered"
@@ -146,9 +138,9 @@ uni-swiper-item{
 						<!-- 内容区域 -->
 						<view class="content" v-if="houseList.length>0">
 							<!-- 租房列表 -->
-						    <block v-for="(item, index) in houseList" :key="index">
+							<block v-for="(item, index) in houseList" :key="index">
 								<house-list-item :item="item" :index="index"></house-list-item>
-						    </block>
+							</block>
 						</view>
 						<view v-if="showModel&&houseList.length==0" >
 							<block v-for="item in houseJia" :key="item">
@@ -170,50 +162,30 @@ uni-swiper-item{
 				@refresherrestore="onRestore"
 				>
 					<view v-if="current === 1">
-					<view class="content" v-if="houseList.length>0">
-						<!-- 租房列表 -->
-					    <block v-for="(item, index) in houseList" :key="index">
-							<house-list-item :item="item" :index="index"></house-list-item>
-					    </block>
-					</view>
+						<view class="content" v-if="houseList.length>0">
+							<!-- 租房列表 -->
+							<block v-for="(item, index) in houseList" :key="index">
+								<house-list-item :item="item" :index="index"></house-list-item>
+							</block>
+						</view>
 
-					<view v-if="showModel&&houseList.length==0" >
-						<block v-for="item in houseJia" :key="item">
-							<houseListItemSkeleton/>
-						</block>
-					</view>
-					<view  class="home_nodata" v-else-if="!showModel&&houseList.length==0">
-						<u-empty  text="暂无数据" mode="favor"></u-empty>
-					</view>
+						<view v-if="showModel&&houseList.length==0" >
+							<block v-for="item in houseJia" :key="item">
+								<houseListItemSkeleton/>
+							</block>
+						</view>
+						<view  class="home_nodata" v-else-if="!showModel&&houseList.length==0">
+							<u-empty  text="暂无数据" mode="favor"></u-empty>
+						</view>
 					</view>
 				</scroll-view>
 			</swiper-item>
-			<!-- <swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
-					<view v-if="current === 2">
-					<view class="content" v-if="houseList.length>0">
-						
-					    <block v-for="(item, index) in houseList" :key="index">
-							<house-list-item :item="item" :index="index"></house-list-item>
-					    </block>
-					</view>
-					<view class="home_nodata" v-else>
-						暂无数据
-					</view>
-					</view>
-				</scroll-view>
-			</swiper-item> -->
 		</swiper>
-		<!-- <view class="upgra_modal" v-if="isUpdateVersion">
-			<upgra @cancelVersion="cancelVersion"></upgra>
-		</view> -->
-		
-		<!-- <LodingM :Model="showModel"/> -->
+		<!-- 公告信息 -->
 		<u-popup v-model="showNotice" mode="center" border-radius="17" :closeable="true" :overlay="false" :overlayOpacity="0.3">
 			<notice :content="noticeStr"/>
 		</u-popup>
 	</view>
-	
 </template>
 
 <script>
@@ -256,7 +228,6 @@ export default {
 	data() {
 		return {
 			isGps:false,
-			// isUpdateVersion:true,//是否需要更新
 			showNotice:false,
 			noticeStr:'',
 			triggered:false, //下拉刷新是否触发
@@ -274,10 +245,7 @@ export default {
 				},
 				{
 					name: '直租'
-				},
-				// {
-				// 	name: '换租'
-				// }
+				}
 			],
 			screenFormData: {
 			    erHouse: {
@@ -313,7 +281,7 @@ export default {
 			// 区域筛选
 			regionLeftList: [
 				{
-					text:''
+					text:'区域'
 				},
 				{
 					text:'地铁'
@@ -386,22 +354,12 @@ export default {
 	        type: String,
 	        default: ""
 	    },
-		isLogin:false ,//是否登录
-	},
-	watch:{
-		"$store.state.currentCity":{
-			handler(val,oldval){
-				console.log(val)
-				this.cityName=val
-				this.regionLeftList[0].text=val
-				this.getHouseList()
-			}
-		}
+		isLogin:false ,
 	},
 	onLoad() {
 		that=this
-		this.cityName=this.$store.state.currentCity
-		this.regionLeftList[0].text=this.cityName
+		this.cityName='北京市'
+		// 保存登录人的设备
 		uni.getStorage({
 			key:'phoneInfo',
 			success(res){
@@ -409,12 +367,14 @@ export default {
 				that.savePhoneInfo(res.data)
 			}
 		})
+		// 获取该城市的所有区
 		this.getArea()
+		// 查询房源列表
 		this.getHouseList()
-		console.log(this.getNotice())
+		// 检查更新
 		getLatest().then(res=>{
 			if(res.version!=this.$store.state.version){
-				MycheckUpdate ()
+				MycheckUpdate()
 			}
 		})
 	},
@@ -422,13 +382,12 @@ export default {
 		if(!this.$store.state.isChatStatus){
 			createlink()
 		}
-		// #ifdef APP-PLUS
 		const systemSetting = uni.getSystemSetting()
 		if(!systemSetting.locationEnabled){
 			var context = plus.android.importClass("android.content.Context")
-			 var locationManager = plus.android.importClass("android.location.LocationManager")
-			 var main = plus.android.runtimeMainActivity()
-			 var mainSvr = main.getSystemService(context.LOCATION_SERVICE)
+			var locationManager = plus.android.importClass("android.location.LocationManager")
+			var main = plus.android.runtimeMainActivity()
+			var mainSvr = main.getSystemService(context.LOCATION_SERVICE)
 			if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
 			 uni.showModal({
 			  title: '温馨提示',
@@ -452,23 +411,9 @@ export default {
 		}else{
 				this.resetAddress()
 		}
-		// #endif
-		// #ifndef APP-PLUS
-		that.cityName='北京市'
-		that.$store.state.currentCity='北京市'
-		// #endif
-	},
-	onReady(){
-		
-	},
-	onPullDownRefresh() {
-		that.currPage=1
-		this.getHouseList()
-		this.houseList=[]
-		uni.stopPullDownRefresh();
 	},
 	methods: {
-		async resetAddress(type){
+		async resetAddress(){
 			// 检查是否开启位置信息权限
 		    let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
 		    if (result != 1) {
@@ -476,32 +421,25 @@ export default {
 		        // permision.gotoAppPermissionSetting();
 		    } else {
 		        //手机定位服务（GPS）已授权
-		        this.fnGetlocation(type);
+		        let that = this;
+		        uni.getLocation({
+		        	type: 'gcj02',
+		        	isHighAccuracy:true,
+		        	geocode: true,
+		        	success: function (res) {
+		        		that.cityName=res.address.province
+		        		that.$store.state.address=res.address
+		        	},
+		        	fail: (e) => {
+		        		if(!that.isGps){
+		        			that.isGps=true
+		        			checkOpenGPSServiceByAndroid()
+		        		}
+		        	}
+		        });
 		    }
 		},
-		fnGetlocation(type) {
-			let that = this;
-			uni.getLocation({
-				type: 'gcj02',
-				isHighAccuracy:false,
-				geocode: true,
-				success: function (res) {
-					console.log(res)
-					that.cityName=res.address.province
-					that.$store.state.address=res.address
-				},
-				fail: (e) => {
-					if(!that.isGps){
-						that.isGps=true
-						checkOpenGPSServiceByAndroid()
-						console.log('获取失败',e)
-					}
-					
-				}
-			});
-		},
-		
-		//获取公告
+		// 获取公告
 		getNotice(){
 			this.$H.get('/zf/v1/notice',{},true).then(res=>{
 				console.log(res)
@@ -518,14 +456,16 @@ export default {
 				setTimeout(()=>{
 					that.currPage=1
 					this.houseList=[]
+					// 查询房源列表
 					this.getHouseList(1)
 				},1000)
 			}		
 		},
+		// 需要重置
 		onRestore() {
-			this.triggered = false ; // 需要重置
+			this.triggered = false ; 
 		},
-		//保存登录人的设备
+		// 保存登录人的设备
 		async savePhoneInfo(phoneInfo){
 				var location=await this.getLocation();
 				let address=location.address
@@ -545,15 +485,15 @@ export default {
 				  "osTheme":phoneInfo.osTheme,
 				  "position":position
 			}
-			this.$H.post('/zf/v1/const/user/device',params,true).then(res=>{
-			})
+			this.$H.post('/zf/v1/const/user/device',params,true).then(res=>{})
 		},
-		getLocation(){//h5中可能不支持,自己选择
+		// 获取用户地理位置
+		getLocation(){
 			return new Promise((resolve, reject) => {
 				uni.getLocation({
 					type: 'gcj02',
 					geocode:true,
-					// isHighAccuracy:true,
+					isHighAccuracy:true,
 					success: function (res) {
 						resolve(res);
 					},
@@ -563,56 +503,59 @@ export default {
 				});
 			} )
 		},
+		// 滚动到最底部时触发
 		scrolltolower(){
 			if(this.isLoad){
 				return;
 			}
 			this.currPage++
+			// 查询房源列表
 			this.getHouseList()
 		},
+		// 查询房源列表
 		getHouseList(type){
 			if(this.currPage==1){
 				this.showModel=true
 				this.isLoad=false
 			}
 			let data={
-					publish_type:that.publish_type,
-					page:that.currPage,
-					size:that.size,
-					city:that.cityName,
-					status:2
+				publish_type:that.publish_type,
+				page:that.currPage,
+				size:that.size,
+				city:that.cityName,
+				status:2
+			}
+			if(this.isScreen){
+				data['subway']=this.subway?this.subway:null
+				data['area']=this.screenArea?this.screenArea:null
+				data['money']=this.screenMoney?this.screenMoney:null
+				data['home_type']=this.home_type?this.home_type:null
+				//更多筛选赋值
+				if(this.moreChooseStr){
+					this.moreChooseStr.forEach((item,index)=>{
+						if(item){
+							data[this.moreSubKey[index]]=item?item:null
+						}	
+					})
 				}
-				if(this.isScreen){
-					data['subway']=this.subway?this.subway:null
-					data['area']=this.screenArea?this.screenArea:null
-					data['money']=this.screenMoney?this.screenMoney:null
-					data['home_type']=this.home_type?this.home_type:null
-					//更多筛选赋值
-					if(this.moreChooseStr){
-						this.moreChooseStr.forEach((item,index)=>{
-							if(item){
-								data[this.moreSubKey[index]]=item?item:null
-							}	
-						})
-					}
-				}
+			}
 			this.$H.post('/zf/v1/room/list',data,true).then(res=>{
 				this.showModel=false
 				this.triggered=false
 				uni.hideLoading()
-					if(res.status){
-						this.fulling=false
-						that.houseList=that.houseList.concat(res.data)
-						if(this.publish_type==1){
-							that.subleaseList=that.houseList
-						}else if(this.publish_type==2){
-							that.directList=that.houseList
-						}
-						if(res.data.length<10){
-							this.isLoad=true
-						}
-						that.$store.commit('houseInfo',that.houseList)
+				if(res.status){
+					this.fulling=false
+					that.houseList=that.houseList.concat(res.data)
+					if(this.publish_type==1){
+						that.subleaseList=that.houseList
+					}else if(this.publish_type==2){
+						that.directList=that.houseList
 					}
+					if(res.data.length<10){
+						this.isLoad=true
+					}
+					that.$store.commit('houseInfo',that.houseList)
+				}
 			})
 		},
 		// 获取选择城市返回的城市名称
@@ -626,6 +569,7 @@ export default {
 			}else if(regionLeftIndex==1){
 				this.getStation()
 			}
+			// 查询房源列表
 			this.getHouseList()
 			this.currPage=1
 			this.$store.commit('currentCity',cityNameLess)
@@ -668,29 +612,21 @@ export default {
 			}
 			if(this.houseList.length==0 || status){
 				this.houseList=[]
+				// 查询房源列表
 				this.getHouseList()
 			}else{
 				this.fulling=false
 			}
 			this.$refs.screenTab.listTcShow=false
 		},
-		// 搜索
-		searchBtn() {
-		  uni.navigateTo({
-		    url: "/pagesHouse/search/search?from=index"
-		  });
-		},
 		// 选择城市
 		chooseCity() {
-			return
-		  // uni.navigateTo({
-		  //   url: "/pages/tabbar/home/chooseCity"
-		  // });
+		  uni.navigateTo({
+		    url: "/pages/tabbar/home/chooseCity"
+		  });
 		},
-	
 		// 选项卡点击 - 弹出div
 		screenBtn(type) {
-			// this.setTabNodeInfo();
 			let screenFormData = this.screenFormData;
 		    let enterType = this.enterType;
 		    if(!screenFormData[enterType][type]) {
@@ -702,25 +638,22 @@ export default {
 		            screenFormData[enterType][key].show = false;
 		        }
 		    }
-		    // new Notification().postNotification(Notify.ScreenShowChanged.Name
-		    //     , this.listTcShow);
-		    // this.screenFormData = screenFormData;
 		},
+		// 确认价格
 		confirmPrice(val) {
 			this.screenMoney=val
 			this.init(true)
 		},
-		
 		// 更多选项卡 - 确定按钮
 		confirmBtn(arr) {
 			this.moreChooseStr=arr
 			this.init(true)
 		},
-		//获取该城市的所有区
+		// 获取该城市的所有区
 		getArea(){
 			let data={
-						city:this.cityName
-					}
+				city:this.cityName
+			}
 			this.$H.get('/zf/v1/const/area',data,true).then(res=>{
 				if(res.status){
 					that.regionRightMap['region']=res.data
@@ -731,8 +664,8 @@ export default {
 		//获取该城市下的所有地铁
 		getStation(){
 			let data={
-					city:this.cityName
-				}
+				city:this.cityName
+			}
 			this.$H.get('/zf/v1/const/station',data,true).then(res=>{
 				if(res.status){
 					that.regionRightMap['region']=res.data
@@ -740,6 +673,7 @@ export default {
 				}			
 			})
 		},
+		// 判断获取区域还是地铁站
 		regionLeftBtn(item,index){
 			switch(index){
 				case 0:
@@ -747,7 +681,7 @@ export default {
 				break;
 				case 1:
 					this.getStation()
-				break
+				break;
 			}
 		},
 		// 区域筛选
@@ -760,7 +694,7 @@ export default {
 			}
 			this.init(true)
 		},
-		//户型的确认
+		// 户型的确认
 		roomConfirm(item,index){
 			let screenFormData = this.screenFormData;
 			let enterType = this.enterType;

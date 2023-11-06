@@ -49,7 +49,7 @@
 									<view hover-class="none" form-type="submit"
 										:class="{region_left_active: regionLeftIndex == index}"
 										@click="regionLeftBtn(item, index)" class="region_list_item" v-if="index==0">
-										{{ $store.state.currentCity}}</view>
+										{{ item.text }}</view>
 									<view hover-class="none" form-type="submit"
 										:class="{region_left_active: regionLeftIndex == index}"
 										@click="regionLeftBtn(item, index)" class="region_list_item" v-if="index>0">

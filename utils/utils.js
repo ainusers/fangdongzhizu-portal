@@ -299,11 +299,10 @@ const getLatest= function(){
 		}
 const MycheckUpdate=function(type){
 	// type =1 从关于我们点击的更新
-		if(!updateOnly||type==1){
-			updateOnly=true
-			checkUpdate()
-		}
-		
+	if(!updateOnly||type==1){
+		updateOnly=true
+		checkUpdate()
+	}
 }
 export {
 	getStoreData,
