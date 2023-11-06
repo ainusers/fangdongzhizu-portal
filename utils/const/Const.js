@@ -49,7 +49,7 @@ export class Const {
 		{
 			id:7,
 			text:'10000以上',
-			value:'10000'
+			value:'10000-99999'
 		},
 	]
 	
