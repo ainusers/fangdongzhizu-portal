@@ -23,7 +23,7 @@
 		width:280px;
 		height:370px;
 		background: url('../../static/home/notice.png') no-repeat;
-		background-size: 600rpx 710rpx;
+		background-size: 280px 370px;
 		overflow: hidden;
 		padding: 65px 15px 0px 15px;
 		font-size: 14px;
