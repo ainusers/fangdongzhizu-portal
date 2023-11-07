@@ -61,7 +61,7 @@
 									<view hover-class="none" form-type="submit"
 										:class="{screen_active: regionRightIndex == index}"
 										@click="regionRightBtn(item, index,1)" class="region_list_item">
-										{{ item.name ||item.line }}</view>
+										{{ item.name || item.line }}</view>
 								</block>
 							</scroll-view>
 							<!-- 地铁站名称 -->
@@ -95,14 +95,6 @@
 									</block>
 								</view>
 							</scroll-view>
-							<!-- <view class="price_bottom_view f_r_b">
-								<view class="f_r_s">
-									<input :value="minPriceVal" @blur="minPriceBlur" class="price_input_val"
-										placeholder="最低价格" />
-									<input :value="maxPriceVal" @blur="maxPriceBlur" class="price_input_val"
-										placeholder="最高价格" />
-								</view>
-							</view> -->
 							<view class="room_new_btn_view">
 								<view hover-class="none" form-type="submit" @click='priceReset()'>重置</view>
 								<view hover-class="none" form-type="submit" @click="confirmPrice"
@@ -175,6 +167,7 @@
 				fixedTcTop: "80rpx", // 筛选条件距离顶部高度43px
 				currentClickType: '',
 				contHeight: "800rpx", // 筛选条件高度
+				subwayline: 0,
 				regionLeftIndex: 0,
 				regionRightIndex: 0,
 				regionRightIndex1: 0,
@@ -380,11 +373,13 @@
 				}
 				if (this.regionLeftIndex != 1 || type == 2) {
 					this.regionRightIndex1 = index
+					this.regionRightIndex = this.subwayline
 					this.areaName = item.name || item
 					this.$emit('regionRightBtn', item)
 				} else if (this.regionLeftIndex == 1) { //当前点击的是地铁
 					this.stationData = this.regionRightMap['region'][index].station
 					this.regionRightIndex1 = 0
+					this.subwayline = index
 				}
 			},
 			// 价格选项卡

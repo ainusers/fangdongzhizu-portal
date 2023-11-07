@@ -371,6 +371,8 @@ export default {
 		this.getArea()
 		// 查询房源列表
 		this.getHouseList()
+		// 通知公告
+		this.getNotice()
 		// 检查更新
 		getLatest().then(res=>{
 			if(res.version!=this.$store.state.version){
@@ -442,7 +444,6 @@ export default {
 		// 获取公告
 		getNotice(){
 			this.$H.get('/zf/v1/notice',{},true).then(res=>{
-				console.log(res)
 				this.noticeStr=res.data[0].notice
 				if(this.noticeStr){
 					this.showNotice=true

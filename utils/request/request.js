@@ -27,16 +27,15 @@ export default {
 					resolve(response.data)
 				} else {
 					uni.showToast({
-						title: response.data.message ||'请求异常',
+						title: response.data.message ||'请求异常,请联系管理员',
 						icon: "none"
 					});
 				}
 			}
-
 			uni.request(options)
 		})
 	},
-
+	// POST请求
 	post(url, data = {},isToken, header = {}) {
 		if(isToken){
 			header={
@@ -50,9 +49,9 @@ export default {
 			header: header,
 			method: "POST"
 		}
-
 		return this.request(options);
 	},
+	// PATCH请求
 	patch(url, data = {},isToken, header = {}) {
 		if(isToken){
 			header={
@@ -66,9 +65,9 @@ export default {
 			header: header,
 			method: "PATCH"
 		}
-
 		return this.request(options);
 	},
+	// GET请求
 	get(url, data = {},isToken, header = {}) {
 		if(isToken){
 			header={
@@ -81,9 +80,9 @@ export default {
 			data: data,
 			header: header
 		}
-
 		return this.request(options);
 	},
+	// 文件上传
 	fileUpload(url,files={},header={}){
 			header={
 					'Authorization': 'Bearer ' + store.state.token
@@ -104,15 +103,13 @@ export default {
             }catch(e){
               console.log(e)
             }
-						
-					},
-					fail: (e) => {
-						uni.hideLoading();
-						reject(e);
-					}
+			},
+			fail: (e) => {
+				uni.hideLoading();
+				reject(e);
+			}
 			}	
 			);
 		})
-		
 	}
 };

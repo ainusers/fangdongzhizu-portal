@@ -15,7 +15,8 @@
         "modules" : {
             "Geolocation" : {},
             "Record" : {},
-            "Maps" : {}
+            "Maps" : {},
+            "Camera" : {}
         },
         /* 模块配置 */
         "distribute" : {
