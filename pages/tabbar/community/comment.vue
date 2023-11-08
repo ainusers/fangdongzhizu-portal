@@ -135,7 +135,7 @@
 										<view @longpress="delComment(res, index1)">
 											<view class="top">
 												<view class="desc">
-													<view class="name"  @tap.stop="onReply(res, index1,1)">{{ res.username }}</view>
+													<view class="name"  @tap.stop="onReply(res, index1,1)">{{ res.nickname }}</view>
 													<view class="date"  @tap.stop="onReply(res, index1,1)">{{res.create_time  }}</view>
 												</view>
 												<!-- <view class="like" :class="{ highlight: res.love }"  @click="clickLike(res.comment_id,res.love,index1)">
