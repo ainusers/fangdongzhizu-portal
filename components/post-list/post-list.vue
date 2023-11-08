@@ -64,7 +64,7 @@
 					<view class="p-footer">
 						<!-- 分享 -->
 						<view class="p-item">
-							<button @click.stop="showShares(index,item.id)" class="u-reset-button" open-type="share">
+							<button class="u-reset-button" open-type="share">
 								<u-icon name="eye" size="38"></u-icon>
 								<text class="count">{{ item.look }}</text>
 							</button>
