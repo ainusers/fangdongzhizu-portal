@@ -422,7 +422,7 @@ export default {
 		        // 打开权限设置界面
 		        // permision.gotoAppPermissionSetting();
 		    } else {
-		        //手机定位服务（GPS）已授权
+		        // 手机定位服务（GPS）已授权
 		        let that = this;
 		        uni.getLocation({
 		        	type: 'gcj02',
@@ -444,13 +444,13 @@ export default {
 		// 获取公告
 		getNotice(){
 			this.$H.get('/zf/v1/notice',{},true).then(res=>{
-				this.noticeStr=res.data[0].notice
-				if(this.noticeStr){
+				if (200 == res.code) {
+					this.noticeStr=res.data[0].notice
 					this.showNotice=true
 				}
 			})
 		},
-		//自定义下拉刷新
+		// 自定义下拉刷新
 		 onRefresh(e) {
 			if(!this.triggered){
 				this.triggered=true
