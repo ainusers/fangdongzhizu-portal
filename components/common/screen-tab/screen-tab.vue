@@ -59,21 +59,21 @@
 							<scroll-view class="region_scroll_right" scroll-y>
 								<block v-for="(item, index) in regionRightMap['region']" :key="index">
 									<view hover-class="none" form-type="submit"
-										:class="{screen_active: regionRightIndex == index}"
+										:class="{screen_active: areaOrLineIndex == index}"
 										@click="regionRightBtn(item, index,1)" class="region_list_item">
 										{{ item.name || item.line }}</view>
 								</block>
 							</scroll-view>
 							<!-- 地铁站名称 -->
-							<scroll-view class="region_scroll_right" scroll-y v-show="stationData.length>0">
+							<scroll-view class="region_scroll_right" scroll-y v-if="stationData.length>0">
 								<block v-for="(item, index) in stationData" :key="index">
 									<view hover-class="none" form-type="submit"
-										:class="{screen_active: regionRightIndex1 == index}"
+										:class="{screen_active: stationIndex == index}"
 										@click="regionRightBtn(item, index,2)" class="region_list_item">{{ item }}
 									</view>
 								</block>
 							</scroll-view>
-							<scroll-view class="region_scroll_right" scroll-y v-show="stationData.length==0">
+							<scroll-view class="region_scroll_right" scroll-y v-else="stationData.length==0">
 								<block v-for="(item, index) in stationData" :key="index">
 									<view hover-class="none" form-type="submit" class="region_list_item">{{ item }}
 									</view>
@@ -169,8 +169,8 @@
 				contHeight: "800rpx", // 筛选条件高度
 				subwayline: 0,
 				regionLeftIndex: 0,
-				regionRightIndex: 0,
-				regionRightIndex1: 0,
+				areaOrLineIndex: 0,
+				stationIndex: 0,
 				roomListIndex: 0,
 				// 价格输入
 				minPriceVal: "",
@@ -343,7 +343,7 @@
 			screenContBtn() {},
 			regionLeftBtn(item, index) {
 				this.regionLeftIndex = index
-				this.regionRightIndex = 0
+				this.areaOrLineIndex = 0
 				this.$emit('regionLeftBtn', item, index)
 				setTimeout(() => {
 					if (this.regionLeftIndex == 1) {
@@ -358,28 +358,38 @@
 			},
 			regionRightBtn(item, index, type) {
 				// type  1区域  2 地铁站
-				this.regionRightIndex = index
+				this.areaOrLineIndex = index
 				let screenFormData = this.screenFormData
 				if (item.line == '不限' || item.name == '不限') {
 					this.areaName = '区域'
 					screenFormData[this.enterType]['region'].show = false;
 					screenFormData[this.enterType].region.text = '区域'
-					this.regionRightIndex1 = -1
+					this.stationIndex = -1
 					this.$emit('regionRightBtn', '')
 					return
 				} else {
 					screenFormData[this.enterType]['region'].show = true;
 					screenFormData[this.enterType].region.text = '选中了'
 				}
-				if (this.regionLeftIndex != 1 || type == 2) {
-					this.regionRightIndex1 = index
-					this.regionRightIndex = this.subwayline
+				// 当前点击的是地铁线路名称
+				if (this.regionLeftIndex == 1 && item.line) { 
+					this.stationData = this.regionRightMap['region'][index].station
+					this.stationIndex = 0
+					this.subwayline = index
+				}
+				//当前点击的是区域名称
+				else if (this.regionLeftIndex == 0 && item.name) { 
+					this.stationIndex = index
+					this.areaOrLineIndex = index
 					this.areaName = item.name || item
 					this.$emit('regionRightBtn', item)
-				} else if (this.regionLeftIndex == 1) { //当前点击的是地铁
-					this.stationData = this.regionRightMap['region'][index].station
-					this.regionRightIndex1 = 0
-					this.subwayline = index
+				}
+				//当前点击的是地铁站名称
+				else if (this.regionLeftIndex == 1 && type == 2) { 
+					this.stationIndex = index
+					this.areaOrLineIndex = this.subwayline
+					this.areaName = item.name || item
+					this.$emit('regionRightBtn', item)
 				}
 			},
 			// 价格选项卡
