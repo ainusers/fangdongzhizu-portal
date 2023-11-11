@@ -18,12 +18,6 @@ export default {
 								url: '/pages/auth/login'
 							})
 					}
-					if (response.data.code == 400||response.data.code == 500) {
-						uni.showToast({
-							title: response.data.message,
-							icon: "none"
-						});
-					}
 					resolve(response.data)
 				} else {
 					uni.showToast({

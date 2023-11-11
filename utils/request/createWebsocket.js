@@ -13,7 +13,7 @@ let isCreate=false
 			socketInstance=''
 			socketInstance  =  uni.connectSocket({
 				// 确保你的服务器是运行态
-				url: "ws://43.143.148.105:31780/websocket",
+				url: wsUrl + "/websocket",
 				success(data) {
 					console.log('链接成功')
 				}

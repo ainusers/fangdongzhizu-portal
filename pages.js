@@ -277,7 +277,7 @@ module.exports=()=>({
 		{
 			"path": "pages/tabbar/me/tools/check",
 			"style": {
-				"navigationBarTitleText": "我的动态",
+				"navigationBarTitleText": "房源信息",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,

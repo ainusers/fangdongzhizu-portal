@@ -667,7 +667,7 @@
 							if(EM.alt==item){
 								//在线表情路径，图文混排必须使用网络路径，请上传一份表情到你的服务器后再替换此路径 
 								//比如你上传服务器后，你的100.gif路径为https://www.xxx.com/emoji/100.gif 则替换onlinePath填写为https://www.xxx.com/emoji/
-								let onlinePath = 'http://43.143.148.105:9090/emoji/'
+								let onlinePath = emojiUrl + '/emoji/'
 								let imgstr = '<img src="'+onlinePath+EM.url+'"  width="18rpx" height="18rpx" alt="'+str+'">';
 								return imgstr;
 							}
