@@ -75,7 +75,7 @@ class Request {
 			}
 
 			// 判断用户传递的URL是否/开头,如果不是,加上/，这里使用了uView的test.js验证库的url()方法
-			options.url = validate.url(options.url) ? options.url : (this.config.baseUrl + (options.url.indexOf('/') == 0 ?
+			options.url = validate.url(options.url) ? options.url : (this.config.domain + (options.url.indexOf('/') == 0 ?
 				options.url : '/' + options.url));
 			
 			// 是否显示loading
@@ -101,7 +101,7 @@ class Request {
 
 	constructor() {
 		this.config = {
-			baseUrl: '', // 请求的根域名
+			domain: '', // 请求的根域名
 			// 默认的请求头
 			header: {},
 			method: 'POST',

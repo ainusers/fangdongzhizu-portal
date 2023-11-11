@@ -18,10 +18,16 @@ export default {
 								url: '/pages/auth/login'
 							})
 					}
+					if (response.data.code == 500) {
+						uni.showToast({
+							title: response.data.message || '系统异常,请联系管理员',
+							icon: "none"
+						});
+					}
 					resolve(response.data)
 				} else {
 					uni.showToast({
-						title: response.data.message ||'请求异常,请联系管理员',
+						title: response.data.message || '请求异常,请联系管理员',
 						icon: "none"
 					});
 				}

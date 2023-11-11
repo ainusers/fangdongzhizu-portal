@@ -1459,8 +1459,11 @@
 				deep: true
 			}
 		},
+		// 编辑房源时点击返回触发事件
 		onBackPress(e) {
-			if (!this.isEdit) {
+			const value = uni.getStorageSync('houseModel');
+			// 如果非编辑房源且本地保存数据不为空，则提示是否保存
+			if (!this.isEdit && value != '') {
 				this.modalShow = true
 				return true
 			} else {
@@ -1468,7 +1471,6 @@
 					key: 'houseModel'
 				})
 			}
-
 		},
 		methods: {
 			showTimeFn() {
@@ -1876,7 +1878,7 @@
 						if (res.code == 200 && res.data[0].status) {
 							this.publishApi()
 						}else{
-							uni.$u.toast('每个用户只能发布三个房源')
+							uni.$u.toast('每个用户只能发布两个房源')
 						}
 					})
 				}
@@ -1887,12 +1889,10 @@
 				if (!this.isCheck) {
 					return
 				}
-				console.log('重新发布')
 				uni.showLoading({
 					title: '发布中',
 					mask: true,
 				});
-				
 				let imagesNatureArr = ''
 				let imagesHouseArr = ''
 				// #ifdef APP-PLUS

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import store from '@/store/index.js';
+import config from '@/utils/request/config.js'
 import {getuserInfo,initStorestate,getStoreData,setBarBadgeNum} from '@/utils/utils.js'
 let fromName=''
 let socketInstance=''
@@ -13,7 +14,7 @@ let isCreate=false
 			socketInstance=''
 			socketInstance  =  uni.connectSocket({
 				// 确保你的服务器是运行态
-				url: wsUrl + "/websocket",
+				url: config.wsUrl + "/websocket",
 				success(data) {
 					console.log('链接成功')
 				}

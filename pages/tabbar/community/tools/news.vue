@@ -174,7 +174,7 @@
 	let that=''
 	import {getPlatform,initStorestate,getStoreData,getuserInfo,dateTime1,spaceTime} from '../../../../utils/utils.js'
 	import {createlink} from '../../../../utils/request/createWebsocket.js'
-  import config from '@/utils/request/config.js'
+    import config from '@/utils/request/config.js'
 	export default {
 		data() {
 			return {
@@ -575,13 +575,14 @@
 							uni.uploadFile({
 								name: 'multipartFile',
 								url: config.domain+'/zf/v1/file/uploads',
-								// buketName: 'asiatrip',
+								formData: {
+									'buketName': 'chat'
+								},
 								filePath: res.tempFilePaths[i],
 									name:'file',
 									header: {
-															// 'content-type': 'multipart/form-data',
-												'Authorization': 'Bearer ' + this.$store.state.token
-											},
+										'Authorization': 'Bearer ' + this.$store.state.token
+									},
 								success: uploadFileRes => {
 									let image = JSON.parse(uploadFileRes.data).data[0];
 									uni.getImageInfo({
@@ -667,7 +668,7 @@
 							if(EM.alt==item){
 								//在线表情路径，图文混排必须使用网络路径，请上传一份表情到你的服务器后再替换此路径 
 								//比如你上传服务器后，你的100.gif路径为https://www.xxx.com/emoji/100.gif 则替换onlinePath填写为https://www.xxx.com/emoji/
-								let onlinePath = emojiUrl + '/emoji/'
+								let onlinePath = config.emojiUrl + '/emoji/'
 								let imgstr = '<img src="'+onlinePath+EM.url+'"  width="18rpx" height="18rpx" alt="'+str+'">';
 								return imgstr;
 							}
@@ -828,7 +829,9 @@
 					uni.uploadFile({
 						name: 'multipartFile',
 						url: config.domain+'/zf/v1/file/uploads',
-						buketName: 'zufang-chat',
+						formData: {
+							'buketName': 'chat'
+						},
 						filePath: res.tempFilePath,
 						header: {
 									// 'content-type': 'multipart/form-data',

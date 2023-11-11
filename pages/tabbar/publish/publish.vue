@@ -55,7 +55,7 @@ export default {
 							url
 						});
 					}else{
-						uni.$u.toast('每个用户只能发布三个房源')
+						uni.$u.toast('每个用户只能发布两个房源')
 					}
 				})
 			}else if(type=='tuwen'){
@@ -65,7 +65,7 @@ export default {
 							url
 						})
 					}else{
-						uni.$u.toast('每天发布动态不能超过三个!')
+						uni.$u.toast('每天每个用户发布动态不能超过三个')
 					}
 				})
 			}
