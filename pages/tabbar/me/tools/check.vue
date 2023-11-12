@@ -402,7 +402,6 @@ export default {
 				// #ifdef APP-PLUS
 					var webView = this.$mp.page.$getAppWebview();
 				// #endif
-				
 				if(newVal==3){
 					that.houseList=that.collectList
 					if(that.collectList.length==0){
@@ -414,7 +413,6 @@ export default {
 						width: '0'  
 					});
 					// #endif
-					
 				}else{
 					if(newVal==1){ //已发布
 					that.houseList=that.publishedList
@@ -423,7 +421,6 @@ export default {
 						width: '100px'  
 					});
 					// #endif
-						
 					}else if(newVal==0){ //待审核
 					that.houseList=that.auditList
 					// #ifdef APP-PLUS
@@ -461,9 +458,11 @@ export default {
 	onNavigationBarButtonTap(e){
 		let txt=''
 		if(!this.isUpdate){
+			console.log(1)
 			txt='退出管理'
 			this.isUpdate=true
 		}else{
+			console.log(2)
 			txt='管理'
 			this.isUpdate=false
 		}
@@ -473,7 +472,6 @@ export default {
 			})
 			editTitleText(txt)
 		}
-			
 	},
 	methods: {
 		//自定义刷新
@@ -504,7 +502,6 @@ export default {
 				}else{
 					this.getCollect()
 				}
-				
 			}
 		},
 		//下架  接口成功之后的刷新
@@ -557,33 +554,42 @@ export default {
 				"user_id": that.$store.state.userInfo.id,
 			}
 			//1 待审核 2 已发布  3已下架
-				this.$H.post('/zf/v1/room/list',params,true).then(res=>{
-					that.triggered=false
-					that.showModel=false
-							if(res.data&&res.status&&res.data.length>0){
-								that.houseList=[...that.houseList,...res.data]
-								switch(type){
-									case 1 :
-									that.auditList=that.houseList
-									break;
-									case 2:
-									that.publishedList=that.houseList
-									break;
-									case 3:
-									that.removeList=that.houseList
-									break;
-								}
-							}else if(res.data.length==0&&that.houseList.length==0){
-								this.houseList=[]
-							}else{
-								uni.showToast({
-									icon: 'none',
-									title: '已加载完成'
-								});
-							}
-							res.data.length<10?this.loadStatus='end':this.loadStatus='loadmore'
-							that.$store.commit('houseInfo',that.houseList)
-				})
+			this.$H.post('/zf/v1/room/list',params,true).then(res=>{
+				that.triggered=false
+				that.showModel=false
+				if(res.data&&res.status&&res.data.length>0){
+					// that.houseList=[...that.houseList,...res.data]
+					that.houseList=res.data
+					switch(type){
+						case 1 :
+						that.auditList=that.houseList
+						break;
+						case 2:
+						that.publishedList=that.houseList
+						break;
+						case 3:
+						that.removeList=that.houseList
+						break;
+					}
+				}else if(res.data.length==0&&that.houseList.length==0){
+					this.houseList=[]
+				}else{
+					uni.showToast({
+						icon: 'none',
+						title: '已加载完成'
+					});
+				}
+				res.data.length<10?this.loadStatus='end':this.loadStatus='loadmore'
+				that.$store.commit('houseInfo',that.houseList)
+				// 下架后关闭管理操作
+				this.isUpdate=false
+				if(this.$refs.ListItem&&this.$refs.ListItem.length>0){
+					this.$refs.ListItem.forEach(item=>{
+						item.isUpdate=this.isUpdate
+					})
+					editTitleText('管理')
+				}
+			})
 		},
 	}
 }

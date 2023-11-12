@@ -370,7 +370,7 @@
 			that = this
 			this.cityName = '北京市'
 			// 检查用户位置权限
-			checkPosition()
+			// this.checkPosition()
 			// 获取该城市的所有区
 			this.getArea()
 			// 查询房源列表
@@ -388,6 +388,9 @@
 				key: 'phoneInfo',
 				success(res) {
 					that.fixedContHeight = res.data.screenHeight
+					// 检查用户位置权限
+					that.checkPosition()
+					// 上报用户设备信息
 					that.savePhoneInfo(res.data)
 				}
 			})

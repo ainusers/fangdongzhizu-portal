@@ -381,7 +381,7 @@
 					id:item.id,
 					status:3
 				}
-				this.$H.patch('/zf/v1/room/status',data,true).then(res=>{
+				this.$H.post('/zf/v1/room/status',data,true).then(res=>{
 					if(res.status){
 						this.$emit('updateHouseList')
 					}

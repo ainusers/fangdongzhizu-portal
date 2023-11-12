@@ -97,6 +97,9 @@ export default {
 					url: config.domain+url,
 					files: files,
 					header: header,
+					formData: {
+						'buketName': 'album'
+					},
 					success:(res)=>{
             try{
               resolve(JSON.parse(res.data).data);
