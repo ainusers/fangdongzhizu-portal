@@ -388,8 +388,6 @@
 				key: 'phoneInfo',
 				success(res) {
 					that.fixedContHeight = res.data.screenHeight
-					// 检查用户位置权限
-					that.checkPosition()
 					// 上报用户设备信息
 					that.savePhoneInfo(res.data)
 				}
@@ -403,64 +401,64 @@
 		},
 		methods: {
 			// 检查用户定位权限
-			checkPosition() {
-				const systemSetting = uni.getSystemSetting()
-				// 如果用户未授权
-				if (!systemSetting.locationEnabled) {
-					var context = plus.android.importClass("android.content.Context")
-					var locationManager = plus.android.importClass("android.location.LocationManager")
-					var main = plus.android.runtimeMainActivity()
-					var mainSvr = main.getSystemService(context.LOCATION_SERVICE)
-					if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
-						uni.showModal({
-							title: '温馨提示',
-							content: '开启定位权限后，将为您精准推荐附近房源',
-							success(res) {
-								if (res.confirm) {
-									if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
-										var Intent = plus.android.importClass('android.content.Intent');
-										var Settings = plus.android.importClass('android.provider.Settings')
-										var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-										main.startActivity(intent) // 打开系统设置GPS服务页面
-									}
-								} else if (res.cancel) {
-									that.cityName = '北京市'
-									that.$store.state.currentCity = '北京市'
-								}
-							}
-						});
-					}
-				} else {
-					// 如果用户已授权
-					this.resetAddress()
-				}
-			},
-			async resetAddress() {
-				// 检查是否开启位置信息权限
-				let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
-				if (result != 1) {
-					// 打开权限设置界面
-					// permision.gotoAppPermissionSetting();
-				} else {
-					// 手机定位服务（GPS）已授权
-					let that = this;
-					uni.getLocation({
-						type: 'gcj02',
-						isHighAccuracy: true,
-						geocode: true,
-						success: function(res) {
-							that.cityName = res.address.province
-							that.$store.state.address = res.address
-						},
-						fail: (e) => {
-							if (!that.isGps) {
-								that.isGps = true
-								checkOpenGPSServiceByAndroid()
-							}
-						}
-					});
-				}
-			},
+			// checkPosition() {
+			// 	const systemSetting = uni.getSystemSetting()
+			// 	// 如果用户未授权
+			// 	if (!systemSetting.locationEnabled) {
+			// 		var context = plus.android.importClass("android.content.Context")
+			// 		var locationManager = plus.android.importClass("android.location.LocationManager")
+			// 		var main = plus.android.runtimeMainActivity()
+			// 		var mainSvr = main.getSystemService(context.LOCATION_SERVICE)
+			// 		if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+			// 			uni.showModal({
+			// 				title: '温馨提示',
+			// 				content: '开启定位权限后，将为您精准推荐附近房源',
+			// 				success(res) {
+			// 					if (res.confirm) {
+			// 						if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+			// 							var Intent = plus.android.importClass('android.content.Intent');
+			// 							var Settings = plus.android.importClass('android.provider.Settings')
+			// 							var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+			// 							main.startActivity(intent) // 打开系统设置GPS服务页面
+			// 						}
+			// 					} else if (res.cancel) {
+			// 						that.cityName = '北京市'
+			// 						that.$store.state.currentCity = '北京市'
+			// 					}
+			// 				}
+			// 			});
+			// 		}
+			// 	} else {
+			// 		// 如果用户已授权
+			// 		this.resetAddress()
+			// 	}
+			// },
+			// async resetAddress() {
+			// 	// 检查是否开启位置信息权限
+			// 	let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
+			// 	if (result != 1) {
+			// 		// 打开权限设置界面
+			// 		// permision.gotoAppPermissionSetting();
+			// 	} else {
+			// 		// 手机定位服务（GPS）已授权
+			// 		let that = this;
+			// 		uni.getLocation({
+			// 			type: 'gcj02',
+			// 			isHighAccuracy: true,
+			// 			geocode: true,
+			// 			success: function(res) {
+			// 				that.cityName = res.address.province
+			// 				that.$store.state.address = res.address
+			// 			},
+			// 			fail: (e) => {
+			// 				if (!that.isGps) {
+			// 					that.isGps = true
+			// 					checkOpenGPSServiceByAndroid()
+			// 				}
+			// 			}
+			// 		});
+			// 	}
+			// },
 			// 获取公告
 			getNotice() {
 				this.$H.get('/zf/v1/notice', {}, true).then(res => {
@@ -490,6 +488,33 @@
 			async savePhoneInfo(phoneInfo) {
 				var location = await this.getLocation();
 				let address = location.address
+				const systemSetting = uni.getSystemSetting()
+				// 如果用户未授权则显示提示框
+				if (!systemSetting.locationEnabled) {
+					var context = plus.android.importClass("android.content.Context")
+					var locationManager = plus.android.importClass("android.location.LocationManager")
+					var main = plus.android.runtimeMainActivity()
+					var mainSvr = main.getSystemService(context.LOCATION_SERVICE)
+					if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+						uni.showModal({
+							title: '温馨提示',
+							content: '开启定位权限后，将为您精准推荐附近房源',
+							success(res) {
+								if (res.confirm) {
+									if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+										var Intent = plus.android.importClass('android.content.Intent');
+										var Settings = plus.android.importClass('android.provider.Settings')
+										var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+										main.startActivity(intent) // 打开系统设置GPS服务页面
+									}
+								} else if (res.cancel) {
+									that.cityName = '北京市'
+									that.$store.state.currentCity = '北京市'
+								}
+							}
+						});
+					}
+				}
 				let position = address.province + '-' + address.city + '-' + address.district + '-' + address.street +
 					'-' + address.streetNum + '-' + address.poiName + '-' + address.cityCode
 				let params = {
