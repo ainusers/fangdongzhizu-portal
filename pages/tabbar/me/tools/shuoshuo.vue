@@ -256,8 +256,14 @@ export default {
 				}
 			})
 		},
-		changeStatus(index,statu){
+		changeStatus(index,statu,isDel){
+			this.tuwen_data.forEach(item=>{
+				item.isReport=false
+			})
 			this.tuwen_data[index].isReport=statu
+			if(isDel){
+				this.tuwen_data.splice(index,1)
+			}
 		},
 		getShowData(){
 			this.status=true

@@ -232,13 +232,13 @@
 					}
 					return isDelete
 				}).then(res=>{
-					this.$emit('changeStatus', index, this.isReport,res)
+					this.$emit('changeStatus', index, !this.isReport,res)
 				})
 			},
 			//控制举报，删除 显示隐藏
 			goReport(index) {
 				this.currentIndex = index
-				this.isReport ? this.isReport = false : this.isReport = true
+				this.list[index].isReport ? this.isReport = false : this.isReport = true
 				this.reportId = this.list[index].id
 				this.$emit('changeStatus', index, this.isReport)
 			},

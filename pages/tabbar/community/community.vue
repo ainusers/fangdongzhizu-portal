@@ -141,6 +141,9 @@
 				})
 			},
 			changeStatus(index,statu,isDelete){
+				this.tuwen_data.forEach(item=>{
+					item.isReport=false
+				})
 				this.tuwen_data[index].isReport=statu
 				if(isDelete){
 					this.tuwen_data.splice(index,1)
