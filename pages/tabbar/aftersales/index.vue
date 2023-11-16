@@ -287,7 +287,7 @@
 }
 .scroll-view-height {
 	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
-	height: calc(100vh - var(--status-bar-height) - 88rpx);
+	height: calc(100vh - var(--status-bar-height) - 176rpx);
 	background-color: #ffffff;
 }
 </style>

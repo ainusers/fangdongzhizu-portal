@@ -61,33 +61,33 @@
 				return
 			}
 			// 向后端发送请求，修改用户密码
-      let data={
-			// 向后端发送请求，修改用户昵称
-					userId: htmlEncode(this.$store.state.userInfo.id),
-					oldPassword:htmlEncode(this.pwd) , //原有密码
-					newPassword:htmlEncode(this.newpwd),  //新密码
-					secondPassword:htmlEncode(this.newpwd2)
-				}
-      this.$H.patch('/zf/v1/user/pwd',data,true).then(res=>{
-        if(res.status&&res.code==200){
-						uni.showToast({
-							title: '修改成功',
-							icon: 'none',
-							duration: 2000
-						})
-						// 返回上一页
-						setTimeout(() => {
-							uni.navigateBack({
-							    delta: 1
-							});
-						},2000)
-					}else{
-						uni.showToast({
-							title: res.message,
-							icon: 'none',
-							duration: 2000
-						})
-					}
+			let data={
+				// 向后端发送请求，修改用户昵称
+				userId: htmlEncode(this.$store.state.userInfo.id),
+				oldPassword:htmlEncode(this.pwd) , //原有密码
+				newPassword:htmlEncode(this.newpwd),  //新密码
+				secondPassword:htmlEncode(this.newpwd2)
+			}
+			this.$H.patch('/zf/v1/user/pwd',data,true).then(res=>{
+			if(res.status&&res.code==200){
+				uni.showToast({
+					title: '修改成功',
+					icon: 'none',
+					duration: 2000
+				})
+				// 返回上一页
+				setTimeout(() => {
+					uni.navigateBack({
+						delta: 1
+					});
+				},2000)
+			}else{
+				uni.showToast({
+					title: res.message,
+					icon: 'none',
+					duration: 2000
+				})
+			}
       })
 		}
     }

@@ -140,11 +140,11 @@
 					}
 				})
 			},
-			changeStatus(index,statu,isDelete){
+			changeStatus(index,status,isDelete){
 				this.tuwen_data.forEach(item=>{
 					item.isReport=false
 				})
-				this.tuwen_data[index].isReport=statu
+				this.tuwen_data[index].isReport=status
 				if(isDelete){
 					this.tuwen_data.splice(index,1)
 				}

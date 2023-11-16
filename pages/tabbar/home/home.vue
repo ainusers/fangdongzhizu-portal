@@ -741,6 +741,7 @@
 			regionRightBtn(item) {
 				if (item.name) {
 					this.screenArea = item.name
+					this.subway = ''
 				} else {
 					this.subway = item
 					this.screenArea = ''
