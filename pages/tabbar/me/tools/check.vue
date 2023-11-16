@@ -307,7 +307,7 @@
 				:refresher-triggered="triggered"
 				:refresher-enabled="true"
 				:refresher-threshold="100"
-				@refresherpulling="onPulling"
+				@refresherrefresh="onPulling"
 				@refresherrestore="onRestore"
 				>
 					<view v-show="current == index">
