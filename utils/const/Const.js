@@ -33,8 +33,8 @@ export class Const {
 		},
 		{
 			id:4,
-			text:'3000-5000元',
-			value:'3000-5000'
+			text:'3500-5000元',
+			value:'3500-5000'
 		},
 		{
 			id:5,
@@ -204,7 +204,7 @@ export class Const {
 	static roomList =  [
 		{ text: '不限', id: '',val:'' },
 		{ text: '一居室', id: '1:1',val:'一居室' },
-		{ text: '二居室', id: '2:2' ,val:'二居室'},
+		{ text: '两居室', id: '2:2' ,val:'两居室'},
 		{ text: '三居室', id: '3:3',val:'三居室' },
 		{ text: '四居室', id: '4:4',val:'四居室' },
 		{ text: '五居室', id: '5:5' ,val:'五居室'},

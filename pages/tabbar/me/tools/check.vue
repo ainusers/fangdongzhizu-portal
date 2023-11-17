@@ -285,7 +285,7 @@
 }
 .scroll-view-height {
 	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
-	height: calc(100vh - var(--status-bar-height) - 88rpx);
+	height: calc(100vh - var(--status-bar-height) - 176rpx);
 	background-color: #ffffff;
 }
 .home_nodata{
@@ -400,7 +400,7 @@ export default {
 				that.pageNum=1
 				that.loadStatus='loadmore'
 				// #ifdef APP-PLUS
-					var webView = this.$mp.page.$getAppWebview();
+				var webView = this.$mp.page.$getAppWebview();
 				// #endif
 				if(newVal==3){
 					that.houseList=that.collectList
@@ -458,11 +458,9 @@ export default {
 	onNavigationBarButtonTap(e){
 		let txt=''
 		if(!this.isUpdate){
-			console.log(1)
 			txt='退出管理'
 			this.isUpdate=true
 		}else{
-			console.log(2)
 			txt='管理'
 			this.isUpdate=false
 		}

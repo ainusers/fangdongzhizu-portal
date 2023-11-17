@@ -256,11 +256,11 @@ export default {
 				}
 			})
 		},
-		changeStatus(index,statu,isDel){
+		changeStatus(index,status,isDel){
 			this.tuwen_data.forEach(item=>{
 				item.isReport=false
 			})
-			this.tuwen_data[index].isReport=statu
+			this.tuwen_data[index].isReport=status
 			if(isDel){
 				this.tuwen_data.splice(index,1)
 			}

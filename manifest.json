@@ -68,7 +68,9 @@
                     }
                 },
                 "oauth" : {},
-                "ad" : {},
+                "ad" : {
+                    "ks-content" : {}
+                },
                 "maps" : {
                     "baidu" : {
                         "appkey_ios" : "XUS7rr7tfF8FNcrNqroqkczFvpWtLpcY",

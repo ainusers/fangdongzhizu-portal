@@ -17,7 +17,8 @@
 								<view style="float: right;padding-right: 10px;font-size: 18px;" @click.stop.prevent="goReport(index,$event)">
 									<u-icon name="more-dot-fill" color="rgb(203,203,203)" ></u-icon>
 									<view class="reportText" v-show="item.isReport">
-										<view @click="report" class="item">举报</view>
+										<view @click="report" class="item"
+											v-show="item.userid!=$store.state.userInfo.id">举报</view>
 										<view @click="deletePost(index,item.id)" class="item"
 											v-show="item.userid==$store.state.userInfo.id">删除</view>
 									</view>
