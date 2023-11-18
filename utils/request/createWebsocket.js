@@ -6,7 +6,6 @@ let fromName=''
 let socketInstance=''
 let isChatStatus=''
 let currentName=store.state.userInfo.username
-console.log(currentName)
 let heartCheck=''
 let isCreate=false
 
@@ -22,11 +21,10 @@ let isCreate=false
 			// 打开socket链接
 			socketInstance.onOpen((res) => {
 				console.log('打开链接')
-				// 发送认证消息
-					store.commit('socket_status',true)
-				setTimeout(function() {
-					authSocket();
-				}, 10);
+				// 存储消息状态
+				store.commit('socket_status',true)
+				// 发送消息认证
+				authSocket();
 			});
 			socketInstance.onClose(() => {
 				clearInterval(heartCheck);
@@ -49,7 +47,7 @@ let isCreate=false
 							  clearInterval(heartCheck)
 							  store.commit('isChatStatus',false)
 						  }
-					  }, 10000);
+					  }, 5000);
 				let data = eval("(" + res.data + ")");
 				// console.log('收到服务器的消息',data)
 				//当前是否有过聊天记录 ，有直接push ，不需要添加fromName  没有就创建一个新的对象  
@@ -140,7 +138,6 @@ let isCreate=false
 		//消息认证
 function authSocket(room) {
 	let that=this
-	console.log(store.state.socket_status)
 		if (store.state.socket_status) {
 			socketInstance.send({
 				data: "{'type':'signal','from':"+store.state.userInfo.username+"}",
@@ -165,7 +162,7 @@ function authSocket(room) {
 					  clearInterval(heartCheck)
 					  store.commit('isChatStatus',false)
 				  }
-			  }, 10000);
+			  }, 5000);
 			Vue.prototype.$socketInstance=socketInstance
 		}
 	}

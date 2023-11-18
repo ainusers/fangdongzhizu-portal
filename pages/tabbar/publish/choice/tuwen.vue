@@ -201,68 +201,65 @@
 		methods: {
 			async publish(){
 				// uni.showLoading({title:'发布中',mask:false,});
-				console.log('发布房源')
 				if(this.isLoading) return
 				this.isLoading=true
 				checkPush().then(async res=>{
 					console.log(res)
 					this.res1=res
 					if(res.status){
-						console.log('可以凡发布')
-							if (!this.input_content) {
+						if (!this.input_content) {
+							uni.showToast({
+								title: '文字内容不能为空',
+								duration: 1000,
+								icon: "none"
+							});
+							return;
+						}
+						// 获取位置信息
+						// #ifdef APP-PLUS
+						let location = await this.getLocation();
+						// #endif
+						// 获取上传图片地址
+						let images;
+						if(this.imageList.length == 0) {
+							images = [];
+						} else {
+							images = await attachUpload(this.imageList);
+						}
+						let data= {
+								'imgUrl': images.toString(),
+								'nickname': this.$store.state.userInfo.nickname,
+								'avatar': this.$store.state.userInfo.avatar,
+								'userId': this.$store.state.userInfo.id,
+								'words': htmlEncode(this.input_content),
+							}
+						// #ifdef APP-PLUS
+						if(location!='未知'){
+							data['longitude']=location.longitude// 经度
+							data['latitude']=location.latitude// 纬度
+							data['country']=location.address.country
+							data['province']=location.address.province
+							data['city']=location.address.city
+							data['address']=location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName
+							data['type']=location.type
+						}
+						// #endif
+						// 上传动态信息
+						this.$H.post('/zf/v1/dynamic/dynamics',data,true).then(res=>{
+								uni.hideLoading();
+							if(res.status){
 								uni.showToast({
-									title: '文字内容不能为空',
-									duration: 1000,
-									icon: "none"
-								});
-								return;
-							}
-							// 获取位置信息
-							// #ifdef APP-PLUS
-							let location = await this.getLocation();
-							// #endif
-							// 获取上传图片地址
-							let images;
-							if(this.imageList.length == 0) {
-								images = [];
-							} else {
-								images = await attachUpload(this.imageList);
-							}
-							let data= {
-									'imgUrl': images.toString(),
-									'nickname': this.$store.state.userInfo.nickname,
-									'avatar': this.$store.state.userInfo.avatar,
-									'userId': this.$store.state.userInfo.id,
-									'words': htmlEncode(this.input_content),
-								}
-								// #ifdef APP-PLUS
-								if(location!='未知'){
-									data['longitude']=location.longitude// 经度
-									data['latitude']=location.latitude// 纬度
-									data['country']=location.address.country
-									data['province']=location.address.province
-									data['city']=location.address.city
-									data['address']=location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName
-									data['type']=location.type
-								}
-								// #endif
-								// return
-							// 上传动态信息
-							this.$H.post('/zf/v1/dynamic/dynamics',data,true).then(res=>{
-									uni.hideLoading();
-								if(res.status){
-									uni.showToast({
-										icon:'success',
-										title:"发布成功"
+									icon:'success',
+									title:"发布成功"
+								})
+								setTimeout(()=>{
+									uni.switchTab({
+										url: '/pages/tabbar/community/community'
 									})
-									setTimeout(()=>{
-										uni.switchTab({
-											url: '/pages/tabbar/community/community'
-										})
-										this.isLoading=false
-									},2000)
-								}
-							})
+									this.isLoading=false
+								},2000)
+							}
+						})
 					}else{
 						uni.showToast({
 							icon:'none',
