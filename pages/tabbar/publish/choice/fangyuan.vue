@@ -847,7 +847,6 @@
 				userInfo: '',
 				homeNum: '', //当前一共有几间房
 				rentNum: 1, //当前出租几间
-
 				currentType: '',
 				tenantObj: [], //每个租户的信息
 				tenantStr: '', //租户A
@@ -1314,7 +1313,6 @@
 				isPublish1: false,
 				isPublish2: false,
 				tipTxt:'请出示完整的租房合同',
-				isLoading:false
 			}
 		},
 		onShow(){
@@ -1866,13 +1864,12 @@
 						}
 					})
 				})
-
 			},
+			// 发布房源
 			async publish() {
-				if(this.isLoading) return
-				this.isLoading=true
+				uni.showToast({title:'发布中',duration:100000000,icon:'loading'});
 				if(this.isEdit){
-						this.publishApi()
+					this.publishApi()
 				}else{
 					getCount().then(async res => {
 						if (res.code == 200 && res.data[0].status) {
@@ -1882,17 +1879,12 @@
 						}
 					})
 				}
-				
 			},
 			async publishApi(){
 				this.homeArrIndex = this.houseModel.chekcNum
 				if (!this.isCheck) {
 					return
 				}
-				uni.showLoading({
-					title: '发布中',
-					mask: true,
-				});
 				let imagesNatureArr = ''
 				let imagesHouseArr = ''
 				// #ifdef APP-PLUS
@@ -1900,31 +1892,27 @@
 				let address =''
 				if(this.$store.state.address&&this.$store.state.address.province){
 					address=this.$store.state.address
-				}else { 
-					// 先判断是否授权  再判断是否开启定位服务
-					let result =await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
-					console.log(result)
+				} else {
+					// 先判断是否授权,再判断是否开启定位服务
+					let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
 					if(result!=1){
+						uni.hideToast();
 						uni.showToast({
 							title: "发布失败，未开启定位权限",
 							icon: 'none',
 							duration: 2000
 						})
-						uni.hideLoading();
-						this.isLoading=false
-						return 
-					}else{
-						//没开启定位服务就弹窗
+						return
+					} else{
+						// 没开启定位服务就弹窗
 						const systemSetting = uni.getSystemSetting()
 						if(!systemSetting.locationEnabled){
 							checkOpenGPSServiceByAndroid()
-							uni.hideLoading();
-							this.isLoading=false
 							return 
 						}else{
-							 location = await this.getLocation();
-							 address=location.address
-							 this.$store.commit('address',location.address)
+							location = await this.getLocation();
+							address=location.address
+							this.$store.commit('address',location.address)
 						}
 					}
 				}
@@ -1948,9 +1936,6 @@
 					orientation: this.houseModel.orientation,
 					size: htmlEncode(this.houseModel.homesize), //房屋面积
 					floor: this.houseModel.floor,
-					// distanceSubway:'距离西二旗地铁站600米',
-					// subway:'西二旗',
-					// rentalHouse:this.houseModel.roomType,
 					payType: this.houseModel.payType,
 					heatType: this.houseModel.heatType, //供暖方式
 					hasElevator: this.houseModel.hasElevatorStr,
@@ -1988,7 +1973,7 @@
 					params['status'] = 1
 				}
 				this.$H.post(url, params, true).then(res => {
-					uni.hideLoading();
+					uni.hideToast();
 					if (res.data && res.status) {
 						uni.$u.toast('发布成功')
 						uni.removeStorage({
@@ -2004,7 +1989,7 @@
 							uni.switchTab({
 								url: '/pages/tabbar/home/home'
 							})
-						}, 2000)
+						}, 1000)
 					} else {
 						uni.$u.toast('发布失败')
 					}
@@ -2021,8 +2006,6 @@
 							console.log(res)
 						},
 						fail: (e) => {
-							// checkOpenGPSServiceByAndroid()
-							console.log(e)
 							reject(e)
 						}
 					});
@@ -2037,7 +2020,6 @@
 				} else {
 					this.houseModel.houseImageList.splice(e, 1);
 				}
-
 			},
 			chooseImage: async function(type) {
 				if (this.setpAll) {
@@ -2092,7 +2074,6 @@
 							})
 						})
 						// #endif
-
 						// #ifndef APP-PLUS
 						attachUpload(res.tempFilePaths).then(res => {
 							if (type == 'natural') {
@@ -2111,7 +2092,6 @@
 								}
 							}
 						})
-
 						// #endif
 					}
 				})

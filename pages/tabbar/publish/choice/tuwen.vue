@@ -146,7 +146,6 @@
 					</view>
 				</view>
 			</view>
-			
 			<view class="footer">
 				<button type="default" class="feedback-submit" @click="publish">发布</button>
 			</view>
@@ -171,7 +170,6 @@
 	export default {
 		data() {
 			return {
-				// title: 'choose/previewImage',
 				input_content:'',
 				imageList: [],
 				sourceTypeIndex: 2,
@@ -180,11 +178,6 @@
 				sizeType: ['压缩', '原图', '压缩或原图'],
 				countIndex: 8,
 				count: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-				//侧滑返回
-				startX: 0, //点击屏幕起始位置
-				movedX: 0, //横向移动的距离
-				endX: 0, //接触屏幕后移开时的位置
-				isLoading:false,
 			}
 		},
 		onLoad(){
@@ -200,12 +193,8 @@
 		},
 		methods: {
 			async publish(){
-				// uni.showLoading({title:'发布中',mask:false,});
-				if(this.isLoading) return
-				this.isLoading=true
+				uni.showToast({title:'发布中',duration:100000000,icon:'loading'});
 				checkPush().then(async res=>{
-					console.log(res)
-					this.res1=res
 					if(res.status){
 						if (!this.input_content) {
 							uni.showToast({
@@ -227,12 +216,12 @@
 							images = await attachUpload(this.imageList);
 						}
 						let data= {
-								'imgUrl': images.toString(),
-								'nickname': this.$store.state.userInfo.nickname,
-								'avatar': this.$store.state.userInfo.avatar,
-								'userId': this.$store.state.userInfo.id,
-								'words': htmlEncode(this.input_content),
-							}
+							'imgUrl': images.toString(),
+							'nickname': this.$store.state.userInfo.nickname,
+							'avatar': this.$store.state.userInfo.avatar,
+							'userId': this.$store.state.userInfo.id,
+							'words': htmlEncode(this.input_content),
+						}
 						// #ifdef APP-PLUS
 						if(location!='未知'){
 							data['longitude']=location.longitude// 经度
@@ -246,8 +235,8 @@
 						// #endif
 						// 上传动态信息
 						this.$H.post('/zf/v1/dynamic/dynamics',data,true).then(res=>{
-								uni.hideLoading();
 							if(res.status){
+								uni.hideToast();
 								uni.showToast({
 									icon:'success',
 									title:"发布成功"
@@ -256,8 +245,7 @@
 									uni.switchTab({
 										url: '/pages/tabbar/community/community'
 									})
-									this.isLoading=false
-								},2000)
+								},1000)
 							}
 						})
 					}else{
@@ -267,7 +255,7 @@
 						})
 					}
 				})
-	},
+			},
 			// 获取地理位置（h5中可能不支持）
 			getLocation(){
 				return new Promise((resolve, reject) => {
@@ -280,8 +268,7 @@
 						},
 						fail: (e) => {  
 							console.log(e)
-							// reject(e);
-							resolve('未知');
+							reject(e);
 						}
 					});
 				})
@@ -289,71 +276,36 @@
 			close(e){
 			    this.imageList.splice(e,1);
 			},
+			// 选择图片
 			chooseImage: async function() {
-				if (this.imageList.length === 9) {
-					let isContinue = await this.isFullImg();
-					if (!isContinue) {
-						return;
-					}
-				}
 				uni.chooseImage({
 					sourceType: sourceType[this.sourceTypeIndex],
 					sizeType: sizeType[this.sizeTypeIndex],
 					count: this.imageList.length + this.count[this.countIndex] > 9 ? 9 - this.imageList.length : this.count[this.countIndex],
 					success: (res) => {
 						// #ifdef APP-PLUS
-						//提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
-						// var compressd = cp_images=> {
-						// //压缩后的图片路径
-						// }
+						// 提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
 						res.tempFilePaths.forEach(item=>{
 							compressImg(item).then(cp_images=>{
-									this.imageList = this.imageList.concat(cp_images)
+								this.imageList = this.imageList.concat(cp_images)
 							})
 						})
 						// #endif
-						
 						// #ifndef APP-PLUS
-						this.imageList = this.imageList.concat(res.tempFilePaths)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
+						// 非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
+						this.imageList = this.imageList.concat(res.tempFilePaths)
 						// #endif
 						
 					}
 				})
 			},
-			isFullImg: function() {
-				return new Promise((res) => {
-					uni.showModal({
-						content: "已经有9张图片了,是否清空现有图片？",
-						success: (e) => {
-							if (e.confirm) {
-								this.imageList = [];
-								res(true);
-							} else {
-								res(false)
-							}
-						},
-						fail: () => {
-							res(false)
-						}
-					})
-				})
-			},
+			// 查看放大图片
 			previewImage: function(e) {
 				var current = e.target.dataset.src
 				uni.previewImage({
 					current: current,
 					urls: this.imageList
 				})
-			},
-			touchStart: function(e) {
-				this.startX = e.mp.changedTouches[0].pageX;
-			},
-			
-			touchEnd: function(e) {
-				this.endX = e.mp.changedTouches[0].pageX;
-				if (this.endX - this.startX > 200) {
-					uni.navigateBack();
-				}
 			},
 		}
 	}
