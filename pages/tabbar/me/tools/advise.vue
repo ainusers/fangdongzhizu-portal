@@ -123,10 +123,10 @@
 					let {word} = {...n};
 					return {word}.word;
 				});
-				var regQQ = /^[1-9]\d{4,9}$/ //qq号
-				var regPhone = /^1[358497]\d{9}$/;  //手机号
-				var regWx = /^[a-zA-Z][-_a-zA-Z0-9]{5,19}$/;  //微信号
-				var regEmail=/^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(\.[0-9A-Za-z]+)+$/
+				// var regQQ = /^[1-9]\d{4,9}$/ // qq号
+				// var regPhone = /^1[358497]\d{9}$/;  // 手机号
+				// var regWx = /^[a-zA-Z][-_a-zA-Z0-9]{5,19}$/;  // 微信号
+				// var regEmail=/^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(\.[0-9A-Za-z]+)+$/ // 邮箱
 				if(!words.toString()){
 					showToastTit('请选择反馈建议')
 					return
@@ -135,10 +135,10 @@
 					showToastTit('请填写意见和反馈')
 					return
 				}
-				if(contact&&!regQQ.test(contact)&&!regPhone.test(contact)&&!regWx.test(contact)&&!regEmail.test(regPhone)){
+				/* if(contact&&!regQQ.test(contact)&&!regPhone.test(contact)&&!regWx.test(contact)&&!regEmail.test(regPhone)){
 					showToastTit('请正确填写联系方式')
 					return
-				}else if(!contact){
+				}else */if(!contact){
 					showToastTit('请添加联系方式')
 					return
 				}

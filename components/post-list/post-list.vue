@@ -457,11 +457,11 @@
 			background-color: #fff;
 			.item {
 				padding:20rpx 0;
-				&:last-child {
-					border-top: 1px solid #d5d5d6;
-					margin-bottom: 0;
-					border-bottom: none;
-				}
+				// &:last-child {
+				// 	border-top: 1px solid #d5d5d6;
+				// 	margin-bottom: 0;
+				// 	border-bottom: none;
+				// }
 			}
 		}
 
