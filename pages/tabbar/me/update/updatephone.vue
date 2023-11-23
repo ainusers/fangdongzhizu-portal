@@ -54,8 +54,7 @@
 					});
 					return;
 				}
-				
-				if (!/^1\d{10}$/.test(this.newphone)) {
+				if (!/^1[3-9]\d{9}$/.test(this.newphone)) {
 					uni.showToast({
 						icon: 'none',
 						title: '请填写正确的手机号'

@@ -1,18 +1,18 @@
 <template></template>
-
 <script>
 	export default{
 		onLoad() {
-			var that = this;
 			var isLogin=false
+			// 判断用户是否登录
 			uni.getStorage({
-					key:'token',
-					success(res) {
-						if(res.data){
-							isLogin=true
-						}
+				key:'token',
+				success(res) {
+					if(res.data){
+						isLogin=true
 					}
-				})
+				}
+			})
+			// 判断用户进入页面
 			setTimeout(function(){
 				if(isLogin){
 					uni.switchTab({
@@ -22,12 +22,9 @@
 					uni.navigateTo({
 						url: '/pages/auth/login'
 					})
-				}	
+				}
 				plus.navigator.closeSplashscreen()
-			},100)
+			},50)
 		}
 	}
 </script>
-
-<style>
-</style>

@@ -5,17 +5,9 @@ module.exports=()=>({
 	},
 	"pages": [
 		{
-			"path": "pages/auth/logintemp",
+			"path": "pages/auth/guide",
 			"style": {
 				"transparentTitle":  "always"
-				// "navigationBarTitleText": "登录页",
-				// "navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#fafafa",
-				// "enablePullDownRefresh": false,
-				// "backgroundTextStyle":"light",
-				// "app-plus": {
-				// 	"scrollIndicator": "none"
-				// }
 			},
 			meta:{
 				needLogin:false
@@ -41,14 +33,6 @@ module.exports=()=>({
 			"path": "pages/auth/login",
 			"style": {
 				"transparentTitle":  "always"
-				// "navigationBarTitleText": "登录页",
-				// "navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#fafafa",
-				// "enablePullDownRefresh": false,
-				// "backgroundTextStyle":"light",
-				// "app-plus": {
-				// 	"scrollIndicator": "none"
-				// }
 			},
 			meta:{
 				needLogin:false
@@ -58,14 +42,6 @@ module.exports=()=>({
 			"path": "pages/tabbar/home/homeDetail",
 			"style": {
 				"transparentTitle":  "always"
-				// "navigationBarTitleText": "房屋详情页",
-				// "navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#fafafa",
-				// "enablePullDownRefresh": false,
-				// "backgroundTextStyle":"light",
-				// "app-plus": {
-				// 	"scrollIndicator": "none"
-				// }
 			},
 			meta:{
 				needLogin:true
@@ -91,14 +67,6 @@ module.exports=()=>({
 			"path": "pages/auth/forget",
 			"style": {
 				"transparentTitle":  "always"
-				// "navigationBarTitleText": "忘记",
-				// "navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#fafafa",
-				// "enablePullDownRefresh": false,
-				// "backgroundTextStyle":"light",
-				// "app-plus": {
-				// 	"scrollIndicator": "none"
-				// }
 			},
 			meta:{
 				needLogin:false
@@ -108,14 +76,6 @@ module.exports=()=>({
 			"path": "pages/auth/register",
 			"style": {
 				"transparentTitle":  "always"
-				// "navigationBarTitleText": "注册",
-				// "navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#fafafa",
-				// "enablePullDownRefresh": false,
-				// "backgroundTextStyle":"light",
-				// "app-plus": {
-				// 	"scrollIndicator": "none"
-				// }
 			},
 			meta:{
 				needLogin:false
@@ -178,14 +138,6 @@ module.exports=()=>({
 			"path": "pages/tabbar/community/commentDetail",
 			"style": {
 				"transparentTitle":  "always"
-				// "navigationBarTitleText": "评论详情页",
-				// "navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#fafafa"
-				// "enablePullDownRefresh": false,
-				// "backgroundTextStyle":"light",
-				// "app-plus": {
-				// 	"scrollIndicator": "none"
-				// }
 			},
 			meta:{
 				needLogin:true
@@ -244,14 +196,6 @@ module.exports=()=>({
 			"path": "pages/tabbar/me/me",
 			"style": {
 				"transparentTitle":  "always"
-				// "navigationBarTitleText": "我的",
-				// "navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#fafafa",
-				// "enablePullDownRefresh": false,
-				// "backgroundTextStyle":"light",
-				// "app-plus": {
-				// 	"scrollIndicator": "none"
-				// }
 			},
 			meta:{
 				needLogin:true
@@ -261,14 +205,6 @@ module.exports=()=>({
 			"path": "pages/tabbar/aftersales/index",
 			"style": {
 				"transparentTitle":  ""
-				// "navigationBarTitleText": "我的",
-				// "navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#fafafa",
-				// "enablePullDownRefresh": false,
-				// "backgroundTextStyle":"light",
-				// "app-plus": {
-				// 	"scrollIndicator": "none"
-				// }
 			},
 			meta:{
 				needLogin:true
@@ -598,7 +534,6 @@ module.exports=()=>({
 			meta:{
 				needLogin:true
 			}
-            
         }
         ,
 		{
@@ -629,37 +564,13 @@ module.exports=()=>({
 			meta:{
 				needLogin:true
 			}
-            
         },
-		{
-			"path": "pages/auth/binding",
-			"style": {
-				"navigationBarTitleText": "绑定手机号"
-				// "navigationBarTitleText": "注册",
-				// "navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#fafafa",
-				// "enablePullDownRefresh": false,
-				// "backgroundTextStyle":"light",
-				// "app-plus": {
-				// 	"scrollIndicator": "none"
-				// }
-			}
-		},
 		{
 			"path": "pages/tabbar/me/personal",
 			"style": {
 				"navigationBarTitleText": "个人主页",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
-				
-				// "navigationBarTitleText": "注册",
-				// "navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#fafafa",
-				// "enablePullDownRefresh": false,
-				// "backgroundTextStyle":"light",
-				// "app-plus": {
-				// 	"scrollIndicator": "none"
-				// }
 			}
 		},
 		{

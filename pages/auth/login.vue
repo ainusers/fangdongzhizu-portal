@@ -10,9 +10,7 @@
 </style>
 <template>
 	<view class="abslrtb flex-column a-center wrap">
-		<view class="topbox flex-column aj-center">
-			<image class="logoimg" src="/static/logo.png" mode=""></image>
-		</view>
+		<view class="topbox flex-column aj-center"></view>
 		<view class="flex tabs mb30">
 			<view @click="tab(0)" class="flex-1 flex aj-center" :class="tabIndex==0&&'active'">
 				<text class="fs34 fw600 text-gray" :class="tabIndex==0&&'curtext'">账号登录</text>
@@ -36,13 +34,12 @@
 		</view>
 		
 		<view class="btns">
-			<button @click="bindLogin" class="qbtn">
+			<button @click="login" class="qbtn">
 				<view class="btn-text-color fs30">登录</view>
 			</button>
 			<view class="blue_link" :class="{'animShake':isShow}">
 				<u-checkbox-group>
 							<u-checkbox 
-								@change="checkboxChange" 
 								v-model="checked" 
 								name="隐私协议"
 								shape="circle"
@@ -105,7 +102,7 @@
 		},
 		onLoad() {
 			that = this;
-			//这里去获取权限了
+			// 获取系统信息
 			uni.getSystemInfo({
 				success(res){
 					uni.setStorage({
@@ -115,22 +112,18 @@
 				}
 			})
 		},
-		onShow(){
-			
-		},
 		onUnload() {
 			clearInterval(timer);
 		},
 		methods: {
-			checkboxChange(e){
-
-			},
+			// 查看隐私协议
 			goUrl(){
 				uni.navigateTo({
 					url:'/pages/tabbar/me/text/privacy'
 				})
 			},
-			bindLogin() {
+			// 账号登录
+			login() {
 				switch (this.tabIndex) {
 					case 0:
 						this.loginByUser()
@@ -144,6 +137,47 @@
 						break;
 				}
 			},
+			// 账号登录
+			loginByUser() {
+				if(!this.$refs.userName.username){
+					uni.showToast({
+						icon: 'none',
+						title: '请填写账号'
+					});
+					return;
+				}
+				if (!/^1[3-9]\d{9}$/.test(this.$refs.userName.username)) {
+					uni.showToast({
+						icon: 'none',
+						title: '请填写正确的手机号'
+					});
+					return;
+				}
+				if (this.$refs.passWord.password.length < 1) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入密码'
+					});
+					return;
+				}
+				if(!this.checkYinSiXieYi()){
+					return
+				}
+				let data={
+			        username: this.$refs.userName.username,
+			        password: this.$refs.passWord.password
+			    }
+				this.$H.post('/zf/v1/user/login',data,false).then(res=>{
+			        if(res.status) {
+			            this.$store.commit('token',res.data[0].token)
+			            this.getUserInfo()
+			            uni.switchTab({
+			                url: '/pages/tabbar/home/home'
+			            })
+			        }
+				})
+			},
+			// 手机号登录
 			loginByMsg() {
 				if(!this.$refs.phone.username){
 					uni.showToast({
@@ -152,7 +186,7 @@
 					});
 					return;
 				}
-				if (!/^1\d{10}$/.test(this.$refs.phone.username)) {
+				if (!/^1[3-9]\d{9}$/.test(this.$refs.phone.username)) {
 					uni.showToast({
 						icon: 'none',
 						title: '请填写正确的手机号'
@@ -168,12 +202,11 @@
 				}
 				uni.showToast({
 					icon: 'none',
-					title: this.checkXie()
+					title: this.checkYinSiXieYi()
 				});
-				if(!this.checkXie()){
+				if(!this.checkYinSiXieYi()){
 					return
 				}
-			
 				let data={
 					username: this.$refs.phone.username,
 					code: this.$refs.yzmCode.code
@@ -183,55 +216,17 @@
 					title: data
 				});
 				this.$H.post('/zf/v1/user/login',data,false).then(res=>{
-							if (res.status) {
-								this.$store.commit('token',res.data[0].token)
-								this.getUserInfo()
-								uni.switchTab({
-									url: '/pages/tabbar/home/home'
-								})
-							}
+					if (res.status) {
+						this.$store.commit('token',res.data[0].token)
+						this.getUserInfo()
+						uni.switchTab({
+							url: '/pages/tabbar/home/home'
+						})
+					}
 				})
 			},
-			loginByUser() {
-				if(!this.$refs.userName.username){
-					uni.showToast({
-						icon: 'none',
-						title: '请填写账号'
-					});
-					return;
-				}
-				if (!/^1\d{10}$/.test(this.$refs.userName.username)) {
-					uni.showToast({
-						icon: 'none',
-						title: '请填写正确的手机号'
-					});
-					return;
-				}
-				if (this.$refs.passWord.password.length < 1) {
-					uni.showToast({
-						icon: 'none',
-						title: '请输入密码'
-					});
-					return;
-				}
-				if(!this.checkXie()){
-					return
-				}
-				let data={
-                    username: this.$refs.userName.username,
-                    password: this.$refs.passWord.password
-                }
-				this.$H.post('/zf/v1/user/login',data,false).then(res=>{
-                    if(res.status) {
-                        this.$store.commit('token',res.data[0].token)
-                        this.getUserInfo()
-                        uni.switchTab({
-                            url: '/pages/tabbar/home/home'
-                        })
-                    }
-				})
-			},
-			checkXie(){
+			// 检查是否勾选隐私协议
+			checkYinSiXieYi(){
 				let status=false
 				if(!this.checked){
 					uni.showToast({
@@ -248,6 +243,7 @@
 				}
 				return status
 			},
+			// 获取用户token
 			getUserInfo() {
 				this.$H.get('/zf/v1/user/attr/token',{},true).then(res=>{
 					if(res.status){
@@ -259,58 +255,6 @@
 						})
 					}
 				})
-			},
-		useWX() {
-				uni.login({
-					provider: 'weixin',
-					success(loginRes) {
-						let obj=loginRes.authResult
-						uni.getUserInfo({
-                          provider: 'weixin',
-                          success: function (infoRes) {
-                              that.$store.commit('isWx',true)
-                              that.$store.commit('ThreeInfo',infoRes.userInfo)
-                              that.checkUser(infoRes.userInfo)
-                          }
-                        });
-					}
-				});
-			},
-			useQQ() {
-				uni.login({
-					provider: 'qq',
-					success: function(loginRes) {
-						// 获取用户信息
-						uni.getUserInfo({
-							provider: 'qq',
-							success: function(infoRes) {
-								// 查看需要保存的信息
-								that.$store.commit('isWx',false)
-								that.$store.commit('ThreeInfo',infoRes.userInfo)
-								that.checkUser(infoRes.userInfo)
-				 		}
-				 	});
-					}
-				})
-			},
-			//判断当前元素是否注册过
-		async checkUser(obj,phoneInfo){
-				this.$H.get('/zf/v1/user/third/check',{openid:obj.openId},false).then(res=>{
-					if(res.status){
-						let token=res.data[0].token
-						if(token){
-							this.$store.commit('token',token)
-						 this.getUserInfo()
-							uni.switchTab({
-								url: '/pages/tabbar/home/home'
-							})
-						}else{
-							uni.navigateTo({
-								url: '/pages/auth/binding'
-							})
-						}
-					}
-				})			
 			},
 			tab(index) {
 				this.tabIndex = index;

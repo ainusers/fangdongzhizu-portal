@@ -135,7 +135,7 @@
 				
 			},
 			bindRegister() {
-				if (!/^1\d{10}$/.test(this.phone)) {
+				if (!/^1[3-9]\d{9}$$/.test(this.phone)) {
 					uni.showToast({
 						icon: 'none',
 						title: '请填写正确的手机号'
