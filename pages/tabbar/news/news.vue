@@ -180,7 +180,7 @@
 				this.$store.commit('chatList',chatList)
 				 uni.navigateTo({
 				 //            //保留当前页面，跳转到应用内的某个页面
-				            url: '/pages/tabbar/community/tools/news?userId='+info.targetName+'&chatId='+info.room+'&isNewsList=1'
+				            url: '/pages/tabbar/news/chat?userId='+info.targetName+'&chatId='+info.room+'&isNewsList=1'
 				        })
 			},
 		}

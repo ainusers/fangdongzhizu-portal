@@ -44,7 +44,7 @@
 			</view>
 		</view>
 		<view class="btns">
-			<view class="qbtn" @tap="bindOk">
+			<view class="qbtn" @tap="login">
 				<text class="btn-text-color fs30">确认</text>
 			</view>
 			<view class="flex ptb30 mlr20 aj-center">
@@ -77,6 +77,7 @@
 			clearInterval(timer);
 		},
 		methods: {
+			// 发送验证码
 			sendCode() {
 				if (this.phone.length < 1) {
 				  uni.showToast({
@@ -88,33 +89,33 @@
 				if (this.codeDuration > 0) {
 				  return;
 				}
-			checkExist(this.phone).then(res=>{
-				if(res.status){
-					// 获取验证码
-					this.$H.get('/zf/v1/code/sendCode',{
-						phone:this.phone
-					}).then(res => {
-						if (res.code === 200) {
-							this.$u.toast('发送成功');
-							this.codeDuration = 60;
-							// 倒计时
-							timer = setInterval(function() {
-								if(that.codeDuration>0){
-									that.codeDuration--;
-								}
-							  if (that.codeDuration == 0) {
-							    clearInterval(timer);
-							  }
-							}, 1000)
-						}
-					});
-				}else{
-					this.$u.toast('当前手机号还没注册，请填写正确手机号！');
-				}
-			})
-				
+				checkExist(this.phone).then(res=>{
+					if(res.status){
+						// 获取验证码
+						this.$H.get('/zf/v1/code/sendCode',{
+							phone:this.phone
+						}).then(res => {
+							if (res.code === 200) {
+								this.$u.toast('发送成功');
+								this.codeDuration = 60;
+								// 倒计时
+								timer = setInterval(function() {
+									if(that.codeDuration>0){
+										that.codeDuration--;
+									}
+									if (that.codeDuration == 0) {
+									  clearInterval(timer);
+									}
+								}, 1000)
+							}
+						});
+					}else{
+						this.$u.toast('当前手机号还没注册，请填写正确手机号！');
+					}
+				})
 			},
-			bindOk() {
+			// 登录
+			login() {
 				if (!/^1[3-9]\d{9}$/.test(this.phone)) {
 					uni.showToast({
 						icon: 'none',
@@ -148,7 +149,6 @@
 								url: '/pages/auth/login'
 							})
 						},2000)
-						
 					}else{
 						this.$u.toast(res.message);
 					}

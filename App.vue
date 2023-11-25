@@ -16,22 +16,15 @@ export default {
 		})
 	},
 	onShow: function() {
-		initStorestate()
-		var isLogin=false
+		initStorestate();
 		uni.getStorage({
-				key:'token',
-				success(res) {
-					if(res.data){
-						isLogin=true
-					}
+			key:'token',
+			success(res) {
+				if(res.data){
+					createlink()
 				}
-			})
-		setTimeout(function(){
-			if(isLogin){
-				createlink()
 			}
-		},100)
-		
+		})
 		uni.getStorage({
 			key:'unReadCount',
 			success(res){

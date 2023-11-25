@@ -395,9 +395,9 @@
 		},
 		onShow() {
 			// 创建会话链接
-			if (!this.$store.state.isChatStatus) {
-				createlink()
-			}
+			// if (!this.$store.state.isChatStatus) {
+			// 	createlink()
+			// }
 		},
 		methods: {
 			// 检查用户定位权限

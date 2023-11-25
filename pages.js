@@ -177,7 +177,7 @@ module.exports=()=>({
 			}
 		},
 		{
-			"path": "pages/tabbar/community/tools/news",
+			"path": "pages/tabbar/news/chat",
 			"style": {
 				"navigationBarTitleText": "",
 				"navigationBarTextStyle": "black",

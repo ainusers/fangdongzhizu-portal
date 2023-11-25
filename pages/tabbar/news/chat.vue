@@ -172,8 +172,8 @@
 
 <script>
 	let that=''
-	import {getPlatform,initStorestate,getStoreData,getuserInfo,dateTime1,spaceTime} from '../../../../utils/utils.js'
-	import {createlink} from '../../../../utils/request/createWebsocket.js'
+	import {getPlatform,initStorestate,getStoreData,getuserInfo,dateTime1,spaceTime} from '@/utils/utils.js'
+	import {createlink} from '@/utils/request/createWebsocket.js'
     import config from '@/utils/request/config.js'
 	export default {
 		data() {

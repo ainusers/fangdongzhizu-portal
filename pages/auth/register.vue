@@ -95,9 +95,7 @@
 			that=this
 		},
 		methods: {
-			checkboxChange(){
-				
-			},
+			checkboxChange(){},
 			sendCode() {
 				if (this.phone.length < 1) {
 				  uni.showToast({
@@ -132,7 +130,6 @@
 						return
 					}
 				})
-				
 			},
 			bindRegister() {
 				if (!/^1[3-9]\d{9}$$/.test(this.phone)) {
