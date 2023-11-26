@@ -188,7 +188,7 @@
 <script>
 	var that;
 	import {compressImg,attachUpload} from '@/utils/utils.js'
-	import {clearT} from '@/utils/request/createWebsocket.js'
+	import {clearHeartCheck} from '@/utils/request/createWebsocket.js'
     export default {
         data() {
             return {
@@ -298,11 +298,11 @@
 					}
 				});
 				//断开链接
-				clearT()
+				clearHeartCheck()
 				this.$store.commit('isChatStatus',false)
-					uni.navigateTo({
-						url: '/pages/auth/login'
-					})
+                uni.navigateTo({
+                    url: '/pages/auth/login'
+                })
 			}
         }
     }

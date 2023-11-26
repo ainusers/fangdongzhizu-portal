@@ -4,9 +4,9 @@
 			<uni-swipe-action>
 				<uni-list>
 					<block v-for="(item,index) in InfoList" :key="index">
-						 <uni-swipe-action-item :right-options="options"  @click="bindClick" @change="swipeChange($event, index)" :show="item.actionShow">
-								<uni-list-chat :avatar-circle="true" :title="item.fromName" :avatar="item.fromAvatar || '../../../static/me/avtar.png'" :note="item.data[item.data.length-1].typename" :time="item.data[item.data.length-1].datetime" :show-badge="true" :badge-text="item.unReadCount" clickable   @click="goInfo(item)"></uni-list-chat>
-							</uni-swipe-action-item>
+						<uni-swipe-action-item :right-options="options"  @click="bindClick" @change="swipeChange($event, index)" :show="item.actionShow">
+							<uni-list-chat :avatar-circle="true" :title="item.fromName" :avatar="item.fromAvatar || '../../../static/me/avtar.png'" :note="item.data[item.data.length-1].typename" :time="item.data[item.data.length-1].datetime" :show-badge="true" :badge-text="item.unReadCount" clickable   @click="goChat(item)"></uni-list-chat>
+						</uni-swipe-action-item>
 					</block>
 				</uni-list>
 			</uni-swipe-action>
@@ -19,7 +19,7 @@
 
 <script>
 	let that=''
-	import {initStorestate,setBarBadgeNum} from '../../../utils/utils.js'
+	import {initStorestate,setBarUnreadCount} from '../../../utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -77,12 +77,12 @@
 		onShow() {
 			var that=this
 			this.active = true;
-      let chatList=''
-      try{
-        chatList=JSON.parse(JSON.stringify(this.$store.state.chatList ))
-      }catch(e){
-        console.log(e)
-      }
+			let chatList=''
+			try{
+				chatList=JSON.parse(JSON.stringify(this.$store.state.chatList ))
+			}catch(e){
+				console.log(e)
+			}
 			if(chatList.length==0){
 				uni.getStorage({
 					key:'chatList',
@@ -92,29 +92,21 @@
 				})
 			}
 			if(!Array.isArray(chatList)){
-        try{
-          chatList=JSON.parse(chatList)
-        }catch(e){
-          console.log(e)
-        }
+				try{
+					chatList=JSON.parse(chatList)
+				}catch(e){
+					console.log(e)
+				}
 			}
 			that.InfoList=chatList.reverse()
 			this.initData(that.InfoList)
-		},
-			
-		onPullDownRefresh(){
-			setTimeout(function(){
-				uni.stopPullDownRefresh();
-			},2000)
-		},
-		onReachBottom(){
 		},
 		onHide() {
 			this.active = false;
 		},
 		methods: {
+			// 初始化会话列表
 			initData(arr){
-				// this.getHistory()
 				this.InfoList =arr.filter(item=>{
 					return item.currentName==this.$store.state.userInfo.username
 				})
@@ -130,16 +122,15 @@
 			//删除消息
 			bindClick(e){
 				this.actionShow='none'
-					let tempT=''
-					tempT=setInterval(()=>{
-						if(this.deleteItem){
-							this.InfoList.splice(this.deleteIndex,1)
-							let chatList=this.InfoList.reverse()
-							this.$store.commit('chatList',chatList)
-							clearInterval(tempT)
-						}
-					},500)
-					
+				let tempT=''
+				tempT=setInterval(()=>{
+					if(this.deleteItem){
+						this.InfoList.splice(this.deleteIndex,1)
+						let chatList=this.InfoList.reverse()
+						this.$store.commit('chatList',chatList)
+						clearInterval(tempT)
+					}
+				},500)
 			},
 			swipeChange(e,index){
 				this.InfoList[index].actionShow=e
@@ -150,21 +141,15 @@
 				}
 				this.deleteIndex=index
 			},
-			getHistory(roomId,item){
-				return this.$H.get('/zf/v1/const/community/offline/msg',null,true).then(res=>{
-					if(res.data.length>0){
-						return res.data
-					}	
-				})
-			},
-			goInfo(info){
+			// 进入消息聊天页面
+			goChat(info){
 				this.$store.commit('currentChatList',info)
 				initStorestate()
 				let count=info.unReadCount
-				let all =Number(this.$store.state.unReadCount)-count
+				let all = Number(this.$store.state.unReadCount)-count
 				this.$store.commit('unReadCount',all)
 				if(all>0){
-					setBarBadgeNum(all)
+					setBarUnreadCount(all)
 				}else{
 					uni.removeTabBarBadge({
 						index:3
@@ -178,10 +163,10 @@
 					}
 				}
 				this.$store.commit('chatList',chatList)
-				 uni.navigateTo({
-				 //            //保留当前页面，跳转到应用内的某个页面
-				            url: '/pages/tabbar/news/chat?userId='+info.targetName+'&chatId='+info.room+'&isNewsList=1'
-				        })
+				//保留当前页面，跳转到应用内的某个页面
+				uni.navigateTo({
+					url: '/pages/tabbar/news/chat?userId='+info.targetName+'&chatId='+info.room+'&isNewsList=1'
+				})
 			},
 		}
 	};

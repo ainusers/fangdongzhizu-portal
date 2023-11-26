@@ -13,12 +13,14 @@ const getStoreData = function(key) {
 		}
 	})
 }
+// 初始化内存数据
 const initStorestate = function() {
 	initKey.forEach(item => {
 		getStoreData(item)
 	})
 }
-const setBarBadgeNum=function(num){
+// 设置未读消息数量
+const setBarUnreadCount=function(num){
 	uni.setTabBarBadge({
 		index: 3,
 		text: num+'',
@@ -48,10 +50,6 @@ const attachUpload = function(imageList) {
 }
 //图片压缩
 const  compressImg = function(img, res) {
-	// uni.showLoading({
-	// 	mask: true,
-	// 	title: "图片压缩中..."
-	// })
 	let that = this
 	return new Promise((res) => {
 		// var localPath = plus.io.convertAbsoluteFileSystem(img);
@@ -70,9 +68,6 @@ const  compressImg = function(img, res) {
 						overwrite: true, //overwrite: (Boolean 类型 )覆盖生成新文件
 						// format:'jpg'   //format: (String 类型 )压缩转换后的图片格式
 					}, (event) => {
-						// setTimeout(() => {
-						// 	uni.hideLoading()
-						// }, 1000)s
 						let newImg = event.target;
 						console.log('压缩后图片信息:' + newImg); // 压缩后图片信息
 						res(newImg); //返回新的图片地址，在uploadFile之前接收
@@ -239,21 +234,18 @@ const tranfTime = function(autoTime) {
 		return hours + '小时前' 
 	}
 }
-//根据userid获取userid 信息
+//根据userid获取用户信息
 const getuserInfo = function(userId,type) {
 	let url='/zf/v1/user/id'
 	let data=''
 	if(type){
 		url='/zf/v1/user/name' //根据用户名查询信息
-		data={
-			username:userId
-		}
+		data={username:userId}
 	}else{
 		data={userId: userId}
 	}
 	return new Promise((resolve, reject) => {
-		
-		request.get(url,data, true).then(res => {
+		request.get(url, data, true).then(res => {
 			resolve(res)
 		})
 	})
@@ -315,7 +307,7 @@ export {
 	tranfTime,
 	getuserInfo,
 	compressImg,
-	setBarBadgeNum,
+	setBarUnreadCount,
 	showToastTit,
 	dateTime1,
 	spaceTime,

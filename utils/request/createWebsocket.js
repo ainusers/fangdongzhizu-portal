@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import store from '@/store/index.js';
 import config from '@/utils/request/config.js'
-import {getuserInfo,initStorestate,getStoreData,setBarBadgeNum} from '@/utils/utils.js'
+import {getuserInfo,initStorestate,getStoreData,setBarUnreadCount} from '@/utils/utils.js'
 let fromName=''
 let socketInstance=''
 let isChatStatus=''
@@ -37,30 +37,40 @@ const createlink = function createlink(){
 	// 接收消息
 	socketInstance.onMessage( async (res) => {
 		let data = eval("(" + res.data + ")");
-		let newchatList=store.state.chatList || []
-		 // 之前是否聊过天
-		isChatStatus=isChatBoolean(data);
-		// 如果没有聊过天
-		if(!isChatStatus){
+		console.log(data)
+		let chatList=store.state.chatList || []
+		// 判断是否聊过天
+		if(!isChat(data)){
 			let targetName=data.target  //目标对象的username  fromName为昵称
 			if(data.from != store.state.userInfo.username){
 				targetName=data.from
 			}
-			//初次收到消息要对当前对象添加fromName和fromAvtar  用于消息列表展示	
+			//初次收到消息要对当前对象添加fromName和fromAvtar  用于消息列表展示
 			addKey(data).then(res=>{
-				 newchatList.push({room:data.room,fromName:res.fromName,fromAvatar:res.fromAvatar,targetName:targetName,currentName:store.state.userInfo.username,unReadCount:0,data:[]})
-				return newchatList
+				chatList.push({room:data.room,fromName:res.fromName,fromAvatar:res.fromAvatar,targetName:targetName,currentName:store.state.userInfo.username,unReadCount:0,data:[]})
+				return chatList
 			}).then(res=>{
 				addInfoInit(data,res)
 			})
 		}else{
 			// 添加消息
-			addInfoInit(data,newchatList)
+			addInfoInit(data,chatList)
 		}
 	});
 }
-
-
+// 添加消息列表用户名称和头像
+function addKey(data){
+	let target=data.target
+	if(data.from != store.state.userInfo.username){
+		target=data.from
+	}
+	let obj={}
+	return getuserInfo(target,1).then(res=>{
+		obj.fromName=res.nickname
+		obj.fromAvatar=res.avatar
+		return obj
+	})
+}
 // 消息认证
 function authSocket() {
 	let that=this
@@ -78,7 +88,7 @@ function authSocket() {
 				socketInstance.send({
 					data: "{'type':'keep','from':"+store.state.userInfo.username+"}",
 					async success() {
-						// console.log('心跳检测')
+						console.log('心跳检测')
 					},
 					fail(e){
 						console.log(e)
@@ -93,7 +103,7 @@ function authSocket() {
 	}
 }
 // 是否聊过天
-function isChatBoolean(data){
+function isChat(data){
 	let temp=store.state.chatList
 	if(temp&&temp.length==0){return}
 	let arr=temp.filter(item=>{
@@ -104,96 +114,80 @@ function isChatBoolean(data){
 	return arr.length
 }
 // 添加消息
-function addInfoInit(data,newchatList){
-	console.log(newchatList)
-	let tempChatList=''
+function addInfoInit(data,chatList){
+	let msgList=''
 	switch (data.type) {
-		// case 'system':
-		// 	this.addSystemTextMsg(data);
-		// 	break;
 		case 'text':
-			tempChatList=addTextMsg(data,newchatList);
+			msgList=addTextMsg(data,chatList);
 			break;
 		case 'voice':
-			tempChatList=addVoiceMsg(data,newchatList);
+			msgList=addVoiceMsg(data,chatList);
 			break;
 		case 'img':
-			tempChatList=addImgMsg(data,newchatList);
+			msgList=addImgMsg(data,chatList);
 			break;
 	}
-	if(data.id&&data.from!=store.state.userInfo.username&&data.msg!='ping'&& data.type!='signal'){
-		if(tempChatList.length>0){
-			tempChatList.forEach(item=>{
+	if(data.id&&data.from!=store.state.userInfo.username){
+		if(msgList.length>0){
+			msgList.forEach(item=>{
 				if(item.room==data.room&&item.currentName==store.state.userInfo.username){
 					if(store.state.currentNameChat!=data.from){
-						setUnreadCountAll(data)
+						// 设置未读消息数
+						setMsgUnreadCount(data)
+						// 本条消息未读数+1
 						item.unReadCount+=1
 						getStoreData('unReadCount')
 						let count=store.state.unReadCount+=1
 						store.commit('unReadCount',count)
-						setBarBadgeNum(count)
+						// 设置Bar未读消息数
+						setBarUnreadCount(count)
 					}
 				}
 			})		
-		}	
+		}
 		uni.vibrateLong();
 	}
-	store.commit('chatList',tempChatList)	
+	store.commit('chatList',msgList)
 }
-function addKey(data){
-	let target=data.target
-	if(data.from != store.state.userInfo.username){
-		target=data.from
-	}
-	let obj={
-		
-	}
-	return getuserInfo(target,1).then(res=>{
-		console.log(res)
-		obj.fromName=res.nickname
-		obj.fromAvatar=res.avatar
-		return obj
-	})
-}	
-function setUnreadCountAll(data){
-	if(store.state.currentNameChat!=data.fromName){
+// 设置未读消息数
+function setMsgUnreadCount(data){
+	if(store.state.currentNameChat!=data.from){
 		let count=store.state.unReadCount++
 		store.commit('unReadCount',count)
 	}
 }
-
+// 添加文字消息
 function addTextMsg(data,chatList){
-	let typename=''
-	let currentNameChat=store.state.currentNameChat
 	for(let i=0;i<chatList.length;i++){
 		let item=chatList[i]
-			if(item.room==data.room&&item.currentName==store.state.userInfo.username){
-				if(data.msg.indexOf('alt')!=-1){
-					data.typename=infoImgInit(data)
-				}else{
-					data.typename=data.msg
-				}
-				item.data.push(data)
+		if(item.room==data.room&&item.currentName==store.state.userInfo.username){
+			// 适配表情包
+			if(data.msg.indexOf('alt')!=-1){
+				data.typename=infoImgInit(data)
+			}else{
+				data.typename=data.msg
 			}
+			item.data.push(data)
+		}
 	}
 	return chatList	
 }	
-
-function addImgMsg(msg,chatList){
-	msg.msg = setPicSize(msg.msg);
-	if(msg.id&&chatList.length>0){
+// 添加图片消息
+function addImgMsg(data,chatList){
+	data.msg = setPicSize(data.msg);
+	if(data.id&&chatList.length>0){
 		chatList.forEach(item=>{
-			if(item.room==msg.room&&item.currentName==store.state.userInfo.username){
+			if(item.room==data.room&&item.currentName==store.state.userInfo.username){
 				let date=new Date(item.datetime)
 				let y=date.getFullYear()
-				msg.typename="[图片]"
-				item.data.push(msg)
+				data.typename="[图片]"
+				item.data.push(data)
 			}
 		})
 	}
 	return chatList
 }
-
+// 添加语音消息
 function addVoiceMsg(data,chatList){
 	if(data.id){
 		chatList.forEach(item=>{
@@ -207,17 +201,15 @@ function addVoiceMsg(data,chatList){
 	}
 	return chatList
 }
-
 // 处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
 function createPromise(data){
 	return new Promise((resolve,reject)=>{
 		setTimeout(function(){
 			resolve(data)
 		},0)
-		
 	})
 }
-
+// 处理表情包
 function infoImgInit(data){
 	let	name=''
 	let alttext=data.msg.split('alt="')[1]
@@ -226,7 +218,7 @@ function infoImgInit(data){
 	} 
 	return name
 }
-
+// 设置图片大小
 function setPicSize(content){
 	// 让图片最长边等于设置的最大长度，短边等比例缩小，图片控件真实改变，区别于aspectFit方式。
 	let maxW = uni.upx2px(350);//350是定义消息图片最大宽度
@@ -238,8 +230,8 @@ function setPicSize(content){
 	}
 	return content;
 }
-
-const clearT=function clearT(){
+// 清除聊天心跳
+const clearHeartCheck=function clearHeartCheck(){
 	 clearInterval(heartCheck)
 }
 
@@ -247,5 +239,5 @@ export {
 	createlink,
 	heartCheck,
 	isCreate,
-	clearT
+	clearHeartCheck
 }

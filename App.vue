@@ -1,6 +1,6 @@
 <script>
-import {initStorestate,setBarBadgeNum} from '@/utils/utils.js'
-import {createlink,clearT} from '@/utils/request/createWebsocket.js'
+import {initStorestate} from '@/utils/utils.js'
+import {createlink,clearHeartCheck} from '@/utils/request/createWebsocket.js'
 
 export default {
 	onLaunch: function() {
@@ -16,7 +16,9 @@ export default {
 		})
 	},
 	onShow: function() {
+		// 初始化内存数据
 		initStorestate();
+		// 创建会话链接
 		uni.getStorage({
 			key:'token',
 			success(res) {
@@ -25,26 +27,12 @@ export default {
 				}
 			}
 		})
-		uni.getStorage({
-			key:'unReadCount',
-			success(res){
-				let count=res.data
-				if(count>0){
-					setBarBadgeNum(count)
-				}else{
-					uni.removeTabBarBadge({
-						index:3
-					})
-				}
-			}
-		})
 	},
 	onHide(){
-		clearT()
+		clearHeartCheck()
 	},
 	onUnload(){
-		clearT()
-		this.$store.commit('isChatStatus',false)
+		clearHeartCheck()
 	}
 };
 </script>

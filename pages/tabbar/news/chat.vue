@@ -29,15 +29,6 @@
 				<!-- 判断展示的内容类型 -->
 					<view v-if="msgList&&msgList.length>0">
 						<view class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
-							<!-- 系统消息 -->
-							<block v-if="row.type=='system'">
-								<view class="system">
-									<!-- 文字消息 -->
-									<view v-if="row.type=='system'" class="text">
-										{{row.msg}}
-									</view>
-								</view>
-							</block>
 							<!-- 用户消息 -->
 							<block v-if="row.type == 'text' || row.type == 'img' || row.type == 'voice'">
 								<!-- 1. 自己发出的消息 -->
@@ -46,28 +37,27 @@
 									<view class="time" v-if="row.datetime1">{{row.datetime1}}</view>
 									<view class="my_item">
 										<view class="left">
-												<!-- 文字消息 -->
-												<view v-if="row.type=='text'" class="bubble">
-													<rich-text :nodes="row.msg" ></rich-text>
-												</view>
-												<!-- 语言消息 -->
-												<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
-													<view class="length">{{JSON.parse(row.msg).length}}</view>
-													<view class="icon my-voice"></view>
-												</view>
-												<!-- 图片消息 -->
-												<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
-													<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}" mode="widthFix"></image>
-												</view>
+											<!-- 文字消息 -->
+											<view v-if="row.type=='text'" class="bubble">
+												<rich-text :nodes="row.msg" ></rich-text>
 											</view>
-											<!-- 右-头像 -->
-											<view class="right">
-												<view class="userImage">
-												  <u-avatar class="avatar" :src="$store.state.userInfo.avatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
-												
-												</view>
+											<!-- 语言消息 -->
+											<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
+												<view class="length">{{JSON.parse(row.msg).length}}</view>
+												<view class="icon my-voice"></view>
 											</view>
-										
+											<!-- 图片消息 -->
+											<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
+												<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}" mode="widthFix"></image>
+											</view>
+										</view>
+										<!-- 右-头像 -->
+										<view class="right">
+											<view class="userImage">
+											  <u-avatar class="avatar" :src="$store.state.userInfo.avatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
+											
+											</view>
+										</view>
 									</view>
 									</view>
 								<!-- 2. 别人发出的消息 -->
@@ -76,37 +66,34 @@
 									<view class="time" v-if="row.datetime1">{{row.datetime1}}</view>
 									<view class="other_item">
 										<view class="left">
-												<view class="userImage">
-												  <u-avatar class="avatar" :src="otherAvatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
-												</view>
-												<!-- <image :src="otherAvatar"></image> -->
+											<view class="userImage">
+											  <u-avatar class="avatar" :src="otherAvatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
 											</view>
-											<!-- 右-用户名称-时间-消息 -->
-											<view class="right">
-												<view class="username">
-													<view class="name">{{otherName}}</view> 
-												</view>
-												<!-- 文字消息 -->
-												<view v-if="row.type=='text'" class="bubble">
-													<rich-text :nodes="row.msg"></rich-text>
-												</view>
-												<!-- 语音消息 -->
-												<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
-													<view class="icon other-voice"></view>
-													<view class="length">{{JSON.parse(row.msg).length}}</view>
-												</view>
-												<!-- 图片消息 -->
-												<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
-													<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}"></image>
-												</view>
+										</view>
+										<!-- 右-用户名称-时间-消息 -->
+										<view class="right">
+											<view class="username">
+												<view class="name">{{otherName}}</view> 
 											</view>
-										
+											<!-- 文字消息 -->
+											<view v-if="row.type=='text'" class="bubble">
+												<rich-text :nodes="row.msg"></rich-text>
+											</view>
+											<!-- 语音消息 -->
+											<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row.msg,row.id)" :class="playMsgid == row.id?'play':''">
+												<view class="icon other-voice"></view>
+												<view class="length">{{JSON.parse(row.msg).length}}</view>
+											</view>
+											<!-- 图片消息 -->
+											<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row.msg)">
+												<image :src="JSON.parse(row.msg).url" :style="{'width': JSON.parse(row.msg).w + 'px','height': JSON.parse(row.msg).w + 'px'}"></image>
+											</view>
+										</view>
 									</view>
 								</view>
 							</block>
 						</view>
 					</view>
-					
 				</view>
 			</scroll-view>
 		</view>
@@ -173,7 +160,6 @@
 <script>
 	let that=''
 	import {getPlatform,initStorestate,getStoreData,getuserInfo,dateTime1,spaceTime} from '@/utils/utils.js'
-	import {createlink} from '@/utils/request/createWebsocket.js'
     import config from '@/utils/request/config.js'
 	export default {
 		data() {
@@ -187,7 +173,6 @@
 				scrollToView:'',
 				msgList:[],
 				msgImgList:[],
-				myuid:'zhangjun5',
 				//录音相关参数
 				// #ifndef H5
 				//H5不能录音
@@ -219,17 +204,6 @@
 						[{"url":"196.gif",alt:"[白眼笑]"},{"url":"197.gif",alt:"[不你不想]"},{"url":"198.gif",alt:"[打call]"},{"url":"199.gif",alt:"[滚]"},{"url":"200.gif",alt:"[敬礼]"},{"url":"201.gif",alt:"[考虑中]"},{"url":"202.gif",alt:"[狂笑]"},{"url":"203.gif",alt:"[没眼看]"},{"url":"204.gif",alt:"[摸鱼]"},{"url":"205.gif",alt:"[魔鬼笑]"},{"url":"206.gif",alt:"[哦]"},{"url":"207.gif",alt:"[让我康康]"},{"url":"208.gif",alt:"[猪头]"},{"url":"209.gif",alt:"[捂脸]"},{"url":"210.gif",alt:"[抠鼻]"},{"url":"211.gif",alt:"[鄙视]"},{"url":"212.gif",alt:"[勾引]"},{"url":"213.gif",alt:"[泪崩]"},{"url":"214.gif",alt:"[卖萌]"},{"url":"215.gif",alt:"[喷血]"},{"url":"216.gif",alt:"[骚扰]"},{"url":"217.gif",alt:"[托腮]"},{"url":"218.gif",alt:"[加油必胜]"},{"url":"219.gif",alt:"[加油抱抱]"}],
 						[{"url":"220.gif",alt:"[脑壳疼]"},{"url":"221.gif",alt:"[沧桑]"},{"url":"222.gif",alt:"[辣眼睛]"},{"url":"223.gif",alt:"[问号脸]"},{"url":"224.gif",alt:"[emm]"}]
 				],
-				//表情图片图床名称 ，由于我上传的第三方图床名称会有改变，所以有此数据来做对应，您实际应用中应该不需要
-				onlineEmoji:{"100.gif":"AbNQgA.gif","101.gif":"AbN3ut.gif","102.gif":"AbNM3d.gif","103.gif":"AbN8DP.gif","104.gif":"AbNljI.gif","105.gif":"AbNtUS.gif","106.gif":"AbNGHf.gif","107.gif":"AbNYE8.gif","108.gif":"AbNaCQ.gif","109.gif":"AbNN4g.gif","110.gif":"AbN0vn.gif","111.gif":"AbNd3j.gif","112.gif":"AbNsbV.gif","113.gif":"AbNwgs.gif","114.gif":"AbNrD0.gif","115.gif":"AbNDuq.gif","116.gif":"AbNg5F.gif","117.gif":"AbN6ET.gif","118.gif":"AbNcUU.gif","119.gif":"AbNRC4.gif","120.gif":"AbNhvR.gif","121.gif":"AbNf29.gif","122.gif":"AbNW8J.gif","123.gif":"AbNob6.gif","124.gif":"AbN5K1.gif","125.gif":"AbNHUO.gif","126.gif":"AbNIDx.gif","127.gif":"AbN7VK.gif","128.gif":"AbNb5D.gif","129.gif":"AbNX2d.gif","130.gif":"AbNLPe.gif","131.gif":"AbNjxA.gif","132.gif":"AbNO8H.gif","133.gif":"AbNxKI.gif","134.gif":"AbNzrt.gif","135.gif":"AbU9Vf.gif","136.gif":"AbUSqP.gif","137.gif":"AbUCa8.gif","138.gif":"AbUkGQ.gif","139.gif":"AbUFPg.gif","140.gif":"AbUPIS.gif","141.gif":"AbUZMn.gif","142.gif":"AbUExs.gif","143.gif":"AbUA2j.gif","144.gif":"AbUMIU.gif","145.gif":"AbUerq.gif","146.gif":"AbUKaT.gif","147.gif":"AbUmq0.gif","148.gif":"AbUuZV.gif","149.gif":"AbUliF.gif","150.gif":"AbU1G4.gif","151.gif":"AbU8z9.gif","152.gif":"AbU3RJ.gif","153.gif":"AbUYs1.gif","154.gif":"AbUJMR.gif","155.gif":"AbUadK.gif","156.gif":"AbUtqx.gif","157.gif":"AbUUZ6.gif","158.gif":"AbUBJe.gif","159.gif":"AbUdIO.gif","160.gif":"AbU0iD.gif","161.gif":"AbUrzd.gif","162.gif":"AbUDRH.gif","163.gif":"AbUyQA.gif","164.gif":"AbUWo8.gif","165.gif":"AbU6sI.gif","166.gif":"AbU2eP.gif","167.gif":"AbUcLt.gif","168.gif":"AbU4Jg.gif","169.gif":"AbURdf.gif","170.gif":"AbUhFS.gif","171.gif":"AbU5WQ.gif","172.gif":"AbULwV.gif","173.gif":"AbUIzj.gif","174.gif":"AbUTQs.gif","175.gif":"AbU7yn.gif","176.gif":"AbUqe0.gif","177.gif":"AbUHLq.gif","178.gif":"AbUOoT.gif","179.gif":"AbUvYF.gif","180.gif":"AbUjFU.gif","181.gif":"AbaSSJ.gif","182.gif":"AbUxW4.gif","183.gif":"AbaCO1.gif","184.gif":"Abapl9.gif","185.gif":"Aba9yR.gif","186.gif":"AbaFw6.gif","187.gif":"Abaiex.gif","188.gif":"AbakTK.gif","189.gif":"AbaZfe.png","190.gif":"AbaEFO.gif","191.gif":"AbaVYD.gif","192.gif":"AbamSH.gif","193.gif":"AbaKOI.gif","194.gif":"Abanld.gif","195.gif":"Abau6A.gif","196.gif":"AbaQmt.gif","197.gif":"Abal0P.gif","198.gif":"AbatpQ.gif","199.gif":"Aba1Tf.gif","200.png":"Aba8k8.png","201.png":"AbaGtS.png","202.png":"AbaJfg.png","203.png":"AbaNlj.png","204.png":"Abawmq.png","205.png":"AbaU6s.png","206.png":"AbaaXn.png","207.png":"Aba000.png","208.png":"AbarkT.png","209.png":"AbastU.png","210.png":"AbaB7V.png","211.png":"Abafn1.png","212.png":"Abacp4.png","213.png":"AbayhF.png","214.png":"Abag1J.png","215.png":"Aba2c9.png","216.png":"AbaRXR.png","217.png":"Aba476.png","218.png":"Abah0x.png","219.png":"Abdg58.png"},
-				//红包相关参数
-				windowsState:'',
-				redenvelopeData:{
-					rid:null,	//红包ID
-					from:null,
-					face:null,
-					blessing:null,
-					money:null
-				},
 				currentName:'',//当前登录人的name
 				chatList:[],//所有聊天记录的数据
 				isChat:false,//有没有曾经聊天过
@@ -256,6 +230,7 @@
 		},
 		onLoad(option) {
 			that=this
+			// 获取屏幕高度
 			uni.getSystemInfo({
 				success: (res) => {
 					that.screenH=res.safeArea.height
@@ -303,14 +278,6 @@
 				this.recordEnd(e);
 			})
 			// #endif
-			// 进入页面聊天链接
-			// createlink()
-		},
-		onShow(){
-			// this.scrollTop = 99999;
-		},
-		onHide(){
-			//关闭连接
 		},
 		onUnload(){
 			this.chatList=[]//所有聊天记录的数据
@@ -321,12 +288,12 @@
 			"$store.state.chatList":{
 				handler:(val,oldval)=>{
 					that.oldTime=new Date()
-				let tempVal='';
-				try{
-				  tempVal=JSON.parse(JSON.stringify(val))
-				 }catch(e){
-				   console.log(e)
-				 }
+					let tempVal='';
+					try{
+						tempVal=JSON.parse(JSON.stringify(val))
+					}catch(e){
+						console.log(e)
+					}
                     that.chatList=tempVal
                     if(Array.isArray(tempVal)){
                         tempVal.forEach(item=>{
@@ -347,7 +314,6 @@
                                 that.$nextTick(function() {
                                     that.scrollAnimation = true;
                                 });
-
                             });
                         }
                         that.getMsgList()
@@ -374,22 +340,22 @@
 				if(!data||data&&data.length==0){
 					return
 				}
-				 //聊天记录大于两条 当前 聊天记录和上一条聊天记录比较   如果小于两条聊天记录，与当前时间比较
-					that.oldTime=this.msgList[this.msgList.length-1].datetime
-					let currentT='';
-					let lastT='';
-					for(let i=0;i<=data.length-1;i++){
-						if(i-1<0){
+				//聊天记录大于两条 当前 聊天记录和上一条聊天记录比较   如果小于两条聊天记录，与当前时间比较
+				that.oldTime=this.msgList[this.msgList.length-1].datetime
+				let currentT='';
+				let lastT='';
+				for(let i=0;i<=data.length-1;i++){
+					if(i-1<0){
+						data[i].datetime1=dateTime1(data[i].datetime)
+					}else {
+						currentT=data[i].datetime;
+						lastT=data[i-1].datetime;
+						let f=	spaceTime(currentT,lastT);
+						if(f){
 							data[i].datetime1=dateTime1(data[i].datetime)
-						}else {
-							currentT=data[i].datetime;
-							lastT=data[i-1].datetime;
-							let f=	spaceTime(currentT,lastT);
-							if(f){
-								data[i].datetime1=dateTime1(data[i].datetime)
-							}
 						}
-					};
+					}
+				};
 				if(data.length>30){
 					that.historyArr=data.slice(0,data.length-29)
 					that.msgList=data.slice(data.length-30)
@@ -415,42 +381,6 @@
 				  }
 				})
 			},
-			// 创建websocket连接方法
-			initSocket() {
-				// 打开socket链接
-				uni.onSocketOpen(res=>{
-				})
-				// 监听socket关闭链接
-				this.$socketInstance.onClose(() => {
-					this.$store.commit('isChatStatus',false)
-				})
-			},
-			// 关闭socket
-			closeSocket() {
-				let that=this
-				this.$socketInstance.close({
-					success(res) {
-						that.$store.commit('isChatStatus',false)
-					},
-					fail(err) {
-					}
-				})
-			},
-			// 发送认证消息
-			authSocket() {
-				let that=this
-				if (this.$store.state.socket_status) {
-					this.$socketInstance.send({
-						data: "{'type':'signal','from':"+that.currentName+","+'room:'+that.chatId+"}",
-						async success() {
-							that.$store.commit('isChatStatus',true)
-						},
-						fail(err){
-							console.log(err)
-						}
-					});
-				}
-			},
 			// 触发滑动到顶部 (加载历史信息记录)
 			loadHistory(e){
 				if(this.isHistoryLoading){
@@ -458,7 +388,7 @@
 				}
 				this.isHistoryLoading = true; //参数作为进入请求标识，防止重复请求
 				this.scrollAnimation = false; //关闭滑动动画
-					// 消息列表
+				// 消息列表
 				let list =this.historyArr
 				let len=list.length
 				let startIndex=''
@@ -489,7 +419,6 @@
 			},
 			// 加载初始页面消息
 			getMsgList(){
-				// 消息列表
 				// 获取消息中的图片,并处理显示尺寸
 				let list=this.msgList
 				if(!list){
@@ -645,7 +574,6 @@
 			async sendText(){
 				getStoreData('isChatStatus')
 				if(this.$store.state.isChatStatus){
-					this.hideDrawer(); // 隐藏抽屉
 					if(!this.textMsg){
 						return
 					}
@@ -653,9 +581,6 @@
 					let msg = {text:content}
 					this.sendMsg(msg,'text');
 					this.textMsg = ''; // 清空输入框
-				}else{
-					 await createlink(1)
-					 // this.sendText()
 				}
 			},
 			// 替换表情符号为图片
@@ -683,13 +608,13 @@
 				if (this.$store.state.socket_status) {
 					switch (type) {
 						case 'text':
-						let data={
-							'type': type,
-							'msg':content.text,
-							'target': this.targetUserName,
-							'face':this.$store.state.userInfo.avatar,
-							"from":this.currentName,
-							"room":this.chatId
+							let data={
+								'type': type,
+								'msg':content.text,
+								'target': this.targetUserName,
+								'face':this.$store.state.userInfo.avatar,
+								"from":this.currentName,
+								"room":this.chatId
 							}
 							this.$socketInstance.send({
 								data: JSON.stringify(data),
@@ -737,16 +662,6 @@
 							break;
 					}
 				}
-			},
-			// 添加系统文字消息到列表
-			addSystemTextMsg(msg){
-				this.msgList.push(msg);
-			},
-			sendSystemMsg(content,type){
-				let lastid = this.msgList[this.msgList.length-1].id;
-				lastid++;
-				let row = {type:"system",msg:{id:lastid,type:type,content:content}};
-				this.screenMsg(row)
 			},
 			// 预览图片
 			showPic(msg){
@@ -834,11 +749,9 @@
 						},
 						filePath: res.tempFilePath,
 						header: {
-									// 'content-type': 'multipart/form-data',
-									'Authorization': 'Bearer ' + this.$store.state.token
-								},
+							'Authorization': 'Bearer ' + this.$store.state.token
+						},
 						success: uploadFileRes => {
-							
 							  let voice ='';
 							  try{
 								voice = JSON.parse(uploadFileRes.data).data[0];
