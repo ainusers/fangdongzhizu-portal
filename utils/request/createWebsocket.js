@@ -139,12 +139,12 @@ function addInfoInit(data,chatList){
 						getStoreData('unReadCount')
 						let count=store.state.unReadCount+=1
 						store.commit('unReadCount',count)
-						// 设置Bar未读消息数
-						setBarUnreadCount(count)
 					}
 				}
 			})		
 		}
+		// 设置Bar未读消息数
+		setBarUnreadCount();
 		uni.vibrateLong();
 	}
 	store.commit('chatList',msgList)

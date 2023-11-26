@@ -149,7 +149,7 @@
 				let all = Number(this.$store.state.unReadCount)-count
 				this.$store.commit('unReadCount',all)
 				if(all>0){
-					setBarUnreadCount(all)
+					setBarUnreadCount()
 				}else{
 					uni.removeTabBarBadge({
 						index:3

@@ -19,11 +19,11 @@ const initStorestate = function() {
 		getStoreData(item)
 	})
 }
-// 设置未读消息数量
+// 设置未读消息
 const setBarUnreadCount=function(num){
 	uni.setTabBarBadge({
 		index: 3,
-		text: num+'',
+		text: '',
 		success: (res) => {
 			console.log('成功')
 		},
