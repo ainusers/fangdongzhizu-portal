@@ -107,7 +107,7 @@ function isChat(data){
 	let temp=store.state.chatList
 	if(temp&&temp.length==0){return}
 	let arr=temp.filter(item=>{
-		if(item.room==data.room&&item.currentName==store.state.userInfo.username){
+		if(item.room==data.room){
 			return item
 		}
 	})
@@ -127,22 +127,18 @@ function addInfoInit(data,chatList){
 			msgList=addImgMsg(data,chatList);
 			break;
 	}
-	if(data.id&&data.from!=store.state.userInfo.username){
-		if(msgList.length>0){
-			msgList.forEach(item=>{
-				if(item.room==data.room&&item.currentName==store.state.userInfo.username){
-					if(store.state.currentNameChat!=data.from){
-						// 设置未读消息数
-						setMsgUnreadCount(data)
-						// 本条消息未读数+1
-						item.unReadCount+=1
-						getStoreData('unReadCount')
-						let count=store.state.unReadCount+=1
-						store.commit('unReadCount',count)
-					}
-				}
-			})		
-		}
+	if(data.id&&msgList.length>0){
+		msgList.forEach(item=>{
+			if(item.room==data.room){
+				// 设置未读消息数
+				setMsgUnreadCount(data)
+				// 本条消息未读数+1
+				item.unReadCount+=1
+				getStoreData('unReadCount')
+				let count=store.state.unReadCount+=1
+				store.commit('unReadCount',count)
+			}
+		})
 		// 设置Bar未读消息数
 		setBarUnreadCount();
 		uni.vibrateLong();
@@ -151,6 +147,7 @@ function addInfoInit(data,chatList){
 }
 // 设置未读消息数
 function setMsgUnreadCount(data){
+	// 如果当前没有和xx聊天则设置未读消息
 	if(store.state.currentNameChat!=data.from){
 		let count=store.state.unReadCount++
 		store.commit('unReadCount',count)
@@ -158,28 +155,28 @@ function setMsgUnreadCount(data){
 }
 // 添加文字消息
 function addTextMsg(data,chatList){
-	for(let i=0;i<chatList.length;i++){
-		let item=chatList[i]
-		if(item.room==data.room&&item.currentName==store.state.userInfo.username){
-			// 适配表情包
-			if(data.msg.indexOf('alt')!=-1){
-				data.typename=infoImgInit(data)
-			}else{
-				data.typename=data.msg
+	if(data.id&&chatList.length>0){
+		chatList.forEach(item=>{
+			if(item.room==data.room){
+				// 适配表情包
+				if(data.msg.indexOf('alt')!=-1){
+					data.typename=infoImgInit(data)
+				}else{
+					data.typename=data.msg
+				}
+				item.data.push(data)
 			}
-			item.data.push(data)
-		}
+		})
 	}
 	return chatList	
 }	
 // 添加图片消息
 function addImgMsg(data,chatList){
+	// 设置图片格式
 	data.msg = setPicSize(data.msg);
 	if(data.id&&chatList.length>0){
 		chatList.forEach(item=>{
-			if(item.room==data.room&&item.currentName==store.state.userInfo.username){
-				let date=new Date(item.datetime)
-				let y=date.getFullYear()
+			if(item.room==data.room){
 				data.typename="[图片]"
 				item.data.push(data)
 			}
@@ -189,11 +186,9 @@ function addImgMsg(data,chatList){
 }
 // 添加语音消息
 function addVoiceMsg(data,chatList){
-	if(data.id){
+	if(data.id&&chatList.length>0){
 		chatList.forEach(item=>{
-			if(item.room==data.room&&item.currentName==store.state.userInfo.username){
-				let date=new Date(item.datetime)
-				let y=date.getFullYear()
+			if(item.room==data.room){
 				data.typename='[语音]'
 				item.data.push(data)
 			}
@@ -201,14 +196,7 @@ function addVoiceMsg(data,chatList){
 	}
 	return chatList
 }
-// 处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
-function createPromise(data){
-	return new Promise((resolve,reject)=>{
-		setTimeout(function(){
-			resolve(data)
-		},0)
-	})
-}
+
 // 处理表情包
 function infoImgInit(data){
 	let	name=''
@@ -221,8 +209,8 @@ function infoImgInit(data){
 // 设置图片大小
 function setPicSize(content){
 	// 让图片最长边等于设置的最大长度，短边等比例缩小，图片控件真实改变，区别于aspectFit方式。
-	let maxW = uni.upx2px(350);//350是定义消息图片最大宽度
-	let maxH = uni.upx2px(350);//350是定义消息图片最大高度
+	let maxW = uni.upx2px(150);//150是定义消息图片最大宽度
+	let maxH = uni.upx2px(200);//200是定义消息图片最大高度
 	if(content.w>maxW||content.h>maxH){
 		let scale = Number(content.w)/Number(content.h);
 		content.w = scale>1?maxW:maxH*scale;

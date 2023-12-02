@@ -393,12 +393,7 @@
 				}
 			})
 		},
-		onShow() {
-			// 创建会话链接
-			// if (!this.$store.state.isChatStatus) {
-			// 	createlink()
-			// }
-		},
+		onShow() {},
 		methods: {
 			// 检查用户定位权限
 			// checkPosition() {

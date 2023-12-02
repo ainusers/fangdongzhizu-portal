@@ -1,5 +1,5 @@
 <template>
-	<view class="container" :class="{'active':active}">
+	<view class="container">
 		<u-cell-group v-if="InfoList&&InfoList.length>0">
 			<uni-swipe-action>
 				<uni-list>
@@ -31,7 +31,6 @@
 						}
 					 }
 				],
-				active: false,
 				avatar: "https://web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png",
 				iconStype:{
 					"margin-right":"15px",
@@ -66,8 +65,7 @@
 					setTimeout(function(){
 						let tempVal=JSON.parse(JSON.stringify(val))
 						if(tempVal instanceof Array){
-							that.InfoList=tempVal.reverse()
-							that.initData(that.InfoList)
+							that.initData(tempVal.reverse())
 						}
 					},100)	
 				},
@@ -75,14 +73,7 @@
 			}
 		},
 		onShow() {
-			var that=this
-			this.active = true;
-			let chatList=''
-			try{
-				chatList=JSON.parse(JSON.stringify(this.$store.state.chatList ))
-			}catch(e){
-				console.log(e)
-			}
+			let chatList=JSON.parse(JSON.stringify(this.$store.state.chatList))
 			if(chatList.length==0){
 				uni.getStorage({
 					key:'chatList',
@@ -92,22 +83,14 @@
 				})
 			}
 			if(!Array.isArray(chatList)){
-				try{
-					chatList=JSON.parse(chatList)
-				}catch(e){
-					console.log(e)
-				}
+				chatList=JSON.parse(chatList)
 			}
-			that.InfoList=chatList.reverse()
-			this.initData(that.InfoList)
-		},
-		onHide() {
-			this.active = false;
+			this.initData(chatList.reverse())
 		},
 		methods: {
 			// 初始化会话列表
 			initData(arr){
-				this.InfoList =arr.filter(item=>{
+				this.InfoList = arr.filter(item=>{
 					return item.currentName==this.$store.state.userInfo.username
 				})
 				let narr=this.InfoList
@@ -115,7 +98,6 @@
 					if(!item.fromName){
 						item.fromName=this.$store.state.userInfo.nickname
 						item.fromAvatar=this.$store.state.userInfo.avatar
-						
 					}
 				})
 			},

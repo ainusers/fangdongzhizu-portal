@@ -297,7 +297,7 @@
                     that.chatList=tempVal
                     if(Array.isArray(tempVal)){
                         tempVal.forEach(item=>{
-                            if(item.room==that.chatId&&item.currentName==that.$store.state.userInfo.username){
+                            if(item.room==that.chatId){
                                 if(!that.otherAvatar|| !that.otherAvatar){
                                     that.otherName=item.fromName
                                     that.otherAvatar=item.fromAvatar
