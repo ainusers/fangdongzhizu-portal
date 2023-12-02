@@ -392,6 +392,8 @@
 					that.savePhoneInfo(res.data)
 				}
 			})
+			// 创建会话链接
+			createlink()
 		},
 		onShow() {},
 		methods: {
