@@ -330,8 +330,7 @@
 				}
 			},
 			"$store.state.currentChatList":{
-				handler(newval,old){
-				}
+				handler(newval,old){}
 			}
 		},
 		methods:{
@@ -377,8 +376,7 @@
 			},
 			textInput(){
 				uni.getSelectedTextRange({
-				  success: res => {
-				  }
+				  success: res => {}
 				})
 			},
 			// 触发滑动到顶部 (加载历史信息记录)
@@ -450,8 +448,8 @@
 			// 处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
 			setPicSize(content){
 				// 让图片最长边等于设置的最大长度，短边等比例缩小，图片控件真实改变，区别于aspectFit方式。
-				let maxW = uni.upx2px(350);//350是定义消息图片最大宽度
-				let maxH = uni.upx2px(350);//350是定义消息图片最大高度
+				let maxW = uni.upx2px(150);//150是定义消息图片最大宽度
+				let maxH = uni.upx2px(200);//200是定义消息图片最大高度
 				if(content.w>maxW||content.h>maxH){
 					let scale = Number(content.w)/Number(content.h);
 					content.w = scale>1?maxW:maxH*scale;

@@ -393,7 +393,7 @@
 				}
 			})
 			// 创建会话链接
-			createlink()
+			// createlink()
 		},
 		onShow() {},
 		methods: {

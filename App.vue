@@ -29,10 +29,10 @@ export default {
 		})
 	},
 	onHide(){
-		// clearHeartCheck()
+		clearHeartCheck()
 	},
 	onUnload(){
-		// clearHeartCheck()
+		clearHeartCheck()
 	}
 };
 </script>

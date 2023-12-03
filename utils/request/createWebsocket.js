@@ -4,7 +4,6 @@ import config from '@/utils/request/config.js'
 import {getuserInfo,initStorestate,getStoreData,setBarUnreadCount} from '@/utils/utils.js'
 let fromName=''
 let socketInstance=''
-let isChatStatus=''
 let currentName=store.state.userInfo.username
 let heartCheck=''
 let isCreate=false
@@ -73,7 +72,6 @@ function addKey(data){
 }
 // 消息认证
 function authSocket() {
-	let that=this
 	// 发送认证消息
 	if (store.state.socket_status) {
 		socketInstance.send({
@@ -82,8 +80,8 @@ function authSocket() {
 				store.commit('isChatStatus',true)
 			},
 		});
-		clearInterval(heartCheck);
-		heartCheck = setInterval(function() {
+		// clearInterval(heartCheck);
+		heartCheck = setInterval(()=>{
 			if(store.state.token){
 				socketInstance.send({
 					data: "{'type':'keep','from':"+store.state.userInfo.username+"}",
@@ -129,7 +127,8 @@ function addInfoInit(data,chatList){
 	}
 	if(data.id&&msgList.length>0){
 		msgList.forEach(item=>{
-			if(item.room==data.room){
+			// 当前发消息的不是自己且当前没有在聊天
+			if(item.room==data.room&&data.from!=store.state.userInfo.username&&store.state.currentNameChat!=data.from){
 				// 设置未读消息数
 				setMsgUnreadCount(data)
 				// 本条消息未读数+1
@@ -137,10 +136,10 @@ function addInfoInit(data,chatList){
 				getStoreData('unReadCount')
 				let count=store.state.unReadCount+=1
 				store.commit('unReadCount',count)
+				// 设置Bar未读消息数
+				setBarUnreadCount();
 			}
 		})
-		// 设置Bar未读消息数
-		setBarUnreadCount();
 		uni.vibrateLong();
 	}
 	store.commit('chatList',msgList)
