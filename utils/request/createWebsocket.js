@@ -6,7 +6,6 @@ let fromName=''
 let socketInstance=''
 let currentName=store.state.userInfo.username
 let heartCheck=''
-let isCreate=false
 
 const createlink = function createlink(){
 	socketInstance = uni.connectSocket({
@@ -225,6 +224,5 @@ const clearHeartCheck=function clearHeartCheck(){
 export {
 	createlink,
 	heartCheck,
-	isCreate,
 	clearHeartCheck
 }
