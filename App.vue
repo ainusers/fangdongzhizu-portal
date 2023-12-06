@@ -18,14 +18,21 @@ export default {
 	onShow: function() {
 		// 初始化内存数据
 		initStorestate();
-		// 创建会话链接
+    //创建会话
 		uni.getStorage({
-			key:'token',
-			success(res) {
-				if(res.data){
+		  key:'token',
+		  success(res){
+			if(res.data){
+			  uni.getStorage({
+				key:'socket_status',
+				success(res) {
+				  if(!res.data){
 					createlink()
+				  }
 				}
+				  })
 			}
+		  }
 		})
 	},
 	onHide(){

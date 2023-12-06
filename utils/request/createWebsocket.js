@@ -5,7 +5,7 @@ import {getuserInfo,initStorestate,getStoreData,setBarUnreadCount} from '@/utils
 let fromName=''
 let socketInstance=''
 let currentName=store.state.userInfo.username
-let heartCheck=''
+var heartCheck=''
 let isCreate=false
 
 const createlink = function createlink(){
@@ -17,26 +17,37 @@ const createlink = function createlink(){
 	});
 	// 打开socket链接
 	socketInstance.onOpen((res) => {
-		console.log('打开链接');
 		// 存储消息状态
 		store.commit('socket_status',true)
 		// 发送消息认证
-		authSocket();
+		authSocketFn();
 	});
 	// 关闭socket链接
 	socketInstance.onClose(() => {
 		clearInterval(heartCheck);
 		store.commit('isChatStatus',false)
+    store.commit('socket_status',false)
+    uni.getStorage({
+			key:'token',
+			success(res) {
+        console.log(res)
+				if(res.data){
+          createlink()
+				}
+			}
+		})
+   
 	})
 	// socket链接错误
 	socketInstance.onError(() => {
+    console.log('链接错误吗')
 		clearInterval(heartCheck);
 		store.commit('isChatStatus',false)
+    store.commit('socket_status',false)
 	})
 	// 接收消息
 	socketInstance.onMessage( async (res) => {
 		let data = eval("(" + res.data + ")");
-		console.log(data)
 		let chatList=store.state.chatList || []
 		// 判断是否聊过天
 		if(!isChat(data)){
@@ -71,22 +82,28 @@ function addKey(data){
 	})
 }
 // 消息认证
-function authSocket() {
+let authSocketFn=function authSocket() {
 	// 发送认证消息
-	if (store.state.socket_status) {
+  let socket_status=''
+  uni.getStorage({
+    key:'socket_status',
+    success(res){
+      socket_status=res.data
+    }
+  })
+	if (socket_status || store.state.socketInstance) {
 		socketInstance.send({
 			data: "{'type':'signal','from':"+store.state.userInfo.username+"}",
 			async success() {
 				store.commit('isChatStatus',true)
 			},
 		});
-		// clearInterval(heartCheck);
+
 		heartCheck = setInterval(()=>{
 			if(store.state.token){
 				socketInstance.send({
 					data: "{'type':'keep','from':"+store.state.userInfo.username+"}",
 					async success() {
-						console.log('心跳检测')
 					},
 					fail(e){
 						console.log(e)
@@ -218,13 +235,24 @@ function setPicSize(content){
 	return content;
 }
 // 清除聊天心跳
-const clearHeartCheck=function clearHeartCheck(){
-	 clearInterval(heartCheck)
+const clearHeartCheck=function clearHeartCheck(type){
+  while(heartCheck>0){
+    clearInterval(heartCheck)
+    heartCheck--
+  }
+  if(type){
+    socketInstance.send({
+			data: "{'type':'close','from':"+store.state.userInfo.username+"}",
+			async success() {
+			},
+		});
+  }
 }
 
 export {
 	createlink,
 	heartCheck,
 	isCreate,
-	clearHeartCheck
+	clearHeartCheck,
+  authSocketFn
 }

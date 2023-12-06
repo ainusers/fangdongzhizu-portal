@@ -298,11 +298,12 @@
 					}
 				});
 				//断开链接
-				clearHeartCheck()
 				this.$store.commit('isChatStatus',false)
-                uni.navigateTo({
+        this.$store.commit('socket_status',false)
+         uni.navigateTo({
                     url: '/pages/auth/login'
-                })
+          })
+         	clearHeartCheck(1)       
 			}
         }
     }

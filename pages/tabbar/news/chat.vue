@@ -571,6 +571,7 @@
 			// 发送文字消息
 			async sendText(){
 				getStoreData('isChatStatus')
+        console.log(this.$store.state.isChatStatus)
 				if(this.$store.state.isChatStatus){
 					if(!this.textMsg){
 						return
@@ -603,7 +604,14 @@
 			// 发送消息
 			sendMsg(content,type){
 				// 如果socket状态正常连接，则可以发送消息
-				if (this.$store.state.socket_status) {
+        let socket_status=''
+        uni.getStorage({
+          key:'socket_status',
+          success(res){
+            socket_status=res.data
+          }
+        })
+				if (socket_status) {
 					switch (type) {
 						case 'text':
 							let data={
