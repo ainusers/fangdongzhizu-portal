@@ -1,6 +1,5 @@
 import App from './App.vue'
-// import Router from './router/index.js'
-// import { RouterMount } from 'uni-simple-router'
+
 // 挂载Vuex
 import store from './store';  
 Vue.prototype.$store = store;

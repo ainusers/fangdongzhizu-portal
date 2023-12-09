@@ -19,19 +19,6 @@ const initStorestate = function() {
 		getStoreData(item)
 	})
 }
-// 设置未读消息
-const setBarUnreadCount=function(num){
-	uni.setTabBarBadge({
-		index: 3,
-		text: '',
-		success: (res) => {
-			console.log('成功')
-		},
-		fail:(err)=>{
-			console.log(err)
-		}
-	});
-}
 // 批量上传接口
 const attachUpload = function(imageList) {
 	return new Promise((resolve, reject) => {
@@ -261,10 +248,10 @@ const getCount=function(){
 }
 //限制发布图文个数
 const checkPush=function(){
-				return request.get('/zf/v1/dynamic/push',{userId:store.state.userInfo.id},true).then(res=>{
-					return res.data[0]
-				})
-			}
+	return request.get('/zf/v1/dynamic/push',{userId:store.state.userInfo.id},true).then(res=>{
+		return res.data[0]
+	})
+}
 const showToastTit=function(tit){
 	uni.showToast({
 		title: tit,
@@ -274,21 +261,21 @@ const showToastTit=function(tit){
 }
 //检测是否注册过
 const checkExist=function(username){
-				return request.get('/zf/v1/user/exist',{username:username},false).then(res=>{
-					if(res.code==200){
-						return res.data[0]
-					}
-				})
-			}
+	return request.get('/zf/v1/user/exist',{username:username},false).then(res=>{
+		if(res.code==200){
+			return res.data[0]
+		}
+	})
+}
 //获取最新版本
 const getLatest= function(){
-			return request.get('/zf/v1/version/latest',{},true).then(res=>{
-				if(res.code==200){
-					let data=res.data[0]
-					return data
-				}
-			})
+	return request.get('/zf/v1/version/latest',{},true).then(res=>{
+		if(res.code==200){
+			let data=res.data[0]
+			return data
 		}
+	})
+}
 const MycheckUpdate=function(type){
 	// type =1 从关于我们点击的更新
 	if(!updateOnly||type==1){
@@ -307,7 +294,6 @@ export {
 	tranfTime,
 	getuserInfo,
 	compressImg,
-	setBarUnreadCount,
 	showToastTit,
 	dateTime1,
 	spaceTime,

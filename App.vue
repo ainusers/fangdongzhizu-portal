@@ -1,6 +1,4 @@
 <script>
-import {initStorestate} from '@/utils/utils.js'
-import {createlink,clearHeartCheck} from '@/utils/request/createWebsocket.js'
 
 export default {
 	onLaunch: function() {
@@ -15,32 +13,9 @@ export default {
 			}
 		})
 	},
-	onShow: function() {
-		// 初始化内存数据
-		initStorestate();
-    //创建会话
-		uni.getStorage({
-		  key:'token',
-		  success(res){
-			if(res.data){
-			  uni.getStorage({
-				key:'socket_status',
-				success(res) {
-				  if(!res.data){
-					createlink()
-				  }
-				}
-				  })
-			}
-		  }
-		})
-	},
-	onHide(){
-		clearHeartCheck()
-	},
-	onUnload(){
-		clearHeartCheck()
-	}
+	onShow(){},
+	onHide(){},
+	onUnload(){}
 };
 </script>
 

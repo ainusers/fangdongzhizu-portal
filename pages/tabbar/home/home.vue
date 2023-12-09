@@ -392,21 +392,8 @@
 					that.savePhoneInfo(res.data)
 				}
 			})
-			// 创建会话链接
-			// createlink()
 		},
-		onShow() {
-      //判断当前是否已经创建链接
-      uni.getStorage({
-        key:'socket_status',
-        complete(res) {
-          console.log(res)
-          if(!res.data){
-            createlink()
-          }
-        }
-		  })
-    },
+		onShow() {},
 		methods: {
 			// 检查用户定位权限
 			// checkPosition() {
