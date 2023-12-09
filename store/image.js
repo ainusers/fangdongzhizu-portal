@@ -1,8 +1,6 @@
 /**
  * 使用plus.zip.compressImage压缩,目前仅支持App端
  */
-
-
 let images = [];//压缩后的图片集合
 let max_width = 500;//若宽度大于此尺寸,触发压缩,否则使用原图,可自行修改
 

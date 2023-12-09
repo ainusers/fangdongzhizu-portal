@@ -85,13 +85,10 @@ module.exports=()=>({
 			"path": "pages/tabbar/home/home",
 			"style": {
 				"transparentTitle":  "always",
-				// "navigationBarTitleText": "",
 				"navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#f2f2f2",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light",
 				"backgroundColor":"#fff",
-				// "onReachBottomDistance":200,
 				"app-plus": {
 					"scrollIndicator": "none"
 				}
@@ -104,14 +101,7 @@ module.exports=()=>({
 			"path": "pages/tabbar/community/community",
 			"style": {
 				"transparentTitle":  "always",
-				// "navigationBarTitleText": "社区",
-				// "navigationBarTextStyle": "black",
-				// "navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": true
-				// "backgroundTextStyle":"light",
-				// "app-plus": {
-				// 	"scrollIndicator": "none"
-				// }
 			},
 			meta:{
 				needLogin:true
@@ -120,15 +110,11 @@ module.exports=()=>({
 		{
 			"path": "pages/tabbar/community/comment",
 			"style": {
-				// "transparentTitle":  "always",
 				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "图文详情",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
 				"backgroundTextStyle":"light"
-				// "app-plus": {
-				// 	"scrollIndicator": "none"
-				// }
 			},
 			meta:{
 				needLogin:true
@@ -219,7 +205,6 @@ module.exports=()=>({
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light",
 				"backgroundColor":"#fff",
-				// "onReachBottomDistance":200,
 				"app-plus": {
 					"scrollIndicator": "none",
 					"bounce": "none",

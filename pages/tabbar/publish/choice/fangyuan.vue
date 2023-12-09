@@ -613,7 +613,7 @@
 	import permision from "@/sdk/wa-permission/permission.js";
 	import {checkOpenGPSServiceByAndroid } from '@/utils/openSettings.js'
 	import image from '@/store/image.js';
-	import {Const} from "@/utils/const/Const.js";
+	import {constant} from "@/utils/constant.js";
 	import {
 		attachUpload,
 		htmlEncode,
@@ -635,7 +635,7 @@
 	export default {
 		data() {
 			return {
-				Blist:Const.Blist,
+				Blist:constant.Blist,
 				quarList: [],
 				onlyBei:true,
 				communityArr: [],

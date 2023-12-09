@@ -134,7 +134,6 @@
 
 <script>
 import screenTab from '@/components/common/screen-tab/screen-tab.vue'
-import { Const } from "@/utils/const/Const.js";
 import postList from '@/components/post-list/post-list.vue';
 import postListSkeleton from '@/components/post-list/post-list-skeleton.vue'
 import tuwenVue from '../../publish/choice/tuwen.vue';

@@ -339,7 +339,6 @@
 import houseListItem from '@/components/house-list/house-list-item.vue';
 import houseListItemSkeleton from '@/components/house-list/house-list-item-skeleton.vue'
 import loadinM from '@/components/common/modal/loading_model.vue'
-import { Const } from "@/utils/const/Const.js";
 import {editTitleText} from '@/utils/utils.js'
 let privateData = {
 	room: {

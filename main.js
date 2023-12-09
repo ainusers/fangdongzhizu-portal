@@ -1,9 +1,8 @@
 import App from './App.vue'
 
 // 挂载Vuex
-import store from './store';  
+import store from './store';
 Vue.prototype.$store = store;
-
 
 // config配置文件
 import config from './utils/request/config.js';  
@@ -16,7 +15,7 @@ Vue.prototype.$H = request;
 // 引入uview-ui框架
 import uView from "uview-ui";
 Vue.use(uView);
-// Vue.use(Router)
+
 // #ifndef VUE3
 import Vue from 'vue'
 Vue.config.productionTip = false
@@ -25,11 +24,7 @@ const app = new Vue({
 	...App,
 	store,
 })
-
 app.$mount()
-// #endif
-// #ifdef H5
-	// RouterMount(app,'#app');
 // #endif
 
 // #ifdef VUE3

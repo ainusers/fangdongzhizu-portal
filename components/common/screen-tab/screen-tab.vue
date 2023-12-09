@@ -87,7 +87,7 @@
 							<scroll-view class="scroll_view_list" scroll-y>
 								<view class="region_new_title">价格区间（元/月）</view>
 								<view class="region_new_cont f_r_s">
-									<block v-for="(item, index) in erHousePriceList" :key="index">
+									<block v-for="(item, index) in roomPriceRange" :key="index">
 										<view hover-class="none" form-type="submit"
 											:class="{screen_active: item.text == priceItem.text}" v-if="item.id"
 											@click="priceBtn(item.id,item.text,item.value, index)" class="region_new_list_item">{{ item.text }}
@@ -155,9 +155,9 @@
 </template>
 
 <script>
-	import {Const} from "@/utils/const/Const.js";
+	import {constant} from "@/utils/constant.js";
 	export default {
-		props: ["screenFormData", "from", "regionLeftList", "regionRightMap", "enterType", "erHousePriceList", "roomList","fixedContHeight"],
+		props: ["screenFormData", "from", "regionLeftList", "regionRightMap", "enterType", "roomPriceRange", "roomList","fixedContHeight"],
 		data() {
 			return {
 				areaName: '区域',
@@ -182,31 +182,31 @@
 				//更多type数组
 				moreType: [{
 						name: '租赁方式',
-						type: Const.leaseType,
+						type: constant.leaseType,
 						currentIndex: -1,
 						currentStr: ''
 					},
 					{
 						name: '有无电梯',
-						type: Const.noHas,
+						type: constant.noHas,
 						currentIndex: -1,
 						currentStr: ''
 					},
 					{
 						name: '供暖方式',
-						type: Const.heatingType,
+						type: constant.heatingType,
 						currentIndex: -1,
 						currentStr: ''
 					},
 					{
 						name: '房屋类型',
-						type: Const.houseType,
+						type: constant.houseType,
 						currentIndex: -1,
 						currentStr: ''
 					},
 				],
 				// 面积
-				areaLsit: Const.areaList,
+				areaLsit: constant.areaList,
 				areaLsitIndex: -1,
 				stationData: [], //地铁站数据
 				stationStr: '', //地铁站线
