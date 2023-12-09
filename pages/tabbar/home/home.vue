@@ -7,11 +7,9 @@
 		background: rgba(0, 0, 0, 0.5);
 		z-index: 999;
 	}
-
 	.main {
 		background: #5199ff;
 	}
-
 	.home_top {
 		margin-top: calc(var(--status-bar-height));
 		position: relative;
@@ -22,22 +20,18 @@
 		padding-bottom: 0;
 		align-items: center;
 		background: #ffffff;
-
 		.type {
 			width: 100%;
 			display: flex;
 			justify-content: center;
-
 			/deep/.u-scroll-box {
 				background: #ffffff;
 			}
 		}
 	}
-
 	/deep/.screen_view {
 		background: #ffffff;
 	}
-
 	.city {
 		position: absolute;
 		align-items: center;
@@ -45,7 +39,6 @@
 		display: inline-flex;
 		font-size: 32upx;
 	}
-
 	.city_icon {
 		margin-left: 10upx;
 		background: url(http://cdn.haofang.net/static/wxPlusApp/yjk/arr_down.png) no-repeat;
@@ -53,7 +46,6 @@
 		height: 8upx;
 		width: 13upx;
 	}
-
 	.search {
 		margin-top: 13px;
 		background: url(http://cdn.haofang.net/static/uuminiapp/pageNewUi/common_icon_sprites.png) no-repeat;
@@ -62,41 +54,33 @@
 		width: 40upx;
 		background-position: -30upx 0;
 	}
-
 	.u-tab-item .u-line-1 {
 		line-height: 0px !important;
 	}
-
 	.f_r_s {
 		display: flex;
 		flex-direction: row;
 	}
-
 	.home_nodata {
 		text-align: center;
 		color: #aaa;
 		padding: 10upx 0;
 	}
-
 	.scroll-view-height {
 		/* 页面高度减去包含状态栏、标题、tab组件的高度 */
 		height: calc(100vh - var(--status-bar-height) - 176rpx);
 		background-color: #ffffff;
 	}
-
 	.list-content {
 		height: calc(100vh - var(--status-bar-height) - 176rpx);
 	}
-
 	.list-swiper {
 		height: calc(100vh - var(--status-bar-height) - 176rpx);
 		background: #ffffff;
 	}
-
 	uni-swiper-item {
 		overflow: scroll;
 	}
-
 	.screen_fixed_list {
 		z-index: 100 !important;
 	}
@@ -122,14 +106,15 @@
 			<!-- 转租和直租 -->
 			<screenTab ref="screenTab" v-if="current == 0&&fixedContHeight || current == 1&&fixedContHeight"
 				:screenFormData="screenFormData" :roomList="roomList" :from="from" :regionLeftList="regionLeftList"
-				:regionRightMap="regionRightMap" :enterType="enterType" :erHousePriceList="erHousePriceList"
+				:regionRightMap="regionRightMap" :enterType="enterType" :roomPriceRange="roomPriceRange"
 				:fixedContHeight="fixedContHeight" :key="updateSearch" @screenBtn="screenBtn"
 				@regionLeftBtn="regionLeftBtn" @regionRightBtn="regionRightBtn" @confirmBtn="confirmBtn"
 				@roomConfirm="roomConfirm" @confirmPrice="confirmPrice">
 			</screenTab>
 			<!-- 换租的筛选 -->
-			<screenHuan v-if="current==2"></screenHuan>
+			<!-- <screenHuan v-if="current==2"></screenHuan> -->
 		</u-sticky>
+		
 		<!-- 内容区域 -->
 		<swiper class="list-swiper" @change="swipeIndex" :current="current" :duration="300" ref="listSwiper">
 			<swiper-item>
@@ -166,7 +151,6 @@
 								<house-list-item :item="item" :index="index"></house-list-item>
 							</block>
 						</view>
-
 						<view v-if="showModel&&houseList.length==0">
 							<block v-for="item in houseJia" :key="item">
 								<houseListItemSkeleton />
@@ -179,6 +163,7 @@
 				</scroll-view>
 			</swiper-item>
 		</swiper>
+		
 		<!-- 公告信息 -->
 		<u-popup v-model="showNotice" mode="center" border-radius="17" :closeable="true" :overlay="false"
 			:overlayOpacity="0.3">
@@ -188,38 +173,37 @@
 </template>
 
 <script>
-	import {
-		checkOpenGPSServiceByAndroid
-	} from '@/utils/openSettings.js'
-	import permision from "@/sdk/wa-permission/permission.js";
 	var that;
+	import {checkOpenGPSServiceByAndroid} from '@/utils/openSettings.js'
+	import permision from "@/sdk/wa-permission/permission.js";
 	import houseListItem from '@/components/house-list/house-list-item.vue';
 	import houseListItemSkeleton from '@/components/house-list/house-list-item-skeleton.vue';
 	import screenTab from '@/components/common/screen-tab/screen-tab.vue'
 	import screenHuan from '@/components/common/screen-tab/screen_huan.vue'
 	import LodingM from '@/components/common/modal/loading_model.vue'
 	import notice from '@/components/common/noticeModel.vue'
-	import {
-		Const
-	} from "@/utils/const/Const.js";
-	import {
-		MycheckUpdate,
-		getLatest
-	} from '@/utils/utils.js'
+	import {constant} from "@/utils/constant.js";
+	import {MycheckUpdate,getLatest} from '@/utils/utils.js'
+	
 	let privateData = {
-		room: {
+		// 区域
+		region: {
 			height: ""
 		},
+		// 价格
 		price: {
 			height: ""
 		},
-		more: {
+		// 户型
+		room: {
 			height: ""
 		},
-		region: {
+		// 更多
+		more: {
 			height: ""
 		}
 	};
+	
 	export default {
 		components: {
 			houseListItem,
@@ -232,14 +216,14 @@
 		data() {
 			return {
 				isGps: false,
-				showNotice: false,
-				noticeStr: '',
+				showNotice: false,	// 是否展示通知
+				noticeStr: '',	// 通知默认内容
 				triggered: false, //下拉刷新是否触发
 				houseJia: [1, 2, 3, 4, 5, 6, 7],
 				showModel: true,
 				updateSearch: 0,
 				houseList: [],
-				cityName: '',
+				cityName: '北京市',	// 城市名称
 				current: 0, //当前tab的下标
 				subleaseList: [], //转租
 				directList: [], //直租
@@ -292,40 +276,10 @@
 				regionRightMap: {
 					region: []
 				},
-				// 二手房价格
-				erHousePriceList: Const.CPriceScreen,
+				// 房屋价格区间
+				roomPriceRange: constant.roomPriceRange,
 				// 户型筛选
-				roomList: Const.roomList,
-				// 公寓出租方式
-				aparmentChuZuTypeList: Const.aparmentChuZuTypeList,
-				aparmentChuZuTypeListIndex: 0,
-				// 公寓更多
-				aparmentMoreMap: {
-					ruZhuTime: {
-						list: Const.aparmentRuZhuTimeList,
-						index: -1
-					},
-					room: {
-						list: Const.apartmentRoomList,
-						index: -1
-					},
-					area: {
-						list: Const.apartmentAreaList,
-						index: -1
-					},
-					sex: {
-						list: Const.aparmentSexList,
-						index: -1
-					},
-					specail: {
-						list: Const.apartmentSpecialList,
-						index: -1
-					}
-				},
-				priceItem: {
-					text: "不限",
-					id: ""
-				},
+				roomList: constant.roomList,
 				cityId: "1",
 				enterType: 'erHouse',
 				publish_type: 1, //(1：转租，2：直租，3：换租)
@@ -359,8 +313,7 @@
 			city: {
 				type: String,
 				default: ""
-			},
-			isLogin: false,
+			}
 		},
 		onLoad() {
 			that = this
