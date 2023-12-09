@@ -188,7 +188,6 @@
 <script>
 	var that;
 	import {compressImg,attachUpload} from '@/utils/utils.js'
-	import {clearHeartCheck} from '@/utils/request/createWebsocket.js'
     export default {
         data() {
             return {
@@ -284,7 +283,6 @@
 					key: 'token',
 					success: function (res) {
 						that.$store.commit('token','')
-						that.$store.commit('isChatStatus',false)
 					}
 				});
 				uni.removeStorage({
@@ -298,12 +296,9 @@
 					}
 				});
 				//断开链接
-				this.$store.commit('isChatStatus',false)
-        this.$store.commit('socket_status',false)
-         uni.navigateTo({
-                    url: '/pages/auth/login'
-          })
-         	clearHeartCheck(1)       
+				uni.navigateTo({
+					url: '/pages/auth/login'
+				})
 			}
         }
     }

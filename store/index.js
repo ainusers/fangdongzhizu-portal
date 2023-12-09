@@ -15,8 +15,6 @@ const store = new Vuex.Store({
 		isWx:false, //是否是微信授权
 		chatList:[],//聊天记录
 		currentChatList:[],//当前聊天记录
-		isChatStatus:false,//当前聊天连接的状态是否成功 给服务发送消息验证
-		socket_status:false,//当前socket 是否打开
 		otherName:'',
 		otherAvtar:'',
 		lock:0,//让watch监听只走一次
@@ -61,37 +59,6 @@ const store = new Vuex.Store({
 				key:'otherName',
 				data:obj
 			})
-		},
-		currentChatList(state,obj){
-			state.currentChatList=obj
-			uni.setStorage({
-				key:'currentChatList',
-				data:obj
-			})
-		},
-		socket_status(state,obj){
-			state.socket_status=obj
-			uni.setStorage({
-				key:'socket_status',
-				data:obj
-			})
-			
-		},
-		isChatStatus(state,obj){
-			state.isChatStatus=obj
-			uni.setStorage({
-				key:'isChatStatus',
-				data:obj
-			})
-		},
-		chatList(state,obj){
-			if(obj){
-				state.chatList=obj
-				uni.setStorage({
-					key:'chatList',
-					data:obj
-				})
-			}
 		},
 		userInfo(state,obj){
 			if(obj){

@@ -188,7 +188,6 @@
 </template>
 
 <script>
-	import '@/utils/request/createWebsocket.js'
 	import {
 		checkOpenGPSServiceByAndroid
 	} from '@/utils/openSettings.js'
@@ -203,9 +202,6 @@
 	import {
 		Const
 	} from "@/utils/const/Const.js";
-	import {
-		createlink
-	} from '@/utils/request/createWebsocket.js';
 	import {
 		MycheckUpdate,
 		getLatest
