@@ -184,6 +184,7 @@
 	import notice from '@/components/common/noticeModel.vue'
 	import {constant} from "@/utils/constant.js";
 	import {MycheckUpdate,getLatest} from '@/utils/utils.js'
+	import {connectSocket, stopHeartbeat} from '@/utils/scoket.js'
 	
 	let privateData = {
 		// 区域
@@ -342,7 +343,19 @@
 				}
 			})
 		},
-		onShow() {},
+		onShow() {
+			//判断当前是否已经创建链接
+			uni.getStorage({
+				key:'socketStatus',
+				complete(res) {
+					if (res.data === WebSocket.OPEN) {
+						return;
+					}
+					// 重新连接scoket
+					connectSocket();
+				}
+			})
+		},
 		methods: {
 			// 检查用户定位权限
 			// checkPosition() {

@@ -1,12 +1,12 @@
 import App from './App.vue'
 
 // 挂载Vuex
-import store from './store';
+import store from '@/store/index.js';
 Vue.prototype.$store = store;
 
 // config配置文件
 import config from '@/utils/config.js';  
-Vue.prototype.$c = config;
+Vue.prototype.$config = config;
 
 // 引入请求对象
 import request from '@/utils/request.js'

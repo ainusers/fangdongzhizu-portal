@@ -1,30 +1,35 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
-		userInfo:"",
+		socketStatus:'', //socket状态
+		
+		userInfo:'',
 		token:'',
 		messegeNum:[],
 		houseInfo:[],
 		communityInfo:{},
 		currentCity:'定位中...',//当前城市
-		ThreeInfo:{},
-		isWx:false, //是否是微信授权
 		chatList:[],//聊天记录
 		currentChatList:[],//当前聊天记录
-		otherName:'',
-		otherAvtar:'',
 		lock:0,//让watch监听只走一次
 		currentNameChat:'',//当前和谁正在聊天
-		unReadCount:0,//未读消息总数
 		version:'1.0.0',
 		address:{},
 		ispublishSub:false, //是否点击到过开启定位服务界面
 	},
 	mutations: {
+		// socket状态
+		socketStatus(state,obj){
+			state.socketStatus=obj
+			uni.setStorage({
+				key:'socketStatus',
+				data:obj
+			})	
+		},
+		
 		currentNameChat(state,obj){
 			state.currentNameChat=obj
 			uni.setStorage({
@@ -32,31 +37,10 @@ const store = new Vuex.Store({
 				data:obj
 			})
 		},
-		unReadCount(state,obj){
-			state.unReadCount=obj
-			uni.setStorage({
-				key:'unReadCount',
-				data:obj
-			})
-		},
 		lock(state,obj){
 			state.lock=obj
 			uni.setStorage({
 				key:'lock',
-				data:obj
-			})
-		},
-		otherAvtar(state,obj){
-			state.otherAvtar=obj
-			uni.setStorage({
-				key:'otherAvtar',
-				data:obj
-			})
-		},
-		otherName(state,obj){
-			state.otherName=obj
-			uni.setStorage({
-				key:'otherName',
 				data:obj
 			})
 		},
@@ -68,21 +52,13 @@ const store = new Vuex.Store({
 					data:obj
 				})
 			}
-			
 		},
 		token(state,token){
-				state.token=token
-				uni.setStorage({
-					key:'token',
-					data:token
-				})	
-		},
-		ThreeInfo(state,ThreeInfo){
-			state.ThreeInfo=ThreeInfo
+			state.token=token
 			uni.setStorage({
-				key:'ThreeInfo',
-				data:ThreeInfo
-			})		
+				key:'token',
+				data:token
+			})	
 		},
 		houseInfo(state,houseInfo){
 			if(houseInfo){
@@ -107,7 +83,6 @@ const store = new Vuex.Store({
 				down:0
 			};
 			uni.removeStorageSync("userInfo");
-			
 		},
 		communityInfo(state,communityInfo){
 			state.communityInfo=communityInfo
@@ -121,13 +96,6 @@ const store = new Vuex.Store({
 			uni.setStorage({
 				key:'currentCity',
 				data:city
-			})
-		},
-		isWx(state,isWx){
-			state.isWx=isWx
-			uni.setStorage({
-				key:'isWx',
-				data:isWx
 			})
 		},
 		address(state,address){
@@ -146,11 +114,11 @@ const store = new Vuex.Store({
 		}
 	},
 	getters:{
+		socketStatus:state=>{
+			return state.socketStatus
+		},
 		token:state=>{
 			return state.token
-		},
-		WXInfo:state=>{
-			return state.WXInfo
 		},
 		userInfo:state=>{
 			return state.userInfo

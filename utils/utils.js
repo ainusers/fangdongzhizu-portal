@@ -3,8 +3,8 @@ import request from '@/utils/request.js'
 import checkUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update.js'
 let updateOnly=false
 
-//获取本地存储中的数据
-const initKey = ['token', 'userInfo', 'houseInfo', 'communityInfo', 'ThreeInfo','chatList','currentChatList','otherName','otherAvtar','unReadCount'] //防止刷新vuex丢失数据 
+// 获取本地存储中的数据
+const initKey = ['socketStatus', 'token', 'userInfo', 'houseInfo', 'communityInfo','chatList','currentChatList'] //防止刷新vuex丢失数据
 const getStoreData = function(key) {
 	uni.getStorage({
 		key: key,
