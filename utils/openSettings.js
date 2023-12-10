@@ -1,5 +1,6 @@
 let system = uni.getSystemInfoSync(); // 获取系统信息
 import store from '@/store/index.js';
+
 /**检查是否打开GPS功能（android）**/
 export const checkOpenGPSServiceByAndroid = () => {
   if (system.platform === 'android') { // 判断平台
@@ -7,7 +8,7 @@ export const checkOpenGPSServiceByAndroid = () => {
   }else  if (system.platform == "ios") {
   //苹果打开对应的通知栏
   uni.showModal({
-	  title: "定位权限开启提醒",
+	   title: "定位权限开启提醒",
 	   content: "未开启定位，请前往设置！",
 	   confirmText: "去设置",
 	   success: function(res) {
@@ -15,8 +16,8 @@ export const checkOpenGPSServiceByAndroid = () => {
           var app = plus.ios.invoke("UIApplication", "sharedApplication");
           var setting = plus.ios.invoke("NSURL", "URLWithString:", "app-settings:");
           plus.ios.invoke(app, "openURL:", setting);
-           plus.ios.deleteObject(setting);
-           plus.ios.deleteObject(app);
+          plus.ios.deleteObject(setting);
+          plus.ios.deleteObject(app);
 	    }
       }
   });

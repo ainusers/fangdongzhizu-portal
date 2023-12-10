@@ -1,8 +1,8 @@
 import store from '@/store/index.js';
-import {get,post} from '@/utils/request/request.js'
-import request from './request/request.js'
+import request from '@/utils/request.js'
 import checkUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update.js'
 let updateOnly=false
+
 //获取本地存储中的数据
 const initKey = ['token', 'userInfo', 'houseInfo', 'communityInfo', 'ThreeInfo','chatList','currentChatList','otherName','otherAvtar','unReadCount'] //防止刷新vuex丢失数据 
 const getStoreData = function(key) {
@@ -13,7 +13,7 @@ const getStoreData = function(key) {
 		}
 	})
 }
-// 初始化内存数据
+// 持久化内存数据
 const initStorestate = function() {
 	initKey.forEach(item => {
 		getStoreData(item)
@@ -70,17 +70,17 @@ const  compressImg = function(img, res) {
 		});
 	})
 }
- const dataURLtoFile=function(dataurl, filename) {
-    var arr = dataurl.split(',')
-    var mime = arr[0].match(/:(.*?);/)[1]
-    var bstr = atob(arr[1])
-    var n = bstr.length
-    var u8arr = new Uint8Array(n)
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n)
-    }
-    return new File([u8arr], filename, { type: mime })
-  }
+ // const dataURLtoFile=function(dataurl, filename) {
+ //    var arr = dataurl.split(',')
+ //    var mime = arr[0].match(/:(.*?);/)[1]
+ //    var bstr = atob(arr[1])
+ //    var n = bstr.length
+ //    var u8arr = new Uint8Array(n)
+ //    while (n--) {
+ //      u8arr[n] = bstr.charCodeAt(n)
+ //    }
+ //    return new File([u8arr], filename, { type: mime })
+ //  }
 //编辑右上角按钮文字
 const editTitleText = function(txt) {
 	let pages = getCurrentPages();

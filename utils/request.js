@@ -1,5 +1,5 @@
-import config from './config.js';
-import store from '../../store/index.js';
+import config from '@/utils/config.js';
+import store from '@/store/index.js';
 export default {
 	request(options = {}) {
 		return new Promise((resolve, reject) => {

@@ -206,8 +206,8 @@
 					},
 				],
 				// 面积
-				areaLsit: constant.areaList,
-				areaLsitIndex: -1,
+				// areaLsit: constant.areaList,
+				// areaLsitIndex: -1,
 				stationData: [], //地铁站数据
 				stationStr: '', //地铁站线
 				// 价格列表的map

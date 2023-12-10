@@ -5,11 +5,11 @@ import store from './store';
 Vue.prototype.$store = store;
 
 // config配置文件
-import config from './utils/request/config.js';  
+import config from '@/utils/config.js';  
 Vue.prototype.$c = config;
 
 // 引入请求对象
-import request from './utils/request/request.js'
+import request from '@/utils/request.js'
 Vue.prototype.$H = request;
 
 // 引入uview-ui框架

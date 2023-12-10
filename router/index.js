@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import store from '../store/index.js'
+import store from '@/store/index.js'
 import Router from 'uni-simple-router'
 import pages from '../pages.js'
-import {getStoreData} from '../utils/utils.js'
+import {getStoreData} from '@/utils/utils.js'
 Vue.use(Router)
 
 const myRouter=pages().pages.map(item=>({

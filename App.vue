@@ -1,4 +1,5 @@
 <script>
+import {initStorestate} from '@/utils/utils.js'
 
 export default {
 	onLaunch: function() {
@@ -13,7 +14,10 @@ export default {
 			}
 		})
 	},
-	onShow(){},
+	onShow(){
+		// 持久化内存数据
+		initStorestate();
+	},
 	onHide(){},
 	onUnload(){}
 };

@@ -353,7 +353,7 @@
 						</view>
 						
 						<view v-else>
-							<u-select v-model="pickerShow" mode="mutil-column-auto" :list="Blist" @confirm="regionConfirm"></u-select>
+							<u-select v-model="pickerShow" mode="mutil-column-auto" :list="BJlist" @confirm="regionConfirm"></u-select>
 						</view>
 						<!-- 小区名称 -->
 						<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150"
@@ -635,7 +635,7 @@
 	export default {
 		data() {
 			return {
-				Blist:constant.Blist,
+				BJlist:constant.BJlist,
 				quarList: [],
 				onlyBei:true,
 				communityArr: [],

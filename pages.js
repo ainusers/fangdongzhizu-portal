@@ -188,15 +188,6 @@ module.exports=()=>({
 			}
 		},
 		{
-			"path": "pages/tabbar/aftersales/index",
-			"style": {
-				"transparentTitle":  ""
-			},
-			meta:{
-				needLogin:true
-			}
-		},
-		{
 			"path": "pages/tabbar/me/tools/check",
 			"style": {
 				"navigationBarTitleText": "房源信息",

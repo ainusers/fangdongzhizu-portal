@@ -141,12 +141,6 @@
 
    	},
    	{
-   		"path": "pages/tabbar/aftersales/index",
-   		"style": {
-   			"transparentTitle":  ""
-   		}
-   	},
-   	{
    		"path": "pages/tabbar/me/tools/check",
    		"style": {
    			"navigationBarTitleText": "房源信息",

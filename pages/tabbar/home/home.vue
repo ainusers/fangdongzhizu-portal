@@ -406,8 +406,8 @@
 			// 获取公告
 			getNotice() {
 				this.$H.get('/zf/v1/notice', {}, true).then(res => {
-					if (200 == res.code) {
-						this.noticeStr = res.data[0].notice
+					if (200 == res.code && res.data.getNotice) {
+						this.noticeStr = res.data.getNotice
 						this.showNotice = true
 					}
 				})
