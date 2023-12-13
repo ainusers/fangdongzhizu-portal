@@ -184,7 +184,7 @@
 	import notice from '@/components/common/noticeModel.vue'
 	import {constant} from "@/utils/constant.js";
 	import {MycheckUpdate,getLatest} from '@/utils/utils.js'
-	import {connectSocket, stopHeartbeat} from '@/utils/scoket.js'
+	import {connectSocket, stopHeartbeat, startHeartbeat} from '@/utils/scoket.js'
 	
 	let privateData = {
 		// 区域
@@ -349,10 +349,13 @@
 				key:'socketStatus',
 				complete(res) {
 					if (res.data === WebSocket.OPEN) {
-						return;
+						stopHeartbeat();
+						// 发送心跳以保持连接活跃
+						startHeartbeat();
+					} else {
+						// 重新连接scoket
+						connectSocket();
 					}
-					// 重新连接scoket
-					connectSocket();
 				}
 			})
 		},

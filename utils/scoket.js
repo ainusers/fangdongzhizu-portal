@@ -1,10 +1,10 @@
 import store from '@/store/index.js';
 
-let socketInstance=''// socket对象
-let heartbeatInterval=''// 心跳定时任务对象
+let socketInstance = '';// socket对象
+let heartbeatInterval = '';// 心跳定时任务对象
 
 // 创建连接
-let connectSocket = function connectSocket() {
+function connectSocket() {
 	socketInstance = uni.connectSocket({
 		url: 'ws://localhost:31780',
 		success(data) {
@@ -20,9 +20,9 @@ let connectSocket = function connectSocket() {
 			// 将socket对象存放本地内存
 			store.commit('socketStatus',socketInstance.readyState)
 			// 发送认证
-			
+			sendMsg('','auth');
 			// 开始心跳检测
-			heartbeatCheck();
+			startHeartbeat();
 		}
 	})
 	socketInstance.onMessage((res) => {
@@ -31,39 +31,35 @@ let connectSocket = function connectSocket() {
 		// 在这里对收到的数据进行处理
 		handleMessage(event);
 	})
-	socketInstance.onMessage((res) => {
-		console.log('socket连接发生错误：', res);
-		// 停止心跳检测
-		stopHeartbeat();
+	socketInstance.onClose(() => {
+		console.log('socket连接已关闭！');
 		// 重新连接
 		reconnect();
 	})
-	socketInstance.onClose(() => {
-		console.log('socket连接已关闭！');
-		// 停止心跳检测
-		stopHeartbeat();
-		// 重新连接
-		reconnect();
+	socketInstance.onError((res) => {  
+		console.log('socket连接发生错误：', res);  
+		// 重新连接  
+		reconnect();  
 	})
 }
 
 // 发送心跳
-let heartbeatCheck = function startHeartbeat() {
+function startHeartbeat() {
 	heartbeatInterval = setInterval(() => {
 		socketInstance.send({
 			data: "{'type':'keep','from':"+store.state.userInfo.username+"}",
 			async success() {
-				console.log('心跳检测')
+				console.log('发送心跳检测成功')
 			},
 			fail(e){
 				console.log('发送心跳检测失败')
 			}
 		});
-	}, 5000); // 例如，每5秒发送一次心跳消息  
+	}, 5000); // 每5秒发送一次心跳消息
 }
 
 // 停止心跳
-let stopHeartbeat = function stopHeartbeat() {
+function stopHeartbeat() {
 	// 清除定时器，停止发送心跳消息 
 	clearInterval(heartbeatInterval);
 }
@@ -72,6 +68,9 @@ let stopHeartbeat = function stopHeartbeat() {
 function reconnect() {
 	// 如果重连成功则退出
 	if(socketInstance.readyState === WebSocket.OPEN) {
+		stopHeartbeat();
+		// 发送心跳以保持连接活跃
+		startHeartbeat();
 		return;
 	}
 	// 停止发送心跳消息
@@ -173,6 +172,6 @@ function sendMsg(content,type){
 }
 export {
 	connectSocket,
-	heartbeatCheck,
+	startHeartbeat,
 	stopHeartbeat
 }
