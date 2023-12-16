@@ -184,7 +184,7 @@
 	import notice from '@/components/common/noticeModel.vue'
 	import {constant} from "@/utils/constant.js";
 	import {MycheckUpdate,getLatest} from '@/utils/utils.js'
-	import {connectSocket, stopHeartbeat, startHeartbeat} from '@/utils/scoket.js'
+	import {connectSocket, reconnectSocket} from '@/utils/scoket.js'
 	
 	let privateData = {
 		// 区域
@@ -342,18 +342,15 @@
 					that.savePhoneInfo(res.data)
 				}
 			})
-		},
-		onShow() {
-			//判断当前是否已经创建链接
+			// 登录后链接scoket
 			uni.getStorage({
 				key:'socketStatus',
 				complete(res) {
 					if (res.data === WebSocket.OPEN) {
-						stopHeartbeat();
-						// 发送心跳以保持连接活跃
-						startHeartbeat();
+						// 重新链接scoket
+						reconnectSocket();
 					} else {
-						// 重新连接scoket
+						// 链接scoket
 						connectSocket();
 					}
 				}

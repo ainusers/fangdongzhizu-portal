@@ -3,7 +3,7 @@ import store from '@/store/index.js';
 let socketInstance = '';// socket对象
 let heartbeatInterval = '';// 心跳定时任务对象
 
-// 创建连接
+// 创建连接 
 function connectSocket() {
 	socketInstance = uni.connectSocket({
 		url: 'ws://localhost:31780',
@@ -34,12 +34,12 @@ function connectSocket() {
 	socketInstance.onClose(() => {
 		console.log('socket连接已关闭！');
 		// 重新连接
-		reconnect();
+		reconnectSocket();
 	})
 	socketInstance.onError((res) => {  
 		console.log('socket连接发生错误：', res);  
 		// 重新连接  
-		reconnect();  
+		reconnectSocket();  
 	})
 }
 
@@ -53,9 +53,11 @@ function startHeartbeat() {
 			},
 			fail(e){
 				console.log('发送心跳检测失败')
+				// 重新链接scoket
+				reconnectSocket();
 			}
 		});
-	}, 5000); // 每5秒发送一次心跳消息
+	}, 10000); // 每10秒发送一次心跳消息
 }
 
 // 停止心跳
@@ -64,21 +66,30 @@ function stopHeartbeat() {
 	clearInterval(heartbeatInterval);
 }
 
-// 重新链接
+// 重新链接socket
+function reconnectSocket() {
+	// TODO 需要增加定时器不断进行断线重连
+	reconnect();
+}
+
+// 重新链接socket调用方法
 function reconnect() {
-	// 如果重连成功则退出
-	if(socketInstance.readyState === WebSocket.OPEN) {
-		stopHeartbeat();
-		// 发送心跳以保持连接活跃
-		startHeartbeat();
-		return;
-	}
 	// 停止发送心跳消息
 	stopHeartbeat();
-	setTimeout(() => { // 等待一段时间后重新连接WebSocket连接  
-		connectSocket();
-		startHeartbeat(); // 重新发送心跳消息  
-	}, 5000); // 例如，每5秒尝试重新连接一次（可根据实际情况调整）  
+	// 如果重连成功则退出
+	socketInstance = uni.connectSocket({
+		url: 'ws://localhost:31780',
+		success(data) {
+			console.log('重新连接IM服务成功')
+			// 发送心跳以保持连接活跃
+			startHeartbeat();
+		},
+		fail(data) {
+			console.log('重新连接IM服务失败')
+			// 重新连接scoket
+			connectSocket();
+		}
+	})
 }
 
 // 处理消息
@@ -173,5 +184,6 @@ function sendMsg(content,type){
 export {
 	connectSocket,
 	startHeartbeat,
-	stopHeartbeat
+	stopHeartbeat,
+	reconnectSocket
 }
