@@ -302,6 +302,7 @@
 	// 页面传值
 	 onLoad(options) {
 		this.houseId=options.id
+		this.targetId=options.userId
 	},
 	onShow() {
 		that=this
@@ -309,10 +310,11 @@
 	},
     data() {
       return {
-		  houseId:'',//房源id
-		  detailData:'',
-		  markers:[],
-		  isMap:true,
+		houseId:'',//房源id
+		targetId:'',//房东用户id
+		detailData:'',
+		markers:[],
+		isMap:true,
 		isOtherR:false,
         sourceTypeId: 2201, // 数据采集 - lh
         shareOption: {},
@@ -464,7 +466,7 @@
 				let otherInfo=''
 				if(item.tenantStr){
 					otherInfo=item.tenantStr.split('-')
-				}				
+				}
 				let money=''
 				let sex=''
 				if(otherInfo[0]&&otherInfo[0].indexOf('未')!=-1){
@@ -499,16 +501,16 @@
 			// 1 举报  2 收藏  3立即沟通
 			switch (index){
 				case 2:
-				// this.detailData.collection==0?params['collection']=1:params['collection']=0
-				this.statistics(params)
-				break;
+					this.statistics(params)
+					break;
 				case 3:
-				params['chat']=1
-				var chatId = this.$store.state.userInfo.id+''+this.houseId
-				uni.navigateTo({
-					url:'/pages/tabbar/news/chat?houseId='+this.houseId+'&userId='+this.detailData.username+'&chatId='+chatId
-				})
-				break;
+					params['chat']=1
+					// 房间id = 用户id + 房东id
+					let chatId = this.$store.state.userInfo.id+''+this.targetId
+					uni.navigateTo({
+						url:'/pages/tabbar/news/chat?userId='+this.detailData.username+'&chatId='+chatId
+					})
+					break;
 			}
 		},
 		statistics(params){

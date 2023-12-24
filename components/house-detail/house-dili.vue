@@ -19,7 +19,6 @@
 		mounted(){
 			console.log(this.markers)
 		},
-		
 		onLoad() {
 			this.markers[0].latitude=this.latitude
 			this.markers[0].longitude=this.longitude

@@ -525,7 +525,7 @@ export default {
 							title: '已加载完成'
 						});
 					}
-					that.$store.commit('houseInfo',that.houseList)
+					// that.$store.commit('houseInfo',that.houseList)
 				}else{
 					uni.showToast({
 						icon:'none',
@@ -577,7 +577,7 @@ export default {
 					});
 				}
 				res.data.length<10?this.loadStatus='end':this.loadStatus='loadmore'
-				that.$store.commit('houseInfo',that.houseList)
+				// that.$store.commit('houseInfo',that.houseList)
 				// 下架后关闭管理操作
 				this.isUpdate=false
 				if(this.$refs.ListItem&&this.$refs.ListItem.length>0){

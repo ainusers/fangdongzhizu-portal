@@ -75,9 +75,9 @@
 
 <script>
 	var that, timer;
-	import phoneTab from '../../components/common/form/phone_tab.vue'
-	import pwdTab from '../../components/common/form/pwd_tab.vue'
-	import yzmCode from'../../components/common/form/yzm_code.vue'
+	import phoneTab from '@/components/common/form/phone_tab.vue'
+	import pwdTab from '@/components/common/form/pwd_tab.vue'
+	import yzmCode from '@/components/common/form/yzm_code.vue'
 	import {MycheckUpdate} from '@/utils/utils.js'
 	export default {
 		data() {
@@ -161,7 +161,7 @@
 					return;
 				}
 				if(!this.checkYinSiXieYi()){
-					return
+					return;
 				}
 				let data={
 			        username: this.$refs.userName.username,
@@ -247,11 +247,11 @@
 			getUserInfo() {
 				this.$H.get('/zf/v1/user/attr/token',{},true).then(res=>{
 					if(res.status){
-						that.userInfo = res.data[0].user;
-						that.$store.commit('userInfo',that.userInfo)
+						this.userInfo = res.data[0].user;
+						this.$store.commit('userInfo',this.userInfo)
 						uni.setStorage({
 							key:'userInfo',
-							data:that.userInfo
+							data:this.userInfo
 						})
 					}
 				})

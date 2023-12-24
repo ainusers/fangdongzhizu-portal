@@ -5,17 +5,17 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	state: {
 		socketStatus:'', //socket状态
-		
 		userInfo:'',
 		token:'',
 		messegeNum:[],
-		houseInfo:[],
+		// houseInfo:[],
 		communityInfo:{},
 		currentCity:'定位中...',//当前城市
 		chatList:[],//聊天记录
 		currentChatList:[],//当前聊天记录
 		lock:0,//让watch监听只走一次
 		currentNameChat:'',//当前和谁正在聊天
+		unReadCount:0,//未读消息总数
 		version:'1.0.0',
 		address:{},
 		ispublishSub:false, //是否点击到过开启定位服务界面
@@ -29,11 +29,17 @@ const store = new Vuex.Store({
 				data:obj
 			})	
 		},
-		
 		currentNameChat(state,obj){
 			state.currentNameChat=obj
 			uni.setStorage({
 				key:'currentNameChat',
+				data:obj
+			})
+		},
+		unReadCount(state,obj){
+			state.unReadCount=obj
+			uni.setStorage({
+				key:'unReadCount',
 				data:obj
 			})
 		},
@@ -60,14 +66,30 @@ const store = new Vuex.Store({
 				data:token
 			})	
 		},
-		houseInfo(state,houseInfo){
-			if(houseInfo){
-				state.houseInfo=houseInfo
+		// houseInfo(state,houseInfo){
+		// 	if(houseInfo){
+		// 		state.houseInfo=houseInfo
+		// 		uni.setStorage({
+		// 			key:'houseInfo',
+		// 			data:houseInfo
+		// 		})
+		// 	}
+		// },
+		chatList(state,obj){
+			if(obj){
+				state.chatList=obj
 				uni.setStorage({
-					key:'houseInfo',
-					data:houseInfo
+					key:'chatList',
+					data:obj
 				})
 			}
+		},
+		currentChatList(state,obj){
+			state.currentChatList=obj
+			uni.setStorage({
+				key:'currentChatList',
+				data:obj
+			})
 		},
 		login(state, userInfo) {			
 			state.hasLogin = true;

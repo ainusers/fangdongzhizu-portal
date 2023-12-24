@@ -4,7 +4,7 @@ import checkUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update
 let updateOnly=false
 
 // 获取本地存储中的数据
-const initKey = ['socketStatus', 'token', 'userInfo', 'houseInfo', 'communityInfo','chatList','currentChatList'] //防止刷新vuex丢失数据
+const initKey = ['socketStatus', 'token', 'userInfo', 'communityInfo', 'chatList', 'currentChatList'] //防止刷新vuex丢失数据
 const getStoreData = function(key) {
 	uni.getStorage({
 		key: key,
@@ -18,6 +18,17 @@ const initStorestate = function() {
 	initKey.forEach(item => {
 		getStoreData(item)
 	})
+}
+// 设置未读消息
+const setBarUnreadStatus=function(num){
+	uni.setTabBarBadge({
+		index: 3,
+		text: '',
+		success: (res) => {},
+		fail:(err)=>{
+			console.log('设置未读消息失败')
+		}
+	});
 }
 // 批量上传接口
 const attachUpload = function(imageList) {
@@ -227,7 +238,7 @@ const getuserInfo = function(userId,type) {
 	let data=''
 	if(type){
 		url='/zf/v1/user/name' //根据用户名查询信息
-		data={username:userId}
+		data={username: userId}
 	}else{
 		data={userId: userId}
 	}
@@ -294,6 +305,7 @@ export {
 	tranfTime,
 	getuserInfo,
 	compressImg,
+	setBarUnreadStatus,
 	showToastTit,
 	dateTime1,
 	spaceTime,

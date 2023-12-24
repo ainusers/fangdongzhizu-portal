@@ -122,7 +122,7 @@
 							title: '已加载完成'
 						});
 					}
-					that.$store.commit('houseInfo', that.houseList)
+					// that.$store.commit('houseInfo', that.houseList)
 				})
 			},
 			//下架刷新

@@ -280,20 +280,36 @@
 			// 退出登录
 			logout() {
 				uni.removeStorage({
-					key: 'token',
-					success: function (res) {
-						that.$store.commit('token','')
-					}
-				});
-				uni.removeStorage({
 					key: 'userInfo',
-					success: function (res) {
-					}
+					success: function (res) {}
 				});
 				uni.removeStorage({
-					key: 'houseInfo',
-					success: function (res) {
-					}
+					key: 'phoneInfo',
+					success: function (res) {}
+				});
+				uni.removeStorage({
+					key: 'token',
+					success: function (res) {}
+				});
+				uni.removeStorage({
+					key: 'socketStatus',
+					success: function (res) {}
+				});
+				uni.removeStorage({
+					key: 'chatList',
+					success: function (res) {}
+				});
+				uni.removeStorage({
+					key: 'currentChatList',
+					success: function (res) {}
+				});
+				uni.removeStorage({
+					key: 'currentNameChat',
+					success: function (res) {}
+				});
+				uni.removeStorage({
+					key: 'unReadCount',
+					success: function (res) {}
 				});
 				//断开链接
 				uni.navigateTo({

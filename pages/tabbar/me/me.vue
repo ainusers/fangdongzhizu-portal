@@ -183,7 +183,7 @@
 
 <script>
 	import myInfoAvatar from '@/components/common/myInfoAvatar.vue'
-	import {isLoginCheck,getUserInfo} from '../../../utils/utils.js'
+	import {isLoginCheck,getUserInfo} from '@/utils/utils.js'
 	export default {
 		data() {
 			return {

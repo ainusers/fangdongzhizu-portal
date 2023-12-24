@@ -558,7 +558,7 @@
 						if (res.data.length < 10) {
 							this.isLoad = true
 						}
-						that.$store.commit('houseInfo', that.houseList)
+						// that.$store.commit('houseInfo', that.houseList)
 					}
 				})
 			},

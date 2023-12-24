@@ -276,7 +276,6 @@
 			</view>
 		</view>
 	</view>
-	
 </template>
 
 <script>
@@ -289,9 +288,7 @@
 		},
         computed:{},
         props: ["item","index","current"],
-		onLoad() {
-		},
-		
+		onLoad() {},
         methods: {
 			updateHouse(item){
 				let city=''
@@ -389,7 +386,7 @@
 			},
         	homeDetail(item,index) {
                 uni.navigateTo({
-                    url: `/pages/tabbar/home/homeDetail?id=${item.id}`
+                    url: `/pages/tabbar/home/homeDetail?id=${item.id}&userId=${item.userId}`
                 });
         	}
         },
