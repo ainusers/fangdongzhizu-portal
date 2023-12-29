@@ -188,6 +188,7 @@
 <script>
 	var that;
 	import {compressImg,attachUpload} from '@/utils/utils.js'
+	import {stopHeartbeat} from '@/utils/scoket.js'
     export default {
         data() {
             return {
@@ -315,6 +316,8 @@
 				uni.navigateTo({
 					url: '/pages/auth/login'
 				})
+				// 停止心跳
+				stopHeartbeat();
 			}
         }
     }

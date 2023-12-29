@@ -184,7 +184,7 @@
 	import notice from '@/components/common/noticeModel.vue'
 	import {constant} from "@/utils/constant.js";
 	import {MycheckUpdate,getLatest} from '@/utils/utils.js'
-	import {connectSocket, reconnectSocket} from '@/utils/scoket.js'
+	import {connectSocket, startHeartbeat} from '@/utils/scoket.js'
 	
 	let privateData = {
 		// 区域
@@ -348,7 +348,7 @@
 				complete(res) {
 					if (res.data === WebSocket.OPEN) {
 						// 重新链接scoket
-						reconnectSocket();
+						startHeartbeat();
 					} else {
 						// 链接scoket
 						connectSocket();

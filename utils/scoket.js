@@ -36,12 +36,12 @@ function connectSocket() {
 	socketInstance.onClose(() => {
 		console.log('socket连接已关闭！');
 		// 重新连接
-		reconnectSocket();
+		connectSocket();
 	})
 	socketInstance.onError((res) => {  
 		console.log('socket连接发生错误：', res);  
 		// 重新连接  
-		reconnectSocket();  
+		connectSocket();  
 	})
 }
 
@@ -74,7 +74,7 @@ function startHeartbeat() {
 			fail(e){
 				console.log('发送心跳检测失败')
 				// 重新链接scoket
-				reconnectSocket();
+				connectSocket();
 			}
 		});
 	}, 20000); // 每10秒发送一次心跳消息
@@ -86,41 +86,41 @@ function stopHeartbeat() {
 	clearInterval(heartbeatInterval);
 }
 
-// 重新链接socket
-function reconnectSocket() {
-	// TODO 需要增加定时器不断进行断线重连
-	reconnect();
-}
-
 // 重新链接socket调用方法
-function reconnect() {
-	// 停止发送心跳消息
-	stopHeartbeat();
-	// 如果重连成功则退出
-	socketInstance = uni.connectSocket({
-		url: 'ws://localhost:31780',
-		success(data) {
-			console.log('重新连接IM服务成功')
-			// 发送心跳以保持连接活跃
-			startHeartbeat();
-			// 将socket对象存放全局
-			Vue.prototype.$socketInstance=socketInstance
-		},
-		fail(data) {
-			console.log('重新连接IM服务失败')
-			// 重新连接scoket
-			connectSocket();
-		}
-	})
-}
+// function reconnect() {
+	// // 停止发送心跳消息
+	// stopHeartbeat();
+	// // 如果重连成功则退出
+	// socketInstance = uni.connectSocket({
+	// 	url: 'ws://localhost:31780',
+	// 	success(data) {
+	// 		console.log('重新连接IM服务成功')
+	// 		// 发送心跳以保持连接活跃
+	// 		startHeartbeat();
+	// 		// 将socket对象存放全局
+	// 		Vue.prototype.$socketInstance=socketInstance
+	// 	},
+	// 	fail(data) {
+	// 		console.log('重新连接IM服务失败')
+	// 		// 重新连接scoket
+	// 		connectSocket();
+	// 	}
+	// })
+// }
 
 // 处理消息
 function handleMessage(event) {
 	let data = eval("(" + event.data + ")");
 	console.log(JSON.stringify(data))
 	let chatList=store.state.chatList || []
+	console.log(chatList)
+	console.log(data)
 	// 判断是否聊过天
-	if(!isChat(data)){
+	let result = isChat(chatList, data);
+	console.log(result)
+	console.log(result.length === 0)
+	if(result.length === 0){
+		console.log("1")
 		let targetName=data.target  //目标对象的username  fromName为昵称
 		if(data.from != store.state.userInfo.username){
 			targetName=data.from
@@ -128,6 +128,7 @@ function handleMessage(event) {
 		//初次收到消息要对当前对象添加fromName和fromAvtar，用于消息列表展示
 		addKey(data).then(res=>{
 			chatList.push({room:data.room,fromName:res.fromName,fromAvatar:res.fromAvatar,targetName:targetName,currentName:store.state.userInfo.username,data:[]})
+			store.state['chatList'] = chatList
 			return chatList
 		}).then(res=>{
 			// 添加消息到本地
@@ -154,15 +155,11 @@ function addKey(data){
 }
 
 // 是否聊过天
-function isChat(data){
-	let temp=store.state.chatList
-	if(temp && temp.length==0) return
-	let arr=temp.filter(item=>{
-		if (item.room==data.room) {
-			return item
-		}
+function isChat(chatList, data){
+	let record = chatList.filter(item=>{
+		return item.room==data.room
 	})
-	return arr.length
+	return record;
 }
 
 // 添加消息
@@ -281,6 +278,5 @@ function setMsgUnreadCount(data){
 export {
 	connectSocket,
 	startHeartbeat,
-	stopHeartbeat,
-	reconnectSocket
+	stopHeartbeat
 }

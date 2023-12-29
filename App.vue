@@ -1,6 +1,6 @@
 <script>
 import {initStorestate} from '@/utils/utils.js'
-import {connectSocket, reconnectSocket, stopHeartbeat} from '@/utils/scoket.js'
+import {connectSocket, startHeartbeat, stopHeartbeat} from '@/utils/scoket.js'
 
 export default {
 	onLaunch: function() {
@@ -28,7 +28,7 @@ export default {
 						success(res) {
 							if (res.data === WebSocket.OPEN) {
 								// 重新链接scoket
-								reconnectSocket();
+								startHeartbeat();
 							} else {
 								// 连接scoket
 								connectSocket();
