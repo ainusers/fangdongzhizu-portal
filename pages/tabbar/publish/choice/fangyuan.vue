@@ -1735,8 +1735,7 @@
 					.chekcNum = 0
 				this.houseModel.lease = result;
 			},
-			leaseCancel(e) {
-			},
+			leaseCancel(e) {},
 			// 供暖方式
 			heatTypeFn(item, index) {
 				if (this.setpAll) {

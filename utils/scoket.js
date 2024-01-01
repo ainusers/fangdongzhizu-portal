@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import store from '@/store/index.js';
+import config from '@/utils/config.js'
 import {initStorestate, getStoreData, getuserInfo, setBarUnreadStatus} from '@/utils/utils.js'
 
 let socketInstance = '';// socket对象
@@ -9,7 +10,7 @@ let currentName=store.state.userInfo.username
 // 创建连接
 function connectSocket() {
 	socketInstance = uni.connectSocket({
-		url: 'ws://localhost:31780',
+		url: config.wsUrl,
 		success(data) {
 			console.log('连接IM服务成功')
 		},
@@ -19,7 +20,8 @@ function connectSocket() {
 	})
 	socketInstance.onOpen(() => {
 		console.log('socket连接已打开！');
-		if (socketInstance.readyState === WebSocket.OPEN) {
+		// WebSocket.OPEN = 1
+		if (socketInstance.readyState === 1) {
 			// 将socket对象存放本地内存
 			store.commit('socketStatus',socketInstance.readyState)
 			// 延迟一秒触发用户认证

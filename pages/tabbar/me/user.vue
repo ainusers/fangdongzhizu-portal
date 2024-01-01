@@ -188,7 +188,7 @@
 <script>
 	var that;
 	import {compressImg,attachUpload} from '@/utils/utils.js'
-	import {stopHeartbeat} from '@/utils/scoket.js'
+	// import {stopHeartbeat} from '@/utils/scoket.js'
     export default {
         data() {
             return {
@@ -198,11 +198,10 @@
         onLoad(options) {
 			
         },
-       onShow(){
-		   that=this
+        onShow(){
+		    that=this
 			this.userInfo =this.$store.state.userInfo
-       },
-
+        },
         methods: {
 			goto(uri,type){
 				if(type=='auth'&&!this.userInfo.auth || type!='auth'){
@@ -312,12 +311,12 @@
 					key: 'unReadCount',
 					success: function (res) {}
 				});
-				//断开链接
+				// 断开链接
 				uni.navigateTo({
 					url: '/pages/auth/login'
 				})
 				// 停止心跳
-				stopHeartbeat();
+				// stopHeartbeat();
 			}
         }
     }

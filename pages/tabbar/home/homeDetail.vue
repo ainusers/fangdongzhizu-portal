@@ -282,6 +282,7 @@
 </template>
 
 <script>
+  import permision from "@/sdk/wa-permission/permission.js"
   import houseSwiper from "@/components/house-swiper/house-swiper.vue";
   import peiTaoSheShi from "@/components/house-detail/house-sheshi.vue";
   import feiYongXiangQing from "@/components/house-detail/house-feiyong.vue";
@@ -494,6 +495,7 @@
 		},
 		//举报，收藏，
 		report(index){
+			let that = this;
 			let params={
 				"userId": this.$store.state.userInfo.id,
 				"roomId": this.detailData.id,
@@ -504,12 +506,78 @@
 					this.statistics(params)
 					break;
 				case 3:
-					params['chat']=1
-					// 房间id = 用户id + 房东id
-					let chatId = this.$store.state.userInfo.id+''+this.targetId
-					uni.navigateTo({
-						url:'/pages/tabbar/news/chat?userId='+this.detailData.username+'&chatId='+chatId
-					})
+					// 注释聊天跳转入口
+					// params['chat']=1
+					// // 房间id = 用户id + 房东id
+					// let chatId = this.$store.state.userInfo.id+''+this.targetId
+					// uni.navigateTo({
+					// 	url:'/pages/tabbar/news/chat?userId='+this.detailData.username+'&chatId='+chatId
+					// })
+					
+					// 温馨提示
+					uni.showModal({
+						title: '温馨提示',
+						content: '每人每天有两次机会获取房东电话',
+						success(res) {
+							if (res.confirm) {
+								let data={
+									"userId": that.$store.state.userInfo.id
+								}
+								that.$H.get('/zf/v1/const/room/chat/count',data,true).then(res=>{
+									if (res.status && res.data[0].count && Number(res.data[0].count) > 1) {
+										uni.showToast({
+											icon:'none',
+											title:"您今天的两次机会已使用完，请明天再来"
+										})
+									} else {
+										// 插入记录
+										let data={
+											"roomId": that.detailData.id,
+											"phone": that.detailData.username,
+											"userId": that.$store.state.userInfo.id
+										}
+										that.$H.post('/zf/v1/const/room/chat/count',data,true).then(res=>{
+											if (res.status) {
+												// 判断用户是否获取电话权限
+												// #ifdef APP-PLUS
+												plus.android.requestPermissions(['android.permission.CALL_PHONE'],
+												(e) => {
+													// 权限被永久拒绝
+													if (e.deniedAlways.length > 0) {
+														uni.showModal({
+															title: '温馨提示',
+															content: '获取电话权限才可以和房东联系',
+															success(res) {
+																if (res.confirm) {
+																	permision.gotoAppPermissionSetting()
+																}
+															}
+														});
+														// 权限被临时拒绝  
+													} else if (e.deniedPresent.length > 0) { 
+														uni.showModal({
+															title: '温馨提示',
+															content: '获取电话权限才可以和房东联系',
+															success(res) {
+																if (res.confirm) {
+																	permision.gotoAppPermissionSetting()
+																}
+															}
+														});
+													} 
+												})
+												// 使用手机号联系房东
+												uni.makePhoneCall({
+													phoneNumber: that.detailData.username
+												})
+												// #endif
+											} 
+										})
+									}
+								})
+							}
+						}
+					});
 					break;
 			}
 		},

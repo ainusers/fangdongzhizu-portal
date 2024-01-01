@@ -115,6 +115,13 @@
 		onUnload() {
 			clearInterval(timer);
 		},
+		// 不允许用户操作返回键
+		onBackPress(){
+			let token = uni.getStorageSync('token')
+			if(!token){
+				return true;
+			}
+		},
 		methods: {
 			// 查看隐私协议
 			goUrl(){

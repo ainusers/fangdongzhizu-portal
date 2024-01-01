@@ -1,5 +1,19 @@
 <template>
 	<view class="content" :class="{'active':active}">
+		<view class="container">
+			<view class="title">社区行为规范:</view>
+			<view class="title">1、尊重他人，不发布攻击、侮辱、谩骂等不良言论</view>
+			<view class="title">2、不发布广告和商业推广信息</view>
+			<view class="title">3、禁止恶意灌水，不发布重复、无意义的垃圾信息</view>
+			<view class="title">4、不侵犯他人版权，不发布侵犯他人知识产权的内容</view>
+			<view class="title">5、注意言辞和形象，不得使用粗俗、低俗的语言</view>
+			<view class="title">6、遵守社区规定，不得违反社区的任何规定和要求</view>
+		</view>
+		<view class="container">
+			<view class="title">社区发布规则:</view>
+			<view class="title">1、每个用户发布 (房源) 不超过两个</view>
+			<view class="title">2、每个用户每天发布 (动态) 不超过三个</view>
+		</view>
 		<!-- <image class="logo" :class="{'active':active}" src="../../../static/logo.png"  mode="aspectFit"></image> -->
 		<view class="tabbar-box-wrap">
 			<view class="tabbar-box">
@@ -55,7 +69,7 @@ export default {
 							url
 						});
 					}else{
-						uni.$u.toast('每个用户只能发布两个房源')
+						uni.$u.toast('每个用户发布房源不超过两个')
 					}
 				})
 			}else if(type=='tuwen'){
@@ -65,7 +79,7 @@ export default {
 							url
 						})
 					}else{
-						uni.$u.toast('每天每个用户发布动态不能超过三个')
+						uni.$u.toast('每个用户每天发布动态不能超过三个')
 					}
 				})
 			}
@@ -84,7 +98,6 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-	display: flex;
 	align-items: center;
 	justify-content: center;
 	width: 100%;
@@ -100,17 +113,16 @@ export default {
 	&.active {
 		opacity: 1;
 	}
-	.logo {
-		position: relative;
-		margin-top: -400upx;
-		width: 200upx;
-		height: 200upx;
-		// z-index: -1;
-		opacity: 0;
-		transition: opacity 0.3s;
-		&.active {
-			opacity: 1;
-		}
+	.container {  
+	  padding: 20px 10px 10px 10px;  
+	}  
+	.title {  
+	  font-size: 14px;  
+	  font-weight: bold;  
+	  margin-bottom: 10px;  
+	}  
+	.rule {  
+	  font-size: 14px;
 	}
 }
 .tabbar-box-wrap {

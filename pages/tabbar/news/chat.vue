@@ -598,8 +598,8 @@
 			},
 			// 发送消息
 			sendMsg(content,type){
-				// 如果socket状态正常连接，则可以发送消息
-				if (this.$socketInstance.readyState === WebSocket.OPEN) {
+				// 如果socket状态正常连接，则可以发送消息 (WebSocket.OPEN = 1)
+				if (this.$socketInstance.readyState === 1) {
 					switch (type) {
 						case 'text':
 							let data={

@@ -1,5 +1,4 @@
 export default function() {
-	console.log('检测版本')
 	// #ifdef APP-PLUS
 	return new Promise((resolve, reject) => {
 		plus.runtime.getProperty(plus.runtime.appid, function(widgetInfo) {
@@ -9,7 +8,7 @@ export default function() {
 			const data = {
 				action: 'checkVersion',
 				appid: '__UNI__190F3AB', //plus.runtime.appid,
-				appVersion:'1.0.0',
+				appVersion:'1.0.1.6',
 				wgtVersion: widgetInfo.version
 			}
 			console.log("data: ",data);
