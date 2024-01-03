@@ -155,6 +155,7 @@
 
 <script>
 	import image from '@/store/image.js';
+	import permision from "@/sdk/wa-permission/permission.js"
 	import {attachUpload,htmlEncode,compressImg,checkPush} from '@/utils/utils.js'
 	var sourceType = [
 		['camera'],
@@ -193,17 +194,30 @@
 		},
 		methods: {
 			async publish(){
-				uni.showToast({title:'发布中',duration:100000000,icon:'loading'});
+				if (!this.input_content) {
+					uni.showToast({
+						title: '文字内容不能为空',
+						duration: 1000,
+						icon: "none"
+					});
+					return;
+				}
 				checkPush().then(async res=>{
 					if(res.status){
-						if (!this.input_content) {
-							uni.showToast({
-								title: '文字内容不能为空',
-								duration: 1000,
-								icon: "none"
+						// 判断用户是否获取位置权限
+						if(!permision.checkSystemEnableLocation()) {
+							uni.showModal({
+								title: '温馨提示',
+								content: '获取定位权限才可以发表动态',
+								success(res) {
+									if (res.confirm) {
+										permision.gotoAppPermissionSetting()
+									}
+								}
 							});
-							return;
+							return
 						}
+						uni.showToast({title:'发布中',duration:15000,icon:'loading'});
 						// 获取位置信息
 						// #ifdef APP-PLUS
 						let location = await this.getLocation();
@@ -278,6 +292,35 @@
 			},
 			// 选择图片
 			chooseImage: async function() {
+				// 判断用户是否获取相机和相册权限
+				// #ifdef APP-PLUS
+				plus.android.requestPermissions(['android.permission.CAMERA','android.permission.READ_EXTERNAL_STORAGE'],
+				(e) => {
+					// 权限被永久拒绝
+					if (e.deniedAlways.length > 0) {
+						uni.showModal({
+							title: '温馨提示',
+							content: '获取相机和相册权限才可以选择图片',
+							success(res) {
+								if (res.confirm) {
+									permision.gotoAppPermissionSetting()
+								}
+							}
+						});
+						// 权限被临时拒绝  
+					} else if (e.deniedPresent.length > 0) { 
+						uni.showModal({
+							title: '温馨提示',
+							content: '获取相机和相册权限才可以选择图片',
+							success(res) {
+								if (res.confirm) {
+									permision.gotoAppPermissionSetting()
+								}
+							}
+						});
+					} 
+				})
+				// #endif
 				uni.chooseImage({
 					sourceType: sourceType[this.sourceTypeIndex],
 					sizeType: sizeType[this.sizeTypeIndex],
@@ -295,7 +338,6 @@
 						// 非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
 						this.imageList = this.imageList.concat(res.tempFilePaths)
 						// #endif
-						
 					}
 				})
 			},
@@ -307,6 +349,15 @@
 					urls: this.imageList
 				})
 			},
+			touchStart: function(e) {
+				this.startX = e.mp.changedTouches[0].pageX;
+			},
+			touchEnd: function(e) {
+				this.endX = e.mp.changedTouches[0].pageX;
+				if (this.endX - this.startX > 200) {
+					uni.navigateBack();
+				}
+			}
 		}
 	}
 </script>
