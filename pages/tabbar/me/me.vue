@@ -6,7 +6,7 @@
 	}
 	.list-card {
 	  background-color: #ffffff;
-	  margin: 20px 15px 0 15px;
+	  margin: 10px 15px 0 15px;
 	  border-radius: 5px;
 	  box-shadow: 0 0 15px 1px rgba(224, 224, 224, 50%);
 	  .card {
@@ -75,7 +75,7 @@
 		width:120upx;
 		height: 40upx;
 		position: relative;
-		bottom:110rpx;
+		bottom: 90rpx;
 		left:auto;
 		margin-left: 0;
 		}

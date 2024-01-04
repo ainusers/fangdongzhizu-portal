@@ -67,7 +67,7 @@
 	  padding: 15px 15px 15px 15px;
 	  .card {
 	    position: relative;
-	    bottom: 40px;
+	    bottom: 35px;
 	    height: 250rpx;
 	    background-color: #ffffff;
 	    border-radius: 5px;
@@ -79,7 +79,7 @@
 	      .userImage {
 			background-color: white;
 	        position: relative;
-	        bottom: 40px;
+	        bottom: 30px;
 			margin: 0 auto;
 	        width: 160rpx;
 	        height: 160rpx;
