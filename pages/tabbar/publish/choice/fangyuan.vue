@@ -464,7 +464,7 @@
 							<view class="" v-for="(item,index) in houseModel.homeArr">
 								<u-form-item :label-position="labelPosition" :label="item.name" prop="homeArr" label-width="150"
 									v-if="houseModel.chekcNum!=0&&index<houseModel.chekcNum">
-									<u-input :border="border" placeholder="请填写房间信息" v-model="item.tenantStr" type="select"
+									<u-input :border="border" placeholder="请填写其他房间信息(除出租房间外)" v-model="item.tenantStr" type="select"
 										@click="popUpShowFn('tenant',index)" :disabled="setpAll"></u-input>
 								</u-form-item>
 							</view>
