@@ -28,15 +28,15 @@
 			</u-sticky>
 		<!-- 内容区域 -->
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
-			<swiper-item>
+			<swiper-item v-for=" (item,index) in tabList" :key="index">
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
 				:refresher-triggered="triggered"
 				:refresher-enabled="true"
 				:refresher-threshold="100"
-				@refresherpulling="onPulling"
+				@refresherrefresh="onPulling"
 				@refresherrestore="onRestore"
 				>
-					<view v-if="current == 0">
+					<view v-show="current == index">
 						<!-- 内容区域 -->
 						<block v-if="status&& currPage==1">
 							<view v-for="(key,index) in jiaL">
@@ -50,81 +50,6 @@
 							<!-- 圈子 -->
 						    <post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @clickLike="clickLike"  @changeStatus="changeStatus"></post-list>					
 						</view>
-					</view>
-				</scroll-view>
-			</swiper-item>
-			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
-				:refresher-triggered="triggered"
-				:refresher-enabled="true"
-				:refresher-threshold="100"
-				@refresherpulling="onPulling"
-				@refresherrestore="onRestore"
-				>
-					<view v-if="current == 1">
-					<!-- 内容区域 -->
-					<block v-if="status&& currPage==1">
-						<view v-for="(key,index) in jiaL">
-							<postListSkeleton/>
-						</view>
-					</block>
-					<block v-if="!status&&tuwen_data.length === 0 && currPage==1">
-						<u-empty  text="暂无数据" mode="favor"></u-empty>
-					</block>
-					<view class="content" v-else>
-						<!-- 点赞 -->
-					   <post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @clickLike="clickLike" @changeStatus="changeStatus"></post-list>
-					</view>
-					</view>
-				</scroll-view>
-			</swiper-item>
-			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
-				:refresher-triggered="triggered"
-				:refresher-enabled="true"
-				:refresher-threshold="100"
-				@refresherpulling="onPulling"
-				@refresherrestore="onRestore"
-				>
-					<view v-if="current == 2">
-						<!-- 内容区域 -->
-						<block v-if="status&& currPage==1">
-							<view v-for="(key,index) in jiaL">
-								<postListSkeleton/>
-							</view>
-						</block>
-						<block v-if="!status&&tuwen_data.length === 0 && currPage==1">
-							<u-empty  text="暂无数据" mode="favor"></u-empty>
-						</block>
-						<view class="content" v-else>
-							<!-- 已下架 -->
-							 <post-list :list="tuwen_data" :loadStatus="load_status_tuwen"  @clickLike="clickLike"  @changeStatus="changeStatus"></post-list>
-						</view>
-					</view>
-				</scroll-view>
-			</swiper-item>
-			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
-					:refresher-triggered="triggered"
-					:refresher-enabled="true"
-					:refresher-threshold="100"
-					@refresherrefresh="onPulling"
-					@refresherrestore="onRestore"
-				>
-					<view v-if="current == 3">
-					<!-- 内容区域 -->
-					<block v-if="status&& currPage==1">
-						<view v-for="(key,index) in jiaL">
-							<postListSkeleton/>
-						</view>
-					</block>
-					<block v-if="!status&&tuwen_data.length === 0 && currPage==1">
-						<u-empty  text="暂无数据" mode="favor"></u-empty>
-					</block>
-					<view class="content" v-else>
-						<!-- 收藏 -->
-					    <post-list :list="tuwen_data" :loadStatus="load_status_tuwen"  @clickLike="clickLike"  @changeStatus="changeStatus" ></post-list>
-					</view>
 					</view>
 				</scroll-view>
 			</swiper-item>
@@ -192,7 +117,7 @@ export default {
 					this.current!=2?this.getShowData():this.getDynamics()
 				},1000)
 				
-			}		
+			}	
 		},
 		onRestore() {
 			this.triggered = false; // 需要重置
