@@ -13,7 +13,7 @@
 			align-items: center;
 			flex-direction: column;
 			width:100%;
-			height:50%;
+			height:40%;
 			image{
 				width:240rpx;
 				height:240rpx;
@@ -26,7 +26,7 @@
 			display: flex;
 			justify-content: center;
 			width:100%;
-			height: 50%;
+			height: 60%;
 			color: #aaa;
 			.app_info{
 				padding: 40rpx;
@@ -70,8 +70,8 @@
 	.icon{
 		display: inline-flex;
 		align-items: center;
-		width:10rpx;
-		height:10rpx;
+		width:15rpx;
+		height:15rpx;
 		background-color: red;
 		border-radius: 50%;
 		margin-left: 10rpx;
@@ -97,11 +97,8 @@
 						</view>
 						<view>
 							{{$store.state.version}}
-							<view class="icon" v-show="isShow">
-								
-							</view>
+							<view class="icon"  v-show="isShow"></view>
 						</view>
-						
 					</view>
 					<view class="item">
 						<view>
@@ -113,6 +110,7 @@
 					</view>
 				</view>
 				<view class="txt_con">
+					<view class="txt1">京ICP备2023028039号-2A</view>
 					<view class="txt">
 						<view class="high" @click="goto('/pages/tabbar/me/text/register')">《注册协议》</view>
 						<view class="high" @click="goto('/pages/tabbar/me/text/privacy')">《隐私协议》</view>
@@ -136,16 +134,19 @@
 			getLatest().then(res=>{
 				if(res.version!=this.$store.state.version){
 					this.isShow=true
+				} else {
+					uni.showToast({
+						icon:'none',
+						title:"当前已是最新版本"
+					})
 				}
 			})
 		},
-        onShow() {},
-        onUnload() {},
         methods: {
 			goto(uri){
-					uni.navigateTo({
-						url: uri
-					})
+				uni.navigateTo({
+					url: uri
+				})
 			},
 			update(){
 				if(this.isShow){
