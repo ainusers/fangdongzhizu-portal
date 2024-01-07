@@ -134,11 +134,6 @@
 			getLatest().then(res=>{
 				if(res.version!=this.$store.state.version){
 					this.isShow=true
-				} else {
-					uni.showToast({
-						icon:'none',
-						title:"当前已是最新版本"
-					})
 				}
 			})
 		},

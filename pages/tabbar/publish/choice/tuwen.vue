@@ -208,7 +208,7 @@
 						if(!permision.checkSystemEnableLocation()) {
 							uni.showModal({
 								title: '温馨提示',
-								content: '获取定位权限才可以发表动态',
+								content: '获取定位权限并开启GPS才可以发表动态',
 								success(res) {
 									if (res.confirm) {
 										permision.gotoAppPermissionSetting()
