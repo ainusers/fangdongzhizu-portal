@@ -16,7 +16,7 @@ const store = new Vuex.Store({
 		lock:0,//让watch监听只走一次
 		currentNameChat:'',//当前和谁正在聊天
 		unReadCount:0,//未读消息总数
-		version:'1.0.1.6',
+		version:'1.0.0',
 		address:{},
 		ispublishSub:false, //是否点击到过开启定位服务界面
 	},
