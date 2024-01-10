@@ -208,10 +208,17 @@
 						if(!permision.checkSystemEnableLocation()) {
 							uni.showModal({
 								title: '温馨提示',
-								content: '获取定位权限并开启GPS才可以发表动态',
+								content: '获取定位服务(GPS)才可以发表动态',
 								success(res) {
 									if (res.confirm) {
-										permision.gotoAppPermissionSetting()
+										// android平台
+										if (uni.getSystemInfoSync().platform == 'android') {
+										  var Intent = plus.android.importClass('android.content.Intent');
+										  var Settings = plus.android.importClass('android.provider.Settings');
+										  var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+										  var main = plus.android.runtimeMainActivity();
+										  main.startActivity(intent); // 打开系统设置GPS服务页面
+										}
 									}
 								}
 							});
