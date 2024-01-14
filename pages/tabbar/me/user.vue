@@ -178,6 +178,13 @@
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
 			</view>
+			<!--注销账号-->
+			<view class="item f_r_b"  @click="deleteUser">
+			    <view class="item_text">注销账号</view>
+			    <view class="item_val">
+					<u-icon class="arrow_right" name="arrow-right"></u-icon>
+				</view>
+			</view>
         </view>
 		<!-- 退出登录 -->
 		<view class="logout" @click="logout()">
@@ -221,7 +228,7 @@
             },
             // 上传图片
             uploadImg(sourceType = "camera") {
-				        var that = this;
+				var that = this;
                 uni.chooseImage({
                     count: 1,
                     // sizeType: ['compressed'],
@@ -275,6 +282,14 @@
 						 })
 					 }
 				
+				})
+			},
+			// 注销账号
+			deleteUser() {
+				uni.showToast({
+					title: "请联系客服5730473@qq.com",
+					icon: 'none',
+					duration: 2000
 				})
 			},
 			// 退出登录

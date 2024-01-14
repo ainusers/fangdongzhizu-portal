@@ -91,7 +91,7 @@
 </template>
 
 <script>
-	import permision from "@/sdk/wa-permission/permission.js";
+	// import permision from "@/sdk/wa-permission/permission.js";
 	export default {
 		data() {
 			return {
@@ -122,17 +122,17 @@
         	this.getPhoneInfo();
         },
         methods: {
-			async resetAddress(type){
-				// 检查是否开启位置信息权限
-                let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
-                if (result != 1) {
-                    // 打开权限设置界面
-                    // permision.gotoAppPermissionSetting();
-                } else {
-                    //手机定位服务（GPS）已授权
-                    this.fnGetlocation(type);
-                }
-			},
+			// async resetAddress(type){
+			// 	// 检查是否开启位置信息权限
+   //              let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
+   //              if (result != 1) {
+   //                  // 打开权限设置界面
+   //                  // permision.gotoAppPermissionSetting();
+   //              } else {
+   //                  //手机定位服务（GPS）已授权
+   //                  this.fnGetlocation(type);
+   //              }
+			// },
             // 获取设备信息
             getPhoneInfo() {
                 let res = uni.getSystemInfoSync();

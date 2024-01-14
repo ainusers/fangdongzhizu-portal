@@ -174,8 +174,8 @@
 
 <script>
 	var that;
-	import {checkOpenGPSServiceByAndroid} from '@/utils/openSettings.js'
-	import permision from "@/sdk/wa-permission/permission.js";
+	// import {checkOpenGPSServiceByAndroid} from '@/utils/openSettings.js'
+	// import permision from "@/sdk/wa-permission/permission.js";
 	import houseListItem from '@/components/house-list/house-list-item.vue';
 	import houseListItemSkeleton from '@/components/house-list/house-list-item-skeleton.vue';
 	import screenTab from '@/components/common/screen-tab/screen-tab.vue'

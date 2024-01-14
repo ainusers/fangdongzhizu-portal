@@ -47,7 +47,7 @@
 					},
 					{
 						"src": "/static/me/tools/transform.png",
-						"word": "传输问题",
+						"word": "程序崩溃",
 						"color": "#f8f9fd",
 						"wordColor": "#a5acc0",
 						"check": false

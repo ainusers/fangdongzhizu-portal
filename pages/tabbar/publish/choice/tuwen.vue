@@ -156,6 +156,7 @@
 <script>
 	import image from '@/store/image.js';
 	import permision from "@/sdk/wa-permission/permission.js"
+	import {checkOpenGPSServiceByAndroid} from '@/utils/openSettings.js'
 	import {attachUpload,htmlEncode,compressImg,checkPush} from '@/utils/utils.js'
 	var sourceType = [
 		['camera'],
@@ -204,6 +205,21 @@
 				}
 				checkPush().then(async res=>{
 					if(res.status){
+						// 检查是否开启位置信息权限
+						let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
+						if (result != 1) {
+							uni.showModal({
+								title: '温馨提示',
+								content: '获取位置权限才可以发表动态',
+								success(res) {
+									if (res.confirm) {
+										// 打开权限设置界面
+										permision.gotoAppPermissionSetting();
+									}	
+								}
+							})
+							return;
+						}
 						// 判断用户是否获取位置权限
 						if(!permision.checkSystemEnableLocation()) {
 							uni.showModal({
