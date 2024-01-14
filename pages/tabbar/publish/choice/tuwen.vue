@@ -301,32 +301,32 @@
 			chooseImage: async function() {
 				// 判断用户是否获取相机和相册权限
 				// #ifdef APP-PLUS
-				plus.android.requestPermissions(['android.permission.CAMERA','android.permission.READ_EXTERNAL_STORAGE'],
-				(e) => {
-					// 权限被永久拒绝
-					if (e.deniedAlways.length > 0) {
-						uni.showModal({
-							title: '温馨提示',
-							content: '获取相机和相册权限才可以选择图片',
-							success(res) {
-								if (res.confirm) {
-									permision.gotoAppPermissionSetting()
-								}
-							}
-						});
-						// 权限被临时拒绝  
-					} else if (e.deniedPresent.length > 0) { 
-						uni.showModal({
-							title: '温馨提示',
-							content: '获取相机和相册权限才可以选择图片',
-							success(res) {
-								if (res.confirm) {
-									permision.gotoAppPermissionSetting()
-								}
-							}
-						});
-					} 
-				})
+				// plus.android.requestPermissions(['android.permission.CAMERA','android.permission.READ_EXTERNAL_STORAGE'],
+				// (e) => {
+				// 	// 权限被永久拒绝
+				// 	if (e.deniedAlways.length > 0) {
+				// 		uni.showModal({
+				// 			title: '温馨提示',
+				// 			content: '获取相机和相册权限才可以选择图片',
+				// 			success(res) {
+				// 				if (res.confirm) {
+				// 					permision.gotoAppPermissionSetting()
+				// 				}
+				// 			}
+				// 		});
+				// 		// 权限被临时拒绝  
+				// 	} else if (e.deniedPresent.length > 0) { 
+				// 		uni.showModal({
+				// 			title: '温馨提示',
+				// 			content: '获取相机和相册权限才可以选择图片',
+				// 			success(res) {
+				// 				if (res.confirm) {
+				// 					permision.gotoAppPermissionSetting()
+				// 				}
+				// 			}
+				// 		});
+				// 	} 
+				// })
 				// #endif
 				uni.chooseImage({
 					sourceType: sourceType[this.sourceTypeIndex],

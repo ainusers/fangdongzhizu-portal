@@ -65,7 +65,7 @@
 				}
 				.desc {
 					display: flex;
-					.username {
+					.nickname {
 						font-size: 14px;
 						color: #5677fc;
 					}
@@ -125,53 +125,53 @@
 		
 		<!-- 评论区 -->
 		<view class="comment_main">
-					<block v-show="commentList.length > 0&&commentListShow" >
-							<view class="comment_con">
-								<view   class="comment" v-for="(res, index1) in commentList" :key="res.id">
-									<view class="left">
-											<u-avatar class="avatar" :src="res.avatar" level-bg-color="#8072f3"></u-avatar>
-										</view>
-									<view class="right">
-										<view @longpress="delComment(res, index1)">
-											<view class="top">
-												<view class="desc">
-													<view class="name"  @tap.stop="onReply(res, index1,1)">{{ res.nickname }}</view>
-													<view class="date"  @tap.stop="onReply(res, index1,1)">{{res.create_time  }}</view>
-												</view>
-												<!-- <view class="like" :class="{ highlight: res.love }"  @click="clickLike(res.comment_id,res.love,index1)">
-													<view class="num">{{ res.love }}</view>
-													<u-icon v-if="!res.love" name="thumb-up" :size="30" color="#9a9a9a"></u-icon>
-													<u-icon v-if="res.love" name="thumb-up-fill" :size="30" ></u-icon>
-												</view> -->
+			<block v-show="commentList.length > 0&&commentListShow" >
+				<view class="comment_con">
+					<view   class="comment" v-for="(res, index1) in commentList" :key="res.id">
+						<view class="left">
+							<u-avatar class="avatar" :src="res.avatar" level-bg-color="#8072f3"></u-avatar>
+						</view>
+						<view class="right">
+							<view @longpress="delComment(res, index1)">
+								<view class="top">
+									<view class="desc">
+										<view class="name"  @tap.stop="onReply(res, index1,1)">{{ res.nickname }}</view>
+										<view class="date"  @tap.stop="onReply(res, index1,1)">{{res.create_time  }}</view>
+									</view>
+									<!-- <view class="like" :class="{ highlight: res.love }"  @click="clickLike(res.comment_id,res.love,index1)">
+										<view class="num">{{ res.love }}</view>
+										<u-icon v-if="!res.love" name="thumb-up" :size="30" color="#9a9a9a"></u-icon>
+										<u-icon v-if="res.love" name="thumb-up-fill" :size="30" ></u-icon>
+									</view> -->
+								</view>
+								<view class="content"  @tap.stop="onReply(res, index1,1)">{{ res.words }}</view>
+							</view>
+							
+							<view class="reply-box">
+								<view v-if="res.AllReply">
+									<view class="item" @tap.stop="onReply(item, index,2,res)" v-for="(item, index) in res.replyList" :key="item.index">
+										<view class="left"><image :src="item.avatar" mode="aspectFill"></image></view>
+										<view class="right" @longpress="delComment(item, index,index1)">
+											<view class="desc">
+												<view class="nickname">{{ item.nickname }}</view>
+												<view class="date">{{ item.create_time?item.create_time:'' }}</view>
 											</view>
-											<view class="content"  @tap.stop="onReply(res, index1,1)">{{ res.words }}</view>
-										</view>
-										
-										<view class="reply-box">
-											<view v-if="res.AllReply">
-												<view class="item" @tap.stop="onReply(item, index,2,res)" v-for="(item, index) in res.replyList" :key="item.index">
-													<view class="left"><image :src="item.avatar" mode="aspectFill"></image></view>
-													<view class="right" @longpress="delComment(item, index,index1)">
-														<view class="desc">
-															<view class="username">{{ item.username }}</view>
-															<view class="date">{{ item.create_time?item.create_time:'' }}</view>
-														</view>
-														<view class="text">{{ item.words }}</view>
-													</view>
-												</view>
-											</view>
-											<view :class="[res.commentText?'all-reply':'']" @tap="toAllReply(index1,res.comment_id)" v-show="res.replyList&&res.replyList.length>0">
-												 {{res.commentText}}
-												<u-icon class="more" name="arrow-right" :size="26"v-if="res.commentText"></u-icon>
-											</view>
+											<view class="text">{{ item.words }}</view>
 										</view>
 									</view>
 								</view>
+								<view :class="[res.commentText?'all-reply':'']" @tap="toAllReply(index1,res.comment_id)" v-show="res.replyList&&res.replyList.length>0">
+									 {{res.commentText}}
+									<u-icon class="more" name="arrow-right" :size="26"v-if="res.commentText"></u-icon>
+								</view>
 							</view>
-						</block>
-						<view v-show="commentList.length <= 0" >
-							<u-empty text="暂无评论" mode="message"></u-empty>
 						</view>
+					</view>
+				</view>
+			</block>
+			<view v-show="commentList.length <= 0" >
+				<u-empty text="暂无评论" mode="message"></u-empty>
+			</view>
 		</view>
 		<!-- 评论输入框 -->
 		<view class="comment-tool">
@@ -313,7 +313,7 @@ export default {
 				this.beforeIndex=index
 				this.expand=0
 			}
-			this.placeholder = '回复' + e.username + '：';
+			this.placeholder = '回复' + e.nickname + '：';
 			if(e.comment_user_id){
 				this.beCommentUserId= e.comment_user_id
 			}else{
@@ -338,7 +338,7 @@ export default {
 				beCommentUserId:this.beCommentUserId,//被回复id也就别人id
 				dynamicId:this.$store.state.communityInfo.id,//动态id
 				avatar:this.$store.state.userInfo.avatar,
-				username:this.$store.state.userInfo.username,
+				nickname:this.$store.state.userInfo.nickname,
 				beCommentId:this.beCommentUserId?this.comment_id:0,
 				create_time:'刚刚',
 				love:0,
@@ -391,7 +391,7 @@ export default {
 		delComment(e, index,index1) {
 			let user = uni.getStorageSync('userInfo');
 			// 判断用户id
-			if (e.username != user.username) {
+			if (e.nickname != user.nickname) {
 				return;
 			}
 			uni.showModal({
