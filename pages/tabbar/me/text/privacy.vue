@@ -1,7 +1,7 @@
 <template>
 	<view class="con">
 		<view class="right">
-			生效日期：2024年01月10日
+			生效日期：2024年01月20日
 		</view>
 		<view class="tit">
 			尊敬的用户：
@@ -45,9 +45,13 @@
 		<view>
 			七、如何联系我们
 		</view>
+		<view>
+			八、第三方SDK的目录及具体信息
+		</view>
 		<view class="tit">
 			一、我们如何收集和使用您的个人信息
 		</view>
+		<view>我们的产品基于DCloud uni-app(5+ App/Wap2App)开发，应用运行期间需要收集您的设备唯一识别码（IMEI/android ID/DEVICE_ID/IDFA、SIM 卡 IMSI 信息、OAID）以提供统计分析服务，并通过应用启动数据及异常错误日志分析改进性能和用户体验，为用户提供更好的服务。</view>
 		<view>
 			为实现向您提供我们产品及服务的基本功能，您须授权我们收集、使用的必要的信息；如您拒绝提供相应信息，您将无法正常使用我们的产品及服务。<br/>
 		</view>
@@ -58,14 +62,14 @@
 			为使您使用平台更便捷或更有乐趣，从而提升您的使用体验，我们的以下基本功能中可能会收集和使用您的个人信息。
 		</view>
 		<view>
-			（1）平台注册
+			（1）注册账号
 		</view>
 		<view>
 			当您注册成为平台用户时，
 			<view class="bold">
 				您需要至少向我们提供您准备使用的账户名、密码、您本人的手机号码，我们将通过发送短信验证码的方式来验证您的身份是否有效。
 			</view>
-			您的账户名为您的默认昵称，您可以修改补充您的昵称、性别，这些信息均属于您的“账户信息”。您补充提供的账户信息将有助于我们为您提供个性化的信息服务。
+			您的账户名为您的默认昵称，您可以修改补充您的昵称、性别，这些信息均属于您的“账户信息”。
 		</view>
 		<view>
 			（2）实名认证
@@ -84,6 +88,12 @@
 			<view>
 				在获得您授权拨打电话权限的前提下，您可以在我们的APP上拨打电话联系房屋租赁人。
 			</view>
+		</view>
+		<view>
+			（5）注销账号
+		</view>
+		<view>
+			当您注销平台用户的时候，您可以通过我的-个人信息-注销账号，获取平台客服的邮件联系方式，发送邮件给客服，说明您要注销账号的原因，客服会在15天内与您联系，确认您是否确实要注销账号
 		</view>
 		<view class="tit">
 			（二）系统权限调用
@@ -470,6 +480,91 @@
 		</view>
 		<view>
 			2、一般情况下，我们将在十五天内回复。如果您对我们的回复不满意，特别是我们的个人信息处理行为损害了您的合法权益，您还可以向网信、电信、公安及工商等监管部门进行投诉或举报，或者向有管辖权的法院提起诉讼。
+		</view>
+		<view class="tit">
+			八、第三方SDK的目录及具体信息
+		</view>
+		<view class="bold">
+			1、快手广告联盟
+		</view>
+		<view>
+			SDK包名/网址：com.kwad.sdk
+		</view>
+		<view>
+			SDK用途：增强广告
+		</view>
+		<view>
+			获取的个人信息类型：基础信息：设备品牌、设备型号、软件系统版本、存储信息、运营商信息、设备时区、设备语言、网络信息等基础信息 设备标识：IMEIs、MEID、OAID、Androidld、IMSIs、ICCID 位置信息：IP地址、MAC地址、GPS位置信息、基站信息、WIFI信息 应用信息：应用安装列表 其他信息：传感器信息、sim卡激活信息
+		</view>
+		<view>
+			调用的设备权限：android.permission.ACCESS_NETWORK_STATE
+							android.permission.INTERNET
+							android.permission.READ_PHONE_STATE
+							android.permission.ACCESS_WIFI_STATE
+							android.permission.REQUEST_INSTALL_PACKAGES
+							android.permission.VIBRATE
+		</view>
+		<view>
+			信息用途：广告投放、广告归因、反作弊、安全
+		</view>
+		<view>
+			SDK隐私政策链接/目的：<a href="https://www.kuaishou.com/about/policy" target="_blank">快手内容联盟隐私协议</a>和<a href="https://u.kuaishou.com/home/detail/1220" target="_blank">SDK使用规范</a>
+		</view>
+		<view class="bold">
+			2、百度开放平台
+		</view>
+		<view>
+			SDK包名/网址：com.baidu
+		</view>
+		<view>
+			SDK用途：实现定位/展现地图
+		</view>
+		<view>
+			获取的个人信息类型：存储的个人文件、位置信息、读取手机状态和身份、网络信息、SD卡
+		</view>
+		<view>
+			调用的设备权限：android.permission.ACCESS_COARSE_LOCATION
+						android.permission.ACCESS_FINE_LOCATION
+						android.permission.ACCESS_NETWORK_STATE
+						android.permission.ACCESS_WIFI_STATE
+						android.permission.CHANGE_WIFI_STATE
+						android.permission.READ_PHONE_STATE
+						android.permission.WRITE_EXTERNAL_STORAGE
+						android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
+						android.permission.READ_LOGS
+						android.permission.WRITE_SETTINGS
+						android.permission.MOUNT_UNMOUNT_FILESYSTEM
+		</view>
+		<view>
+			信息用途：定位用户地理位置提供房源/显示IP属地/计算小区和地铁站的距离
+		</view>
+		<view>
+			SDK隐私政策链接/目的：https://map.baidu.com/zt/client/privacy/index.html
+		</view>
+		<view class="bold">
+			3、uni-app(5+、web2app)
+		</view>
+		<view>
+			SDK包名/网址：io.dcloud
+		</view>
+		<view>
+			SDK用途：基础模块
+		</view>
+		<view>
+			获取的个人信息类型：存储的个人文件、位置信息、读取手机状态和身份、网络信息、SD卡
+		</view>
+		<view>
+			调用的设备权限：android.permission.INTERNET
+						android.permission.ACCESS_NETWORK_STATE
+						android.permission.WRITE_EXTERNAL_STORAGE
+						android.permission.READ_EXTERNAL_STORAG
+						android.permission.READ_PHONE_STATE
+		</view>
+		<view>
+			信息用途：存储的个人文件，设备信息（IMEI、ANDROID_ID、DEVICE_ID、IMSI），网络信息
+		</view>
+		<view>
+			SDK隐私政策链接/目的：https://ask.dcloud.net.cn/article/36937
 		</view>
 	</view>
 	

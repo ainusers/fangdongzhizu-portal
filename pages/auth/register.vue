@@ -63,8 +63,9 @@
 							>
 							</u-checkbox>
 				</u-checkbox-group>
+				我已阅读并同意
 				<view class="blue" @click="goUrl">
-					注册协议
+					《注册协议》
 				</view>
 			</view>
 			<view class="flex ptb30 mlr20 aj-center">

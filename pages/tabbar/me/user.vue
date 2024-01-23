@@ -287,7 +287,7 @@
 			// 注销账号
 			deleteUser() {
 				uni.showToast({
-					title: "请联系客服5730473@qq.com",
+					title: "请联系客服：5730473@qq.com",
 					icon: 'none',
 					duration: 2000
 				})

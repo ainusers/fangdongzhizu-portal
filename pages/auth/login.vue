@@ -47,8 +47,9 @@
 							>
 							</u-checkbox>
 				</u-checkbox-group>
+				我已阅读并同意
 				<view class="blue" @click="goUrl">
-					隐私协议
+					《隐私协议》
 				</view>
 			</view>
 				
