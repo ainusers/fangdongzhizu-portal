@@ -157,7 +157,7 @@
 				if(!this.checked){
 					uni.showToast({
 						icon: 'none',
-						title: '请选择注册协议！'
+						title: '请勾选注册协议！'
 					});
 					this.isShow=true
 					setTimeout(()=>{

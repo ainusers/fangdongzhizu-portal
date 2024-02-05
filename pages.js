@@ -568,7 +568,7 @@ module.exports=()=>({
 		{
 			"path": "pages/tabbar/me/text/server",
 			"style": {
-				"navigationBarTitleText": "服务政策",
+				"navigationBarTitleText": "用户协议",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
 			}

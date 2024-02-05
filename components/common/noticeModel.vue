@@ -1,9 +1,7 @@
 <template>
 	<view class="main_notice">
 		<h2>通知</h2>
-		<view class="con">
-			{{content}}
-		</view>
+		<view class="con" v-html="content"></view>
 	</view>
 </template>
 
@@ -23,9 +21,9 @@
 		width:280px;
 		height:370px;
 		background: url('../../static/home/notice.png') no-repeat;
-		background-size: 280px 370px;
+		background-size: 280px 400px;
 		overflow: hidden;
-		padding: 65px 15px 0px 15px;
+		padding: 40px 15px 0px 15px;
 		font-size: 14px;
 		letter-spacing: 3rpx;
 		line-height: 150%;
@@ -33,7 +31,7 @@
 		font-weight: bold;
 		.con{
 			padding: 5rpx;
-			box-shadow: 1px 1px 1px #eee;
+			/* box-shadow: 1px 1px 1px #eee; */
 		}
 	}
 </style>

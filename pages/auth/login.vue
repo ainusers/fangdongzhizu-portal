@@ -48,6 +48,9 @@
 							</u-checkbox>
 				</u-checkbox-group>
 				我已阅读并同意
+				<view class="blue" @click="goUserUrl">
+					《用户协议》
+				</view>
 				<view class="blue" @click="goUrl">
 					《隐私协议》
 				</view>
@@ -128,6 +131,12 @@
 			goUrl(){
 				uni.navigateTo({
 					url:'/pages/tabbar/me/text/privacy'
+				})
+			},
+			// 查看用户协议
+			goUserUrl(){
+				uni.navigateTo({
+					url:'/pages/tabbar/me/text/server'
 				})
 			},
 			// 账号登录
@@ -239,7 +248,7 @@
 				if(!this.checked){
 					uni.showToast({
 						icon: 'none',
-						title: '请选择隐私协议！'
+						title: '请勾选用户协议和隐私协议！'
 					});
 					this.isShow=true
 					setTimeout(()=>{
