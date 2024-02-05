@@ -347,14 +347,7 @@
 								@click="showPickerArea"></u-input>
 						</u-form-item>
 						<!-- 适用全国 -->
-						<view v-if="!onlyBei">
-							<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm" 
-							></u-picker>
-						</view>
-						
-						<view v-else>
-							<u-select v-model="pickerShow" mode="mutil-column-auto" :list="BJlist" @confirm="regionConfirm"></u-select>
-						</view>
+						<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
 						<!-- 小区名称 -->
 						<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150"
 							:label-position="labelPosition" label="小区名称 :" prop="communityName" ref="item1" required>
@@ -637,7 +630,6 @@
 			return {
 				BJlist:constant.BJlist,
 				quarList: [],
-				onlyBei:true,
 				communityArr: [],
 				modalShow: false,
 				content: '是否保存为草稿',
@@ -1677,20 +1669,9 @@
 			},
 			// 选择地区回调
 			regionConfirm(e) {
-				console.log(e)
-				let province=''
-				let city=''
-				let area=''
-				if(this.onlyBei){
-					province=e[0].label
-					city=e[1].label
-					area=e[2].label
-				}else{
-					province=e.province.label
-					city=e.city.label
-					area=e.area.label
-				}
-				
+				let	province=e.province.label
+				let	city=e.city.label
+				let	area=e.area.label
 				
 				this.getCommunit(province, area)
 				this.houseModel.region1 = province+ '-' + city + '-' +area;
