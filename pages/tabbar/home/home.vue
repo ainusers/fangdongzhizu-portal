@@ -91,7 +91,7 @@
 		<u-sticky offset-top="0">
 			<view class="home_top">
 				<!-- 城市 -->
-				<view class="city">
+				<view class="city" @click.stop="chooseCity">
 					<view>{{ cityName }}</view>
 					<view class="city_icon"></view>
 				</view>
@@ -316,11 +316,27 @@
 				default: ""
 			}
 		},
+		mounted() {
+			that = this
+			uni.$on('chooseCity', function(data) {
+				//触发更新后
+				that.cityName = data.cityName;
+				// 获取该城市的所有区
+				that.getArea()
+				// 初始化条件参数
+				
+				// 查询房源列表
+				that.init(1)
+			})
+		},
+		//为了优化代码，可以加上移除事件，避免重复监听事件
+		onUnload() {
+			// 移除监听事件  
+			uni.$off('chooseCity');
+		},
 		onLoad() {
 			that = this
 			this.cityName = '北京市'
-			// 检查用户位置权限
-			// this.checkPosition()
 			// 获取该城市的所有区
 			this.getArea()
 			// 查询房源列表
@@ -342,86 +358,13 @@
 					that.savePhoneInfo(res.data)
 				}
 			})
-			// 登录后链接scoket
-			// uni.getStorage({
-			// 	key:'socketStatus',
-			// 	complete(res) {
-			// 		// WebSocket.OPEN = 1
-			// 		if (res.data === 1) {
-			// 			// 重新链接scoket
-			// 			startHeartbeat();
-			// 		} else {
-			// 			// 链接scoket
-			// 			connectSocket();
-			// 		}
-			// 	}
-			// })
 		},
 		methods: {
-			// 检查用户定位权限
-			// checkPosition() {
-			// 	const systemSetting = uni.getSystemSetting()
-			// 	// 如果用户未授权
-			// 	if (!systemSetting.locationEnabled) {
-			// 		var context = plus.android.importClass("android.content.Context")
-			// 		var locationManager = plus.android.importClass("android.location.LocationManager")
-			// 		var main = plus.android.runtimeMainActivity()
-			// 		var mainSvr = main.getSystemService(context.LOCATION_SERVICE)
-			// 		if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
-			// 			uni.showModal({
-			// 				title: '温馨提示',
-			// 				content: '开启定位权限后，将为您精准推荐附近房源',
-			// 				success(res) {
-			// 					if (res.confirm) {
-			// 						if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
-			// 							var Intent = plus.android.importClass('android.content.Intent');
-			// 							var Settings = plus.android.importClass('android.provider.Settings')
-			// 							var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-			// 							main.startActivity(intent) // 打开系统设置GPS服务页面
-			// 						}
-			// 					} else if (res.cancel) {
-			// 						that.cityName = '北京市'
-			// 						that.$store.state.currentCity = '北京市'
-			// 					}
-			// 				}
-			// 			});
-			// 		}
-			// 	} else {
-			// 		// 如果用户已授权
-			// 		this.resetAddress()
-			// 	}
-			// },
-			// async resetAddress() {
-			// 	// 检查是否开启位置信息权限
-			// 	let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
-			// 	if (result != 1) {
-			// 		// 打开权限设置界面
-			// 		// permision.gotoAppPermissionSetting();
-			// 	} else {
-			// 		// 手机定位服务（GPS）已授权
-			// 		let that = this;
-			// 		uni.getLocation({
-			// 			type: 'gcj02',
-			// 			isHighAccuracy: true,
-			// 			geocode: true,
-			// 			success: function(res) {
-			// 				that.cityName = res.address.province
-			// 				that.$store.state.address = res.address
-			// 			},
-			// 			fail: (e) => {
-			// 				if (!that.isGps) {
-			// 					that.isGps = true
-			// 					checkOpenGPSServiceByAndroid()
-			// 				}
-			// 			}
-			// 		});
-			// 	}
-			// },
 			// 获取公告
 			getNotice() {
 				this.$H.get('/zf/v1/notice', {}, true).then(res => {
-					if (200 == res.code && res.data.getNotice) {
-						this.noticeStr = res.data.getNotice
+					if (200 == res.code && res.data.length > 0) {
+						this.noticeStr = res.data[0].notice
 						this.showNotice = true
 					}
 				})
@@ -562,22 +505,6 @@
 						// that.$store.commit('houseInfo', that.houseList)
 					}
 				})
-			},
-			// 获取选择城市返回的城市名称
-			getValue(cityNameLess) {
-				if (cityNameLess.length <= 2) {
-					this.cityName = cityNameLess + '市';
-				}
-				let regionLeftIndex = this.$refs.screenTab.regionLeftIndex
-				if (regionLeftIndex == 0) {
-					this.getArea()
-				} else if (regionLeftIndex == 1) {
-					this.getStation()
-				}
-				// 查询房源列表
-				this.getHouseList()
-				this.currPage = 1
-				this.$store.commit('currentCity', cityNameLess)
 			},
 			// 获得swiper切换后的current索引
 			swipeIndex(index) {
