@@ -67,7 +67,9 @@
                 },
                 "oauth" : {},
                 "ad" : {
-                    "ks" : {}
+                    "ks" : {},
+                    "gdt" : {},
+                    "sigmob" : {}
                 },
                 "maps" : {
                     "baidu" : {

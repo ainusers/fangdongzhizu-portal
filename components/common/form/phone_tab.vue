@@ -8,7 +8,7 @@
 		<view class="label_fgs"></view>
 		<view class="flex-1">
 			<input placeholder-class="placeholder" class="qui-input" type="text" value="" v-model="username"
-				placeholder="请输入账号" @input="inputPhone"/>
+				placeholder="请输入手机号" @input="inputPhone"/>
 		</view>
 	</view>
 </template>

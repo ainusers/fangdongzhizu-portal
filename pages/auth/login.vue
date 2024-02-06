@@ -159,7 +159,7 @@
 				if(!this.$refs.userName.username){
 					uni.showToast({
 						icon: 'none',
-						title: '请填写账号'
+						title: '请填写手机号'
 					});
 					return;
 				}
