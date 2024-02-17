@@ -14,6 +14,11 @@
 			<view class="title">1、每个用户发布 (房源) 不超过两个</view>
 			<view class="title">2、每个用户每天发布 (动态) 不超过三个</view>
 		</view>
+		<view class="container">
+			<view class="title">社区审核规则:</view>
+			<view class="title">1、发布图文：无需经过平台审核</view>
+			<view class="title">2、发布房源：需要经过平台审核<br/>2.1、未审核：会在“待审核”中展示<br/>2.2、审核不通过：会在“待审核”中展示并附上审核意见<br/>2.3、审核通过：会在首页展示</view>
+		</view>
 		<!-- <image class="logo" :class="{'active':active}" src="../../../static/logo.png"  mode="aspectFit"></image> -->
 		<view class="tabbar-box-wrap">
 			<view class="tabbar-box">

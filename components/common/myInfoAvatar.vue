@@ -147,7 +147,7 @@
 
 	.renzheng_icon{
 		position: relative;
-		bottom:110rpx;
+		bottom:94rpx;
 		left:50%;
 		width:120upx;
 		height: 40upx;
