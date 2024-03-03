@@ -195,16 +195,14 @@
 <script>
 	var that;
 	import {compressImg,attachUpload} from '@/utils/utils.js'
-	// import {stopHeartbeat} from '@/utils/scoket.js'
+
     export default {
         data() {
             return {
 				userInfo: '',
 			}
         },
-        onLoad(options) {
-			
-        },
+        onLoad(options) {},
         onShow(){
 		    that=this
 			this.userInfo =this.$store.state.userInfo
@@ -231,7 +229,6 @@
 				var that = this;
                 uni.chooseImage({
                     count: 1,
-                    // sizeType: ['compressed'],
                     sourceType: [sourceType],
                     success: function (res) {
                         uni.showLoading({title: '上传中...'});
@@ -326,12 +323,14 @@
 					key: 'unReadCount',
 					success: function (res) {}
 				});
+				uni.removeStorage({
+					key: 'loadlTuwenStatus',
+					success: function (res) {}
+				});
 				// 断开链接
 				uni.navigateTo({
 					url: '/pages/auth/login'
 				})
-				// 停止心跳
-				// stopHeartbeat();
 			}
         }
     }

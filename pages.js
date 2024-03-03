@@ -146,39 +146,6 @@ module.exports=()=>({
 			}
 		},
 		{
-			"path": "pages/tabbar/news/news",
-			"style": {
-				"navigationBarTitleText": "消息",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#fafafa",
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle":"light",
-				"backgroundColor":"#fff",
-				"app-plus": {
-					"scrollIndicator": "none"
-				}
-			},
-			meta:{
-				needLogin:true
-			}
-		},
-		// {
-		// 	"path": "pages/tabbar/news/chat",
-		// 	"style": {
-		// 		"navigationBarTitleText": "",
-		// 		"navigationBarTextStyle": "black",
-		// 		"navigationBarBackgroundColor": "#fafafa",
-		// 		"enablePullDownRefresh": false,
-		// 		"backgroundTextStyle":"light",
-		// 		"app-plus": {
-		// 			"scrollIndicator": "none"
-		// 		}
-		// 	},
-		// 	meta:{
-		// 		needLogin:true
-		// 	}
-		// },
-		{
 			"path": "pages/tabbar/me/me",
 			"style": {
 				"transparentTitle":  "always"
@@ -606,12 +573,6 @@ module.exports=()=>({
 				"selectedIconPath": "static/tabbar/publishactive-temp.png",
 				"text": "发布"
 			},
-			// {
-			// 	"pagePath": "pages/tabbar/news/news",
-			// 	"iconPath": "static/tabbar/news.png",
-			// 	"selectedIconPath": "static/tabbar/newsactive.png",
-			// 	"text": "消息"
-			// },
 			{
 				"pagePath": "pages/tabbar/me/me",
 				"iconPath": "static/tabbar/me.png",

@@ -4,51 +4,34 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
-		socketStatus:'', //socket状态
 		userInfo:'',
 		token:'',
 		messegeNum:[],
-		// houseInfo:[],
+		loadlTuwenStatus:'',
 		communityInfo:{},
 		currentCity:'定位中...',//当前城市
-		chatList:[],//聊天记录
-		currentChatList:[],//当前聊天记录
-		lock:0,//让watch监听只走一次
+		lock: 0,//让watch监听只走一次
 		currentNameChat:'',//当前和谁正在聊天
-		unReadCount:0,//未读消息总数
-		version:'1.0.0',
+		version:'1.0.1',
 		address:{},
 		ispublishSub:false, //是否点击到过开启定位服务界面
 	},
 	mutations: {
-		// socket状态
-		socketStatus(state,obj){
-			state.socketStatus=obj
-			uni.setStorage({
-				key:'socketStatus',
-				data:obj
-			})	
-		},
-		currentNameChat(state,obj){
-			state.currentNameChat=obj
-			uni.setStorage({
-				key:'currentNameChat',
-				data:obj
-			})
-		},
-		unReadCount(state,obj){
-			state.unReadCount=obj
-			uni.setStorage({
-				key:'unReadCount',
-				data:obj
-			})
-		},
 		lock(state,obj){
 			state.lock=obj
 			uni.setStorage({
 				key:'lock',
 				data:obj
 			})
+		},
+		loadlTuwenStatus(state,obj){
+			if(obj){
+				state.loadlTuwenStatus=obj
+				uni.setStorage({
+					key:'loadlTuwenStatus',
+					data:obj
+				})
+			}
 		},
 		userInfo(state,obj){
 			if(obj){
@@ -65,31 +48,6 @@ const store = new Vuex.Store({
 				key:'token',
 				data:token
 			})	
-		},
-		// houseInfo(state,houseInfo){
-		// 	if(houseInfo){
-		// 		state.houseInfo=houseInfo
-		// 		uni.setStorage({
-		// 			key:'houseInfo',
-		// 			data:houseInfo
-		// 		})
-		// 	}
-		// },
-		chatList(state,obj){
-			if(obj){
-				state.chatList=obj
-				uni.setStorage({
-					key:'chatList',
-					data:obj
-				})
-			}
-		},
-		currentChatList(state,obj){
-			state.currentChatList=obj
-			uni.setStorage({
-				key:'currentChatList',
-				data:obj
-			})
 		},
 		login(state, userInfo) {			
 			state.hasLogin = true;
@@ -136,11 +94,11 @@ const store = new Vuex.Store({
 		}
 	},
 	getters:{
-		socketStatus:state=>{
-			return state.socketStatus
-		},
 		token:state=>{
 			return state.token
+		},
+		loadlTuwenStatus:state=>{
+			return state.loadlTuwenStatus
 		},
 		userInfo:state=>{
 			return state.userInfo

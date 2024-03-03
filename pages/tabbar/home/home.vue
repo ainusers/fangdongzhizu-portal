@@ -174,8 +174,6 @@
 
 <script>
 	var that;
-	// import {checkOpenGPSServiceByAndroid} from '@/utils/openSettings.js'
-	// import permision from "@/sdk/wa-permission/permission.js";
 	import houseListItem from '@/components/house-list/house-list-item.vue';
 	import houseListItemSkeleton from '@/components/house-list/house-list-item-skeleton.vue';
 	import screenTab from '@/components/common/screen-tab/screen-tab.vue'
@@ -184,7 +182,6 @@
 	import notice from '@/components/common/noticeModel.vue'
 	import {constant} from "@/utils/constant.js";
 	import {MycheckUpdate,getLatest} from '@/utils/utils.js'
-	// import {connectSocket, startHeartbeat} from '@/utils/scoket.js'
 	
 	let privateData = {
 		// 区域
@@ -323,8 +320,6 @@
 				that.cityName = data.cityName;
 				// 获取该城市的所有区
 				that.getArea()
-				// 初始化条件参数
-				
 				// 查询房源列表
 				that.init(1)
 			})
@@ -387,37 +382,7 @@
 			},
 			// 保存登录人的设备
 			async savePhoneInfo(phoneInfo) {
-				var location = await this.getLocation();
-				let address = location.address
 				const systemSetting = uni.getSystemSetting()
-				// 如果用户未授权则显示提示框
-				if (!systemSetting.locationEnabled) {
-					var context = plus.android.importClass("android.content.Context")
-					var locationManager = plus.android.importClass("android.location.LocationManager")
-					var main = plus.android.runtimeMainActivity()
-					var mainSvr = main.getSystemService(context.LOCATION_SERVICE)
-					if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
-						uni.showModal({
-							title: '温馨提示',
-							content: '开启定位权限后，将为您精准推荐附近房源',
-							success(res) {
-								if (res.confirm) {
-									if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
-										var Intent = plus.android.importClass('android.content.Intent');
-										var Settings = plus.android.importClass('android.provider.Settings')
-										var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-										main.startActivity(intent) // 打开系统设置GPS服务页面
-									}
-								} else if (res.cancel) {
-									that.cityName = '北京市'
-									that.$store.state.currentCity = '北京市'
-								}
-							}
-						});
-					}
-				}
-				let position = address.province + '-' + address.city + '-' + address.district + '-' + address.street +
-					'-' + address.streetNum + '-' + address.poiName + '-' + address.cityCode
 				let params = {
 					"userId": this.$store.state.userInfo.id,
 					"appName": phoneInfo.appName,
@@ -430,26 +395,9 @@
 					"osName": phoneInfo.osName,
 					"osVersion": phoneInfo.osVersion,
 					"osLanguage": phoneInfo.osLanguage,
-					"osTheme": phoneInfo.osTheme,
-					"position": position
+					"osTheme": phoneInfo.osTheme
 				}
 				this.$H.post('/zf/v1/const/user/device', params, true).then(res => {})
-			},
-			// 获取用户地理位置
-			getLocation() {
-				return new Promise((resolve, reject) => {
-					uni.getLocation({
-						type: 'gcj02',
-						geocode: true,
-						isHighAccuracy: true,
-						success: function(res) {
-							resolve(res);
-						},
-						fail: (e) => {
-							reject(e);
-						}
-					});
-				})
 			},
 			// 滚动到最底部时触发
 			scrolltolower() {

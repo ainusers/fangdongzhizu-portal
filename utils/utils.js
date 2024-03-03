@@ -19,17 +19,6 @@ const initStorestate = function() {
 		getStoreData(item)
 	})
 }
-// 设置未读消息
-const setBarUnreadStatus=function(num){
-	uni.setTabBarBadge({
-		index: 3,
-		text: '',
-		success: (res) => {},
-		fail:(err)=>{
-			console.log('设置未读消息失败')
-		}
-	});
-}
 // 批量上传接口
 const attachUpload = function(imageList) {
 	return new Promise((resolve, reject) => {
@@ -107,11 +96,6 @@ const editTitleText = function(txt) {
 		titleNView: titleObj
 	});
 	// #endif
-}
-// ios  devtools 微信小程序 android
-const getPlatform = function() {
-	let platform = uni.getSystemInfoSync().platform
-	return platform
 }
 // 转义代码
 const htmlEncode = function(str) {
@@ -300,12 +284,10 @@ export {
 	attachUpload,
 	editTitleText,
 	htmlEncode,
-	getPlatform,
 	isLoginCheck,
 	tranfTime,
 	getuserInfo,
 	compressImg,
-	setBarUnreadStatus,
 	showToastTit,
 	dateTime1,
 	spaceTime,

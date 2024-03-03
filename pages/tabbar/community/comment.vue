@@ -121,7 +121,7 @@
 <template>
 	<view>
 		<!-- 展示区 -->
-		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" :isDetail="true" @changeStatus="changeStatus" @clickLike="clickLikes" @commontInt="commontInt" @deletePostFn="deletePostFn"></post-list>
+		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" :isDetail="true" @changeStatus="changeStatus" @clickLike="clickLike" @commontInt="commontInt" @deletePostFn="deletePostFn"></post-list>
 		
 		<!-- 评论区 -->
 		<view class="comment_main">
@@ -138,11 +138,6 @@
 										<view class="name"  @tap.stop="onReply(res, index1,1)">{{ res.nickname }}</view>
 										<view class="date"  @tap.stop="onReply(res, index1,1)">{{res.create_time  }}</view>
 									</view>
-									<!-- <view class="like" :class="{ highlight: res.love }"  @click="clickLike(res.comment_id,res.love,index1)">
-										<view class="num">{{ res.love }}</view>
-										<u-icon v-if="!res.love" name="thumb-up" :size="30" color="#9a9a9a"></u-icon>
-										<u-icon v-if="res.love" name="thumb-up-fill" :size="30" ></u-icon>
-									</view> -->
 								</view>
 								<view class="content"  @tap.stop="onReply(res, index1,1)">{{ res.words }}</view>
 							</view>
@@ -183,7 +178,7 @@
 </template>
 
 <script>
-	import {htmlEncode ,tranfTime} from '../../../utils/utils.js'
+	import {htmlEncode,tranfTime} from '../../../utils/utils.js'
 export default {
 	data() {
 		return {
@@ -233,7 +228,6 @@ export default {
 			this.pageNumOne++
 			this.getOneList()
 		}
-		
 	},
 	methods: {
 		commontInt(){
@@ -251,21 +245,21 @@ export default {
 		getdyDetail(){
 			this.load_status_tuwen='loading'
 			let data={
-					  "id": this.dyId,
-					  "page":1 ,
-					  "size": "10",
-					  "userId":this.$store.state.userInfo.id
-				}
+				"id": this.dyId,
+				"page":1 ,
+				"size": "10",
+				"userId":this.$store.state.userInfo.id
+			}
 			this.$H.get('/zf/v1/dynamic/detail',data,true).then(res=>{
 				this.load_status_tuwen='nomore'
 					if(res.status){	
-							this.tuwen_data = res.data
-							this.tuwen_data.forEach(item=>{
-								this.$set(item,'status',item.status)
-								this.$set(item,'like',item.like)
-								item.image=item.imgurl.split(',')
-								this.$set(item,'isReport',false)
-							})
+						this.tuwen_data = res.data
+						this.tuwen_data.forEach(item=>{
+							this.$set(item,'status',item.status)
+							this.$set(item,'like',item.like)
+							item.image=item.imgurl.split(',')
+							this.$set(item,'isReport',false)
+						})
 					uni.stopPullDownRefresh();
 					}
 				})
@@ -290,7 +284,7 @@ export default {
 			this.getTwoList(this.commentList[index].comment_user_id,index,id,this.commentList[index])
 		},
 		//动态点赞
-		clickLikes(id,index){
+		clickLike(id,index){
 			let data={
 				userId:this.$store.state.userInfo.id,
 				id:id?id:0
@@ -321,7 +315,6 @@ export default {
 			}
 			this.comment_id=e.comment_id ||e.id
 			this.focus = true;
-			
 		},
 		// 添加评论
 		addComment() {
@@ -384,7 +377,6 @@ export default {
 				}else{
 					this.isSubmitD = false;
 				}
-				
 			})	
 		},
 		// 删除评论
@@ -417,7 +409,6 @@ export default {
 								}
 							}
 						})
-						
 					} else if (res.cancel) {
 						// 用户取消删除操作
 					}
@@ -433,47 +424,43 @@ export default {
 				pageSize:10,
 			}
 			this.$H.post('/zf/v1/comment/list',data,true).then(res=>{
-						if(res.status){
-							let commentList=res.data
-							if(commentList&&commentList.length<10){
-								this.loadStatus='state'
+				if(res.status){
+					let commentList=res.data
+					if(commentList&&commentList.length<10){
+						this.loadStatus='state'
+					}
+					if(commentList){
+						commentList.forEach((item,index)=>{
+							this.$set(item,'replyList',[])
+							item.AllReply=false
+							item.commentText='展开查看更多'
+							let time=new Date(item.create_time)
+							let y=time.getFullYear()
+							let m=time.getMonth()+1
+							let d=time.getDate()
+							let h=time.getHours()
+							let mm=time.getMinutes()
+							let s=time.getSeconds()
+							if(h<10){
+								h='0'+h
 							}
-							if(commentList){
-								commentList.forEach((item,index)=>{
-										this.$set(item,'replyList',[])
-										// item.replyList=[]
-										item.AllReply=false
-										item.commentText='展开查看更多'
-										let time=new Date(item.create_time)
-										let y=time.getFullYear()
-										let m=time.getMonth()+1
-										let d=time.getDate()
-										let h=time.getHours()
-										let mm=time.getMinutes()
-										let s=time.getSeconds()
-										if(h<10){
-											h='0'+h
-										}
-										if(mm<10){
-											mm='0'+mm
-										}
-										item.create_time=tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm)
-										that.commentList.push(item)
-										item.likeNum=0
-										that.getTwoList(item.comment_user_id,index,item.comment_id,item)
-									})
-								
+							if(mm<10){
+								mm='0'+mm
 							}
-						}
+							item.create_time=tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm)
+							that.commentList.push(item)
+							item.likeNum=0
+							that.getTwoList(item.comment_user_id,index,item.comment_id,item)
+						})
+					}
+				}
 			})
-
 		},
 		getTwoList(beCommentUserId,index,id,item){
 			let that=this
 			let data={
 				pageNum:this.pageNum,
 			    pageSize:10,
-				// status:1,
 				parentId:id,
 				dynamicId:this.dyId
 			}
@@ -492,28 +479,8 @@ export default {
 							if(item.create_time.length>10){
 								item.create_time=tranfTime(item.create_time)
 							}
-							
 						})
 					}
-					
-				}
-			})
-		},
-		//一级评论和动态评论的点赞
-		clickLike(id,isLove,index){
-			let data={
-				dynamicId:this.$store.state.communityInfo.id,
-				commentId:id?id:0,
-				type:isLove?'reduce':'plus',
-			}
-			this.$H.patch('/zf/v1/comment/love',data,true).then(res=>{
-				if(res.status&&res.status!=500)
-				if (isLove == 1) {
-					this.commentList[index].love=0;
-					this.commentList[index].likeNum=res.data[0].count;
-				} else {
-					this.commentList[index].love=1;
-					this.commentList[index].likeNum=res.data[0].count;
 				}
 			})
 		},

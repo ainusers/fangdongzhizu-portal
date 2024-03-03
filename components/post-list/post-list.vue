@@ -61,9 +61,9 @@
 							</block>
 						</view>
 					</view>
-					<!-- 列表操作（分享，评论，点赞） -->
+					<!-- 列表操作（浏览，评论，点赞） -->
 					<view class="p-footer">
-						<!-- 分享 -->
+						<!-- 浏览 -->
 						<view class="p-item">
 							<button class="u-reset-button" open-type="share">
 								<u-icon name="eye" size="38"></u-icon>
@@ -109,23 +109,6 @@
 		<block v-else>
 			<!-- 此处空白，用于朋友圈详情页 -->
 		</block>
-		<!-- 分享操作 -->
-		<u-popup v-model="showShare" height="240rpx" mode="bottom">
-			<view class="share-wrap" @click="showShare = false">
-				<button open-type="share" @click="shareWX('WXSceneSession')" class="share-item u-reset-button">
-					<image src="/static/login/wx.png"></image>
-					<text>微信</text>
-				</button>
-				<view @click="shareWX('WXSenceTimeline')" class="share-item">
-					<image src="/static/login/pyq.png"></image>
-					<text>朋友圈</text>
-				</view>
-				<view @click="shareQQ('qq')" class="share-item">
-					<image src="/static/login/qq.png"></image>
-					<text>QQ</text>
-				</view>
-			</view>
-		</u-popup>
 		<!-- //举报模态框 -->
 		<view v-show="reportShows">
 			<zhizuReport @cancelReport="cancelReport" @goReport="goReportText" :typeStr="reportType" :reportId="reportId" ref="report" />
@@ -167,10 +150,6 @@
 				shareId:'',
 				jiaL:[1,2,3]
 			};
-		},
-		
-		watch: {
-
 		},
 		filters:{
 			splitEnd1(val){
@@ -259,8 +238,8 @@
 			},
 			// 跳转详情页
 			toDetail(data,index) {
-					this.isReport = false
-					this.$emit('changeStatus', index, false)
+				this.isReport = false
+				this.$emit('changeStatus', index, false)
 				if (this.isDetail) {
 					if (this.$parent.$parent.comment_id) {
 						this.$emit('commontInt')
@@ -310,70 +289,70 @@
 				this.shareId=id
 			},
 			// 分享至微信
-			shareWX(scene) {
-				let imgURL = (imgURL = this.postDetail.imgUrl);
-				let that = this
-				let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
-				let curRoute = routes[routes.length - 1].$page.fullPath // 获取当前页面路由，也就是最后一个打开的页面路由
-				uni.share({
-					provider: "weixin", // 服务提供商（即weixin|qq|sinaweibo）
-					scene: scene, // 分享到哪儿
-					type: 0, // 图文
-					href: 'https://uniapp.dcloud.net.cn/api/plugins/share.html#share', //'../../pages/tabbar/community/comment?id'+this.dyId, //跳转链接   图文连接
-					summary: that.postDetail.words, // 分享内容的摘要
-					title: that.postDetail.words, // 分享内容的标题
-					imageUrl: imgURL, //图片地址
-					success: function(res) {
-						that.tranferCount()
-						uni.showToast({
-							title: '分享成功',
-							icon: 'none',
-							duration: 2000
-						})
-						that.posters = false; // 成功后关闭底部弹框
-					},
-					fail: function(err) {
-						uni.showToast({
-							title: '分享失败',
-							icon: 'none',
-							duration: 2000
-						})
-						that.posters = false;
-					}
-				})
-			},
+			// shareWX(scene) {
+			// 	let imgURL = (imgURL = this.postDetail.imgUrl);
+			// 	let that = this
+			// 	let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
+			// 	let curRoute = routes[routes.length - 1].$page.fullPath // 获取当前页面路由，也就是最后一个打开的页面路由
+			// 	uni.share({
+			// 		provider: "weixin", // 服务提供商（即weixin|qq|sinaweibo）
+			// 		scene: scene, // 分享到哪儿
+			// 		type: 0, // 图文
+			// 		href: 'https://uniapp.dcloud.net.cn/api/plugins/share.html#share', //'../../pages/tabbar/community/comment?id'+this.dyId, //跳转链接   图文连接
+			// 		summary: that.postDetail.words, // 分享内容的摘要
+			// 		title: that.postDetail.words, // 分享内容的标题
+			// 		imageUrl: imgURL, //图片地址
+			// 		success: function(res) {
+			// 			that.tranferCount()
+			// 			uni.showToast({
+			// 				title: '分享成功',
+			// 				icon: 'none',
+			// 				duration: 2000
+			// 			})
+			// 			that.posters = false; // 成功后关闭底部弹框
+			// 		},
+			// 		fail: function(err) {
+			// 			uni.showToast({
+			// 				title: '分享失败',
+			// 				icon: 'none',
+			// 				duration: 2000
+			// 			})
+			// 			that.posters = false;
+			// 		}
+			// 	})
+			// },
 			// 分享至qq
-			shareQQ() {
-				let imgURL = (imgURL = this.postDetail.imgUrl);
-				let that = this
-				let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
-				let curRoute = routes[routes.length - 1].$page.fullPath // 获取当前页面路由，也就是最后一个打开的页面路由
-				uni.share({
-					provider: "qq", // 分享到哪儿（即weixin|qq|sinaweibo）
-					type: 0, // 图文
-					href: 'http://uniapp.dcloud.io/', // 跳转链接
-					summary: that.postDetail.words, // 分享内容的摘要
-					title: that.postDetail.words, // 分享内容的标题
-					imageUrl: imgURL, //图片地址
-					success: function(res) {
-						that.tranferCount()
-						uni.showToast({
-							title: '分享成功',
-							icon: 'none',
-							duration: 2000
-						})
-						that.posters = false; // 成功后关闭底部弹框
-					},
-					fail: function(err) {
-						uni.showToast({
-							title: '分享失败',
-							icon: 'none',
-							duration: 2000
-						})
-						that.posters = false;
-					}
-				})
-			},
+			// shareQQ() {
+			// 	let imgURL = (imgURL = this.postDetail.imgUrl);
+			// 	let that = this
+			// 	let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
+			// 	let curRoute = routes[routes.length - 1].$page.fullPath // 获取当前页面路由，也就是最后一个打开的页面路由
+			// 	uni.share({
+			// 		provider: "qq", // 分享到哪儿（即weixin|qq|sinaweibo）
+			// 		type: 0, // 图文
+			// 		href: 'http://uniapp.dcloud.io/', // 跳转链接
+			// 		summary: that.postDetail.words, // 分享内容的摘要
+			// 		title: that.postDetail.words, // 分享内容的标题
+			// 		imageUrl: imgURL, //图片地址
+			// 		success: function(res) {
+			// 			that.tranferCount()
+			// 			uni.showToast({
+			// 				title: '分享成功',
+			// 				icon: 'none',
+			// 				duration: 2000
+			// 			})
+			// 			that.posters = false; // 成功后关闭底部弹框
+			// 		},
+			// 		fail: function(err) {
+			// 			uni.showToast({
+			// 				title: '分享失败',
+			// 				icon: 'none',
+			// 				duration: 2000
+			// 			})
+			// 			that.posters = false;
+			// 		}
+			// 	})
+			// },
 			tranferCount(){
 				let data={
 					id:this.shareId,

@@ -104,20 +104,20 @@
 				tuwen_default_page: 1
 			}
 		},
-		computed: {
-			
-		},
 		onLoad() {
 			this.getBanner()
 		},
+		// 默认展示
 		onShow() {
 			this.getMomentPost();
 		},
+		// 下拉刷新
 		onPullDownRefresh() {
 			this.tuwen_default_page = 1;
 			this.getMomentPost();
 			uni.stopPullDownRefresh();
 		},
+		// 上拉加载
 		onReachBottom() {
 			if(this.load_status_tuwen!='nomore'){
 				this.tuwen_default_page++;
@@ -130,7 +130,7 @@
 					icon:'none',
 					title:"主人，已经到底了呦"
 				})
-			}	
+			}
 		},
 		methods: {
 			getBanner(){
@@ -161,12 +161,11 @@
 				// 测试数据待修改
 				this.load_status_tuwen = 'loading';
 				let data={
-						  "page":this.tuwen_default_page ,
-						  "size": "10",
-						  'userId':this.$store.state.userInfo.id
+					"page":this.tuwen_default_page ,
+					"size": "10",
+					'userId':this.$store.state.userInfo.id
 				}
 				this.$H.get('/zf/v1/dynamic/list',data,true).then(res=>{
-
 					if(res.status){
 						if(this.tuwen_default_page==1){
 							this.tuwen_data = res.data

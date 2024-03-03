@@ -20,6 +20,7 @@
 		color: #333;
 
 		.item {
+			font-size: 18px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -30,14 +31,12 @@
 			color: #333;
 			margin-right: 34rpx;
 			border-radius: 10rpx;
-			font-size: 22rpx;
-
 			&:last-child {
 				margin-right: 0;
 			}
 		}
-
 		.active {
+			font-size: 18px;
 			background: url('../../../../static/publish/active.gif') no-repeat;
 			background-size: 100% 135rpx;
 			color: #fff;
@@ -275,7 +274,6 @@
 		overflow: auto;
 		position: absolute;
 		z-index: 10;
-		// margin-top: -25rpx;
 		background: #fff;
 		border-radius: 0 0 20rpx 20rpx;
 		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -295,7 +293,7 @@
 	.tipTxt{
 		font-size: 28rpx;
 		margin-left: 10rpx;
-		color: #878585;
+		color: #FF0000;
 	}
 </style>
 <template>
@@ -311,7 +309,7 @@
 					</view>
 					<view class="step_1" v-show="stepNum==1||setpAll">
 						<!-- 资质上传 -->
-						<view class="region_new_title">资质上传  <text class="tipTxt">(&nbsp;{{tipTxt}}&nbsp;)</text></view>
+						<view class="region_new_title">资质上传  <text class="tipTxt">({{tipTxt}})</text></view>
 						<u-form-item prop="naturalImageList" required :border-bottom="false">
 							<view class="uni-list list-pd">
 								<view class="uni-list-cell cell-pd">
@@ -352,13 +350,9 @@
 						<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150"
 							:label-position="labelPosition" label="小区名称 :" prop="communityName" ref="item1" required>
 							<u-input :border="border" placeholder="请输入小区名称" type="text" v-model="houseModel.communityName"
-								:disabled="setpAll" @input="communitInput" @blur="BlurComm"></u-input>
+								:disabled="setpAll"></u-input>
 						</u-form-item>
-						<view class="quarList" v-if="quarList.length>0">
-							<ul>
-								<li v-for="(item,index) in quarList" :key="index" @click="checkComm(item)">{{item}}</li>
-							</ul>
-						</view>
+						<!-- 详细地址 -->
 						<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="200"
 							:label-position="labelPosition" label="详细地址 :" prop="communityName" ref="item1" required>
 							<u-input :border="border" placeholder="请输入详细地址具体到房间号" type="text" v-model="houseModel.roomName"
@@ -629,8 +623,6 @@
 		data() {
 			return {
 				BJlist:constant.BJlist,
-				quarList: [],
-				communityArr: [],
 				modalShow: false,
 				content: '是否保存为草稿',
 				//from表单 model
@@ -926,12 +918,7 @@
 						name: '我是房东',
 						checked: false,
 						disabled: false
-					},
-					// {
-					// 	name: '个人换租',
-					// 	checked: false,
-					// 	disabled: false
-					// }
+					}
 				],
 				selectShow: false,
 				payTypeList: [{
@@ -1304,7 +1291,7 @@
 				isEdit: false, //当前是否为编辑房源
 				isPublish1: false,
 				isPublish2: false,
-				tipTxt:'请出示完整的租房合同',
+				tipTxt:'请提供完整清晰的房屋资质,如:租房合同',
 			}
 		},
 		onShow(){
@@ -1625,7 +1612,6 @@
 				if (this.isPublish1) {
 					this.validateParam2()
 				}
-
 			},
 			popUpShowFn(type, index) {
 				if (this.setpAll) {
@@ -1663,7 +1649,7 @@
 						item.checked = true
 					}
 				})
-				index==0?this.tipTxt='请出示完整的租房合同':this.tipTxt='请出示清晰的房产证主页'
+				index==0?this.tipTxt='请提供完整清晰的房屋资质,如:租房合同':this.tipTxt='请提供完整清晰的房屋资质,如:房产证'
 				this.houseModel.publishType = index + 1
 			},
 			// 选择地区回调
@@ -1672,7 +1658,7 @@
 				let	city=e.city.label
 				let	area=e.area.label
 				
-				this.getCommunit(province, area)
+				// this.getCommunit(province, area)
 				this.houseModel.region1 = province+ '-' + city + '-' +area;
 				this.houseModel.province = province
 				this.houseModel.city = city == '市辖区' ? this.houseModel.province : city
@@ -2116,39 +2102,6 @@
 				if (this.endX - this.startX > 200) {
 					uni.navigateBack();
 				}
-			},
-			BlurComm(e) {
-				setTimeout(() => {
-					this.quarList = []
-				})
-
-			},
-			checkComm(val) {
-				this.quarList = []
-				this.houseModel.communityName = val
-			},
-			communitInput(e) {
-				this.quarList = []
-				if (e) {
-					this.communityArr.forEach(item => {
-						if (item.indexOf(e) != -1) {
-							this.quarList.push(item)
-						}
-					})
-				} else {
-					this.quarList = []
-				}
-			},
-			//获取小区
-			getCommunit(city,area) {
-				this.$H.get('/zf/v1/const/community/name', {
-					city: city,
-					area:area
-				}, true).then(res => {
-					if (res.code == 200) {
-						this.communityArr = res.data
-					}
-				})
 			}
 		},
 		onReady() {
