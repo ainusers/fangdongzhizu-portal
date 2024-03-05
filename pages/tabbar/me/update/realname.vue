@@ -12,7 +12,7 @@
 										</view>
 									</block>
 									<view class="uni-uploader__input-box" v-if="!form.straightUrl[0]">
-										<view class="uni-uploader__input" @tap="chooseImage('straight')">人像面</view>
+										<view class="uni-uploader__input" @tap="chooseImage('straight')">请上传人像面</view>
 									</view>
 								</view>
 							</view>
@@ -30,7 +30,7 @@
 										</view>
 									</block>
 									<view class="uni-uploader__input-box" v-if="!form.reverseUrl[0]">
-										<view class="uni-uploader__input" @tap="chooseImage('reverse')">国徽面</view>
+										<view class="uni-uploader__input" @tap="chooseImage('reverse')">请上传国徽面</view>
 									</view>
 								</view>
 							</view>
@@ -67,10 +67,19 @@
 			}
 		},
 		methods:{
-			chooseImage: async function(type) {
-				this.chooseImageFn(type)
+			chooseImage: function(type) {
+				let that = this;
+				uni.showModal({
+					title: '温馨提示',
+					content: '获取相机和相册权限才可以选择图片',
+					success(res) {
+						if (res.confirm) {
+							that.chooseImageFn(type)
+						}
+					}
+				});
 			},
-			chooseImageFn:async function(type){
+			chooseImageFn: function(type){
 				let imageList=[]
 				let count=1
 				uni.chooseImage({
@@ -105,7 +114,6 @@
 			},
 		},
 		onNavigationBarButtonTap(e){
-
 			if(!this.form.straightUrl){
 				uni.showToast({
 					title: '请上传身份证人像面',

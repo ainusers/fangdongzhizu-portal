@@ -123,7 +123,8 @@
 		onBackPress(){
 			let token = uni.getStorageSync('token')
 			if(!token){
-				return true;
+				// 退出APP
+				plus.runtime.quit();
 			}
 		},
 		methods: {

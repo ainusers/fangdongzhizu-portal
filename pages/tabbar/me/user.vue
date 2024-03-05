@@ -217,35 +217,44 @@
 			},
             // 更新头像
             chooseAvatar() {
-                uni.showActionSheet({
-                    itemList: ['拍照', '从手机相册选择'],
-                    success: (res) => {
-                        this.uploadImg(res.tapIndex === 0 ? "camera" : "album")
-                    }
-                });
+				let that = this;
+				uni.showModal({
+					title: '温馨提示',
+					content: '获取相机和相册权限才可以选择图片',
+					success(res) {
+						if (res.confirm) {
+							uni.showActionSheet({
+							    itemList: ['拍照', '从手机相册选择'],
+							    success: (res) => {
+							        that.uploadImg(res.tapIndex === 0 ? "camera" : "album")
+							    }
+							});
+						}
+					}
+				});
             },
             // 上传图片
             uploadImg(sourceType = "camera") {
 				var that = this;
-                uni.chooseImage({
-                    count: 1,
-                    sourceType: [sourceType],
-                    success: function (res) {
-                        uni.showLoading({title: '上传中...'});
-                  // #ifdef APP-PLUS
-                    compressImg(res.tempFilePaths[0]).then(file=>{
-                      attachUpload([file]).then(res=>{
-                        that.updateImg(res[0])
-                      })
-                    })
-                  //#endif
-                  // #ifndef APP-PLUS
-                      attachUpload(res.tempFilePaths).then(res=>{
-                        that.updateImg(res[0])
-                      })
-                  // #endif
-                          }
-                      });
+				uni.chooseImage({
+					count: 1,
+					sourceType: [sourceType],
+					success: function (res) {
+						uni.showLoading({title: '上传中...'});
+						// #ifdef APP-PLUS
+						compressImg(res.tempFilePaths[0]).then(file=>{
+							attachUpload([file]).then(res=>{
+								that.updateImg(res[0])
+							})
+						})
+						//#endif
+						// #ifndef APP-PLUS
+						attachUpload(res.tempFilePaths).then(res=>{
+							that.updateImg(res[0])
+						})
+						// #endif
+					}
+				});
             },
 			//更改头像
 			updateImg(imgAvtar){
@@ -253,7 +262,7 @@
 				let data= {
 					id: that.userInfo.id,
 					avatar: imgAvtar
-					}
+				}
 				this.$H.patch('/zf/v1/user/attr',data,true).then(res=>{
 					 uni.hideLoading();
 					 if(res.status&&res.code==200){
@@ -263,14 +272,14 @@
 								duration: 2000
 							})
 							that.userInfo.avatar=imgAvtar
-							that.$store.commit('userInfo',that.userInfo) 
+							that.$store.commit('userInfo',that.userInfo)
 							let chatList=that.$store.state.chatList
 							chatList.forEach(item=>{
 								if(item.targetName==that.userInfo.username){
 									item.fromAvatar=imgAvtar
 								}
 							})
-							that.$store.commit('chatList',chatList) 
+							that.$store.commit('chatList',chatList)
 					 }else{
 						 uni.showToast({
 						 	title:res.message,
@@ -278,15 +287,15 @@
 						 	duration: 2000
 						 })
 					 }
-				
+
 				})
 			},
 			// 注销账号
 			deleteUser() {
 				uni.showToast({
-					title: "请联系客服：5730473@qq.com",
+					title: "请提供手机号和注销原因，联系客服：5730473@qq.com",
 					icon: 'none',
-					duration: 2000
+					duration: 3000
 				})
 			},
 			// 退出登录
