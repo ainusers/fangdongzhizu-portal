@@ -19,6 +19,11 @@
 			<view class="title">1、发布图文：无需经过平台审核</view>
 			<view class="title">2、发布房源：需要经过平台审核<br/>2.1、未审核：会在“待审核”中展示<br/>2.2、审核不通过：会在“待审核”中展示并附上审核意见<br/>2.3、审核通过：会在首页展示</view>
 		</view>
+		<view class="container" style="color: #bd1212;">
+			<view class="title">发布房源注意事项:</view>
+			<view class="title">1、房源类型：租客选择:我要转租(默认)/房东选择:我是房东</view>
+			<view class="title">2、资质上传：租客选择:租房合同等证明材料/房东选择:清晰的房产证内容页等证明材料</view>
+		</view>
 		<!-- <image class="logo" :class="{'active':active}" src="../../../static/logo.png"  mode="aspectFit"></image> -->
 		<view class="tabbar-box-wrap">
 			<view class="tabbar-box">
@@ -26,10 +31,6 @@
 					<image class="box-image" src="../../../static/publish/release.png" mode="aspectFit"></image>
 					<text class="explain">发布图文</text>
 				</view>
-				<!-- <view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/tuwen')">
-					<image class="box-image" src="../../../static/publish/video.png" mode="aspectFit"></image>
-					<text class="explain">发布视频</text>
-				</view> -->
 				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/fangyuan','fangyuan')">
 					<image class="box-image" src="../../../static/publish/qa.png" mode="aspectFit"></image>
 					<text class="explain">发布房源</text>
@@ -119,7 +120,7 @@ export default {
 		opacity: 1;
 	}
 	.container {  
-	  padding: 20px 10px 10px 10px;  
+	  padding: 10px 10px 10px 10px;  
 	}  
 	.title {  
 	  font-size: 14px;  

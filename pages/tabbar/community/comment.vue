@@ -4,7 +4,8 @@
 }
 .comment {
 	display: flex;
-	padding: 30rpx;
+	padding: 15rpx;
+	border-bottom: 1px #e5e5e5 solid;
 	.left {
 		image {
 			width: 64rpx;
@@ -356,7 +357,8 @@ export default {
 							this.$set(this.commentList[this.beforeIndex],'commentText','展开查看更多')
 							this.expand=1
 						}
-						this.expand>0?this.commentList[this.beforeIndex].replyList.unshift(addComment):''
+						this.commentList[this.beforeIndex].replyList.unshift(addComment)
+						// this.expand>0?this.commentList[this.beforeIndex].replyList.unshift(addComment):''
 						let time=new Date()
 						let y=time.getFullYear()
 						let m=time.getMonth()+1
@@ -365,7 +367,6 @@ export default {
 						let mm=time.getMinutes()
 						let s=time.getSeconds()
 						let create_time=y+'-'+m+'-'+d +'  '+h+':'+mm+':'+s
-						// this.commentList[this.beforeIndex].create_time=tranfTime(create_time)
 					}
 					if(res.status&&!this.beCommentUserId){
 						this.commentList.unshift(addComment);

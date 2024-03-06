@@ -87,12 +87,6 @@
    		}
    	},
    	{
-   		"path": "pages/tabbar/community/commentDetail",
-   		"style": {
-   			"transparentTitle":  "always"
-   		}
-   	},
-   	{
    		"path": "pages/tabbar/publish/publish",
    		"style": {
    			"navigationBarTitleText": "发布",

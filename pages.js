@@ -121,15 +121,6 @@ module.exports=()=>({
 			}
 		},
 		{
-			"path": "pages/tabbar/community/commentDetail",
-			"style": {
-				"transparentTitle":  "always"
-			},
-			meta:{
-				needLogin:true
-			}
-		},
-		{
 			"path": "pages/tabbar/publish/publish",
 			"style": {
 				"navigationBarTitleText": "发布",
