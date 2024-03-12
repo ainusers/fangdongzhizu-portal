@@ -1,15 +1,6 @@
 <template>
 	<view class="content" :class="{'active':active}">
 		<view class="container">
-			<view class="title">社区行为规范:</view>
-			<view class="title">1、尊重他人，不发布攻击、侮辱、谩骂等不良言论</view>
-			<view class="title">2、不发布广告和商业推广信息</view>
-			<view class="title">3、禁止恶意灌水，不发布重复、无意义的垃圾信息</view>
-			<view class="title">4、不侵犯他人版权，不发布侵犯他人知识产权的内容</view>
-			<view class="title">5、注意言辞和形象，不得使用粗俗、低俗的语言</view>
-			<view class="title">6、遵守社区规定，不得违反社区的任何规定和要求</view>
-		</view>
-		<view class="container">
 			<view class="title">社区发布规则:</view>
 			<view class="title">1、每个用户发布 (房源) 不超过两个</view>
 			<view class="title">2、每个用户每天发布 (动态) 不超过三个</view>

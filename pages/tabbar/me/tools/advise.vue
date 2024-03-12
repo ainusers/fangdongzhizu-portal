@@ -224,7 +224,7 @@
 		height: 87%;
 		border-radius: 20rpx;
 		margin: 5px;
-		font-size:24upx;
+		font-size:26upx;
 		padding:20upx;
 		background:#f6f8f9;
 		box-sizing: border-box;
@@ -243,10 +243,10 @@
 	}
 
 	.concact {
-		font-size: 24upx;
+		font-size: 26upx;
 		font-weight: 500;
 		padding-bottom: 12rpx;
-		padding-left: 10rpx;
+		padding-left: 20rpx;
 	}
 
 	.communication {
@@ -261,7 +261,7 @@
 		height: 90rpx;
 		background-color: #f8f9fd;
 		border-radius: 20rpx;
-		font-size:24upx;
+		font-size: 26upx;
 		padding:10upx;
 		padding-left: 20upx;
 		font-size:#f6f8f9;

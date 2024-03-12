@@ -1940,7 +1940,7 @@
 				this.$H.post(url, params, true).then(res => {
 					uni.hideToast();
 					if (res.data && res.status) {
-						uni.$u.toast('发布成功')
+						uni.$u.toast('发布成功,房源会在5个工作日内审核完毕')
 						uni.removeStorage({
 							key: 'houseModel'
 						})
