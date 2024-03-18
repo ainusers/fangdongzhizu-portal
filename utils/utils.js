@@ -241,7 +241,7 @@ const getCount=function(){
 		return res
 	})
 }
-//限制发布图文个数
+//限制发布动态个数
 const checkPush=function(){
 	return request.get('/zf/v1/dynamic/push',{userId:store.state.userInfo.id},true).then(res=>{
 		return res.data[0]

@@ -429,7 +429,7 @@ module.exports=()=>({
 		{
 			"path": "pages/tabbar/publish/choice/tuwen",
 			"style": {
-				"navigationBarTitleText": "发布图文",
+				"navigationBarTitleText": "发布动态",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,

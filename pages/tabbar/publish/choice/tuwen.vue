@@ -203,86 +203,61 @@
 					});
 					return;
 				}
+				// 检查发布动态数量是否达到上限
 				checkPush().then(async res=>{
 					if(res.status){
-						// 检查是否开启位置信息权限
-						let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
-						if (result != 1) {
-							uni.showModal({
-								title: '温馨提示',
-								content: '获取位置权限才可以发表动态',
-								success(res) {
-									if (res.confirm) {
-										// 打开权限设置界面
-										permision.gotoAppPermissionSetting();
-									}	
-								}
-							})
-							return;
-						}
-						// 判断用户是否获取位置权限
-						if(!permision.checkSystemEnableLocation()) {
-							uni.showModal({
-								title: '温馨提示',
-								content: '获取定位服务(GPS)才可以发表动态',
-								success(res) {
-									if (res.confirm) {
-										// android平台
-										if (uni.getSystemInfoSync().platform == 'android') {
-										  var Intent = plus.android.importClass('android.content.Intent');
-										  var Settings = plus.android.importClass('android.provider.Settings');
-										  var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-										  var main = plus.android.runtimeMainActivity();
-										  main.startActivity(intent); // 打开系统设置GPS服务页面
-										}
+						// 提示用户获取权限
+						uni.showModal({
+							title: '温馨提示',
+							content: '发布动态需要获取位置权限，用于展示动态的发布城市',
+							success: async (res) => {  
+								if (res.confirm) {
+									uni.showToast({title:'发布中',duration:15000,icon:'loading'});
+									// 获取位置信息
+									// #ifdef APP-PLUS
+									let location = await this.getLocation();
+									// #endif
+									// 获取上传图片地址
+									let images;
+									if(this.imageList.length == 0) {
+										images = [];
+									} else {
+										images = await attachUpload(this.imageList);
 									}
-								}
-							});
-							return
-						}
-						uni.showToast({title:'发布中',duration:15000,icon:'loading'});
-						// 获取位置信息
-						// #ifdef APP-PLUS
-						let location = await this.getLocation();
-						// #endif
-						// 获取上传图片地址
-						let images;
-						if(this.imageList.length == 0) {
-							images = [];
-						} else {
-							images = await attachUpload(this.imageList);
-						}
-						let data= {
-							'imgUrl': images.toString(),
-							'nickname': this.$store.state.userInfo.nickname,
-							'avatar': this.$store.state.userInfo.avatar,
-							'userId': this.$store.state.userInfo.id,
-							'words': htmlEncode(this.input_content),
-						}
-						// #ifdef APP-PLUS
-						if(location!='未知'){
-							data['longitude']=location.longitude// 经度
-							data['latitude']=location.latitude// 纬度
-							data['country']=location.address.country
-							data['province']=location.address.province
-							data['city']=location.address.city
-							data['address']=location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName
-							data['type']=location.type
-						}
-						// #endif
-						// 上传动态信息
-						this.$H.post('/zf/v1/dynamic/dynamics',data,true).then(res=>{
-							if(res.status){
-								uni.hideToast();
-								uni.showToast({
-									icon:'success',
-									title:"发布成功"
-								})
-								setTimeout(()=>{
-									uni.switchTab({
-										url: '/pages/tabbar/community/community'
+									let data= {
+										'imgUrl': images.toString(),
+										'nickname': this.$store.state.userInfo.nickname,
+										'avatar': this.$store.state.userInfo.avatar,
+										'userId': this.$store.state.userInfo.id,
+										'words': htmlEncode(this.input_content),
+									}
+									// #ifdef APP-PLUS
+									if(location!='未知'){
+										data['longitude']=location.longitude// 经度
+										data['latitude']=location.latitude// 纬度
+										data['country']=location.address.country
+										data['province']=location.address.province
+										data['city']=location.address.city
+										data['address']=location.address.district+"-"+location.address.street+"-"+location.address.streetNum+"-"+location.address.poiName
+										data['type']=location.type
+									}
+									// #endif
+									// 上传动态信息
+									this.$H.post('/zf/v1/dynamic/dynamics',data,true).then(res=>{
+										if(res.status){
+											uni.hideToast();
+											uni.showToast({
+												icon:'success',
+												title:"发布成功"
+											})
+											setTimeout(()=>{
+												uni.switchTab({
+													url: '/pages/tabbar/community/community'
+												})
+											},1000)
+										}
 									})
-								},1000)
+								}
 							}
 						})
 					}else{

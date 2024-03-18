@@ -60,7 +60,6 @@
 			.item {
 				display: flex;
 				padding: 20rpx;
-				border-bottom: solid 2rpx $u-border-color;
 				.text{
 					font-size: 14px;
 				}

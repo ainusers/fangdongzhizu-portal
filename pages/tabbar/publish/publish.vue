@@ -7,7 +7,7 @@
 		</view>
 		<view class="container">
 			<view class="title">社区审核规则:</view>
-			<view class="title">1、发布图文：无需经过平台审核</view>
+			<view class="title">1、发布动态：无需经过平台审核</view>
 			<view class="title">2、发布房源：需要经过平台审核<br/>2.1、未审核：会在“待审核”中展示<br/>2.2、审核不通过：会在“待审核”中展示并附上审核意见<br/>2.3、审核通过：会在首页展示</view>
 		</view>
 		<view class="container" style="color: #bd1212;">
@@ -20,7 +20,7 @@
 			<view class="tabbar-box">
 				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/tuwen','tuwen')">
 					<image class="box-image" src="../../../static/publish/release.png" mode="aspectFit"></image>
-					<text class="explain">发布图文</text>
+					<text class="explain">发布动态</text>
 				</view>
 				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/fangyuan','fangyuan')">
 					<image class="box-image" src="../../../static/publish/qa.png" mode="aspectFit"></image>
