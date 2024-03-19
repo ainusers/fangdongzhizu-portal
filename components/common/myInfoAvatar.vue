@@ -17,7 +17,7 @@
 		        <view class="user-text">
 					<view class="userNickName">{{ userInfo.nickname }}
 						<image mode="aspectFit" src="../../static/me/boy_icon.png" class="sex_con" v-if="this.userInfo.sex == 1"></image>
-						<image mode="aspectFit" src="../../static/me/girl.svg" class="sex_con" v-else></image>
+						<image mode="aspectFit" src="../../static/me/girl_icon.png" class="sex_con" v-else></image>
 					</view>
 						<view class="option" v-if="isShow">
 						<u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>

@@ -22,6 +22,20 @@
 			</view>
 			<input name="contact" class="concactContent" placeholder="请留下任一联系方式" bindinput="userNameInput" />
 		</view>
+		<view class="reward_text">
+			<view>
+				温馨提示:
+			</view>
+			<view>
+				1、您的每一条建议，都是我们前进的动力
+			</view>
+			<view>
+				2、期待您的宝贵反馈，共同完善这个app
+			</view>
+			<view>
+				3、所有合理反馈都将纳入后续版本更新，敬请持续关注
+			</view>
+		</view>
 		<button form-type='submit' class="commit" type="primary" plain="true">
 			<text class="commitContent">提交</text>
 		</button>
@@ -177,7 +191,7 @@
 		flex-direction: row;
 		justify-content: space-around;
 		flex-wrap: wrap;
-		padding:30upx;
+		padding: 14px 10px 0px 10px;
 	}
 	/deep/.u-radio__label{
 		margin-bottom: 10upx;
@@ -238,7 +252,7 @@
 
 	/* 联系方式 */
 	.bottom {
-		height: 31.7vh;
+		height: 11vh;
 		width: 100%;
 	}
 
@@ -271,9 +285,9 @@
 	/* 按钮 */
 	.commit {
 		position: absolute;
-		bottom:0;
+		bottom: 1px;
 		width:100%;
-		border-radius: 0;
+		border-radius: 6px;
 		background-color: #5199ff !important;
 		&::after{
 			border:none;
@@ -283,5 +297,16 @@
 	.commitContent {
 		color: #fff;
 		border-radius: 30rpx;
+	}
+	
+	.reward_text{
+		font-size: 27rpx;
+		width: 90%;
+		margin: 0 auto;
+		color: #AAAAAA;
+		view{
+			margin-bottom: 10rpx;
+			line-height: 150%;
+		}
 	}
 </style>

@@ -541,31 +541,82 @@
 		<view>
 			SDK隐私政策链接/目的：https://map.baidu.com/zt/client/privacy/index.html
 		</view>
-		<view class="bold">
-			3、uni-app(5+、web2app)
-		</view>
-		<view>
-			SDK包名/网址：io.dcloud
-		</view>
-		<view>
-			SDK用途：基础模块
-		</view>
-		<view>
-			获取的个人信息类型：存储的个人文件、位置信息、读取手机状态和身份、网络信息、SD卡
-		</view>
-		<view>
-			调用的设备权限：android.permission.INTERNET
-						android.permission.ACCESS_NETWORK_STATE
-						android.permission.WRITE_EXTERNAL_STORAGE
-						android.permission.READ_EXTERNAL_STORAG
-						android.permission.READ_PHONE_STATE
-		</view>
-		<view>
-			信息用途：存储的个人文件，设备信息（IMEI、ANDROID_ID、DEVICE_ID、IMSI），网络信息
-		</view>
-		<view>
-			SDK隐私政策链接/目的：https://ask.dcloud.net.cn/article/36937
-		</view>
+		<div class="bold">
+            3、高德开放平台
+        </div>
+        <div>
+            SDK包名/网址：com.amap.api, com.loc, com.autonavi
+        </div>
+        <div>
+            SDK用途：实现定位/展现地图
+        </div>
+        <div>
+            获取的个人信息类型：存储的个人文件、位置信息、读取手机状态和身份、网络信息、传感器信息、Android ID
+        </div>
+        <div>
+            调用的设备权限：android.permission.ACCESS_COARSE_LOCATION
+                            android.permission.ACCESS_FINE_LOCATION
+                            android.permission.ACCESS_NETWORK_STATE
+                            android.permission.ACCESS_WIFI_STATE
+                            android.permission.CHANGE_WIFI_STATE
+                            android.permission.READ_PHONE_STATE
+                            android.permission.WRITE_EXTERNAL_STORAGE
+                            android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
+        </div>
+        <div>
+            信息用途：定位用户地理位置提供房源/显示IP属地/计算小区和地铁站的距离
+        </div>
+        <div>
+            SDK隐私政策链接/目的：https://lbs.amap.com/pages/privacy
+        </div>
+        <div class="bold">
+            4、uni-app(5+、web2app)
+        </div>
+        <div>
+            SDK包名/网址：io.dcloud
+        </div>
+        <div>
+            SDK用途：基础模块
+        </div>
+        <div>
+            获取的个人信息类型：存储的个人文件、位置信息、读取手机状态和身份、网络信息、SD卡
+        </div>
+        <div>
+            调用的设备权限：android.permission.INTERNET
+                        android.permission.ACCESS_NETWORK_STATE
+                        android.permission.WRITE_EXTERNAL_STORAGE
+                        android.permission.READ_EXTERNAL_STORAG
+                        android.permission.READ_PHONE_STATE
+        </div>
+        <div>
+            信息用途：存储的个人文件，设备信息（IMEI、ANDROID_ID、DEVICE_ID、IMSI），网络信息
+        </div>
+        <div>
+            SDK隐私政策链接/目的：https://ask.dcloud.net.cn/article/36937
+        </div>
+		<div class="bold">
+            5、uni-AD
+        </div>
+        <div>
+            SDK包名/网址：uni-AD
+        </div>
+        <div>
+            SDK用途：基础广告
+        </div>
+        <div>
+            获取的个人信息类型：设备品牌、型号、操作系统版本、OAID、分辨率、IMEI、android ID、SIM 卡 IMSI 信息、应用名称、应用包名、应用版本号、网络信息、应用安装列表、位置信息
+        </div>
+        <div>
+            调用的设备权限：android.permission.ACCESS_NETWORK_STATE
+                        android.permission.READ_PHONE_STATE
+                        android.permission.ACCESS_COARSE_LOCATION
+        </div>
+        <div>
+            信息用途：广告投放合作，广告归因、反作弊、安全
+        </div>
+        <div>
+            SDK隐私政策链接/目的：https://doc.dcloud.net.cn/markdown-share-docs/1d821cdd3cdf2681045ec4be94bc8404
+        </div>
 	</view>
 	
 </template>

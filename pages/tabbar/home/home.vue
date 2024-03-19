@@ -177,7 +177,6 @@
 	import houseListItem from '@/components/house-list/house-list-item.vue';
 	import houseListItemSkeleton from '@/components/house-list/house-list-item-skeleton.vue';
 	import screenTab from '@/components/common/screen-tab/screen-tab.vue'
-	import screenHuan from '@/components/common/screen-tab/screen_huan.vue'
 	import LodingM from '@/components/common/modal/loading_model.vue'
 	import notice from '@/components/common/noticeModel.vue'
 	import {constant} from "@/utils/constant.js";
@@ -206,7 +205,6 @@
 		components: {
 			houseListItem,
 			screenTab,
-			screenHuan,
 			LodingM,
 			houseListItemSkeleton,
 			notice

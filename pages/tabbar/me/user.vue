@@ -292,7 +292,7 @@
 			// 注销账号
 			deleteUser() {
 				uni.showToast({
-					title: "请提供手机号和注销原因，联系客服：5730473@qq.com，处理时效最长不超过7个工作日",
+					title: "请提供手机号和注销原因，联系客服：5730473@qq.com，处理时效最长不超过5个工作日",
 					icon: 'none',
 					duration: 3000
 				})
