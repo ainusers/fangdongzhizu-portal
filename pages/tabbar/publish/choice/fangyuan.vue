@@ -1649,7 +1649,7 @@
 						item.checked = true
 					}
 				})
-				index==0?this.tipTxt='请提供完整清晰的房屋资质,如:租房合同':this.tipTxt='请提供完整清晰的房屋资质,如:房产证'
+				index==0?this.tipTxt='请提供完整清晰的房屋资质,如:租房合同或其他证明材料':this.tipTxt='请提供完整清晰的房屋资质,如:房产证或其他证明材料'
 				this.houseModel.publishType = index + 1
 			},
 			// 选择地区回调
