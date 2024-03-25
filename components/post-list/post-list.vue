@@ -249,7 +249,7 @@
 				this.$store.commit('communityInfo', data)
 				this.dyId = data.id
 				uni.navigateTo({
-					url: "/pages/tabbar/community/comment?id=" + data.id
+					url: "/pages/tabbar/community/comment?data=" + JSON.stringify(data)
 				})
 			},
 			toUcenter(userId) {

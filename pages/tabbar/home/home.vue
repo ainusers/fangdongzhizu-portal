@@ -111,18 +111,15 @@
 				@regionLeftBtn="regionLeftBtn" @regionRightBtn="regionRightBtn" @confirmBtn="confirmBtn"
 				@roomConfirm="roomConfirm" @confirmPrice="confirmPrice">
 			</screenTab>
-			<!-- 换租的筛选 -->
-			<!-- <screenHuan v-if="current==2"></screenHuan> -->
 		</u-sticky>
 		
 		<!-- 内容区域 -->
 		<swiper class="list-swiper" @change="swipeIndex" :current="current" :duration="300" ref="listSwiper">
 			<swiper-item>
-				<scroll-view scroll-y="true" class=" list-content" @scrolltolower="scrolltolower"
+				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
 					:refresher-triggered="triggered" :refresher-enabled="true" :refresher-threshold="100"
 					@refresherrefresh="onRefresh" @refresherrestore="onRestore">
 					<view v-if="current === 0">
-						<!-- 内容区域 -->
 						<view class="content" v-if="houseList.length>0">
 							<!-- 租房列表 -->
 							<block v-for="(item, index) in houseList" :key="index">
@@ -141,10 +138,11 @@
 				</scroll-view>
 			</swiper-item>
 			<swiper-item>
-				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
+				<scroll-view scroll-y="true" class=" list-content" @scrolltolower="scrolltolower"
 					:refresher-triggered="triggered" :refresher-enabled="true" :refresher-threshold="100"
 					@refresherrefresh="onRefresh" @refresherrestore="onRestore">
 					<view v-if="current === 1">
+						<!-- 内容区域 -->
 						<view class="content" v-if="houseList.length>0">
 							<!-- 租房列表 -->
 							<block v-for="(item, index) in houseList" :key="index">
@@ -224,10 +222,10 @@
 				subleaseList: [], //转租
 				directList: [], //直租
 				tabList: [{
-						name: '转租'
+						name: '直租'
 					},
 					{
-						name: '直租'
+						name: '转租'
 					}
 				],
 				screenFormData: {
