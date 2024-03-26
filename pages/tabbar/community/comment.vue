@@ -199,6 +199,7 @@ export default {
 			load_status_tuwen: 'loadmore',
 			loadStatus: 'loadmore', //用于控制是否可以再继续加载
 			comment_id:'',//评论id
+			options:'',//动态
 			dyId:'',//动态id
 			parentId:'',//二级评论的父id
 			expand:0,//当前展开的第几层
@@ -208,8 +209,9 @@ export default {
 		index:String
 	},
 	onLoad(options) {
-		if(options.id){
-			this.dyId=options.id
+		if(options){
+			this.options=JSON.parse(options.data)
+			this.dyId=this.options.id
 		}
 		this.getOneList()
 		this.getdyDetail()
@@ -217,10 +219,9 @@ export default {
 	},
 	onPullDownRefresh(){
 		this.pageNumOne=1
+		this.tuwen_data=[]
 		this.commentList=[]
 		this.getOneList()
-		this.getdyDetail()
-		this.tuwen_data=[]
 		uni.stopPullDownRefresh();
 	},
 	onReachBottom(){
@@ -242,28 +243,14 @@ export default {
 				uni.navigateBack()
 			}
 		},
+		// 进入动态详情页
 		getdyDetail(){
-			this.load_status_tuwen='loading'
-			let data={
-				"id": this.dyId,
-				"page":1 ,
-				"size": "10",
-				"userId":this.$store.state.userInfo.id
+			this.load_status_tuwen='nomore'
+			if(this.options){
+				this.tuwen_data = [this.options]
+				uni.stopPullDownRefresh();
 			}
-			this.$H.get('/zf/v1/dynamic/detail',data,true).then(res=>{
-				this.load_status_tuwen='nomore'
-					if(res.status){	
-						this.tuwen_data = res.data
-						this.tuwen_data.forEach(item=>{
-							this.$set(item,'status',item.status)
-							this.$set(item,'like',item.like)
-							item.image=item.imgurl.split(',')
-							this.$set(item,'isReport',false)
-						})
-					uni.stopPullDownRefresh();
-					}
-				})
-			},
+		},
 		// 跳转到全部回复
 		toAllReply(index,id) {
 			this.expand++
