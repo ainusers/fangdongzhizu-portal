@@ -319,6 +319,8 @@
 				// 获取该城市的所有区
 				that.getArea()
 				// 查询房源列表
+        that.subleaseList = []
+        that.directList = []
 				that.init(1)
 			})
 		},
@@ -577,6 +579,8 @@
 					this.subway = item
 					this.screenArea = ''
 				}
+        this.directList = []
+        this.subleaseList = []
 				this.init(true)
 			},
 			// 户型的确认

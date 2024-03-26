@@ -109,7 +109,9 @@
 		},
 		// 默认展示
 		onShow() {
-			this.getMomentPost();
+      if(!this.tuwen_data.length){
+        this.getMomentPost();
+      }
 		},
 		// 下拉刷新
 		onPullDownRefresh() {

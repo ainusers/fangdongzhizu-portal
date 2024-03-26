@@ -57,6 +57,7 @@ export default {
 				this.show=true
 				return
 			}
+			// this.show=true
 			if (!url) return;
 			//房源
 			if(type=='fangyuan'){
