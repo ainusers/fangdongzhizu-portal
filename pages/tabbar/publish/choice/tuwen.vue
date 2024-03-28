@@ -122,6 +122,7 @@ textarea {
 
 .list-pd {
     margin-top: 0;
+	border-bottom: 2px solid #f2f2f2;
 }
 
 .close-view {
@@ -145,9 +146,8 @@ textarea {
 }
 
 .feedback-submit {
-    border-radius: 50upx;
-    background: #5199ff;
-    color: #fff;
+    border-radius: 10px;
+    width: 200px;
 }
 </style>
 <template>
@@ -157,7 +157,7 @@ textarea {
                 <textarea placeholder="说点什么吧..." v-model="input_content" />
             </view>
             <view class="upload-type">
-                <view>上传类型(图片或视频只能选择一种):</view>
+                <view>上传类型(图片和视频只能选择一种)</view>
                 <u-radio-group v-model="uploadType" placement="column" @change="uploadTypeChange">
                     <u-radio name="image">图片</u-radio>
                     <u-radio name="video">视频</u-radio>
@@ -189,7 +189,7 @@ textarea {
                 </view>
             </view>
             <view class="footer">
-                <button type="default" class="feedback-submit" @click="publish">发布</button>
+                <button type="primary" class="feedback-submit" plain="true" @click="publish">发布</button>
             </view>
         </form>
 
@@ -199,7 +199,6 @@ textarea {
 <script>
 import image from '@/store/image.js';
 import permision from "@/sdk/wa-permission/permission.js"
-import { checkOpenGPSServiceByAndroid } from '@/utils/openSettings.js'
 import { attachUpload, htmlEncode, compressImg, checkPush } from '@/utils/utils.js'
 var sourceType = [
     ['camera'],

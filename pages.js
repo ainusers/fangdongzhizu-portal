@@ -393,6 +393,23 @@ module.exports=()=>({
 			}
 		},
 		{
+			"path": "pages/tabbar/me/tools/feel",
+			"style": {
+				"navigationBarTitleText": "租房体验",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa",
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle":"light",
+				"app-plus": {
+					"scrollIndicator": "none",
+					"bounce": "none"
+				}
+			},
+			meta:{
+				needLogin:true
+			}
+		},
+		{
 			"path": "pages/tabbar/me/tools/advise",
 			"style": {
 				"navigationBarTitleText": "反馈建议",

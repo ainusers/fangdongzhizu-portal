@@ -36,9 +36,9 @@
 				3、所有合理反馈都将纳入后续版本更新，敬请持续关注
 			</view>
 		</view>
-		<button form-type='submit' class="commit" type="primary" plain="true">
-			<text class="commitContent">提交</text>
-		</button>
+		<view class="footer">
+			<button form-type='submit' class="commit" type="primary" plain="true">提交</button>
+		</view>
 	</form>
 </template>
 
@@ -183,7 +183,11 @@
 </script>
 
 <style lang="scss" scope>
-	/* pages/record/record.wxss */
+	.footer {
+	    margin: 20upx;
+		position: absolute;
+		bottom: 1px;
+	}
 	/* 反馈选项 */
 	.flex-row {
 		width: 100%;
@@ -284,14 +288,8 @@
 
 	/* 按钮 */
 	.commit {
-		position: absolute;
-		bottom: 1px;
-		width:100%;
-		border-radius: 6px;
-		background-color: #5199ff !important;
-		&::after{
-			border:none;
-		}
+		width: 200px;
+		border-radius: 10px;
 	}
 
 	.commitContent {

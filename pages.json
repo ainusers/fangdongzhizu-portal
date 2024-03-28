@@ -323,9 +323,9 @@
    		}
    	},
    	{
-   		"path": "pages/tabbar/me/tools/advise",
+   		"path": "pages/tabbar/me/tools/feel",
    		"style": {
-   			"navigationBarTitleText": "反馈建议",
+   			"navigationBarTitleText": "租房体验",
    			"navigationBarTextStyle": "black",
    			"navigationBarBackgroundColor": "#fafafa",
    			"enablePullDownRefresh": false,
@@ -336,6 +336,20 @@
    			}
    		}
    	},
+	{
+		"path": "pages/tabbar/me/tools/advise",
+		"style": {
+			"navigationBarTitleText": "反馈建议",
+			"navigationBarTextStyle": "black",
+			"navigationBarBackgroundColor": "#fafafa",
+			"enablePullDownRefresh": false,
+			"backgroundTextStyle":"light",
+			"app-plus": {
+				"scrollIndicator": "none",
+				"bounce": "none"
+			}
+		}
+	},
    	{
    		"path": "pages/tabbar/me/tools/shuoshuo",
    		"style": {

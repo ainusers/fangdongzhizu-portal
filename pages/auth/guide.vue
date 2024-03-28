@@ -24,7 +24,7 @@
 					})
 				}
 				plus.navigator.closeSplashscreen()
-			},100)
+			},200)
 		}
 	}
 </script>
