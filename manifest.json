@@ -15,7 +15,8 @@
         "modules" : {
             "Geolocation" : {},
             "Maps" : {},
-            "Camera" : {}
+            "Camera" : {},
+            "VideoPlayer" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -149,6 +150,7 @@
         }
     },
     "uniStatistics" : {
-        "version" : "2"
+        "version" : "2",
+        "reportInterval" : "60"
     }
 }

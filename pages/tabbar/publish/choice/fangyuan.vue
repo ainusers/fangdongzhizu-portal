@@ -1291,7 +1291,7 @@
 				isEdit: false, //当前是否为编辑房源
 				isPublish1: false,
 				isPublish2: false,
-				tipTxt:'请提供完整清晰的房屋资质,如:租房合同',
+				tipTxt:'请提供完整清晰的房屋资质,如:租房合同或其他证明材料',
 			}
 		},
 		onShow(){

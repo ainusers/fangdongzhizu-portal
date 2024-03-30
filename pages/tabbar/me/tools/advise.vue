@@ -3,17 +3,16 @@
 		<view class="flex-row">
 			<u-radio-group v-model="value" >
 				<u-radio 
-							@change="checkTarget(index)" 
-							v-for="(item, index) in list" :key="index" 
-							:name="item.word"
-				>
+					@change="checkTarget(index)" 
+					v-for="(item, index) in list" :key="index" 
+					:name="item.word">
 					{{item.word}}
 				</u-radio>
 			</u-radio-group>
 		</view>
 		<view class="middle">
 			<textarea name="content" class="recordContent" maxlength="100" @input = "descInput($event)"
-				placeholder="输入内容帮我们了解您的意见和建议" />
+				placeholder="输入内容帮我们了解您的意见或建议" />
 			<span class="wordwrap">{{number}}/100</span>
 		</view>
 		<view class="bottom">
@@ -22,9 +21,12 @@
 			</view>
 			<input name="contact" class="concactContent" placeholder="请留下任一联系方式" bindinput="userNameInput" />
 		</view>
+		<view class="footer">
+			<button form-type='submit' class="commit" type="primary" plain="true">提交</button>
+		</view>
 		<view class="reward_text">
-			<view>
-				温馨提示:
+			<view style="text-align: center;">
+				— — 温馨提示 — —
 			</view>
 			<view>
 				1、您的每一条建议，都是我们前进的动力
@@ -33,11 +35,8 @@
 				2、期待您的宝贵反馈，共同完善这个app
 			</view>
 			<view>
-				3、所有合理反馈都将纳入后续版本更新，敬请持续关注
+				3、所有合理反馈都将纳入后续版本更新，敬请关注
 			</view>
-		</view>
-		<view class="footer">
-			<button form-type='submit' class="commit" type="primary" plain="true">提交</button>
 		</view>
 	</form>
 </template>
@@ -52,83 +51,22 @@
 				contact: '', // 联系方式
 				content: '', // 反馈内容
 				list: [
-					{
-						"src": "/static/me/tools/quit.png",
-						"word": "页面闪退",
-						"color": "#f8f9fd",
-						"wordColor": "#a5acc0",
-						"check": false
-					},
-					{
-						"src": "/static/me/tools/transform.png",
-						"word": "程序崩溃",
-						"color": "#f8f9fd",
-						"wordColor": "#a5acc0",
-						"check": false
-					},
-					{
-						"src": "/static/me/tools/operation.png",
-						"word": "操作体验",
-						"color": "#f8f9fd",
-						"wordColor": "#a5acc0",
-						"check": false
-					},
-					{
-						"src": "/static/me/tools/mei.png",
-						"word": "界面审美",
-						"color": "#f8f9fd",
-						"wordColor": "#a5acc0",
-						"check": false
-					},
-					{
-						"src": "/static/me/tools/function.png",
-						"word": "功能建议",
-						"color": "#f8f9fd",
-						"wordColor": "#a5acc0",
-						"check": false
-					},
-					{
-						"src": "/static/me/tools/other.png",
-						"word": "其他反馈",
-						"color": "#f8f9fd",
-						"wordColor": "#a5acc0",
-						"check": false
-					}
+					{"word": "页面闪退"},
+					{"word": "程序崩溃"},
+					{"word": "操作体验"},
+					{"word": "界面审美"},
+					{"word": "功能建议"},
+					{"word": "其他反馈"}
 				]
 			}
 		},
-		onLoad() {},
-		onShow() {},
-		onUnload() {},
 		methods: {
+			// 判断当前是否之选中一个反馈建议
 			checkTarget(index) {
 				this.list.forEach(item=>{
 					item.check=false
 				})
-				// 判断当前是否之选中一个反馈建议
-				this.list[index].wordColor = this.list[index].wordColor == '#ffffff' ? '#a5acc0' : '#ffffff';
-				this.list[index].color = this.list[index].color == '#f8f9fd' ? '#5199ff' : '#f8f9fd';
 				this.list[index].check = this.list[index].check == false ? true : false;
-				switch(index){
-					case 0: 
-						this.list[index].src = this.list[index].src == '/static/me/tools/quit.png' ? '/static/me/tools/quit-select.png' : '/static/me/tools/quit.png';;
-					break;
-					case 1: 
-						this.list[index].src = this.list[index].src == '/static/me/tools/transform.png' ? '/static/me/tools/transform-select.png' : '/static/me/tools/transform.png';;
-					break;
-					case 2: 
-						this.list[index].src = this.list[index].src == '/static/me/tools/operation.png' ? '/static/me/tools/operation-select.png' : '/static/me/tools/operation.png';;
-					break;
-					case 3: 
-						this.list[index].src = this.list[index].src == '/static/me/tools/mei.png' ? '/static/me/tools/mei-select.png' : '/static/me/tools/mei.png';;
-					break;
-					case 4: 
-						this.list[index].src = this.list[index].src == '/static/me/tools/function.png' ? '/static/me/tools/function-select.png' : '/static/me/tools/function.png';;
-					break;
-					case 5: 
-						this.list[index].src = this.list[index].src == '/static/me/tools/other.png' ? '/static/me/tools/other-select.png' : '/static/me/tools/other.png';;
-					break;
-				}
 			},
 			// 用户反馈内容提交
 			formSubmit(e) {
@@ -137,40 +75,33 @@
 					let {word} = {...n};
 					return {word}.word;
 				});
-				// var regQQ = /^[1-9]\d{4,9}$/ // qq号
-				// var regPhone = /^1[358497]\d{9}$/;  // 手机号
-				// var regWx = /^[a-zA-Z][-_a-zA-Z0-9]{5,19}$/;  // 微信号
-				// var regEmail=/^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(\.[0-9A-Za-z]+)+$/ // 邮箱
 				if(!words.toString()){
-					showToastTit('请选择反馈建议')
+					showToastTit('请选择反馈类型')
 					return
 				}
 				if(!e.detail.value.content){
-					showToastTit('请填写意见和反馈')
+					showToastTit('请输入意见或建议')
 					return
 				}
-				/* if(contact&&!regQQ.test(contact)&&!regPhone.test(contact)&&!regWx.test(contact)&&!regEmail.test(regPhone)){
-					showToastTit('请正确填写联系方式')
-					return
-				}else */if(!contact){
+				if(!contact){
 					showToastTit('请添加联系方式')
 					return
 				}
-				
 				let data={
+					username: this.$store.state.userInfo.username,
 					type: words.toString(),
 					content: htmlEncode(e.detail.value.content),
 					contact: htmlEncode(e.detail.value.contact)
 				}
 				this.$H.post('/zf/v1/advise/advises',data,true).then(res=>{
 					if(res.status){
-							showToastTit( '反馈建议已成功提交')
-							// 返回上一页
-							setTimeout(() => {
-								uni.navigateBack({
-								    delta: 1
-								});
-							},2000)		
+						showToastTit( '反馈建议已成功提交')
+						// 返回上一页
+						setTimeout(() => {
+							uni.navigateBack({
+								delta: 1
+							});
+						},2000)		
 					}
 				})
 			},
@@ -185,8 +116,6 @@
 <style lang="scss" scope>
 	.footer {
 	    margin: 20upx;
-		position: absolute;
-		bottom: 1px;
 	}
 	/* 反馈选项 */
 	.flex-row {
@@ -199,10 +128,9 @@
 	}
 	/deep/.u-radio__label{
 		margin-bottom: 10upx;
-		font-size: 24upx;
+		font-size: 25upx;
 		color: #333;
 	}
-
 	.flex-view-item {
 		height: 80px;
 		width: 30%;
@@ -210,36 +138,31 @@
 		background-color: #f8f9fd;
 		border-radius: 15rpx;
 	}
-
 	.model {
 		padding-left: 50rpx;
 		padding-top: 10rpx;
 	}
-
 	.reasonImg {
 		width: 80rpx;
 		height: 80rpx;
 		display: block;
 		padding-left: 10px;
 	}
-
 	/* 反馈内容 */
 	.middle {
-		height: 36vh;
+		height: 35vh;
 		width: 100%;
 		position: relative;
 	}
-
 	.record {
 		font-size: 16px;
 		font-weight: 500;
 		padding-bottom: 12rpx;
 		padding-left: 10rpx;
 	}
-
 	.recordContent {
 		width: 97%;
-		height: 87%;
+		height: 97%;
 		border-radius: 20rpx;
 		margin: 5px;
 		font-size:26upx;
@@ -247,34 +170,29 @@
 		background:#f6f8f9;
 		box-sizing: border-box;
 	}
-
 	.wordwrap {
 		position: absolute;
-		bottom:90upx;
-		right: 20rpx;
+		bottom: 32rpx;
+		right: 32rpx;
 	}
-
 	/* 联系方式 */
 	.bottom {
 		height: 11vh;
 		width: 100%;
 	}
-
 	.concact {
 		font-size: 26upx;
 		font-weight: 500;
 		padding-bottom: 12rpx;
 		padding-left: 20rpx;
 	}
-
 	.communication {
 		font-size: 14px;
 		color: #b9bece;
 		padding-left: 10px;
 	}
-
 	.concactContent {
-		width:97%;
+		width: 97%;
 		margin: 4px 5px 0px 5px;
 		height: 90rpx;
 		background-color: #f8f9fd;
@@ -285,25 +203,23 @@
 		font-size:#f6f8f9;
 		box-sizing: border-box;
 	}
-
 	/* 按钮 */
 	.commit {
 		width: 200px;
 		border-radius: 10px;
 	}
-
 	.commitContent {
 		color: #fff;
 		border-radius: 30rpx;
 	}
-	
 	.reward_text{
-		font-size: 27rpx;
+		font-size: 28rpx;
 		width: 90%;
 		margin: 0 auto;
 		color: #AAAAAA;
+		padding: 10px;
 		view{
-			margin-bottom: 10rpx;
+			margin-bottom: 11rpx;
 			line-height: 150%;
 		}
 	}
