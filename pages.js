@@ -110,7 +110,7 @@ module.exports=()=>({
 		{
 			"path": "pages/tabbar/community/comment",
 			"style": {
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": false,
 				"navigationBarTitleText": "图文详情",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",

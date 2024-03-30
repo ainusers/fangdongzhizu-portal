@@ -217,13 +217,6 @@ export default {
 		this.getdyDetail()
 		this.lookCount(this.dyId)
 	},
-	onPullDownRefresh(){
-		this.pageNumOne=1
-		this.tuwen_data=[]
-		this.commentList=[]
-		this.getOneList()
-		uni.stopPullDownRefresh();
-	},
 	onReachBottom(){
 		if(this.loadStatus=='loadmore'){
 			this.pageNumOne++
