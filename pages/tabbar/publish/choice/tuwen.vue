@@ -137,7 +137,7 @@ textarea {
     right: 1upx;
     font-size: 35upx;
     border-radius: 8upx;
-    z-index: 100;
+    z-index: 1001;
 }
 
 .page {
@@ -149,12 +149,51 @@ textarea {
     border-radius: 10px;
     width: 200px;
 }
+
+.preview-full {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1002;
+}
+.preview-full video {
+	width: 100%;
+	height: 100%;
+	z-index: 1002;
+}
+	
+.preview-full-close {
+	position: fixed;
+	right: 16px;
+	top: 12px;
+	width: 40px;
+	height: 40px;
+	line-height: 30px;
+	text-align: center;
+	z-index: 1003;
+	color: #fff;
+	font-size: 32px;
+	font-weight: bold;
+}
+
+.image-upload-Item-video-fixed {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+}
 </style>
 <template>
     <view class="page" @touchstart="touchStart" @touchend="touchEnd">
         <form>
             <view class="uni-textarea">
-                <textarea placeholder="说点什么吧..." v-model="input_content" />
+                <textarea placeholder="说点什么吧..." v-model="content" />
             </view>
             <view class="upload-type">
                 <view>上传类型(图片和视频只能选择一种)</view>
@@ -173,12 +212,20 @@ textarea {
                                         <image v-if="uploadType==='image'" class="uni-uploader__img" mode="aspectFit" :src="image" :data-src="image"
                                             @tap="previewImage"></image>
                                         <video v-else class="uni-uploader__video" :controls="false" :src="image" :data-src="image"></video>
+										<cover-view class="image-upload-Item-video-fixed" @click="previewVideo(image)"/>
                                         <view class="close-view" @click="close(index)">×</view>
                                     </view>
                                 </block>
                                 <view class="uni-uploader__input-box" v-show="uploadType === 'image' ? imageList.length < 9 : imageList <= 1">
                                     <view class="uni-uploader__input" @tap="chooseImage"></view>
                                 </view>
+								<!-- 全屏预览视频 -->
+								<view class="preview-full" v-if="previewVideoSrc!=''">
+									<video :autoplay="false" :src="previewVideoSrc" :show-fullscreen-btn="false">
+										<!-- 退出全屏预览按钮 -->
+										<cover-view class="preview-full-close" @click="previewVideoClose"> × </cover-view>
+									</video>
+								</view>
                             </view>
                         </view>
                         <view class="uni-uploader-head">
@@ -214,7 +261,8 @@ var that;
 export default {
     data() {
         return {
-            input_content: '',
+			previewVideoSrc: '',
+            content: '',
             imageList: [],
             sourceTypeIndex: 2,
             sourceType: ['拍照', '相册', '拍照或相册'],
@@ -230,18 +278,27 @@ export default {
     },
     onUnload() {
         this.imageList = [],
-            this.sourceTypeIndex = 2,
-            this.sourceType = ['拍照', '相册', '拍照或相册'],
-            this.sizeTypeIndex = 2,
-            this.sizeType = ['压缩', '原图', '压缩或原图'],
-            this.countIndex = 8;
+		this.sourceTypeIndex = 2,
+		this.sourceType = ['拍照', '相册', '拍照或相册'],
+		this.sizeTypeIndex = 2,
+		this.sizeType = ['压缩', '原图', '压缩或原图'],
+		this.countIndex = 8;
     },
     methods: {
+		// 预览视频
+		previewVideo(src) {
+			this.previewVideoSrc = src;
+		},
+		// 关闭预览视频
+		previewVideoClose(){
+			this.previewVideoSrc = ''
+		},
+		// 切换类型
         uploadTypeChange(val){
             this.imageList = []
         },
         async publish() {
-            if (!this.input_content) {
+            if (!this.content) {
                 uni.showToast({
                     title: '文字内容不能为空',
                     duration: 1000,
@@ -275,7 +332,7 @@ export default {
                                     'nickname': this.$store.state.userInfo.nickname,
                                     'avatar': this.$store.state.userInfo.avatar,
                                     'userId': this.$store.state.userInfo.id,
-                                    'words': htmlEncode(this.input_content),
+                                    'words': htmlEncode(this.content),
                                 }
                                 // #ifdef APP-PLUS
                                 if (location != '未知') {
@@ -395,15 +452,13 @@ export default {
             // });
             if (this.uploadType == 'video') {
                 uni.chooseVideo({
-                    maxDuration: 60,
+                    maxDuration: 30,
                     success: (res) => {
-                        console.log(res)
                         this.imageList = [res.tempFilePath]
                     }
                 })
                 return
             } else if (this.uploadType == 'image') {
-
                 uni.chooseImage({
                     sourceType: sourceType[that.sourceTypeIndex],
                     sizeType: sizeType[that.sizeTypeIndex],
