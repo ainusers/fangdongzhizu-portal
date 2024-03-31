@@ -137,7 +137,7 @@ textarea {
     right: 1upx;
     font-size: 35upx;
     border-radius: 8upx;
-    z-index: 1001;
+    z-index: 100;
 }
 
 .page {
@@ -148,45 +148,6 @@ textarea {
 .feedback-submit {
     border-radius: 10px;
     width: 200px;
-}
-
-.preview-full {
-	position: fixed;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 1002;
-}
-.preview-full video {
-	width: 100%;
-	height: 100%;
-	z-index: 1002;
-}
-	
-.preview-full-close {
-	position: fixed;
-	right: 16px;
-	top: 12px;
-	width: 40px;
-	height: 40px;
-	line-height: 30px;
-	text-align: center;
-	z-index: 1003;
-	color: #fff;
-	font-size: 32px;
-	font-weight: bold;
-}
-
-.image-upload-Item-video-fixed {
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 1000;
 }
 </style>
 <template>
@@ -212,20 +173,12 @@ textarea {
                                         <image v-if="uploadType==='image'" class="uni-uploader__img" mode="aspectFit" :src="image" :data-src="image"
                                             @tap="previewImage"></image>
                                         <video v-else class="uni-uploader__video" :controls="false" :src="image" :data-src="image"></video>
-										<cover-view class="image-upload-Item-video-fixed" @click="previewVideo(image)"/>
                                         <view class="close-view" @click="close(index)">×</view>
                                     </view>
                                 </block>
                                 <view class="uni-uploader__input-box" v-show="uploadType === 'image' ? imageList.length < 9 : imageList <= 1">
                                     <view class="uni-uploader__input" @tap="chooseImage"></view>
                                 </view>
-								<!-- 全屏预览视频 -->
-								<view class="preview-full" v-if="previewVideoSrc!=''">
-									<video :autoplay="false" :src="previewVideoSrc" :show-fullscreen-btn="false">
-										<!-- 退出全屏预览按钮 -->
-										<cover-view class="preview-full-close" @click="previewVideoClose"> × </cover-view>
-									</video>
-								</view>
                             </view>
                         </view>
                         <view class="uni-uploader-head">
@@ -261,7 +214,6 @@ var that;
 export default {
     data() {
         return {
-			previewVideoSrc: '',
             content: '',
             imageList: [],
             sourceTypeIndex: 2,
@@ -285,14 +237,6 @@ export default {
 		this.countIndex = 8;
     },
     methods: {
-		// 预览视频
-		previewVideo(src) {
-			this.previewVideoSrc = src;
-		},
-		// 关闭预览视频
-		previewVideoClose(){
-			this.previewVideoSrc = ''
-		},
 		// 切换类型
         uploadTypeChange(val){
             this.imageList = []
