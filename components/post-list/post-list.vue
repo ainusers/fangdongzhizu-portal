@@ -38,12 +38,12 @@
 						<view v-show="item.image&&item.image[0]!=''">
 							<block>
 								<!--一张图片-->
-								<block v-if="item.image&&item.image.length == 1">
+								<block v-if="item.filetype==='image'&&item.image&&item.image.length == 1">
 									<image :lazy-load="true" mode="aspectFill" class="img-style-1" :src="item.image[0]"
 										@tap.stop="previewImage(item.image[0], item.image, item.integral, item.id,index)"></image>
 								</block>
 								<!--二张图片-->
-								<block v-if="item.image&&item.image.length == 2">
+								<block v-if="item.filetype==='image'&&item.image&&item.image.length == 2">
 									<view class="img-style-2">
 										<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
 											@tap.stop="previewImage(imgItem, item.image, item.integral, item.id,index)"
@@ -51,12 +51,16 @@
 									</view>
 								</block>
 								<!--三张以上图片-->
-								<block v-if="item.image&&item.image.length > 2">
+								<block v-if="item.filetype==='image'&&item.image&&item.image.length > 2">
 									<view class="img-style-3">
 										<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
 											@tap.stop="previewImage(imgItem, item.image, item.integral, item.id,index)"
 											mode="aspectFill" :src="imgItem"></image>
 									</view>
+								</block>
+								<!--一个视频-->
+								<block v-if="item.filetype==='video'&&item.image&&item.image.length == 1">
+									<video :lazy-load="true" mode="aspectFill" class="img-style-1" :controls="true" :src="item.image[0]" :data-src="item.image[0]"></video>
 								</block>
 							</block>
 						</view>

@@ -277,6 +277,7 @@ export default {
                                     'avatar': this.$store.state.userInfo.avatar,
                                     'userId': this.$store.state.userInfo.id,
                                     'words': htmlEncode(this.content),
+									'fileType': this.uploadType
                                 }
                                 // #ifdef APP-PLUS
                                 if (location != '未知') {
@@ -338,90 +339,49 @@ export default {
         // 选择图片
         chooseImage: async function () {
             let that = this;
-            // 判断用户是否获取相机和相册权限
-            // #ifdef APP-PLUS
-            // plus.android.requestPermissions(['android.permission.CAMERA','android.permission.READ_EXTERNAL_STORAGE'],
-            // (e) => {
-            // 	// 权限被永久拒绝
-            // 	if (e.deniedAlways.length > 0) {
-            // 		uni.showModal({
-            // 			title: '温馨提示',
-            // 			content: '获取相机和相册权限才可以选择图片',
-            // 			success(res) {
-            // 				if (res.confirm) {
-            // 					permision.gotoAppPermissionSetting()
-            // 				}
-            // 			}
-            // 		});
-            // 		// 权限被临时拒绝  
-            // 	} else if (e.deniedPresent.length > 0) { 
-            // 		uni.showModal({
-            // 			title: '温馨提示',
-            // 			content: '获取相机和相册权限才可以选择图片',
-            // 			success(res) {
-            // 				if (res.confirm) {
-            // 					permision.gotoAppPermissionSetting()
-            // 				}
-            // 			}
-            // 		});
-            // 	} 
-            // })
-            // #endif
-            // uni.showModal({
-            //     title: '温馨提示',
-            //     content: '获取相机或相册权限才可以上传图片',
-            //     success(res) {
-            //         if (res.confirm) {
-            //             uni.chooseImage({
-            //                 sourceType: sourceType[that.sourceTypeIndex],
-            //                 sizeType: sizeType[that.sizeTypeIndex],
-            //                 count: that.imageList.length + that.count[that.countIndex] > 9 ? 9 - that.imageList.length : that.count[that.countIndex],
-            //                 success: (res) => {
-            //                     // #ifdef APP-PLUS
-            //                     // 提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
-            //                     res.tempFilePaths.forEach(item => {
-            //                         compressImg(item).then(cp_images => {
-            //                             that.imageList = that.imageList.concat(cp_images)
-            //                         })
-            //                     })
-            //                     // #endif
-            //                     // #ifndef APP-PLUS
-            //                     // 非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
-            //                     that.imageList = that.imageList.concat(res.tempFilePaths)
-            //                     // #endif
-            //                 }
-            //             })
-            //         }
-            //     }
-            // });
             if (this.uploadType == 'video') {
-                uni.chooseVideo({
-                    maxDuration: 30,
-                    success: (res) => {
-                        this.imageList = [res.tempFilePath]
-                    }
-                })
-                return
+				uni.showModal({
+				    title: '温馨提示',
+				    content: '获取相机或相册(视频)权限才可以上传图片',
+				    success(res) {
+				        if (res.confirm) {
+							uni.chooseVideo({
+								maxDuration: 30,
+								success: (res) => {
+									that.imageList = [res.tempFilePath]
+								}
+							})
+						}
+					}
+				});
             } else if (this.uploadType == 'image') {
-                uni.chooseImage({
-                    sourceType: sourceType[that.sourceTypeIndex],
-                    sizeType: sizeType[that.sizeTypeIndex],
-                    count: that.imageList.length + that.count[that.countIndex] > 9 ? 9 - that.imageList.length : that.count[that.countIndex],
-                    success: (res) => {
-                        // #ifdef APP-PLUS
-                        // 提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
-                        res.tempFilePaths.forEach(item => {
-                            compressImg(item).then(cp_images => {
-                                that.imageList = that.imageList.concat(cp_images)
-                            })
-                        })
-                        // #endif
-                        // #ifndef APP-PLUS
-                        // 非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
-                        that.imageList = that.imageList.concat(res.tempFilePaths)
-                        // #endif
-                    }
-                })
+				uni.showModal({
+				    title: '温馨提示',
+				    content: '获取相机或相册(图片)权限才可以上传图片',
+				    success(res) {
+				        if (res.confirm) {
+							uni.chooseImage({
+								sourceType: sourceType[that.sourceTypeIndex],
+								sizeType: sizeType[that.sizeTypeIndex],
+								count: that.imageList.length + that.count[that.countIndex] > 9 ? 9 - that.imageList.length : that.count[that.countIndex],
+								success: (res) => {
+									// #ifdef APP-PLUS
+									// 提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
+									res.tempFilePaths.forEach(item => {
+										compressImg(item).then(cp_images => {
+											that.imageList = that.imageList.concat(cp_images)
+										})
+									})
+									// #endif
+									// #ifndef APP-PLUS
+									// 非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
+									that.imageList = that.imageList.concat(res.tempFilePaths)
+									// #endif
+								}
+							})
+						}
+					}
+				});
             }
 
         },
