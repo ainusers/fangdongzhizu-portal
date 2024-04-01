@@ -137,7 +137,7 @@ textarea {
     right: 1upx;
     font-size: 35upx;
     border-radius: 8upx;
-    z-index: 100;
+    z-index: 200;
 }
 
 .page {
@@ -346,8 +346,25 @@ export default {
 				    success(res) {
 				        if (res.confirm) {
 							uni.chooseVideo({
-								maxDuration: 30,
 								success: (res) => {
+									const maxSize = 10 * 1024 * 1024; // 10M
+									const maxDuration = 20; // 20秒
+									// 判断文件大小
+									if (res.size > maxSize) {
+										uni.showToast({
+											title: '视频大小不能超过10M',
+											icon: 'none',
+										});
+										return;
+									} 
+									// 判断视频时长
+									if (res.maxDuration > maxDuration) {
+										uni.showToast({
+											title: '视频时长不能超过20秒',
+											icon: 'none',
+										});
+										return;
+									} 
 									that.imageList = [res.tempFilePath]
 								}
 							})
