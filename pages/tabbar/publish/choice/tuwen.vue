@@ -356,9 +356,9 @@ export default {
 											icon: 'none',
 										});
 										return;
-									} 
+									}
 									// 判断视频时长
-									if (res.maxDuration > maxDuration) {
+									if (res.duration > maxDuration) {
 										uni.showToast({
 											title: '视频时长不能超过20秒',
 											icon: 'none',
