@@ -7,15 +7,18 @@
 		</view>
 		<view class="container">
 			<view class="title">社区审核规则:</view>
-			<view class="title">1、发布动态：无需经过平台审核</view>
-			<view class="title">2、发布房源：需要经过平台审核<br/>2.1、未审核：会在“待审核”中展示<br/>2.2、审核不通过：会在“待审核”中展示并附上审核意见<br/>2.3、审核通过：会在首页展示</view>
+			<view class="title">1、发布动态：无需经过平台审核，私下联系需谨慎</view>
+			<view class="title">2、发布房源：需要经过平台审核<br/></view>
+			<view class="title-content">暂未审核：会在<待审核>中展示<br/>
+			审核不过：会在<待审核>中展示并附上审核意见<br/>
+			审核通过：会在<首页>中展示</view>
 		</view>
-		<view class="container" style="color: #bd1212;">
-			<view class="title">发布房源注意事项:</view>
-			<view class="title">1、房源类型：租客选择:我要转租(默认)/房东选择:我是房东</view>
-			<view class="title">2、资质上传：租客选择:租房合同等证明材料/房东选择:清晰的房产证内容页等证明材料</view>
+		<view class="container">
+			<view class="title">注意事项:</view>
+			<view class="title">1、房源类型：<br/>租客选择<我要转租>(默认)，房东选择<我是房东></view>
+			<view class="title">2、资质上传：<br/>租客选择：租房合同或其他证明材料<br/>房东选择：清晰的房产证内容页或其他证明材料<br/></view>
+			<view class="title" style="color: #bd1212;">3、注：如发现在资质中上传房源照片的，因平台无法核实您的身份和房源的真实性，一律审核不过</view>
 		</view>
-		<!-- <image class="logo" :class="{'active':active}" src="../../../static/logo.png"  mode="aspectFit"></image> -->
 		<view class="tabbar-box-wrap">
 			<view class="tabbar-box">
 				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/tuwen','tuwen')">
@@ -107,18 +110,23 @@ export default {
 	/* #endif */
 	transition: opacity 0.3s;
 	background: #999;
-	opacity: 0;
 	&.active {
 		opacity: 1;
 	}
 	.container {  
-	  padding: 10px 10px 10px 10px;  
+	  padding: 5px;  
 	}  
 	.title {  
 	  font-size: 14px;  
 	  font-weight: bold;  
-	  margin-bottom: 10px;  
-	}  
+	  margin-bottom: 3px;  
+	}
+	.title-content{ 
+		font-size: 14px;
+		font-weight: bold;  
+		margin-bottom: 3px;  
+		padding-left: 20px;
+	}
 	.rule {  
 	  font-size: 14px;
 	}
@@ -167,7 +175,6 @@ export default {
 			z-index: 2;
 		}
 		.tabbar-box-item {
-			// position: relative;
 			width: 100%;
 			z-index: 3;
 			margin: 10upx;
