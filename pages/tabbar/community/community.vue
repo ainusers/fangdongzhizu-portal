@@ -109,7 +109,7 @@
 		},
 		// 默认展示
 		onShow() {
-			if(!this.tuwen_data.length){
+			if(!this.tuwen_data.length || this.tuwen_default_page == 1){
 				this.getMomentPost();
 			}
 		},

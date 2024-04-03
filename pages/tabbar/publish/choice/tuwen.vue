@@ -11,8 +11,8 @@
     flex-wrap: wrap;
 }
 .uni-uploader__video{
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
 }
 .uni-uploader__input-box {
     position: relative;
@@ -124,22 +124,44 @@ textarea {
     margin-top: 0;
 	border-bottom: 2px solid #f2f2f2;
 }
-
-.close-view {
-    text-align: center;
-    line-height: 30upx;
+.close-view-video{
     height: 35upx;
     width: 35upx;
+    position: absolute;
+    top: 1upx;
+    right: 1upx;
+    z-index: 200;
+}
+.close-text{
+    border-radius: 8upx;
+    background: #ef5350;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 20upx;
+    height: 35upx;
+    width: 35upx;
+}
+.close-view {
+    text-align: center;
+    height: 35upx;
+    width: 35upx;
+    line-height: 1;
+    border-radius: 8upx;
     background: #ef5350;
     color: #FFFFFF;
     position: absolute;
     top: 1upx;
     right: 1upx;
-    font-size: 35upx;
-    border-radius: 8upx;
     z-index: 200;
+    
 }
-
+.hide{
+  display:none;
+opacity:0;
+left:-99999px;
+height:0;
+width:0;
+    }
 .page {
     width: 100%;
     height: 100%;
@@ -172,8 +194,11 @@ textarea {
                                     <view class="uni-uploader__file" style="position: relative;">
                                         <image v-if="uploadType==='image'" class="uni-uploader__img" mode="aspectFit" :src="image" :data-src="image"
                                             @tap="previewImage"></image>
-                                        <video v-else class="uni-uploader__video" :controls="false" :src="image" :data-src="image"></video>
-                                        <view class="close-view" @click="close(index)">×</view>
+                                        <video v-if="uploadType==='video'" class="uni-uploader__video" :controls="false" :src="image" :data-src="image"></video>
+                                        <cover-view v-if="uploadType==='video'" class="close-view-video">
+                                          <cover-view @click="close(index)" class="close-text">x</cover-view>
+                                        </cover-view>
+                                        <view v-if="uploadType==='image'" class="close-view" @click="close(index)">x</view>
                                     </view>
                                 </block>
                                 <view class="uni-uploader__input-box" v-show="uploadType === 'image' ? imageList.length < 9 : imageList <= 1">
@@ -183,7 +208,7 @@ textarea {
                         </view>
                         <view class="uni-uploader-head">
                             <view class="uni-uploader-title"></view>
-                            <view class="uni-uploader-info">{{ imageList.length }}/9</view>
+                            <view class="uni-uploader-info">{{ imageList.length }}/{{ uploadType === 'image' ? 9:1 }}</view>
                         </view>
                     </view>
                 </view>
