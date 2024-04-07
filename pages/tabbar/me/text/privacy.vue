@@ -484,34 +484,61 @@
 		<view class="tit">
 			八、第三方SDK的目录及具体信息
 		</view>
+		<div class="bold">
+		    1、uni-app(5+、web2app)
+		</div>
+		<div>
+		    SDK包名/网址：io.dcloud
+		</div>
+		<div>
+		    SDK用途：基础模块
+		</div>
+		<div>
+		    获取的个人信息类型：存储的个人文件、位置信息、读取手机状态和身份、网络信息、SD卡
+		</div>
+		<div>
+		    调用的设备权限：android.permission.INTERNET
+		                android.permission.ACCESS_NETWORK_STATE
+		                android.permission.WRITE_EXTERNAL_STORAGE
+		                android.permission.READ_EXTERNAL_STORAG
+		                android.permission.READ_PHONE_STATE
+		</div>
+		<div>
+		    信息用途：存储的个人文件，设备信息（IMEI、ANDROID_ID、DEVICE_ID、IMSI），网络信息
+		</div>
+		<div>
+		    SDK隐私政策链接/目的：https://ask.dcloud.net.cn/protocol.html
+		</div>
+		<div class="bold">
+		    2、高德开放平台
+		</div>
+		<div>
+		    SDK包名/网址：com.amap.api, com.loc, com.autonavi
+		</div>
+		<div>
+		    SDK用途：实现定位/展现地图
+		</div>
+		<div>
+		    获取的个人信息类型：存储的个人文件、位置信息、读取手机状态和身份、网络信息、传感器信息、Android ID
+		</div>
+		<div>
+		    调用的设备权限：android.permission.ACCESS_COARSE_LOCATION
+		                    android.permission.ACCESS_FINE_LOCATION
+		                    android.permission.ACCESS_NETWORK_STATE
+		                    android.permission.ACCESS_WIFI_STATE
+		                    android.permission.CHANGE_WIFI_STATE
+		                    android.permission.READ_PHONE_STATE
+		                    android.permission.WRITE_EXTERNAL_STORAGE
+		                    android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
+		</div>
+		<div>
+		    信息用途：定位用户地理位置提供房源/显示IP属地/计算小区和地铁站的距离
+		</div>
+		<div>
+		    SDK隐私政策链接/目的：https://lbs.amap.com/pages/privacy
+		</div>
 		<view class="bold">
-			1、快手广告联盟
-		</view>
-		<view>
-			SDK包名/网址：com.kwad.sdk
-		</view>
-		<view>
-			SDK用途：增强广告
-		</view>
-		<view>
-			获取的个人信息类型：基础信息：设备品牌、设备型号、软件系统版本、存储信息、运营商信息、设备时区、设备语言、网络信息等基础信息 设备标识：IMEIs、MEID、OAID、Androidld、IMSIs、ICCID 位置信息：IP地址、MAC地址、GPS位置信息、基站信息、WIFI信息 应用信息：应用安装列表 其他信息：传感器信息、sim卡激活信息
-		</view>
-		<view>
-			调用的设备权限：android.permission.ACCESS_NETWORK_STATE
-							android.permission.INTERNET
-							android.permission.READ_PHONE_STATE
-							android.permission.ACCESS_WIFI_STATE
-							android.permission.REQUEST_INSTALL_PACKAGES
-							android.permission.VIBRATE
-		</view>
-		<view>
-			信息用途：广告投放、广告归因、反作弊、安全
-		</view>
-		<view>
-			SDK隐私政策链接/目的：<a href="https://www.kuaishou.com/about/policy" target="_blank">快手内容联盟隐私协议</a>和<a href="https://u.kuaishou.com/home/detail/1220" target="_blank">SDK使用规范</a>
-		</view>
-		<view class="bold">
-			2、百度开放平台
+			3、百度开放平台
 		</view>
 		<view>
 			SDK包名/网址：com.baidu
@@ -542,83 +569,111 @@
 			SDK隐私政策链接/目的：https://map.baidu.com/zt/client/privacy/index.html
 		</view>
 		<div class="bold">
-            3、高德开放平台
-        </div>
-        <div>
-            SDK包名/网址：com.amap.api, com.loc, com.autonavi
-        </div>
-        <div>
-            SDK用途：实现定位/展现地图
-        </div>
-        <div>
-            获取的个人信息类型：存储的个人文件、位置信息、读取手机状态和身份、网络信息、传感器信息、Android ID
-        </div>
-        <div>
-            调用的设备权限：android.permission.ACCESS_COARSE_LOCATION
-                            android.permission.ACCESS_FINE_LOCATION
-                            android.permission.ACCESS_NETWORK_STATE
-                            android.permission.ACCESS_WIFI_STATE
-                            android.permission.CHANGE_WIFI_STATE
-                            android.permission.READ_PHONE_STATE
-                            android.permission.WRITE_EXTERNAL_STORAGE
-                            android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
-        </div>
-        <div>
-            信息用途：定位用户地理位置提供房源/显示IP属地/计算小区和地铁站的距离
-        </div>
-        <div>
-            SDK隐私政策链接/目的：https://lbs.amap.com/pages/privacy
-        </div>
-        <div class="bold">
-            4、uni-app(5+、web2app)
-        </div>
-        <div>
-            SDK包名/网址：io.dcloud
-        </div>
-        <div>
-            SDK用途：基础模块
-        </div>
-        <div>
-            获取的个人信息类型：存储的个人文件、位置信息、读取手机状态和身份、网络信息、SD卡
-        </div>
-        <div>
-            调用的设备权限：android.permission.INTERNET
-                        android.permission.ACCESS_NETWORK_STATE
-                        android.permission.WRITE_EXTERNAL_STORAGE
-                        android.permission.READ_EXTERNAL_STORAG
-                        android.permission.READ_PHONE_STATE
-        </div>
-        <div>
-            信息用途：存储的个人文件，设备信息（IMEI、ANDROID_ID、DEVICE_ID、IMSI），网络信息
-        </div>
-        <div>
-            SDK隐私政策链接/目的：https://ask.dcloud.net.cn/article/36937
-        </div>
-		<div class="bold">
-            5、uni-AD
-        </div>
-        <div>
-            SDK包名/网址：uni-AD
-        </div>
-        <div>
-            SDK用途：基础广告
-        </div>
-        <div>
-            获取的个人信息类型：设备品牌、型号、操作系统版本、OAID、分辨率、IMEI、android ID、SIM 卡 IMSI 信息、应用名称、应用包名、应用版本号、网络信息、应用安装列表、位置信息
-        </div>
-        <div>
-            调用的设备权限：android.permission.ACCESS_NETWORK_STATE
-                        android.permission.READ_PHONE_STATE
-                        android.permission.ACCESS_COARSE_LOCATION
-        </div>
-        <div>
-            信息用途：广告投放合作，广告归因、反作弊、安全
-        </div>
-        <div>
-            SDK隐私政策链接/目的：https://doc.dcloud.net.cn/markdown-share-docs/1d821cdd3cdf2681045ec4be94bc8404
-        </div>
+		    4、uni-AD
+		</div>
+		<div>
+		    SDK包名/网址：uni-AD
+		</div>
+		<div>
+		    SDK用途：基础广告
+		</div>
+		<div>
+		    获取的个人信息类型：设备品牌、型号、操作系统版本、OAID、分辨率、IMEI、android ID、SIM 卡 IMSI 信息、应用名称、应用包名、应用版本号、网络信息、应用安装列表、位置信息
+		</div>
+		<div>
+		    调用的设备权限：android.permission.ACCESS_NETWORK_STATE
+							android.permission.READ_PHONE_STATE
+							android.permission.ACCESS_COARSE_LOCATION
+		</div>
+		<div>
+		    信息用途：广告投放合作，广告归因、反作弊、安全
+		</div>
+		<div>
+		    SDK隐私政策链接/目的：<a href="https://doc.dcloud.net.cn/markdown-share-docs/1d821cdd3cdf2681045ec4be94bc8404/" target="_blank">隐私协议</a>
+		</div>
+		<view class="bold">
+			5、优量汇
+		</view>
+		<view>
+			SDK包名/网址：com.qq.e
+		</view>
+		<view>
+			SDK用途：增强广告
+		</view>
+		<view>
+			获取的个人信息类型：基站、附近的WIFI、连接的WIFI、位置信息、设备制造商、设备型号、操作系统版本、屏幕分辨率、屏幕方向、屏幕DPI、IP地址、加速度传感器、磁场传感器、OAID、IMEI/MEID（Device ID）、Android_ID、包名、版本号、进程名称、运行状态、可疑行为、应用安装信息
+		</view>
+		<view>
+			调用的设备权限： android.permission.INTERNET
+							android.permission.ACCESS_NETWORK_STATE
+							android.permission.ACCESS_WIFI_STATE
+							android.permission.REQUEST_INSTALL_PACKAGES
+							android.permission.CHANGE_NETWORK_STATE
+							android.permission.QUERY_ALL_PACKAGES
+							android.permission.REORDER_TASKS
+							android.permission.VIBRATE
+							android.permission.ACCESS_COARSE_LOCATION
+		</view>
+		<view>
+			信息用途：广告投放与监测归因、广告主统计投放结果、减少App崩溃、确保服务器正常运行、提升可扩展性和性能
+		</view>
+		<view>
+			SDK隐私政策链接/目的：<a href="https://e.qq.com/dev/help_detail.html?cid=2005&pid=5983" target="_blank">优量汇隐私协议</a>
+		</view>
+		<view class="bold">
+			6、快手广告联盟
+		</view>
+		<view>
+			SDK包名/网址：com.kwad.sdk
+		</view>
+		<view>
+			SDK用途：增强广告
+		</view>
+		<view>
+			获取的个人信息类型：设备品牌、设备型号、软件系统版本、存储信息、运营商信息、设备时区、设备语言、网络信息等基础信息，IMEIs、MEID、OAID、Androidld、IMSIs、ICCID，IP地址、MAC地址、GPS位置信息、基站信息、WIFI信息，应用安装列表，传感器信息、sim卡激活信息
+		</view>
+		<view>
+			调用的设备权限：android.permission.ACCESS_NETWORK_STATE
+							android.permission.INTERNET
+							android.permission.READ_PHONE_STATE
+							android.permission.ACCESS_WIFI_STATE
+							android.permission.REQUEST_INSTALL_PACKAGES
+							android.permission.VIBRATE
+		</view>
+		<view>
+			信息用途：广告投放、广告归因、反作弊、安全
+		</view>
+		<view>
+			SDK隐私政策链接/目的：<a href="https://www.kuaishou.com/about/policy" target="_blank">快手内容联盟隐私协议</a>和<a href="https://u.kuaishou.com/home/detail/1220" target="_blank">SDK使用规范</a>
+		</view>
+		<view class="bold">
+			7、Sigmob
+		</view>
+		<view>
+			SDK包名/网址：com.sigmob.windad
+		</view>
+		<view>
+			SDK用途：增强广告
+		</view>
+		<view>
+			获取的个人信息类型：设备品牌、型号、操作系统版本、OAID、分辨率等基础设备信息，应用名称、应用包名、应用版本号，运营商信息、时区
+		</view>
+		<view>
+			调用的设备权限：android.permission.ACCESS_NETWORK_STATE
+							android.permission.INTERNET
+							android.permission.ACCESS_WIFI_STATE
+							android.permission.CHANGE_WIFI_STATE
+							android.permission.READ_PHONE_STATE
+							android.permission.REQUEST_INSTALL_PACKAGES
+							android.permission.QUERY_ALL_PACKAGES
+		</view>
+		<view>
+			信息用途：广告投放、广告主归因、反作弊
+		</view>
+		<view>
+			SDK隐私政策链接/目的：<a href="https://doc.sigmob.com/Sigmob%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/%E9%9A%90%E7%A7%81%E6%9D%A1%E6%AC%BE/%E9%9A%90%E7%A7%81%E6%94%BF%E7%AD%96/" target="_blank">Sigmob隐私协议</a>
+		</view>
 	</view>
-	
 </template>
 
 <script>
