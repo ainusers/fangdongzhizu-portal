@@ -910,12 +910,12 @@
 				radioCheckWrap: false,
 				radio: '个人转租',
 				radioList: [{
-						name: '我要转租',
+						name: '->我要转租',
 						checked: true,
 						disabled: false
 					},
 					{
-						name: '我是房东',
+						name: '->我是房东',
 						checked: false,
 						disabled: false
 					}

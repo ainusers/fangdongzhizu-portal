@@ -373,7 +373,7 @@ export default {
 							uni.chooseVideo({
 								success: (res) => {
 									const maxSize = 10 * 1024 * 1024; // 10M
-									const maxDuration = 20; // 20秒
+									const maxDuration = 15; // 15秒
 									// 判断文件大小
 									if (res.size > maxSize) {
 										uni.showToast({
@@ -385,7 +385,7 @@ export default {
 									// 判断视频时长
 									if (res.duration > maxDuration) {
 										uni.showToast({
-											title: '视频时长不能超过20秒',
+											title: '视频时长不能超过15秒',
 											icon: 'none',
 										});
 										return;

@@ -14,10 +14,10 @@
 			审核通过：会在<首页>中展示</view>
 		</view>
 		<view class="container">
-			<view class="title">注意事项:</view>
+			<view class="title">发布房源规则:</view>
 			<view class="title">1、房源类型：<br/>租客选择<我要转租>(默认)，房东选择<我是房东></view>
 			<view class="title">2、资质上传：<br/>租客选择：租房合同或其他证明材料<br/>房东选择：清晰的房产证内容页或其他证明材料<br/></view>
-			<view class="title" style="color: #bd1212;">3、注：如发现在资质中上传房源照片的，因平台无法核实您的身份和房源的真实性，一律审核不过</view>
+			<view class="title" style="color: #bd1212;">注意事项：如发现在资质中上传房源照片的，因平台无法核实您的身份和房源的真实性，一律审核不过</view>
 		</view>
 		<view class="tabbar-box-wrap">
 			<view class="tabbar-box">
