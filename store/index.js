@@ -12,7 +12,7 @@ const store = new Vuex.Store({
 		currentCity:'定位中...',//当前城市
 		lock: 0,//让watch监听只走一次
 		currentNameChat:'',//当前和谁正在聊天
-		version:'1.0.2',
+		version:'1.0.3',
 		address:{},
 		ispublishSub:false, //是否点击到过开启定位服务界面
 	},
