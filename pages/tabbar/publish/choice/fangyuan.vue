@@ -286,6 +286,7 @@
 
 	/deep/.u-form-item--left__content--required {
 		color: #fff;
+		padding: 5px 0;
 	}
 	.selectbtnItem{
 		width:100%;
@@ -300,9 +301,9 @@
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
 		<view class="main">
 			<u-form labelPosition="left" :model="houseModel" ref="form1">
-					<!-- 发布类型 -->
-					<view class="region_new_title">选择角色</view>
 					<view class="Hometype_con" v-show="stepNum==1 || setpAll">
+						<!-- 发布类型 -->
+						<view class="region_new_title">选择角色</view>
 						<view class="item" v-for="(item,index) in radioList" :key="index" @click="radioGroupChange(index)"
 							:class="[{'active':item.checked}]">
 							{{ item.name }}
@@ -631,7 +632,7 @@
 				mode: 'date',
 				isHomeArr: false, //是合租
 				houseModel: {
-					publishType: '1',
+					publishType: '2',
 					province: '', //省
 					city: '', //市
 					area: '', //区，县城
@@ -1306,99 +1307,99 @@
 			
 		},
 		onLoad(options) {
-					this.isEdit = options.isUpdate
-					that = this
-					// 其他选项值
-					uni.getStorage({
-						key: 'houseModel',
-						success: function(data) {
-					  try{
+			this.isEdit = options.isUpdate
+			that = this
+			// 其他选项值
+			uni.getStorage({
+				key: 'houseModel',
+					success: function(data) {
+					try{
 						that.houseModel = JSON.parse(data.data)
-					  }catch(e){
+					}catch(e){
 						console.log(e)
-					  }
-					
-					if (that.houseModel.heatType == '自供暖') {
-						that.heatActiveVar = 1
 					}
-					if (that.houseModel.roomType == '整租') {
-						this.isHomeArr = false
-					} else if (that.houseModel.roomType == '合租') {
-						this.isHomeArr = true
-					}
-					let loacalData = JSON.parse(data.data)
-					let Numstr = loacalData.layout ? loacalData.layout.slice(0, 1) : ''
-					if (that.houseModel.homeArr.length == 0) {
-						that.houseModel.homeArr = [{
-								name: 'A室',
-								tenantStr: ''
-							},
-							{
-								name: 'B室',
-								tenantStr: ''
-							},
-							{
-								name: 'C室',
-								tenantStr: ''
-							},
-							{
-								name: 'D室',
-								tenantStr: ''
-							},
-							{
-								name: 'E室',
-								tenantStr: ''
-							}
-						]
-					}
-					that.radioList.forEach((item, index) => {
-						item.checked = false
-						if (that.houseModel.publishType - 1 == index) {
-							item.checked = true
+				if (that.houseModel.heatType == '自供暖') {
+					that.heatActiveVar = 1
+				}
+				if (that.houseModel.roomType == '整租') {
+					this.isHomeArr = false
+				} else if (that.houseModel.roomType == '合租') {
+					this.isHomeArr = true
+				}
+				let loacalData = JSON.parse(data.data)
+				let Numstr = loacalData.layout ? loacalData.layout.slice(0, 1) : ''
+				if (that.houseModel.homeArr.length == 0) {
+					that.houseModel.homeArr = [
+						{
+							name: 'A室',
+							tenantStr: ''
+						},
+						{
+							name: 'B室',
+							tenantStr: ''
+						},
+						{
+							name: 'C室',
+							tenantStr: ''
+						},
+						{
+							name: 'D室',
+							tenantStr: ''
+						},
+						{
+							name: 'E室',
+							tenantStr: ''
 						}
-					})
-					switch (Numstr) {
-						case "一":
-							that.homeNum = 1
-							break;
-						case "两":
-							that.homeNum = 2
-							break;
-						case "三":
-							that.homeNum = 3
-							break;
-						case "四":
-							that.homeNum = 4
-							break;
-						case "五":
-							that.homeNum = 5
-							break;
+					]
+				}
+				that.radioList.forEach((item, index) => {
+					item.checked = false
+					if (that.houseModel.publishType - 1 == index) {
+						item.checked = true
 					}
-					let newArr = that.houseModel.houseConfigStr.split(',')
-					that.houseConfigList.forEach((item, index) => {
-						if (newArr.indexOf(item.name) != -1) {
-							that.$nextTick(() => {
-								that.$set(that.houseConfigList[index], 'checked', true)
-							})
-						}
-					})
+				})
+				switch (Numstr) {
+					case "一":
+						that.homeNum = 1
+					break;
+					case "两":
+						that.homeNum = 2
+					break;
+					case "三":
+						that.homeNum = 3
+					break;
+					case "四":
+						that.homeNum = 4
+					break;
+					case "五":
+						that.homeNum = 5
+					break;
 				}
-			})
-			//下拉选择值
-			uni.getStorage({
-				key: 'currentObj',
-				success: function(data) {
-					that.currentObj = data.data
-				}
-			})
-			//房源配置
-			uni.getStorage({
-				key: 'houseConfigList',
-				success: function(data) {
-					that.houseConfigList = data.data
-				}
-			})
-			this.userInfo = this.$store.state.userInfo
+				let newArr = that.houseModel.houseConfigStr.split(',')
+				that.houseConfigList.forEach((item, index) => {
+					if (newArr.indexOf(item.name) != -1) {
+						that.$nextTick(() => {
+							that.$set(that.houseConfigList[index], 'checked', true)
+						})
+					}
+				})
+			}
+		})
+		//下拉选择值
+		uni.getStorage({
+			key: 'currentObj',
+			success: function(data) {
+				that.currentObj = data.data
+			}
+		})
+		//房源配置
+		uni.getStorage({
+			key: 'houseConfigList',
+			success: function(data) {
+				that.houseConfigList = data.data
+			}
+		})
+		this.userInfo = this.$store.state.userInfo
 		},
 		onUnload() {
 			this.imageList = [],
@@ -1639,7 +1640,6 @@
 			CancelFn() {
 				this.selectShow = false
 			},
-
 			// 发布类型选择发生变化
 			radioGroupChange(index) {
 				if (this.setpAll) return
@@ -1892,7 +1892,7 @@
 					username: this.userInfo.username,
 					imgUrl: imagesHouseArr.toString(), //房源图片
 					condition: imagesNatureArr.toString(), //资质图片
-					publishType: this.houseModel.publishType, //1 个人转租  2.房东直租  3.个人换租
+					publishType: this.houseModel.publishType, //1. 房东直租   2.个人转租 
 					province: this.houseModel.province,
 					city: this.houseModel.city,
 					area: this.houseModel.area,
