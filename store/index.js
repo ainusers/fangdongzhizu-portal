@@ -6,12 +6,9 @@ const store = new Vuex.Store({
 	state: {
 		userInfo:'',
 		token:'',
-		messegeNum:[],
-		loadlTuwenStatus:'',
 		communityInfo:{},
 		currentCity:'定位中...',//当前城市
 		lock: 0,//让watch监听只走一次
-		currentNameChat:'',//当前和谁正在聊天
 		version:'1.0.3',
 		address:{},
 		ispublishSub:false, //是否点击到过开启定位服务界面
@@ -23,15 +20,6 @@ const store = new Vuex.Store({
 				key:'lock',
 				data:obj
 			})
-		},
-		loadlTuwenStatus(state,obj){
-			if(obj){
-				state.loadlTuwenStatus=obj
-				uni.setStorage({
-					key:'loadlTuwenStatus',
-					data:obj
-				})
-			}
 		},
 		userInfo(state,obj){
 			if(obj){
@@ -97,14 +85,8 @@ const store = new Vuex.Store({
 		token:state=>{
 			return state.token
 		},
-		loadlTuwenStatus:state=>{
-			return state.loadlTuwenStatus
-		},
 		userInfo:state=>{
 			return state.userInfo
-		},
-		chatList:state=>{
-			return state.chatList
 		}
 	}
 })

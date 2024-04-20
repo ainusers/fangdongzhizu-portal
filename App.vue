@@ -1,6 +1,5 @@
 <script>
 import {initStorestate} from '@/utils/utils.js'
-// import {connectSocket, startHeartbeat, stopHeartbeat} from '@/utils/scoket.js'
 
 export default {
 	onLaunch: function() {
@@ -18,37 +17,6 @@ export default {
 	onShow(){
 		// 持久化内存数据
 		initStorestate();
-		// 用户已登录则创建socket连接
-		// uni.getStorage({
-		// 	key:'token',
-		// 	success(res){
-		// 		if (res.data) {
-		// 			uni.getStorage({
-		// 				key:'socketStatus',
-		// 				success(res) {
-		// 					// WebSocket.OPEN = 1
-		// 					if (res.data === 1) {
-		// 						// 重新链接scoket
-		// 						startHeartbeat();
-		// 					} else {
-		// 						// 连接scoket
-		// 						connectSocket();
-		// 					}
-		// 				},
-		// 				fail(data) {
-		// 					// 重新连接scoket
-		// 					connectSocket();
-		// 				}
-		// 			})
-		// 		}
-		// 	}
-		// })
-	},
-	onHide(){
-		// stopHeartbeat();
-	},
-	onUnload(){
-		// stopHeartbeat();
 	}
 };
 </script>

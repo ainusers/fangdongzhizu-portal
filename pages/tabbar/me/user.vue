@@ -331,13 +331,6 @@
 							})
 							that.userInfo.avatar=imgAvtar
 							that.$store.commit('userInfo',that.userInfo)
-							let chatList=that.$store.state.chatList
-							chatList.forEach(item=>{
-								if(item.targetName==that.userInfo.username){
-									item.fromAvatar=imgAvtar
-								}
-							})
-							that.$store.commit('chatList',chatList)
 					 }else{
 						 uni.showToast({
 						 	title:res.message,
@@ -384,30 +377,6 @@
 				});
 				uni.removeStorage({
 					key: 'token',
-					success: function (res) {}
-				});
-				uni.removeStorage({
-					key: 'socketStatus',
-					success: function (res) {}
-				});
-				uni.removeStorage({
-					key: 'chatList',
-					success: function (res) {}
-				});
-				uni.removeStorage({
-					key: 'currentChatList',
-					success: function (res) {}
-				});
-				uni.removeStorage({
-					key: 'currentNameChat',
-					success: function (res) {}
-				});
-				uni.removeStorage({
-					key: 'unReadCount',
-					success: function (res) {}
-				});
-				uni.removeStorage({
-					key: 'loadlTuwenStatus',
 					success: function (res) {}
 				});
 				// 断开链接
