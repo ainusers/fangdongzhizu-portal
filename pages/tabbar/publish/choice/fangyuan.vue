@@ -244,16 +244,29 @@
 	.content {
 		text-align: center;
 		margin-top: 10%;
+		.current {
+			display: inline-flex;
+			flex-direction: row;
+			padding: 9px 0;
+			font-size: 13px;
+			color: #303133;
+			box-sizing: border-box;
+			line-height: 33px;
+		}
+		.max {
+			display: inline-flex;
+			flex-direction: row;
+			padding: 9px 0;
+			font-size: 13px;
+			color: #303133;
+			box-sizing: border-box;
+			line-height: 33px;
+		}
 	}
 
 	.confirm_con {
 		text-align: center;
 		padding: 20upx 0;
-
-		.confirm {
-			width: 30%;
-			margin-top: 10px;
-		}
 	}
 
 	.select_btn {
@@ -540,12 +553,12 @@
 					:mask="mask" :closeable="closeable" :close-icon-pos="closeIconPos" :safe-area-inset-bottom="true">
 					<view class="content" v-if="floorShow">
 						<view class="current">
-							<view>当前楼层</view>
-							<u-number-box :min="1" :max="100" v-model="currentValue" @change="currentChange"></u-number-box>
+							<view style="padding-right: 10px;">当前楼层:</view>
+							<u-number-box :min="1" :max="100" :input-width="160" :input-height="60" v-model="currentValue" @change="currentChange"></u-number-box>
 						</view>
 						<view class="max">
-							<view>最高楼层</view>
-							<u-number-box :min="1" :max="100" v-model="maxValue" @change="maxChange"></u-number-box>
+							<view style="padding-right: 10px;">最高楼层:</view>
+							<u-number-box :min="1" :max="100" :input-width="160" :input-height="60" v-model="maxValue" @change="maxChange"></u-number-box>
 						</view>
 					</view>
 					<view v-if="tenantShow">
@@ -575,7 +588,8 @@
 						</u-form-item>
 					</view>
 					<view class="confirm_con">
-						<u-button size="mini" @click="confirmPopup" class="confirm">确认</u-button>
+						<!-- <u-button size="mini" @click="confirmPopup" class="confirm">确认</u-button> -->
+						<button form-type='submit' class="commit" type="primary" plain="true" style="font-size: 14px;width: 150px;">确认</button>
 					</view>
 				</u-popup>
 				<u-picker v-model="showTime" mode="time" @confirm="confirmTime" start-year="2023"></u-picker>
