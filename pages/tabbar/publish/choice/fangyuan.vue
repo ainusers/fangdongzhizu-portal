@@ -301,292 +301,291 @@
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
 		<view class="main">
 			<u-form labelPosition="left" :model="houseModel" ref="form1">
-					<view class="Hometype_con" v-show="stepNum==1 || setpAll">
-						<!-- 发布类型 -->
-						<view class="region_new_title">选择角色</view>
+				<!-- 发布类型 -->
+				<view v-show="stepNum==1 || setpAll">
+					<view class="region_new_title">选择角色</view>
+					<view class="Hometype_con">
 						<view class="item" v-for="(item,index) in radioList" :key="index" @click="radioGroupChange(index)"
 							:class="[{'active':item.checked}]">
 							{{ item.name }}
 						</view>
 					</view>
-					<view class="step_1" v-show="stepNum==1||setpAll">
-						<!-- 资质上传 -->
-						<view class="region_new_title">资质上传  <text class="tipTxt">({{tipTxt}})</text></view>
-						<u-form-item prop="naturalImageList" required :border-bottom="false">
-							<view class="uni-list list-pd">
-								<view class="uni-list-cell cell-pd">
-									<view class="uni-uploader">
-										<view class="uni-uploader-body">
-											<view class="uni-uploader__files">
-												<view class="uni-uploader__input-box"
-													v-show="houseModel.naturalImageList.length < 9">
-													<view class="uni-uploader__input" @tap="chooseImage('natural')"></view>
-												</view>
-												<block v-for="(image,index) in houseModel.naturalImageList" :key="index">
-													<view class="uni-uploader__file" style="position: relative;">
-														<image class="uni-uploader__img" mode="aspectFit" :src="image"
-															:data-src="image" @tap="previewImage(image,'natural')"></image>
-														<view class="close-view" @click="deletImg(index,'natural')">×</view>
-													</view>
-												</block>
+				</view>
+				<view class="step_1" v-show="stepNum==1||setpAll">
+					<!-- 资质上传 -->
+					<view class="region_new_title">资质上传  <text class="tipTxt">({{tipTxt}})</text></view>
+					<u-form-item prop="naturalImageList" required :border-bottom="false">
+						<view class="uni-list list-pd">
+							<view class="uni-list-cell cell-pd">
+								<view class="uni-uploader">
+									<view class="uni-uploader-body">
+										<view class="uni-uploader__files">
+											<view class="uni-uploader__input-box"
+												v-show="houseModel.naturalImageList.length < 9">
+												<view class="uni-uploader__input" @tap="chooseImage('natural')"></view>
 											</view>
+											<block v-for="(image,index) in houseModel.naturalImageList" :key="index">
+												<view class="uni-uploader__file" style="position: relative;">
+													<image class="uni-uploader__img" mode="aspectFit" :src="image"
+														:data-src="image" @tap="previewImage(image,'natural')"></image>
+													<view class="close-view" @click="deletImg(index,'natural')">×</view>
+												</view>
+											</block>
 										</view>
-										<view class="uni-uploader-head">
-											<view class="uni-uploader-title"></view>
-											<view class="uni-uploader-info">{{houseModel.naturalImageList.length}}/9</view>
-										</view>
+									</view>
+									<view class="uni-uploader-head">
+										<view class="uni-uploader-title"></view>
+										<view class="uni-uploader-info">{{houseModel.naturalImageList.length}}/9</view>
 									</view>
 								</view>
 							</view>
-						</u-form-item>
-			
-						<!-- 房屋位置 -->
-						<view class="region_new_title">房间位置</view>
-						<u-form-item :label-position="labelPosition" prop="region1" label-width="150" borderBottom required>
-							<u-input :border="border" type="select" v-model="houseModel.region1" placeholder="请选择所属区域"
-								@click="showPickerArea"></u-input>
-						</u-form-item>
-						<!-- 适用全国 -->
-						<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
-						<!-- 小区名称 -->
-						<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150"
-							:label-position="labelPosition" label="小区名称 :" prop="communityName" ref="item1" required>
-							<u-input :border="border" placeholder="请输入小区名称" type="text" v-model="houseModel.communityName"
-								:disabled="setpAll"></u-input>
-						</u-form-item>
-						<!-- 详细地址 -->
-						<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="200"
-							:label-position="labelPosition" label="详细地址 :" prop="communityName" ref="item1" required>
-							<u-input :border="border" placeholder="请输入详细地址具体到房间号" type="text" v-model="houseModel.roomName"
-								:disabled="setpAll"></u-input>
-						</u-form-item>
+						</view>
+					</u-form-item>
+		
+					<!-- 房屋位置 -->
+					<view class="region_new_title">房间位置</view>
+					<u-form-item :label-position="labelPosition" prop="region1" label-width="150" borderBottom required>
+						<u-input :border="border" type="select" v-model="houseModel.region1" placeholder="请选择所属区域"
+							@click="showPickerArea"></u-input>
+					</u-form-item>
+					<!-- 适用全国 -->
+					<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
+					<!-- 小区名称 -->
+					<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150"
+						:label-position="labelPosition" label="小区名称 :" prop="communityName" ref="item1" required>
+						<u-input :border="border" placeholder="请输入小区名称" type="text" v-model="houseModel.communityName"
+							:disabled="setpAll"></u-input>
+					</u-form-item>
+					<!-- 详细地址 -->
+					<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="200"
+						:label-position="labelPosition" label="详细地址 :" prop="communityName" ref="item1" required>
+						<u-input :border="border" placeholder="请输入详细地址具体到房间号" type="text" v-model="houseModel.roomName"
+							:disabled="setpAll"></u-input>
+					</u-form-item>
+				</view>
+			</u-form>
+			<u-form labelPosition="left" :model="houseModel" ref="form2">
+				<view class="step_2" v-show="stepNum==2 ||setpAll">
+					<!-- 费用信息 -->
+					<view class="region_new_title">费用信息<text class="tipTxt">(&nbsp;客观地评估价格,有助于更快出租&nbsp;)</text></view>
+					<u-form-item :label-position="labelPosition" label="房间布局 :" prop="layout" label-width="150">
+						<u-input :border="border" placeholder="请选择房间结构" v-model="houseModel.layout" type="select"
+							@click="layoutShowFn" :disabled="setpAll"></u-input>
+						<u-select :mode="mode" v-model="layoutShow" :list="layoutList" @confirm="layoutConfirm"
+							@cancel="layoutCancel"></u-select>
+					</u-form-item>
+					<!-- 付款方式 -->
+					<u-form-item :label-position="labelPosition" label="付款方式 :" label-width="150" prop="payType" required>
+						<view @click="showPicker('pay')" :class="[{'select_btn':!houseModel.payType}]" class="selectbtnItem">
+							{{houseModel.payType || '请选择付款方式'}}</view>
+					</u-form-item>
+		
+					<!-- 月度租金 -->
+					<u-form-item :label-position="labelPosition" label="房间租金 :" prop="money" label-width="150" required>
+						<u-input :border="border" :type="Number" placeholder="请输入房间租金" type="number"
+							v-model="houseModel.money" :disabled="setpAll" @blur="rentMoney"></u-input>
+						<span>元</span>
+					</u-form-item>
+					<!-- 房屋押金 -->
+					<u-form-item :label-position="labelPosition" label="房间押金 :" prop="mortgageMoney" label-width="150">
+						<u-input :border="border" :type="Number" placeholder="请输入房间押金" type="number"
+							v-model="houseModel.mortgageMoney" :disabled="setpAll"></u-input>
+						<span>元</span>
+					</u-form-item>
+					<!-- 服务费用 -->
+					<u-form-item :label-position="labelPosition" label="维修费用 :" prop="serviceMoney" label-width="150">
+						<u-input :border="border" :type="Number" placeholder="请输入维修费用" type="number"
+							v-model="houseModel.serviceMoney" :disabled="setpAll"></u-input>
+						<span>元</span>
+					</u-form-item>
+					<!-- 中介费用 -->
+					<u-form-item :label-position="labelPosition" label="中介费用 :" prop="proxyMoney" label-width="150">
+						<u-input :border="border" :type="Number" placeholder="请输入中介费用" type="number"
+							v-model="houseModel.proxyMoney" :disabled="setpAll"></u-input>
+						<span>元</span>
+					</u-form-item>
+					<!-- 取暖费用 -->
+					<u-form-item :label-position="labelPosition" label="取暖费用 :" label-width="150" prop="warmType">
+						<!-- <view @click="showPicker('warm')" :class="[{'select_btn':!houseModel.warmType}]">{{houseModel.warmType || '请选择取暖费用'}}</view> -->
+						<u-input :border="border" :type="Number" placeholder="请输入取暖费用" type="number"
+							v-model="houseModel.warmType" :disabled="setpAll"></u-input>
+						<span>元</span>
+					</u-form-item>
+					<!-- 无线费用 -->
+					<u-form-item :label-position="labelPosition" label="无线费用 :" label-width="150" prop="wirelessType">
+						<view @click="showPicker('wireless')" :class="[{'select_btn':!houseModel.wirelessType}]" class="selectbtnItem">
+							{{houseModel.wirelessType || '请选择无线费用'}}</view>
+						<!-- <u-input :border="border" :type="Number" placeholder="请输入无线费用" type="number" v-model="houseModel.wirelessType" :disabled="setpAll"></u-input> -->
+					</u-form-item>
+					<!-- 物业费用 -->
+					<u-form-item :label-position="labelPosition" label="物业费用 :" label-width="150" prop="propertyType">
+						<view @click="showPicker('property')" :class="[{'select_btn':!houseModel.propertyType}]" class="selectbtnItem">
+							{{houseModel.propertyType ||'请选择无线费用'}}</view>
+						<!-- <u-input :border="border" :type="Number" placeholder="请输入物业费用" type="number" v-model="houseModel.propertyType" :disabled="setpAll"></u-input> -->
+					</u-form-item>
+					<!-- 水电费用 -->
+					<u-form-item :label-position="labelPosition" label="水电费用 :" label-width="150" prop="hydropowerType">
+						<view @click="showPicker('hydropower')" :class="[{'select_btn':!houseModel.hydropowerType}]" class="selectbtnItem">
+							{{houseModel.hydropowerType || '请选择水电费用'}}</view>
+					</u-form-item>
+		
+					<!-- 供暖方式 -->
+					<u-form-item :label-position="labelPosition" label="供暖方式 :" label-width="150">
+						<view v-for="(item, index) in heatList" :key="index"
+							:class="{ more_item_active:heatActiveVar == index }" @click="heatTypeFn(item, index)"
+							class="more_item">
+							{{ item }}
+						</view>
+					</u-form-item>
+				</view>
+			</u-form>
+			<u-form labelPosition="left" :model="houseModel" ref="form3">
+				<view class="step_3" v-show="stepNum==3 || setpAll">
+					<!-- 费用信息 -->
+					<view class="region_new_title">房间信息</view>
+					<!-- 出租房屋 -->
+					<u-form-item :label-position="labelPosition" label="出租房间:" prop="lease" label-width="150">
+						<u-input :border="border" placeholder="请选择房间结构" v-model="houseModel.lease" type="select"
+							@click="leaseShowFn" :disabled="setpAll"></u-input>
+						<u-select mode="mutil-column-auto" v-model="leaseShow" :list="leaseList" @confirm="leaseConfirm"
+							@cancel="leaseCancel"></u-select>
+					</u-form-item>
+					<!-- 几室 -->
+					<view v-show="isHomeArr">
+						<view class="" v-for="(item,index) in houseModel.homeArr">
+							<u-form-item :label-position="labelPosition" :label="item.name" prop="homeArr" label-width="150"
+								v-if="houseModel.chekcNum!=0&&index<houseModel.chekcNum">
+								<u-input :border="border" placeholder="请填写其他房间信息(除出租房间外)" v-model="item.tenantStr" type="select"
+									@click="popUpShowFn('tenant',index)" :disabled="setpAll"></u-input>
+							</u-form-item>
+						</view>
 					</view>
-				</u-form>
-				<u-form labelPosition="left" :model="houseModel" ref="form2">
-					<view class="step_2" v-show="stepNum==2 ||setpAll">
-						<!-- 费用信息 -->
-						<view class="region_new_title">费用信息<text class="tipTxt">(&nbsp;客观地评估价格,有助于更快出租&nbsp;)</text></view>
-						<u-form-item :label-position="labelPosition" label="房间布局 :" prop="layout" label-width="150">
-							<u-input :border="border" placeholder="请选择房间结构" v-model="houseModel.layout" type="select"
-								@click="layoutShowFn" :disabled="setpAll"></u-input>
-							<u-select :mode="mode" v-model="layoutShow" :list="layoutList" @confirm="layoutConfirm"
-								@cancel="layoutCancel"></u-select>
-						</u-form-item>
-						<!-- 付款方式 -->
-						<u-form-item :label-position="labelPosition" label="付款方式 :" label-width="150" prop="payType" required>
-							<view @click="showPicker('pay')" :class="[{'select_btn':!houseModel.payType}]" class="selectbtnItem">
-								{{houseModel.payType || '请选择付款方式'}}</view>
-						</u-form-item>
-			
-						<!-- 月度租金 -->
-						<u-form-item :label-position="labelPosition" label="房间租金 :" prop="money" label-width="150" required>
-							<u-input :border="border" :type="Number" placeholder="请输入房间租金" type="number"
-								v-model="houseModel.money" :disabled="setpAll" @blur="rentMoney"></u-input>
-							<span>元</span>
-						</u-form-item>
-						<!-- 房屋押金 -->
-						<u-form-item :label-position="labelPosition" label="房间押金 :" prop="mortgageMoney" label-width="150">
-							<u-input :border="border" :type="Number" placeholder="请输入房间押金" type="number"
-								v-model="houseModel.mortgageMoney" :disabled="setpAll"></u-input>
-							<span>元</span>
-						</u-form-item>
-						<!-- 服务费用 -->
-						<u-form-item :label-position="labelPosition" label="维修费用 :" prop="serviceMoney" label-width="150">
-							<u-input :border="border" :type="Number" placeholder="请输入维修费用" type="number"
-								v-model="houseModel.serviceMoney" :disabled="setpAll"></u-input>
-							<span>元</span>
-						</u-form-item>
-						<!-- 中介费用 -->
-						<u-form-item :label-position="labelPosition" label="中介费用 :" prop="proxyMoney" label-width="150">
-							<u-input :border="border" :type="Number" placeholder="请输入中介费用" type="number"
-								v-model="houseModel.proxyMoney" :disabled="setpAll"></u-input>
-							<span>元</span>
-						</u-form-item>
-						<!-- 取暖费用 -->
-						<u-form-item :label-position="labelPosition" label="取暖费用 :" label-width="150" prop="warmType">
-							<!-- <view @click="showPicker('warm')" :class="[{'select_btn':!houseModel.warmType}]">{{houseModel.warmType || '请选择取暖费用'}}</view> -->
-							<u-input :border="border" :type="Number" placeholder="请输入取暖费用" type="number"
-								v-model="houseModel.warmType" :disabled="setpAll"></u-input>
-							<span>元</span>
-						</u-form-item>
-						<!-- 无线费用 -->
-						<u-form-item :label-position="labelPosition" label="无线费用 :" label-width="150" prop="wirelessType">
-							<view @click="showPicker('wireless')" :class="[{'select_btn':!houseModel.wirelessType}]" class="selectbtnItem">
-								{{houseModel.wirelessType || '请选择无线费用'}}</view>
-							<!-- <u-input :border="border" :type="Number" placeholder="请输入无线费用" type="number" v-model="houseModel.wirelessType" :disabled="setpAll"></u-input> -->
-						</u-form-item>
-						<!-- 物业费用 -->
-						<u-form-item :label-position="labelPosition" label="物业费用 :" label-width="150" prop="propertyType">
-							<view @click="showPicker('property')" :class="[{'select_btn':!houseModel.propertyType}]" class="selectbtnItem">
-								{{houseModel.propertyType ||'请选择无线费用'}}</view>
-							<!-- <u-input :border="border" :type="Number" placeholder="请输入物业费用" type="number" v-model="houseModel.propertyType" :disabled="setpAll"></u-input> -->
-						</u-form-item>
-						<!-- 水电费用 -->
-						<u-form-item :label-position="labelPosition" label="水电费用 :" label-width="150" prop="hydropowerType">
-							<view @click="showPicker('hydropower')" :class="[{'select_btn':!houseModel.hydropowerType}]" class="selectbtnItem">
-								{{houseModel.hydropowerType || '请选择水电费用'}}</view>
-						</u-form-item>
-			
-						<!-- 供暖方式 -->
-						<u-form-item :label-position="labelPosition" label="供暖方式 :" label-width="150">
-							<view v-for="(item, index) in heatList" :key="index"
-								:class="{ more_item_active:heatActiveVar == index }" @click="heatTypeFn(item, index)"
-								class="more_item">
-								{{ item }}
-							</view>
-						</u-form-item>
-					</view>
-				</u-form>
-				<u-form labelPosition="left" :model="houseModel" ref="form3">
-					<view class="step_3" v-show="stepNum==3 || setpAll">
-						<!-- 费用信息 -->
-						<view class="region_new_title">房间信息</view>
-						<!-- 出租房屋 -->
-						<u-form-item :label-position="labelPosition" label="出租房间:" prop="lease" label-width="150">
-							<u-input :border="border" placeholder="请选择房间结构" v-model="houseModel.lease" type="select"
-								@click="leaseShowFn" :disabled="setpAll"></u-input>
-							<u-select mode="mutil-column-auto" v-model="leaseShow" :list="leaseList" @confirm="leaseConfirm"
-								@cancel="leaseCancel"></u-select>
-						</u-form-item>
-						<!-- 几室 -->
-						<view v-show="isHomeArr">
-							<view class="" v-for="(item,index) in houseModel.homeArr">
-								<u-form-item :label-position="labelPosition" :label="item.name" prop="homeArr" label-width="150"
-									v-if="houseModel.chekcNum!=0&&index<houseModel.chekcNum">
-									<u-input :border="border" placeholder="请填写其他房间信息(除出租房间外)" v-model="item.tenantStr" type="select"
-										@click="popUpShowFn('tenant',index)" :disabled="setpAll"></u-input>
-								</u-form-item>
+		
+					<!-- 房屋朝向 -->
+					<u-form-item :label-position="labelPosition" label="房间朝向 :" prop="orientation" label-width="150">
+						<u-input :border="border" placeholder="请选择房间朝向" v-model="houseModel.orientation" type="select"
+							@click="orientationShowFn" :disabled="setpAll"></u-input>
+						<u-select :mode="mode" v-model="orientationShow" :list="orientationList"
+							@confirm="orientationConfirm" @cancel="orientationCancel"></u-select>
+					</u-form-item>
+					<!-- 房屋面积 -->
+					<u-form-item :label-position="labelPosition" label="房间面积 :" prop="homesize" label-width="150">
+						<u-input :border="border" placeholder="请输入平方数" type="number" v-model="houseModel.homesize"
+							:disabled="setpAll"></u-input>m²
+					</u-form-item>
+					<!-- 有无电梯 -->
+					<u-form-item :label-position="labelPosition" label="有无电梯 :" label-width="150">
+						<view v-for="(item, index) in elevatorList" :key="index"
+							:class="{ more_item_active:elevatorActiveVar == index }" @click="hasElevator(item, index)"
+							class="more_item">
+							{{ item }}
+						</view>
+					</u-form-item>
+					<!-- 楼层位置 -->
+					<u-form-item :label-position="labelPosition" label="楼层位置 :" prop="floor" label-width="150">
+						<u-input :border="border" placeholder="请输入楼层" type="select" @click="popUpShowFn('floor')"
+							v-model="houseModel.floor" :disabled="setpAll"></u-input>层
+					</u-form-item>
+					<!-- 入住时间 -->
+					<u-form-item :label-position="labelPosition" label="入住时间 :" prop="live_time" label-width="150">
+						<u-input :border="border" placeholder="请选择入住时间" v-model="houseModel.live_time" type="select"
+							@click="showTimeFn" :disabled="setpAll"></u-input>
+						<!-- <view @click="showTimeFn" :class="[{'select_btn':houseModel.live_time?houseModel.live_time.indexOf('请选择')!=-1:''}]">{{houseModel.live_time}}</view> -->
+					</u-form-item>
+					<!-- 房源照片 -->
+					<view class="region_new_title">房间照片 <text class="tipTxt">(&nbsp;横屏照片效果更佳,不允许虚假和合成图片&nbsp;)</text></view>
+					<u-form-item prop="houseImageList" :border-bottom="false" required>
+						<view class="uni-list list-pd">
+							<view class="uni-list-cell cell-pd">
+								<view class="uni-uploader">
+									<view class="uni-uploader-body">
+										<view class="uni-uploader__files">
+											<view class="uni-uploader__input-box"
+												v-show="houseModel.houseImageList.length < 9">
+												<view class="uni-uploader__input" @tap="chooseImage('house')"></view>
+											</view>
+											<block v-for="(image,index) in houseModel.houseImageList" :key="index">
+												<view class="uni-uploader__file" style="position: relative;">
+													<image class="uni-uploader__img" mode="aspectFit" :src="image"
+														:data-src="image" @tap="previewImage(image,'house')"></image>
+													<view class="close-view" @click="deletImg(index,'house')">×</view>
+												</view>
+											</block>
+										</view>
+									</view>
+									<view class="uni-uploader-head">
+										<view class="uni-uploader-title"></view>
+										<view class="uni-uploader-info">{{houseModel.houseImageList.length}}/9</view>
+									</view>
+								</view>
 							</view>
 						</view>
-			
-						<!-- 房屋朝向 -->
-						<u-form-item :label-position="labelPosition" label="房间朝向 :" prop="orientation" label-width="150">
-							<u-input :border="border" placeholder="请选择房间朝向" v-model="houseModel.orientation" type="select"
-								@click="orientationShowFn" :disabled="setpAll"></u-input>
-							<u-select :mode="mode" v-model="orientationShow" :list="orientationList"
-								@confirm="orientationConfirm" @cancel="orientationCancel"></u-select>
+					</u-form-item>
+					<view class="region_new_title">房间设施</view>
+					<!-- 房源配置 -->
+					<u-form-item :label-position="labelPosition" label-width="150" prop="houseConfigStr">
+						<u-checkbox-group @change="houseConfig" :width="radioCheckWidth" :wrap="false">
+							<u-checkbox v-model="item.checked" v-for="(item, index) in houseConfigList" :key="index"
+								:name="item.name" :disabled="setpAll">
+								{{ item.name }}
+							</u-checkbox>
+						</u-checkbox-group>
+					</u-form-item>
+				</view>
+				<!-- picker -->
+				<u-picker mode="selector" v-model="selectShow" :default-selector="[0]" :range="selectList"
+					@confirm="ConfirmFn" @cancel="CancelFn" range-key="value"></u-picker>
+				<!-- u-popup 弹窗 -->
+				<u-popup border-radius="10" v-model="popUpShow" @close="close" @open="open" :mode="position" length="36%"
+					:mask="mask" :closeable="closeable" :close-icon-pos="closeIconPos" :safe-area-inset-bottom="true">
+					<view class="content" v-if="floorShow">
+						<view class="current">
+							<view>当前楼层</view>
+							<u-number-box :min="1" :max="100" v-model="currentValue" @change="currentChange"></u-number-box>
+						</view>
+						<view class="max">
+							<view>最高楼层</view>
+							<u-number-box :min="1" :max="100" v-model="maxValue" @change="maxChange"></u-number-box>
+						</view>
+					</view>
+					<view v-if="tenantShow">
+						<!-- 出租情况 -->
+						<u-form-item :label-position="labelPosition" label="出租情况 :" label-width="150">
+							<view @click="showPicker('hire')"
+								:class="[{'select_btn':currentObj['hire'].valueName.indexOf('请选择')!=-1}]"  class="selectbtnItem">
+								{{currentObj['hire'].valueName}}</view>
 						</u-form-item>
-						<!-- 房屋面积 -->
-						<u-form-item :label-position="labelPosition" label="房间面积 :" prop="homesize" label-width="150">
-							<u-input :border="border" placeholder="请输入平方数" type="number" v-model="houseModel.homesize"
+						<!-- 性别 -->
+						<u-form-item :label-position="labelPosition" label="性别 :" label-width="150"
+							v-if='currentObj["hire"].valueName=="已出租"'>
+							<view @click="showPicker('sex')"
+								:class="[{'select_btn':currentObj['sex'].valueName.indexOf('请选择')!=-1}]"  class="selectbtnItem">
+								{{currentObj['sex'].valueName}}</view>
+						</u-form-item>
+						<!-- 价钱 -->
+						<u-form-item :label-position="labelPosition" label="价钱 :" label-width="150"
+							v-if='currentObj["hire"].valueName=="未出租"'>
+							<u-input :border="border" :type="Number" placeholder="请输入出租价钱" type="text" v-model="tenantPrice"
+								:disabled="setpAll"></u-input>元/月
+						</u-form-item>
+						<!-- 面积 -->
+						<u-form-item :label-position="labelPosition" label="面积 :" label-width="150">
+							<u-input :border="border" :type="Number" placeholder="请输入房间面积" type="text" v-model="tenantArea"
 								:disabled="setpAll"></u-input>m²
 						</u-form-item>
-						<!-- 有无电梯 -->
-						<u-form-item :label-position="labelPosition" label="有无电梯 :" label-width="150">
-							<view v-for="(item, index) in elevatorList" :key="index"
-								:class="{ more_item_active:elevatorActiveVar == index }" @click="hasElevator(item, index)"
-								class="more_item">
-								{{ item }}
-							</view>
-						</u-form-item>
-						<!-- 楼层位置 -->
-						<u-form-item :label-position="labelPosition" label="楼层位置 :" prop="floor" label-width="150">
-							<u-input :border="border" placeholder="请输入楼层" type="select" @click="popUpShowFn('floor')"
-								v-model="houseModel.floor" :disabled="setpAll"></u-input>层
-						</u-form-item>
-						<!-- 入住时间 -->
-						<u-form-item :label-position="labelPosition" label="入住时间 :" prop="live_time" label-width="150">
-							<u-input :border="border" placeholder="请选择入住时间" v-model="houseModel.live_time" type="select"
-								@click="showTimeFn" :disabled="setpAll"></u-input>
-							<!-- <view @click="showTimeFn" :class="[{'select_btn':houseModel.live_time?houseModel.live_time.indexOf('请选择')!=-1:''}]">{{houseModel.live_time}}</view> -->
-						</u-form-item>
-						<!-- 房源照片 -->
-						<view class="region_new_title">房间照片 <text class="tipTxt">(&nbsp;横屏照片效果更佳,不允许虚假和合成图片&nbsp;)</text></view>
-						<u-form-item prop="houseImageList" :border-bottom="false" required>
-							<view class="uni-list list-pd">
-								<view class="uni-list-cell cell-pd">
-									<view class="uni-uploader">
-										<view class="uni-uploader-body">
-											<view class="uni-uploader__files">
-												<view class="uni-uploader__input-box"
-													v-show="houseModel.houseImageList.length < 9">
-													<view class="uni-uploader__input" @tap="chooseImage('house')"></view>
-												</view>
-												<block v-for="(image,index) in houseModel.houseImageList" :key="index">
-													<view class="uni-uploader__file" style="position: relative;">
-														<image class="uni-uploader__img" mode="aspectFit" :src="image"
-															:data-src="image" @tap="previewImage(image,'house')"></image>
-														<view class="close-view" @click="deletImg(index,'house')">×</view>
-													</view>
-												</block>
-											</view>
-										</view>
-										<view class="uni-uploader-head">
-											<view class="uni-uploader-title"></view>
-											<view class="uni-uploader-info">{{houseModel.houseImageList.length}}/9</view>
-										</view>
-									</view>
-								</view>
-							</view>
-						</u-form-item>
-						<view class="region_new_title">房间设施</view>
-						<!-- 房源配置 -->
-						<u-form-item :label-position="labelPosition" label-width="150" prop="houseConfigStr">
-							<u-checkbox-group @change="houseConfig" :width="radioCheckWidth" :wrap="false">
-								<u-checkbox v-model="item.checked" v-for="(item, index) in houseConfigList" :key="index"
-									:name="item.name" :disabled="setpAll">
-									{{ item.name }}
-								</u-checkbox>
-							</u-checkbox-group>
-						</u-form-item>
 					</view>
-					<!-- picker -->
-					<u-picker mode="selector" v-model="selectShow" :default-selector="[0]" :range="selectList"
-						@confirm="ConfirmFn" @cancel="CancelFn" range-key="value"></u-picker>
-					<!-- u-popup 弹窗 -->
-					<u-popup border-radius="10" v-model="popUpShow" @close="close" @open="open" :mode="position" length="36%"
-						:mask="mask" :closeable="closeable" :close-icon-pos="closeIconPos" :safe-area-inset-bottom="true">
-						<view class="content" v-if="floorShow">
-							<view class="current">
-								<view>当前楼层</view>
-								<u-number-box :min="1" :max="100" v-model="currentValue" @change="currentChange"></u-number-box>
-							</view>
-							<view class="max">
-								<view>最高楼层</view>
-								<u-number-box :min="1" :max="100" v-model="maxValue" @change="maxChange"></u-number-box>
-							</view>
-						</view>
-						<view v-if="tenantShow">
-							<!-- 出租情况 -->
-							<u-form-item :label-position="labelPosition" label="出租情况 :" label-width="150">
-								<view @click="showPicker('hire')"
-									:class="[{'select_btn':currentObj['hire'].valueName.indexOf('请选择')!=-1}]"  class="selectbtnItem">
-									{{currentObj['hire'].valueName}}</view>
-							</u-form-item>
-							<!-- 性别 -->
-							<u-form-item :label-position="labelPosition" label="性别 :" label-width="150"
-								v-if='currentObj["hire"].valueName=="已出租"'>
-								<view @click="showPicker('sex')"
-									:class="[{'select_btn':currentObj['sex'].valueName.indexOf('请选择')!=-1}]"  class="selectbtnItem">
-									{{currentObj['sex'].valueName}}</view>
-							</u-form-item>
-							<!-- 价钱 -->
-							<u-form-item :label-position="labelPosition" label="价钱 :" label-width="150"
-								v-if='currentObj["hire"].valueName=="未出租"'>
-								<u-input :border="border" :type="Number" placeholder="请输入出租价钱" type="text" v-model="tenantPrice"
-									:disabled="setpAll"></u-input>元/月
-							</u-form-item>
-							<!-- 面积 -->
-							<u-form-item :label-position="labelPosition" label="面积 :" label-width="150">
-								<u-input :border="border" :type="Number" placeholder="请输入房间面积" type="text" v-model="tenantArea"
-									:disabled="setpAll"></u-input>m²
-							</u-form-item>
-			
-						</view>
-						<view class="confirm_con">
-							<u-button size="mini" @click="confirmPopup" class="confirm">确认</u-button>
-						</view>
-			
-					</u-popup>
-					<u-picker v-model="showTime" mode="time" @confirm="confirmTime" start-year="2023"></u-picker>
-					<u-modal v-model="modalShow" :show-cancel-button="true" cancel-text="不保存" confirm-text="保存"
-						@cancel="deleteHouseInfo" @confirm="saveBack">
-						<view class="slot-content">
-							{{content}}
-						</view>
-					</u-modal>
-					
-				</u-form>
+					<view class="confirm_con">
+						<u-button size="mini" @click="confirmPopup" class="confirm">确认</u-button>
+					</view>
+				</u-popup>
+				<u-picker v-model="showTime" mode="time" @confirm="confirmTime" start-year="2023"></u-picker>
+				<u-modal v-model="modalShow" :show-cancel-button="true" cancel-text="不保存" confirm-text="保存"
+					@cancel="deleteHouseInfo" @confirm="saveBack">
+					<view class="slot-content">
+						{{content}}
+					</view>
+				</u-modal>
+			</u-form>
 		</view>
 		<view class="footer">
 			<button type="default" class="feedback-pre" @click="preStep" v-show="stepNum>1||setpAll">上一步</button>
