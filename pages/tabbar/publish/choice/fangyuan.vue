@@ -15,6 +15,7 @@
 
 	//发布类型
 	.Hometype_con {
+		padding: 20upx 0upx;
 		display: flex;
 		justify-content: space-between;
 		color: #333;
@@ -65,7 +66,7 @@
 		padding-left: 26upx;
 		box-sizing: border-box;
 		border-left: 6rpx solid #5199ff;
-		margin-top: 24upx;
+		margin: 10upx 0upx;
 	}
 
 	.fabuleixing {
@@ -78,7 +79,6 @@
 		.uni-uploader-head {
 			position: absolute;
 			right: 30upx;
-			// bottom:10upx;
 		}
 	}
 
@@ -301,6 +301,7 @@
 		<view class="main">
 			<u-form labelPosition="left" :model="houseModel" ref="form1">
 					<!-- 发布类型 -->
+					<view class="region_new_title">选择角色</view>
 					<view class="Hometype_con" v-show="stepNum==1 || setpAll">
 						<view class="item" v-for="(item,index) in radioList" :key="index" @click="radioGroupChange(index)"
 							:class="[{'active':item.checked}]">
@@ -910,12 +911,12 @@
 				radioCheckWrap: false,
 				radio: '个人转租',
 				radioList: [{
-						name: '->我要转租',
+						name: '我要转租',
 						checked: true,
 						disabled: false
 					},
 					{
-						name: '->我是房东',
+						name: '我是房东',
 						checked: false,
 						disabled: false
 					}

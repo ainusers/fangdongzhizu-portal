@@ -48,7 +48,13 @@
             },
             "ios" : {
                 "dSYMs" : false,
-                "idfa" : true
+                "idfa" : false,
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "上传房源照片、更换头像需要读取相册，是否允许?",
+                    "NSCameraUsageDescription" : "上传房源照片、更换头像需要使用摄像头，是否允许?",
+                    "NSPhotoLibraryAddUsageDescription" : "下载图片需要保存相册，是否允许?",
+                    "NSMicrophoneUsageDescription" : "上传房源视频需要使用麦克风，是否允许?"
+                }
             },
             /* ios打包配置 */
             "sdkConfigs" : {
@@ -153,5 +159,6 @@
     "uniStatistics" : {
         "version" : "2",
         "reportInterval" : "60"
-    }
+    },
+    "locale" : "en"
 }
