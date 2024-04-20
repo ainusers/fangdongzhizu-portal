@@ -41,9 +41,9 @@
 		    </view>
 		</view>
 		
-		<!-- 租房体验 -->
+		<!-- 租房心得 -->
 		<view class="uni-textarea">
-		    <textarea placeholder="说点什么吧..." v-model="content" />
+		    <textarea style="font-size: 14px" placeholder="请描述房源优缺点，请不要上传需要出租的房源..." v-model="content" />
 		</view>
 		<view class="footer">
 			<button form-type='submit' class="commit" type="primary" plain="true">提交</button>
@@ -57,13 +57,13 @@
 				1、记录租过或正在居住的房源信息，包括但不限于优缺点，为您和未来租客提供宝贵的参考
 			</view>
 			<view>
-				2、您的租房体验对他人来说有着极其重要的参考价值。从而避免不必要的"踩坑"
+				2、您的租房心得对他人来说有着极其重要的参考价值。从而避免不必要的"踩坑"
 			</view>
 			<view>
-				3、请您填写真实的租房体验，营造良好的反馈氛围，毕竟您可能也会参考他人的心得
+				3、请您填写真实的租房心得，营造良好的反馈氛围，毕竟您可能也会参考他人的心得
 			</view>
 			<view>
-				4、后续会考虑增加房源体验搜索功能，搜索指定房源的租房体验
+				4、后续会考虑增加房源体验搜索功能，搜索指定房源的租房心得，为您租房提供参考
 			</view>
 		</view>
 	</form>
@@ -215,7 +215,7 @@
 				}
 				this.$H.post('/zf/v1/feel/feels',data,true).then(res=>{
 					if(res.status){
-						showToastTit( '租房体验已成功提交')
+						showToastTit( '租房心得已成功提交')
 						// 返回上一页
 						setTimeout(() => {
 							uni.navigateBack({

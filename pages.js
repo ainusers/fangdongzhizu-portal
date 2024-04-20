@@ -395,7 +395,7 @@ module.exports=()=>({
 		{
 			"path": "pages/tabbar/me/tools/feel",
 			"style": {
-				"navigationBarTitleText": "租房体验",
+				"navigationBarTitleText": "租房心得",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
 				"enablePullDownRefresh": false,

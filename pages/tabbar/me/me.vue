@@ -157,7 +157,7 @@
 		        <image mode="aspectFit" src="../../../static/me/feel.png"></image>
 		      </view>
 		      <view class="center">
-		        <text>租房体验</text>
+		        <text>租房心得</text>
 		      </view>
 		      <view class="right flex-center">
 		        <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
