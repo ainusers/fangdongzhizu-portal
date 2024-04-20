@@ -506,13 +506,6 @@
 					this.statistics(params)
 					break;
 				case 3:
-					// 注释聊天跳转入口
-					// params['chat']=1
-					// // 房间id = 用户id + 房东id
-					// let chatId = this.$store.state.userInfo.id+''+this.targetId
-					// uni.navigateTo({
-					// 	url:'/pages/tabbar/news/chat?userId='+this.detailData.username+'&chatId='+chatId
-					// })
 					// 温馨提示
 					uni.showModal({
 						title: '温馨提示',

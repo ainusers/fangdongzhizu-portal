@@ -95,6 +95,19 @@
 					height: 105rpx;
 				}
 	}
+	.report_con{
+		  width:100%;
+		  padding: 15upx 60upx 0upx 80upx;
+		  /deep/.u-radio{
+			  width: 50%;
+			  margin-bottom: 30upx;
+		  }
+	}
+	.hink{
+		font-size: 26upx;
+		color: #aaa;
+		margin: 0upx 30upx 10upx 40upx;
+	}
 </style>
 <template>
     <view class="cont_view">
@@ -190,6 +203,23 @@
 		<view class="logout" @click="logout()">
 			<button type="default" class="feedback-submit">退出登录</button>
 		</view>
+		<!-- 注销用户 - 温馨提示 -->
+		<u-modal :async-close="true" v-model="show" title="请选择注销用户原因" :content="content" confirm-text="确认注销" :show-cancel-button="true" cancel-text="再想想" @confirm="confirm">
+			<view class="report_con">
+				<u-radio-group v-model="reportValue" @change="radioGroupChange" width="50%">
+							<u-radio 
+								v-for="(item, index) in reportList" :key="index" 
+								:name="item.name"
+								v-model="item.checked"
+								:disabled="item.disabled">
+								{{item.name}}
+							</u-radio>
+				</u-radio-group>
+			</view>
+			<view class="hink">
+				注：非常感谢您一直以来对房东直租app的支持与关注，我们深知房源的数量和质量对于用户来说至关重要，因此我们一直在努力拓展房源和丰富功能，以满足更多用户的需求，我们真诚地希望您能够继续留在这里，一同见证app的成长与发展
+			</view>
+		</u-modal>
     </view>
 </template>
 <script>
@@ -200,9 +230,37 @@
         data() {
             return {
 				userInfo: '',
+				reportValue:'',
+				content: '',
+				show: false,
+				reportList:[
+					{
+						name:'虚假房源',
+						checked:false
+					},
+					{
+						name:'房源较少',
+						checked:false
+					},
+					{
+						name:'已租到房',
+						checked:false
+					},
+					{
+						name:'用户体验',
+						checked:false
+					},
+					{
+						name:'信息安全',
+						checked:false
+					},
+					{
+						name:'其它',
+						checked:false
+					}
+				]
 			}
         },
-        onLoad(options) {},
         onShow(){
 		    that=this
 			this.userInfo =this.$store.state.userInfo
@@ -289,13 +347,30 @@
 					 }
 				})
 			},
+			// 切换注销原因事件
+			radioGroupChange(e){
+				this.reason=e
+			},
 			// 注销账号
 			deleteUser() {
-				uni.showToast({
-					title: "请提供手机号和注销原因，联系客服：5730473@qq.com，处理时效最长不超过5个工作日",
-					icon: 'none',
-					duration: 3000
+				this.show = true;
+			},
+			confirm(e) {
+				if(!this.reason) {
+					this.$u.toast('请选择注销用户原因')
+					return
+				}
+				let data={
+					userId: this.$store.state.userInfo.id,
+					reason:this.reason
+				}
+				this.$H.get('/zf/v1/user/remove',data,true).then(res=>{
+					if (res.status) {
+						// 退出登录
+						this.logout()
+					}
 				})
+				this.show = false;
 			},
 			// 退出登录
 			logout() {

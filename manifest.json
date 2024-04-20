@@ -47,7 +47,8 @@
                 "targetSdkVersion" : 60
             },
             "ios" : {
-                "dSYMs" : false
+                "dSYMs" : false,
+                "idfa" : true
             },
             /* ios打包配置 */
             "sdkConfigs" : {
