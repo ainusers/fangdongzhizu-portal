@@ -160,5 +160,5 @@
         "version" : "2",
         "reportInterval" : "60"
     },
-    "locale" : "en"
+    "locale" : "auto"
 }

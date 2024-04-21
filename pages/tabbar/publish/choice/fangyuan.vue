@@ -382,7 +382,7 @@
 					<!-- 费用信息 -->
 					<view class="region_new_title">费用信息<text class="tipTxt">(&nbsp;客观地评估价格,有助于更快出租&nbsp;)</text></view>
 					<u-form-item :label-position="labelPosition" label="房间布局 :" prop="layout" label-width="150">
-						<u-input :border="border" placeholder="请选择房间结构" v-model="houseModel.layout" type="select"
+						<u-input :border="border" placeholder="请选择房间布局" v-model="houseModel.layout" type="select"
 							@click="layoutShowFn" :disabled="setpAll"></u-input>
 						<u-select :mode="mode" v-model="layoutShow" :list="layoutList" @confirm="layoutConfirm"
 							@cancel="layoutCancel"></u-select>
@@ -433,7 +433,7 @@
 					<!-- 物业费用 -->
 					<u-form-item :label-position="labelPosition" label="物业费用 :" label-width="150" prop="propertyType">
 						<view @click="showPicker('property')" :class="[{'select_btn':!houseModel.propertyType}]" class="selectbtnItem">
-							{{houseModel.propertyType ||'请选择无线费用'}}</view>
+							{{houseModel.propertyType ||'请选择物业费用'}}</view>
 						<!-- <u-input :border="border" :type="Number" placeholder="请输入物业费用" type="number" v-model="houseModel.propertyType" :disabled="setpAll"></u-input> -->
 					</u-form-item>
 					<!-- 水电费用 -->
@@ -458,7 +458,7 @@
 					<view class="region_new_title">房间信息</view>
 					<!-- 出租房屋 -->
 					<u-form-item :label-position="labelPosition" label="出租房间:" prop="lease" label-width="150">
-						<u-input :border="border" placeholder="请选择房间结构" v-model="houseModel.lease" type="select"
+						<u-input :border="border" placeholder="请选择出租房间" v-model="houseModel.lease" type="select"
 							@click="leaseShowFn" :disabled="setpAll"></u-input>
 						<u-select mode="mutil-column-auto" v-model="leaseShow" :list="leaseList" @confirm="leaseConfirm"
 							@cancel="leaseCancel"></u-select>
@@ -575,10 +575,10 @@
 								:class="[{'select_btn':currentObj['sex'].valueName.indexOf('请选择')!=-1}]"  class="selectbtnItem">
 								{{currentObj['sex'].valueName}}</view>
 						</u-form-item>
-						<!-- 价钱 -->
-						<u-form-item :label-position="labelPosition" label="价钱 :" label-width="150"
+						<!-- 价格 -->
+						<u-form-item :label-position="labelPosition" label="价格 :" label-width="150"
 							v-if='currentObj["hire"].valueName=="未出租"'>
-							<u-input :border="border" :type="Number" placeholder="请输入出租价钱" type="text" v-model="tenantPrice"
+							<u-input :border="border" :type="Number" placeholder="请输入出租价格" type="text" v-model="tenantPrice"
 								:disabled="setpAll"></u-input>元/月
 						</u-form-item>
 						<!-- 面积 -->
@@ -588,8 +588,7 @@
 						</u-form-item>
 					</view>
 					<view class="confirm_con">
-						<!-- <u-button size="mini" @click="confirmPopup" class="confirm">确认</u-button> -->
-						<button form-type='submit' class="commit" type="primary" plain="true" style="font-size: 14px;width: 150px;">确认</button>
+						<button form-type='submit' @click="confirmPopup" class="confirm" type="primary" plain="true" style="font-size: 14px;width: 150px;">确认</button>
 					</view>
 				</u-popup>
 				<u-picker v-model="showTime" mode="time" @confirm="confirmTime" start-year="2023"></u-picker>
@@ -603,8 +602,7 @@
 		</view>
 		<view class="footer">
 			<button type="default" class="feedback-pre" @click="preStep" v-show="stepNum>1||setpAll">上一步</button>
-			<button type="default" class="feedback-next" @click="nextStep"
-				v-show="stepNum==1 || stepNum<3 ">下一步</button>
+			<button type="default" class="feedback-next" @click="nextStep" v-show="stepNum==1 || stepNum<3 ">下一步</button>
 			<button type="default" class="feedback-pre" @click="nextStep" v-show="stepNum==3&!setpAll">预览</button>
 			<button type="default" class="feedback-next" @click="publish" v-show="setpAll">发布</button>
 		</view>
@@ -711,7 +709,7 @@
 					communityName: {
 						type: 'string',
 						required: true,
-						message: '请填写小区名称',
+						message: '请填写小区信息',
 						trigger: ['change', 'blur']
 					},
 					roomName: {
@@ -745,7 +743,7 @@
 					},
 					serviceMoney: {
 						required: true,
-						message: '请填写服务费用',
+						message: '请填写维修费用',
 						trigger: ['change', 'blur']
 					},
 					proxyMoney: {
@@ -760,17 +758,17 @@
 					},
 					wirelessType: {
 						required: true,
-						message: '请填写无线费用',
+						message: '请选择无线费用',
 						trigger: ['change', 'blur']
 					},
 					propertyType: {
 						required: true,
-						message: '请填写物业费用',
+						message: '请选择物业费用',
 						trigger: ['change', 'blur']
 					},
 					hydropowerType: {
 						required: true,
-						message: '请填写供水费用',
+						message: '请选择水电费用',
 						trigger: ['change', 'blur']
 					},
 				},
@@ -831,13 +829,13 @@
 					houseImageList: {
 						type: 'array',
 						required: true,
-						message: '请上传房间证明',
+						message: '请上传房间照片',
 						trigger: ['change', 'blur']
 					},
 
 					houseConfigStr: {
 						required: true,
-						message: '请选择房间配置',
+						message: '请选择房间设施',
 						trigger: ['change', 'blur']
 					},
 
@@ -865,7 +863,7 @@
 						valueCode: ''
 					},
 					hydropower: {
-						valueName: '请选择水电费用',
+						valueName: '请选择水电类型',
 						valueCode: ''
 					},
 					pay: {
@@ -1779,6 +1777,10 @@
 							area: this.tenantArea,
 							price: this.tenantPrice,
 						}
+						if (obj.hirecircum.includes('请选择出租情况') || '' == obj.area || (obj.sex.includes('请选择性别') && '' == obj.price)) {
+							uni.$u.toast('请填写其他房间租赁信息')
+							return
+						}
 						let tenantStr = obj.hirecircum + '-' + (obj.sex.indexOf('请选择') == -1 ? obj.sex : obj.price +
 							'元/月') + '-' + obj.area + 'm²'
 						this.tenantObj.push(obj)
@@ -1807,7 +1809,6 @@
 						}
 					})
 				})
-
 			},
 			async validateParam2() {
 				uni.setStorage({
