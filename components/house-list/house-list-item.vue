@@ -16,12 +16,11 @@
 	}
     .er_house_item{
 		position: relative;
-        padding: 0px 0px 5px 5px;
-        box-sizing: border-box;
-        background: #FFFFFF;
-		margin: 0px 0px 5px 0px;
-		padding-top: 0;
-		border-bottom: 20rpx solid #f2f2f2;
+		padding: 5px;
+		box-sizing: border-box;
+		background: #FFFFFF;
+		margin: 5px;
+		border-radius: 5px;
     }
     .er_house_img_view{
         position: relative;
@@ -199,7 +198,6 @@
 		width:100%;
 		height:80upx;
 		display: flex;
-		// margin-bottom: 20upx;
 		justify-content: end;
 		.btn_item{
 			display: flex;
@@ -385,6 +383,13 @@
 				})
 			},
         	homeDetail(item,index) {
+				// 用户浏览统计
+				let data={
+					userId: this.$store.state.userInfo.id,
+					roomId: item.id
+				}
+				this.$H.post('/zf/v1/const/look/statistics',data,true).then(res=>{})
+				// 跳转详情页
                 uni.navigateTo({
                     url: `/pages/tabbar/home/homeDetail?id=${item.id}&userId=${item.userId}`
                 });

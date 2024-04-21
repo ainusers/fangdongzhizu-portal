@@ -10,6 +10,9 @@
 	.main {
 		background: #5199ff;
 	}
+	.content {
+		background-color: #f2f2f2;
+	}
 	.home_top {
 		margin-top: calc(var(--status-bar-height));
 		position: relative;
@@ -69,7 +72,7 @@
 	.scroll-view-height {
 		/* 页面高度减去包含状态栏、标题、tab组件的高度 */
 		height: calc(100vh - var(--status-bar-height) - 176rpx);
-		background-color: #ffffff;
+		background-color: #f2f2f2;
 	}
 	.list-content {
 		height: calc(100vh - var(--status-bar-height) - 176rpx);
