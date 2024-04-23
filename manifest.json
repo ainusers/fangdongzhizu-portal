@@ -2,8 +2,8 @@
     "name" : "房东直租",
     "appid" : "__UNI__190F3AB",
     "description" : "面对面交易，拒绝中间商",
-    "versionName" : "1.0.3",
-    "versionCode" : 103,
+    "versionName" : "1.0.4",
+    "versionCode" : 104,
     "transformPx" : false,
     "compatConfig" : {
         "MODE" : 2 // 2代表兼容Vue2模式，3代表非兼容Vue2模式

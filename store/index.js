@@ -9,7 +9,7 @@ const store = new Vuex.Store({
 		communityInfo:{},
 		currentCity:'定位中...',//当前城市
 		lock: 0,//让watch监听只走一次
-		version:'1.0.3',
+		version:'1.0.4',
 		address:{},
 		ispublishSub:false, //是否点击到过开启定位服务界面
 	},
