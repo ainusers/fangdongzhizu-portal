@@ -79,7 +79,7 @@
 	}
 	.list-swiper {
 		height: calc(100vh - var(--status-bar-height) - 176rpx);
-		background: #ffffff;
+		background: #f2f2f2;
 	}
 	uni-swiper-item {
 		overflow: scroll;
