@@ -255,10 +255,6 @@
 .price_bottom_view .price_input_val:last-child{
 	margin-left: 50upx;
 }
-// .f_r_s {
-// 	display: flex;
-// 	flex-direction: row;
-// }
 .price_bottom_confirm{
 	width:200upx;
 	height:74upx;
@@ -285,8 +281,8 @@
 }
 .scroll-view-height {
 	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
-	height: calc(100vh - var(--status-bar-height) - 176rpx);
-	background-color: #ffffff;
+	height: calc(100vh - var(--status-bar-height));
+	background-color: #f2f2f2;
 }
 .home_nodata{
 	padding: 5px 0 ;

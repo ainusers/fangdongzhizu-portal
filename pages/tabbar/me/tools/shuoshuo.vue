@@ -1,7 +1,6 @@
 <style scope lang="scss">
 .main {
 	background-color: #f2f2f2;
-	 // height: var(--status-bar-height);
 }
 /deep/.u-scroll-box{
 	display: flex;
@@ -12,9 +11,8 @@
 }
 .scroll-view-height {
 	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
-	// height: calc(100vh - var(--status-bar-height) - 176rpx);
 	height: calc(100vh - var(--status-bar-height));
-	background-color: #ffffff;
+	background-color: #f2f2f2;
 }
 </style>
 <template>
