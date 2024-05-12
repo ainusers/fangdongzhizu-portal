@@ -92,7 +92,7 @@
 				   <view class='city_title'>手动选择城市：</view>
 				   <u-form-item label-position="left" prop="region" label-width="150" style="padding: 10px 15px" borderBottom >
 				   <u-input :border="false" type="select" v-model="position.region" placeholder="请选择所属区域"
-				   		@click="showPickerArea"></u-input>
+				   		@click="pickerShow = true"></u-input>
 				   </u-form-item>
 				   <uPicker mode="region" v-model="pickerShow" @confirm="regionConfirm"></uPicker>
 				   
@@ -157,12 +157,6 @@
         	this.getPhoneInfo();
         },
         methods: {
-			showPickerArea() {
-				if (this.setpAll) {
-					return
-				}
-				this.pickerShow = true
-			},
 			// 选择地区回调
 			regionConfirm(e) {
 				let that = this;

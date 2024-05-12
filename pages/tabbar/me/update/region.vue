@@ -11,8 +11,8 @@
 </style>
 <template>
 	<view class="content">
-		<u-form-item :label-position="labelPosition" label="所属区域 :" prop="region" label-width="150" class="region">
-			<u-input :border="border" type="select" :select-open="pickerShow" v-model="model.region" placeholder="请选择地区" @click="pickerShow = true"></u-input>
+		<u-form-item label-position="left" label="所属区域 :" prop="region" label-width="150" class="region">
+			<u-input :border="false" type="select" :select-open="pickerShow" v-model="model.region" placeholder="请选择地区" @click="pickerShow = true"></u-input>
 		</u-form-item>
 		<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
 	</view>
@@ -22,9 +22,6 @@
         data() {
 			return {
 				userInfo: '',
-				// 房屋位置
-				labelPosition: 'left',
-				border: false,
 				pickerShow: false,
 				region: [
 					{
