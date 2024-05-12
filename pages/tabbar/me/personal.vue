@@ -3,7 +3,7 @@
 		<view class="person_info">
 			<!-- 个人信息 -->
 			<myInfoAavtar :userInfo="userInfo" :isShow="false"/>
-			<u-tabs :list="list" :is-scroll="false" :current="current" @change="change"></u-tabs>
+			<u-tabs :list="list" :is-scroll="false" :current="current" bg-color="#f2f2f2" @change="change"></u-tabs>
 		</view>
 		<view class="person_info_ti">
 			
@@ -21,7 +21,7 @@
 								</block>
 							</div>
 							<div v-else>
-								<p class="home_nodata">暂无数据</p>
+								<u-empty class="home_nodata" text="暂无数据" mode="favor"></u-empty>
 							</div>
 						</view>
 					</view>
@@ -122,7 +122,6 @@
 							title: '已加载完成'
 						});
 					}
-					// that.$store.commit('houseInfo', that.houseList)
 				})
 			},
 			//下架刷新
@@ -156,6 +155,10 @@
 </script>
 
 <style lang="scss" scoped>
+	.personal_main {
+		height: 100vh;
+		background-color: #f2f2f2;
+	}
 	.person_info {
 		position: relative;
 		width: 100%;

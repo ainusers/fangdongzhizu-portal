@@ -14,7 +14,6 @@
         box-sizing: border-box;
     }
     .gps_city{
-        margin-left: 33upx;
 		width:186upx;
 		height:60upx;
 		line-height:60upx;
@@ -24,6 +23,7 @@
         position:relative;
 		border-radius:6upx;
         color:#0f0f0f;
+		margin-left: 0px;
     }
 	.dingwei{
 		display: flex;
@@ -66,7 +66,7 @@
 		height:80upx;
 		line-height:80upx;
 		font-size:27upx;
-		margin-left: 32upx;
+		margin-left: 33upx;
 		box-sizing: border-box;
 	}
 </style>
