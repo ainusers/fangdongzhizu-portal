@@ -7,9 +7,6 @@
 		background: rgba(0, 0, 0, 0.5);
 		z-index: 999;
 	}
-	.main {
-		background: #5199ff;
-	}
 	.content {
 		background-color: #f2f2f2;
 	}
@@ -48,14 +45,6 @@
 		background-size: contain;
 		height: 8upx;
 		width: 13upx;
-	}
-	.search {
-		margin-top: 13px;
-		background: url(http://cdn.haofang.net/static/uuminiapp/pageNewUi/common_icon_sprites.png) no-repeat;
-		background-size: 226upx 108upx;
-		height: 40upx;
-		width: 40upx;
-		background-position: -30upx 0;
 	}
 	.u-tab-item .u-line-1 {
 		line-height: 0px !important;
