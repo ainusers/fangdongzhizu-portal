@@ -134,7 +134,7 @@
 					userId: this.userId,
 					page: this.currPage,
 					size: 10,
-					// way:'user'
+					loginUserId: this.$store.state.userInfo.id
 				}
 				let url = '/zf/v1/dynamic/user'
 				this.$H.get(url, data, true).then(res => {
