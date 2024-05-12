@@ -58,6 +58,17 @@
         color:#0f0f0f;
 		display: inline-block;
     }
+	.choose_title{
+		height:60upx;
+		line-height:60upx;
+		display: flex;
+		align-items: center;
+		height:80upx;
+		line-height:80upx;
+		font-size:27upx;
+		margin-left: 32upx;
+		box-sizing: border-box;
+	}
 </style>
 <template>
 	<form report-submit>
@@ -67,8 +78,8 @@
 				<view class="choose_city_cont">
 					<view class='city_title'>当前定位城市 :</view>
 					<view class="choose_title">
-						<button form-type="submit" hover-class="none" class="gps_city f_r_s" @click="cityBtn(gpsCityInfo)">
-								  {{ gpsCityInfo.cityName }}
+						<button form-type="submit" hover-class="none" class="gps_city f_r_s" @click="chooseCity(gpsCityName)">
+								  {{ gpsCityName.cityName }}
 						</button>
 						<view class="dingwei">
 							<image class="gps_icon" src="@/static/home/position.svg"></image>
@@ -77,13 +88,21 @@
 							</view>
 						</view>
 					</view>
+					
 				   <view class='city_title'>手动选择城市：</view>
 				   <u-form-item label-position="left" prop="region" label-width="150" style="padding: 10px 15px" borderBottom >
 				   <u-input :border="false" type="select" v-model="position.region" placeholder="请选择所属区域"
 				   		@click="showPickerArea"></u-input>
 				   </u-form-item>
-				   <!-- 适用全国 -->
 				   <uPicker mode="region" v-model="pickerShow" @confirm="regionConfirm"></uPicker>
+				   
+				   <view class="choose_title">热门城市：</view>
+				   <view class="hot_city_list f_r_s">
+					   <block v-for="(item, hotIndex) in hotCityList" :index="hotIndex" :key="hotIndex">
+						   <button form-type="submit" hover-class="none" @click="chooseCity(item)"
+								class="hot_city_item">{{ item.cityName }}</button>
+					   </block>
+				   </view>
 				</view>
 			</scroll-view>
 		</view>
@@ -100,9 +119,8 @@
 		data() {
 			return {
                 scrollIntoId: "",
-                gpsCityInfo: {
-                    cityName: "定位中..",
-                    cityId: "1"
+                gpsCityName: {
+                    cityName: "定位中.."
                 },
                 pageHeight: "100%",
 				pickerShow: false,
@@ -113,7 +131,23 @@
 					region: '', //所属区域
 				},
                 scrollAnimate: true,
-				bindList:{}
+				hotCityList: [
+					{ cityName: "北京市" },
+					{ cityName: "上海市" },
+					{ cityName: "广州市" },
+					{ cityName: "深圳市" },
+					{ cityName: "成都市" },
+					{ cityName: "重庆市" },
+					{ cityName: "杭州市" },
+					{ cityName: "西安市" },
+					{ cityName: "武汉市" },
+					{ cityName: "苏州市" },
+					{ cityName: "郑州市" },
+					{ cityName: "南京市" },
+					{ cityName: "天津市" },
+					{ cityName: "长沙市" },
+					{ cityName: "沈阳市" }
+				],
 			};
 		},
         onLoad() {
@@ -168,7 +202,7 @@
 					// isHighAccuracy:true,
 					geocode: true,
 					success: function (res) {
-						that.gpsCityInfo.cityName=res.address.city
+						that.gpsCityName.cityName=res.address.city
 						//只有点击重新定位的时候出来
 						if (status) {
 							uni.showToast({
@@ -190,7 +224,7 @@
 			changeTwoDecimal_f(num){
 				return num.toFixed(2)
 			},
-			cityBtn(item){
+			chooseCity(item){
 				this.$store.commit('currentCity',item.cityName)
 				uni.navigateBack({
 					delta: 1,
