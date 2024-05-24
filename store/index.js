@@ -8,18 +8,11 @@ const store = new Vuex.Store({
 		token:'',
 		communityInfo:{},
 		currentCity:'定位中...',//当前城市
-		lock: 0,//让watch监听只走一次
 		address:{},
 		ispublishSub:false, //是否点击到过开启定位服务界面
+		version:'1.0.5'
 	},
 	mutations: {
-		lock(state,obj){
-			state.lock=obj
-			uni.setStorage({
-				key:'lock',
-				data:obj
-			})
-		},
 		userInfo(state,obj){
 			if(obj){
 				state.userInfo=obj
