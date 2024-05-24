@@ -76,47 +76,54 @@
 				this.payType=type
 			},
 			goPay(){
-				this.$H.get('/zf/v1/ali/pay',{},true).then(res=>{
-					if(res.status){
-						console.log("-------------->" + res.data[0]);
-						uni.requestPayment({
-							provider: 'alipay',
-							orderInfo: res.data[0],
-							success(r) {
-								uni.showToast({
-									title:"支付成功",
-									icon: "success"
-								})
-							},
-							fail(e) {
-								uni.showToast({
-									title:"用户取消支付",
-									icon: "error"
-								})
-							},
-							complete: () => {
-								console.log("payment结束")
-							}
-						})
-					}
-				})
-				/* uni.requestPayment({
-				    provider: 'wxpay',
-				    orderInfo: {
-						"appid": "wx2c28b021e15abad4",  // 微信开放平台 - 应用 - AppId，注意和微信小程序、公众号 AppId 可能不一致
-						"partnerid": "1648896229",      // 微信支付商户号
-						"prepayid": "wx202254********************fbe90000", // 统一下单订单号 
-						"timestamp": 1597935292,        // 时间戳（单位：秒）
-						"sign": "96e939a667090ad79004e272e11d4a84" // 签名，这里用的 MD5/RSA 签名
-					}, //微信、支付宝订单数据 【注意微信的订单信息，键值应该全部是小写，不能采用驼峰命名】
-				    success: function (res) {
-				    	let rawdata = JSON.parse(res.rawdata);
-				    	console.log("支付成功");
-				    },
-				    fail: function (err) {
-				    	console.log('支付失败:' + JSON.stringify(err));
-				    }
-				}); */
+				// this.$H.get('/zf/v1/ali/pay',{},true).then(res=>{
+				// 	if(res.status){
+				// 		console.log("-------------->" + res.data[0]);
+				// 		uni.requestPayment({
+				// 			provider: 'alipay',
+				// 			orderInfo: res.data[0],
+				// 			success(r) {
+				// 				uni.showToast({
+				// 					title:"支付成功",
+				// 					icon: "success"
+				// 				})
+				// 			},
+				// 			fail(e) {
+				// 				uni.showToast({
+				// 					title:"用户取消支付",
+				// 					icon: "error"
+				// 				})
+				// 			},
+				// 			complete: () => {
+				// 				console.log("payment结束")
+				// 			}
+				// 		})
+				// 	}
+				// })
+				// this.$H.get('/zf/v1/wx/pay?order=out_trade_no_005&money=0.01&desc=测试微信支付',{},true).then(res=>{
+				// 	if(res.status){
+				// 		console.log("-------------->" + JSON.stringify(res.data[0]));
+				// 		uni.requestPayment({
+				// 		    "provider": "wxpay", 
+				// 		    "orderInfo": {
+				// 		        "appid": res.data[0].appid,  // 微信开放平台 - 应用 - AppId，注意和微信小程序、公众号 AppId 可能不一致
+				// 		        "noncestr": res.data[0].nonceStr, // 随机字符串
+				// 		        "package": res.data[0].packageVal,        // 固定值
+				// 		        "partnerid": res.data[0].partnerId,      // 微信支付商户号
+				// 		        "prepayid": res.data[0].prepayId, // 统一下单订单号 
+				// 		        "timestamp": Number(res.data[0].timestamp),        // 时间戳（单位：秒）
+				// 		        "sign": res.data[0].sign // 签名，这里用的 MD5/RSA 签名
+				// 		    },
+				// 			success: function (res) {
+				// 				let rawdata = JSON.parse(res.rawdata);
+				// 				console.log("支付成功");
+				// 			},
+				// 			fail: function (err) {
+				// 				console.log('支付失败:' + JSON.stringify(err));
+				// 			}
+				// 		});
+				// 	}
+				// })
 			}
 		}
 	}

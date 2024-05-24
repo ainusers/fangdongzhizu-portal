@@ -31,7 +31,7 @@
 				</view>
 			</view>
 		</view>
-		<u-modal v-model="show" :content="content" :mask-close-able="true" title="提示" @confirm="confirm" :show-cancel-button="true"></u-modal>
+		<u-modal v-model="show" :content="content" :mask-close-able="true" title="温馨提示" @confirm="confirm" :show-cancel-button="true"></u-modal>
 	</view>
 </template> 
 
