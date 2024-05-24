@@ -101,7 +101,8 @@
 				swiperList: [],
 				tuwen_data: [],
 				load_status_tuwen: 'loadmore',
-				tuwen_default_page: 1
+				tuwen_default_page: 1,
+        cityName: ''
 			}
 		},
 		onLoad() {
@@ -109,6 +110,12 @@
 		},
 		// 默认展示
 		onShow() {
+      //加入cityName筛选
+      const cityName = uni.getStorageSync('cityName')
+      if(this.cityName !== cityName){
+        this.tuwen_default_page = 1
+        this.cityName = cityName
+      }
 			if(!this.tuwen_data.length || this.tuwen_default_page == 1){
 				this.getMomentPost();
 			}
@@ -165,7 +172,8 @@
 				let data={
 					"page":this.tuwen_default_page ,
 					"size": "10",
-					'userId':this.$store.state.userInfo.id
+					"userId":this.$store.state.userInfo.id,
+          "cityName": this.cityName,
 				}
 				this.$H.get('/zf/v1/dynamic/list',data,true).then(res=>{
 					if(res.status){
