@@ -306,6 +306,7 @@
 			uni.$on('chooseCity', function(data) {
 				//触发更新后
 				that.cityName = data.cityName;
+        uni.setStorageSync('cityName', data.cityName) // 保存城市
 				// 获取该城市的所有区
 				that.getArea()
 				// 查询房源列表
@@ -322,6 +323,7 @@
 		onLoad() {
 			that = this
 			this.cityName = '北京市'
+      uni.setStorageSync('cityName', this.cityName)
 			// 获取该城市的所有区
 			this.getArea()
 			// 查询房源列表
