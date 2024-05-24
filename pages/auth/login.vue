@@ -34,7 +34,7 @@
 		</view>
 		
 		<view class="btns">
-			<button @click="login" class="qbtn">
+			<button @click="login" class="qbtn" @tap="$u.throttle(login, 3000)">
 				<view class="btn-text-color fs30">登录</view>
 			</button>
 			<view class="blue_link" :class="{'animShake':isShow}">

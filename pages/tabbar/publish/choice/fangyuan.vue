@@ -604,7 +604,7 @@
 			<button type="default" class="feedback-pre" @click="preStep" v-show="stepNum>1||setpAll">上一步</button>
 			<button type="default" class="feedback-next" @click="nextStep" v-show="stepNum==1 || stepNum<3 ">下一步</button>
 			<button type="default" class="feedback-pre" @click="nextStep" v-show="stepNum==3&!setpAll">预览</button>
-			<button type="default" class="feedback-next" @click="publish" v-show="setpAll">发布</button>
+			<button type="default" class="feedback-next" @click="publish" v-show="setpAll" @tap="$u.throttle(publish, 2000)">发布</button>
 		</view>
 	</view>
 </template>
@@ -1847,7 +1847,7 @@
 			},
 			// 发布房源
 			async publish() {
-				uni.showToast({title:'发布中',duration:100000000,icon:'loading'});
+				uni.showToast({title:'发布中',duration:15000,icon:'loading'});
 				if(this.isEdit){
 					this.publishApi()
 				}else{

@@ -214,7 +214,7 @@ width:0;
                 </view>
             </view>
             <view class="footer">
-                <button type="primary" class="feedback-submit" plain="true" @click="publish">发布</button>
+                <button type="primary" class="feedback-submit" plain="true" @click="publish" @tap="$u.throttle(publish, 3000)">发布</button>
             </view>
         </form>
 

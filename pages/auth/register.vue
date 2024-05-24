@@ -49,7 +49,7 @@
 			</view>
 		</view>
 		<view class="btns">
-			<view class="qbtn" @tap="bindRegister">
+			<view class="qbtn" @click="bindRegister" @tap="$u.throttle(bindRegister, 3000)">
 				<text class="btn-text-color fs30">立即注册</text>
 			</view>
 			<view class="blue_link" :class="{'animShake':isShow}">
@@ -69,7 +69,7 @@
 				</view>
 			</view>
 			<view class="flex ptb30 mlr20 aj-center">
-				<view @click="goLogin()" class="">
+				<view @click="goLogin()">
 					<text class="fs28 nav-text-color underline">返回登录</text>
 				</view>
 			</view>
