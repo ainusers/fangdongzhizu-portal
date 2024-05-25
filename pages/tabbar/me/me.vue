@@ -1,6 +1,6 @@
 <style lang="scss" scoped>
 	.content {
-		background-color: #f2f2f2;
+		background-color: #f7f7f7;
 		text-align: center;
 		height: 100vh;
 	}
@@ -48,7 +48,7 @@
 		align-items: center;
 		background-color: #ffffff;
 		flex-wrap: wrap;
-		margin: 15px 15px 15px 15px;
+		margin: 15px 15px 10px 15px;
 		border-radius: 5px;
 		box-shadow: 0 0 15px 1px rgba(224, 224, 224, 50%);
 		.option {

@@ -2,12 +2,12 @@
     page{
         width: 100%;
         height: 100%;
-        background-color: #f2f2f2;
+        background-color: #f7f7f7;
     }
     .cont_view{
         width: 100%;
         height: 100%;
-        background-color: #f2f2f2;
+        background-color: #f7f7f7;
         overflow-y: auto;
         box-sizing: border-box;
     }
@@ -108,6 +108,9 @@
 		color: #aaa;
 		margin: 0upx 30upx 10upx 40upx;
 	}
+	.commit{
+		border-radius: 10px;
+	}
 </style>
 <template>
     <view class="cont_view">
@@ -201,7 +204,7 @@
         </view>
 		<!-- 退出登录 -->
 		<view class="logout" @click="logout()">
-			<button type="default" class="feedback-submit">退出登录</button>
+			<button type="primary" plain="true" class="commit">退出登录</button>
 		</view>
 		<!-- 注销用户 - 温馨提示 -->
 		<u-modal :async-close="true" v-model="show" title="请选择注销用户原因" :content="content" confirm-text="确认注销" :show-cancel-button="true" cancel-text="再想想" @confirm="confirm">

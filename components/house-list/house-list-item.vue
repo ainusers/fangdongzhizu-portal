@@ -19,7 +19,7 @@
 		padding: 5px;
 		box-sizing: border-box;
 		background: #FFFFFF;
-		margin: 5px;
+		margin: 0 5px 5px 5px;
 		border-radius: 5px;
     }
     .er_house_img_view{
@@ -202,10 +202,9 @@
 		.btn_item{
 			display: flex;
 			align-items: center;
-			padding: 10upx 20px;
+			padding: 10upx 30upx;
 			border:1px solid #18acf0;
-			border-radius: 50upx;
-			margin: 10upx;
+			margin: 0 10upx 10upx 10upx;
 			color: #18acf0;
 		}
 	}
@@ -230,7 +229,6 @@
 					<image mode="scaleToFill" class="er_house_img" :src="item.imgUrl.split(',')[0]" lazy-load></image>
 				</view>
 				<view class="er_house_cont">
-					
 					<!-- 租房类型，小区名称-->
 					<view class="er_house_title">
 						<view class="type_icon item">
@@ -263,10 +261,14 @@
 					</view>
 				</view>
 			</view>
-			<view style="font-size: 26rpx;padding: 10rpx;display: block;" v-if="item.checkIdea&&current==0">审核反馈： <view style="color: #ff002f;display: inline-block;">{{item.checkIdea}}</view></view>
+			<view style="font-size: 26rpx;padding: 10rpx;display: block;" v-if="item.checkIdea&&current==0">审核反馈： 
+				<view style="color: #ff002f;display: inline-block;">{{item.checkIdea}}</view>
+			</view>
 		</view>
+		
+		<!-- 管理房源功能 -->
 		<view class="detail_btn" v-show="isUpdate">
-			<view class="btn_item" @click="updateHouse(item)" v-show="current==0">
+			<view class="btn_item" @click="updateHouse(item)" v-show="current==0 || current==1">
 				编辑
 			</view>
 			<view class="btn_item" @click="offShelf(item)" v-show="current==1">
@@ -366,7 +368,6 @@
 					key:'currentObj',
 					data:currentObj
 				})
-			
 				uni.navigateTo({
 					url:'/pages/tabbar/publish/choice/fangyuan?isUpdate=true'
 				})

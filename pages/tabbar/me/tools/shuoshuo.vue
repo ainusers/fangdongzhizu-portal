@@ -1,29 +1,19 @@
 <style scope lang="scss">
-.main {
-	background-color: #f2f2f2;
-}
 /deep/.u-scroll-box{
 	display: flex;
-}
-
-.u-tab-item .u-line-1 {
-	line-height: 0px!important;
 }
 .scroll-view-height {
 	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
 	height: calc(100vh - var(--status-bar-height));
-	background-color: #f2f2f2;
+	background-color: #f7f7f7;
 }
 </style>
 <template>
-	<view class="main">
+	<view>
 		<!-- 顶部区域 -->
-		  <!-- 选项卡 -->
-			<u-sticky bgColor="#fff">
-			  <u-tabs :list="tabList" :current="current" @change="tabChange" 
-			   lineWidth="30"
-			lineColor="#f56c6c"></u-tabs>
-			</u-sticky>
+		<u-sticky bgColor="#fffff">
+			<u-tabs :list="tabList" :current="current" @change="tabChange" lineWidth="30" lineColor="#f56c6c"></u-tabs>
+		</u-sticky>
 		<!-- 内容区域 -->
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
 			<swiper-item v-for=" (item,index) in tabList" :key="index">
@@ -32,8 +22,7 @@
 				:refresher-enabled="true"
 				:refresher-threshold="100"
 				@refresherrefresh="onPulling"
-				@refresherrestore="onRestore"
-				>
+				@refresherrestore="onRestore">
 					<view v-show="current == index">
 						<!-- 内容区域 -->
 						<block v-if="status&& currPage==1">
@@ -52,7 +41,6 @@
 				</scroll-view>
 			</swiper-item>
 		</swiper>
-		
 	</view>
 </template>
 
@@ -61,6 +49,7 @@ import screenTab from '@/components/common/screen-tab/screen-tab.vue'
 import postList from '@/components/post-list/post-list.vue';
 import postListSkeleton from '@/components/post-list/post-list-skeleton.vue'
 import tuwenVue from '../../publish/choice/tuwen.vue';
+
 export default {
 	components: {
 		screenTab,
@@ -70,7 +59,7 @@ export default {
 	data() {
 		return {
 			triggered:false,
-			current: 0,//0 圈子 1 互动 2 转发  3 浏览
+			current: 0,// 0 圈子 1 互动 2 转发  3 浏览
 			tabList: [
 				{
 					name: '动态'
@@ -94,8 +83,6 @@ export default {
 			jiaL:[1,2,3]
 		};
 	},
-	props: {
-	},
 	onLoad(options) {
 		this.current=options.id
 		if(this.current==2){
@@ -114,7 +101,6 @@ export default {
 					this.tuwen_data=[]
 					this.current!=2?this.getShowData():this.getDynamics()
 				},1000)
-				
 			}	
 		},
 		onRestore() {
@@ -124,18 +110,18 @@ export default {
 			 if(this.status) return
 			 this.current = index;
 			 if(index!=2){
-				 this.tuwen_data=this.tuwen_dataAll[index]?this.tuwen_dataAll[index]:[]
-				   if(this.tuwen_dataAll[index]&&this.tuwen_dataAll[index].length==0){
-				 	   this.status =false
-				   }
+				this.tuwen_data=this.tuwen_dataAll[index]?this.tuwen_dataAll[index]:[]
+				if(this.tuwen_dataAll[index]&&this.tuwen_dataAll[index].length==0){
+					this.status =false
+				}
 			 }else{
-				 this.tuwen_data=this.reportList
+				this.tuwen_data=this.reportList
 			 } 
 			 if(this.tuwen_data&&this.tuwen_data.length==0 ||!this.tuwen_data){
-			 		this.status=true
-			 		this.currPage=1
-			 		this.tuwen_data=[]
-			 		index!=2?this.getShowData():this.getDynamics()
+				this.status=true
+				this.currPage=1
+				this.tuwen_data=[]
+				index!=2?this.getShowData():this.getDynamics()
 			 }	
 		},
 		//上拉加载
@@ -163,19 +149,19 @@ export default {
 				id:id?id:0,
 			}
 			this.$H.patch('/zf/v1/dynamic/like',data,true).then(res=>{
-				if(res.status&&res.status!=500){
-				if(res.status&&res.status!=500){
-					if(!this.tuwen_data[index].like){
-						this.$set(this.tuwen_data[index],'like',0)
+				if(res.status && res.status!=500){
+					if(res.status && res.status!=500){
+						if(!this.tuwen_data[index].like){
+							this.$set(this.tuwen_data[index],'like',0)
+						}
+						res.data[0].status?this.tuwen_data[index].like+=1 :this.tuwen_data[index].like-=1
+						if(res.data[0].status){
+							this.$set(this.tuwen_data[index],'status',1)
+							
+						}else{
+							this.$set(this.tuwen_data[index],'status',0)
+						}
 					}
-					res.data[0].status?this.tuwen_data[index].like+=1 :this.tuwen_data[index].like-=1
-					if(res.data[0].status){
-						this.$set(this.tuwen_data[index],'status',1)
-						
-					}else{
-						this.$set(this.tuwen_data[index],'status',0)
-					}
-				}
 				}
 			})
 		},

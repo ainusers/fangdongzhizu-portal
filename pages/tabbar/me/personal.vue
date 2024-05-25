@@ -3,7 +3,7 @@
 		<view class="person_info">
 			<!-- 个人信息 -->
 			<myInfoAavtar :userInfo="userInfo" :isShow="false"/>
-			<u-tabs :list="list" :is-scroll="false" :current="current" bg-color="#f2f2f2" @change="change"></u-tabs>
+			<u-tabs :list="list" :is-scroll="false" :current="current" bg-color="#f7f7f7" @change="change"></u-tabs>
 		</view>
 		<view class="person_info_ti">
 			
@@ -157,7 +157,7 @@
 <style lang="scss" scoped>
 	.personal_main {
 		height: 100vh;
-		background-color: #f2f2f2;
+		background-color: #f7f7f7;
 	}
 	.person_info {
 		position: relative;

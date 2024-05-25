@@ -51,7 +51,7 @@
 		
 		<view class="reward_text">
 			<view style="text-align: center;">
-				— — 温馨提示 — —
+				———— 温馨提示 ————
 			</view>
 			<view>
 				1、记录租过或正在居住的房源信息，包括但不限于优缺点，为您和未来租客提供宝贵的参考

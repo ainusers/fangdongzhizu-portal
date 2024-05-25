@@ -1,6 +1,6 @@
 <style scope lang="scss">
   page {
-    background: #f2f2f2;
+    background: #f7f7f7;
   }
   .er_house_detail {
     overflow-x: hidden;

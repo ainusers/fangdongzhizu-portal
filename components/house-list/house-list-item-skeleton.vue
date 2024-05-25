@@ -28,7 +28,6 @@
         width: 100%;
         height: 100%;
     }
-
     .er_house_cont{
 		padding: 0px 6px 0px 6px;
         box-sizing: border-box;
@@ -60,47 +59,34 @@
 		width:80%;
 		margin-top: 20rpx;
     }
-
 	.place {
 		height:30rpx;
 		background: #eee;
 		width:30%;
 		margin-top: 20rpx;
 	}
-
 </style>
 <template>
 	<view class="er_house_main">
 		<view   class="er_house_item f_r_s">
 			<view class="er_house_item_con">
-				<view class="er_house_img_view">
-					
-				</view>
+				<view class="er_house_img_view"></view>
 				<view class="er_house_cont">
 					<!-- 租房类型，小区名称-->
-					<view class="er_house_title">
-						
-					</view>
+					<view class="er_house_title"></view>
 					<!-- 租房类型，两室一厅（配比），大小，楼层 -->
-					<view class="er_house_des">
-					
-					</view>
+					<view class="er_house_des"></view>
 					<!-- 地理位置：距离昌平线沙河地铁站1020米 -->
-					<view class="er_house_tag_info f_r_s">
-					</view>
-						
+					<view class="er_house_tag_info f_r_s"></view>
 					<!-- 房屋价格，朝阳区，酒仙桥 -->
 					<view class="er_house_price_view f_r_s">
 						<view class="er_house_price main_color f_r_s"></view>
 						<view class="place"></view>
 					</view>
 				</view>
-				
 			</view>
-	
 		</view>
 	</view>
-	
 </template>
 
 <script>

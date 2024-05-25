@@ -13,12 +13,14 @@ const getStoreData = function(key) {
 		}
 	})
 }
+
 // 持久化内存数据
 const initStorestate = function() {
 	initKey.forEach(item => {
 		getStoreData(item)
 	})
 }
+
 // 批量上传接口
 const attachUpload = function(imageList) {
 	return new Promise((resolve, reject) => {
@@ -35,8 +37,9 @@ const attachUpload = function(imageList) {
 		})
 	})
 }
+
 //图片压缩
-const  compressImg = function(img, res) {
+const compressImg = function(img, res) {
 	let that = this
 	return new Promise((res) => {
 		// var localPath = plus.io.convertAbsoluteFileSystem(img);
@@ -70,17 +73,7 @@ const  compressImg = function(img, res) {
 		});
 	})
 }
- // const dataURLtoFile=function(dataurl, filename) {
- //    var arr = dataurl.split(',')
- //    var mime = arr[0].match(/:(.*?);/)[1]
- //    var bstr = atob(arr[1])
- //    var n = bstr.length
- //    var u8arr = new Uint8Array(n)
- //    while (n--) {
- //      u8arr[n] = bstr.charCodeAt(n)
- //    }
- //    return new File([u8arr], filename, { type: mime })
- //  }
+
 //编辑右上角按钮文字
 const editTitleText = function(txt) {
 	let pages = getCurrentPages();
@@ -97,6 +90,7 @@ const editTitleText = function(txt) {
 	});
 	// #endif
 }
+
 // 转义代码
 const htmlEncode = function(str) {
 	var temp = "";
@@ -126,6 +120,7 @@ const isLoginCheck = function() {
 		})
 	}
 }
+
 // 聊天记录中的事件格式化
 const dateTime1=function(e){
 	let old=new Date(e)
@@ -183,6 +178,7 @@ const dateTime1=function(e){
 		return  Y+'年'+M+'月'+D+'日'+' '+h+':'+m
 	}
 }
+
 // 控制时间间隔
 const spaceTime=function(old,now){
 	old=new Date(old);
@@ -191,6 +187,7 @@ const spaceTime=function(old,now){
 	var tnow=now.getTime();
 	return (told>(tnow+1000*60*5))
 }
+
 //时间转换
 const tranfTime = function(autoTime) {
 	//var autoTime='2022-05-05 21:58:59'   //尽量让服务端传时间戳，能够有效避免时区问题
@@ -216,6 +213,7 @@ const tranfTime = function(autoTime) {
 		return hours + '小时前' 
 	}
 }
+
 //根据userid获取用户信息
 const getuserInfo = function(userId,type) {
 	let url='/zf/v1/user/id'
@@ -232,6 +230,7 @@ const getuserInfo = function(userId,type) {
 		})
 	})
 }
+
 // 限制发布房源个数
 const getCount=function(){
 	let data = {
@@ -241,12 +240,15 @@ const getCount=function(){
 		return res
 	})
 }
+
 //限制发布动态个数
 const checkPush=function(){
 	return request.get('/zf/v1/dynamic/push',{userId:store.state.userInfo.id},true).then(res=>{
 		return res.data[0]
 	})
 }
+
+// 输出提示信息
 const showToastTit=function(tit){
 	uni.showToast({
 		title: tit,
@@ -254,7 +256,8 @@ const showToastTit=function(tit){
 		duration: 2000
 	})
 }
-//检测是否注册过
+
+//检测是否注册过用户
 const checkExist=function(username){
 	return request.get('/zf/v1/user/exist',{username:username},false).then(res=>{
 		if(res.code==200){
@@ -262,7 +265,8 @@ const checkExist=function(username){
 		}
 	})
 }
-//获取最新版本
+
+//获取最新APP版本
 const getLatest= function(){
 	return request.get('/zf/v1/version/latest',{},true).then(res=>{
 		if(res.code==200){
@@ -271,13 +275,16 @@ const getLatest= function(){
 		}
 	})
 }
+
+// 用户自助更新APP
 const MycheckUpdate=function(type){
 	// type =1 从关于我们点击的更新
-	if(!updateOnly||type==1){
+	if(!updateOnly || type==1){
 		updateOnly=true
 		checkUpdate()
 	}
 }
+
 export {
 	getStoreData,
 	initStorestate,

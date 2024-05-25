@@ -1,5 +1,5 @@
 <template>
-	<view class="">
+	<view>
 			<u-form :model="form" ref="uForm">
 				<view class="uni-list list-pd">
 					<view class="uni-list-cell cell-pd">
@@ -164,13 +164,13 @@
 </script>
 
 <style lang="scss" scoped>
-.cell-pd {
+	.cell-pd {
 		padding: 20upx 30upx;
 	}
-		uni-image{
-			width: 100%;
-			height: 350upx;
-		}
+	uni-image{
+		width: 100%;
+		height: 350upx;
+	}
 	//附件上传
 	.uni-uploader-head {
 		display: flex;

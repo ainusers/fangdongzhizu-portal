@@ -1,356 +1,56 @@
 <style scope lang="scss">
-.main {
-	background-color: #f2f2f2;
-	 // height: var(--status-bar-height);
-}
 /deep/.u-scroll-box{
 	display: flex;
-}
-.city {
-	align-items: center;
-	color: #272727;
-	display: inline-flex;
-	font-size: 32upx;
-}
-.city_icon {
-	margin-left: 10upx;
-	background: url(http://cdn.haofang.net/static/wxPlusApp/yjk/arr_down.png) no-repeat;
-	background-size: contain;
-	height: 8upx;
-	width: 13upx;
-}
-.search {
-	margin-top: 13px;
-	background: url(http://cdn.haofang.net/static/uuminiapp/pageNewUi/common_icon_sprites.png) no-repeat;
-	background-size: 226upx 108upx;
-	height: 40upx;
-	width: 40upx;
-	background-position: -30upx 0;
-}
-.u-tab-item .u-line-1 {
-	line-height: 0px!important;
-}
-
-/* 弹窗 */
-.screen_fixed_list{
-	position: fixed;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: rgba(0, 0, 0, 0.4);
-	z-index: 99999;
-	font-size: 30upx;
-}
-/* #ifdef H5 */
-.screen_fixed_list{
-	max-width: 640px;
-	width: 100%;
-	transform: translateX(-50%);
-	left: 50%;
-}
-/* #endif */
-.region_list_view{
-	height: 70%;
-	background: #FFFFFF;
-	width: 100%;
-	position: relative;
-}
-.region_scroll_left{
-	width: 35%;
-	height: 100%;
-	background: #FFFFFF;
-	box-sizing: border-box;
-}
-.region_scroll_right{
-	width: 65%;
-	height: 100%;
-	background: #F8F8F9;
-	padding-left: 30upx;
-	box-sizing: border-box;
-}
-.scroll_view_list{
-	width: 100%;
-	height: 100%;
-	background: #FFFFFF;
-	box-sizing: border-box;
-	position: relative;
-}
-.region_scroll_right .region_list_item{
-	padding-left: 0;
-}
-.region_list_item{
-	text-align: left;
-	padding-left: 30upx;
-	width:100%;
-	box-sizing:border-box;
-	height:100upx;
-	line-height:100upx;
-	box-sizing: border-box;
-	font-size: 30upx;
-}
-.screen_fixed_list .region_left_active{
-	background:#fff;
-	color:#ab7f2e;
-}
-.price_scroll_list .screen_active{
-	color:#ab7f2e;
-	border: none;
-	color:#ab7f2e;
-}
-.region_scroll_right .screen_active{
-	background: #F8F8F9;
-	border: none;
-	color:#ab7f2e;
-}
-.region_new_cont .screen_active{
-	background: #ffd900;
-}
-.room_list_view{
-	width: 100%;
-}
-/* 更多 */
-.more_list_cont{
-	padding-left: 30upx;
-	box-sizing: border-box;
-	padding-bottom: 190upx;
-}
-.more_list{
-/* border-bottom:1px solid #f3f3f3; */
-}
-.more_title{
-	height:90upx;
-	line-height:90upx;
-	color:#2d2c2c;
-	letter-spacing:1upx;
-	font-family:'黑体';
-	font-size:36upx;
-	font-weight:600;
-}
-.more_cont{
-	flex-wrap: wrap;
-	display: flex;
-	flex-direction: row;
-}
-.more_item{
-	width:150upx;
-	height:62upx;
-	background:#f2f2f2;
-	line-height:62upx;
-	text-align:center;
-	color:#101d36;
-	border-radius:6upx;
-	font-size:26upx;
-	margin-right:20upx;
-	margin-bottom:20upx;
-	letter-spacing:1px;
-	box-sizing:border-box;
-}
-.more_list .more_item_active{
-	background:#ffd900;
-}
-.more_btn_view{
-	width:100%;
-	height:156upx;
-	position:absolute;
-	bottom:0;
-	align-items:center;
-	background:#ffffff;
-	z-index:99;
-	padding:0 39upx 0 39upx;
-	box-sizing:border-box;
-}
-.more_btn_view view{
-	width:48%;
-	height:80upx;
-	border-radius:6upx;
-	background:#f1f3f6;
-	text-align:center;
-	line-height:85upx;
-	font-size:30upx;
-	letter-spacing:10upx;
-	border-radius:40upx;
-}
-.more_btn_view .confirmBtn{
-	background:-webkit-linear-gradient(left, #ffd900 , rgb(255,84,0));
-	color:#fff;
-}
-.region_new_title{
-	font-size:36upx;
-	font-weight:600;
-	color:#101d36;
-	margin-top:20upx;
-	padding-left: 30upx;
-	box-sizing: border-box;
-	margin-bottom: -10upx;
-}
-.region_new_list_item{
-	width:150upx;
-	height:62upx;
-	background-color:#f2f2f2;
-	border-radius:6upx;
-	float:left;
-	margin-right:23upx;
-	text-align:center;
-	line-height:62upx;
-	color:#101d36;
-	font-size:24upx;
-	margin-top:24upx;
-}
-.region_new_cont{
-	padding-left: 30upx;
-	box-sizing: border-box;
-	flex-wrap: wrap;
-}
-.room_new_btn_view{
-	display:flex;
-	justify-content:space-between;
-	width:100%;
-	height:156upx;
-	position:absolute;
-	bottom:0;
-	align-items:center;
-	background:#ffffff;
-	z-index:99;
-	padding:0 39upx 0 39upx;
-	box-sizing:border-box;
-}
-.room_new_btn_view view, .room_new_btn_view view, .room_new_btn_view button{
-	width:48%;
-	height:80upx;
-	border-radius:40upx;
-	background:#f1f3f6;
-	text-align:center;
-	line-height:85upx;
-	letter-spacing:10upx;
-	font-size:30upx;
-}
-.room_new_btn_view .room_new_btn_confirm{
-	background:-webkit-linear-gradient(left, #ffd900 , rgb(255,84,0));
-	color:#fff;
-}
-.screen_view .price_scroll_list{
-	padding-bottom: 140upx;
-	box-sizing: border-box;
-}
-.price_bottom_view{
-	position:absolute;
-	bottom: 0;
-	left: 0;
-	height:140upx;
-	width:100%;
-	box-sizing:border-box;
-	padding:0 40upx 0;
-	background-color:#ffffff;
-}
-.price_bottom_view .price_input_val{
-	width:160upx;
-	height:60upx;
-	line-height: 60upx;
-	text-align:center;
-	border:1px solid #cccccc;
-	border-radius:6upx;
-	font-size:24upx;
-	margin: auto 0;
-}
-.price_bottom_view .price_input_val:last-child{
-	margin-left: 50upx;
-}
-.price_bottom_confirm{
-	width:200upx;
-	height:74upx;
-	background-image:linear-gradient(246deg, #ffd900 0%, #ff8400 100%), linear-gradient( #eeeff5, #eeeff5);
-	border-radius:37upx;
-	color:#ffffff;
-	font-size:28upx;
-	line-height:74upx;
-	text-align:center;
-	margin: auto 0;
-}
-/* 新房价格切换 */
-.new_house_price_change_view{
-	width: 28%;
-	flex-shrink: 0;
-	background: #FFFFFF;
-}
-.new_house_price_change_view>view{
-	text-align: center;
-	line-height: 100upx;
-}
-.new_house_price_change_view>.new_price_tab_active{
-	color: #ab7f2e;
 }
 .scroll-view-height {
 	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
 	height: calc(100vh - var(--status-bar-height));
-	background-color: #f2f2f2;
-}
-.home_nodata{
-	padding: 5px 0 ;
-	text-align: center;
+	background-color: #f7f7f7;
 }
 </style>
 <template>
-	<view class="main">
+	<view>
 		<!-- 顶部区域 -->
-		  <!-- 选项卡 -->
-			<u-sticky bgColor="#fff">
-			  <u-tabs :list="tabList" :current="current" @change="tabChange" lineWidth="30" lineColor="#f56c6c"></u-tabs>
-			</u-sticky>
+		<u-sticky bgColor="#fffff">
+			<u-tabs :list="tabList" :current="current" @change="tabChange" lineWidth="30" lineColor="#f56c6c"></u-tabs>
+		</u-sticky>
 		<!-- 内容区域 -->
-		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300"  >
+		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
 			<swiper-item v-for=" (item,index) in tabList" :key="index">
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
 				:refresher-triggered="triggered"
 				:refresher-enabled="true"
 				:refresher-threshold="100"
 				@refresherrefresh="onPulling"
-				@refresherrestore="onRestore"
-				>
+				@refresherrestore="onRestore">
 					<view v-show="current == index">
-						
 						<view class="content" v-show="houseList.length>0">
 							<!-- 列表 -->
-								<block v-for="(item, index) in houseList" :key="index">
-									<house-list-item ref="ListItem" :item="item" :index="index" @updateHouseList="updateHouseList" :current="current"></house-list-item>
-								</block>
+							<block v-for="(item, index) in houseList" :key="index">
+								<house-list-item ref="ListItem" :item="item" :index="index" @updateHouseList="updateHouseList" :current="current"></house-list-item>
+							</block>
 						</view>
-						<view v-show="showModel&&houseList.length==0">
+						<view v-show="showModel && houseList.length==0">
 							<block v-for=" item in houseJia" :key="item">
 								<houseListItemSkeleton/>
 							</block>
 						</view>
-						<block v-if="!showModel&&houseList.length === 0 && pageNum==1">
+						<block v-if="!showModel && houseList.length===0 && pageNum==1">
 							<u-empty  text="暂无数据" mode="favor"></u-empty>
 						</block>
 					</view>
 				</scroll-view>
 			</swiper-item>
         </swiper>
-		<!-- <loadinM :Model="showModel"/> -->
 	</view>
 </template>
 
 <script>
-	
 import houseListItem from '@/components/house-list/house-list-item.vue';
 import houseListItemSkeleton from '@/components/house-list/house-list-item-skeleton.vue'
 import loadinM from '@/components/common/modal/loading_model.vue'
-import {editTitleText} from '@/utils/utils.js'
-let privateData = {
-	room: {
-		height: ""
-	},
-	price: {
-		height: ""
-	},
-	more: {
-		height: ""
-	},
-	region: {
-		height: ""
-	}
-};
-let that='';
+import {editTitleText,showToastTit} from '@/utils/utils.js'
+
 export default {
 	components: {
 		houseListItem,
@@ -367,7 +67,6 @@ export default {
 			publishedList:[],//已发布
 			removeList:[],//已下架
 			collectList:[],//收藏
-			cityName: "北京",
 			current: 0,
 			tabList: [
 				{
@@ -391,60 +90,56 @@ export default {
 	watch:{
 		current:{
 			handler(newVal,oldVal){
-				that.houseList=[]
-				that.pageNum=1
-				that.loadStatus='loadmore'
+				this.houseList=[]
+				this.pageNum=1
+				this.loadStatus='loadmore'
 				// #ifdef APP-PLUS
 				var webView = this.$mp.page.$getAppWebview();
 				// #endif
-				if(newVal==3){
-					that.houseList=that.collectList
-					if(that.collectList.length==0){
+				if(newVal==0){ // 待审核
+					this.houseList=this.auditList
+					// #ifdef APP-PLUS
+					webView.setTitleNViewButtonStyle(0,{
+						width: '100px'  
+					});
+					// #endif
+				} else if(newVal==1){ // 已发布
+					this.houseList=this.publishedList
+					// #ifdef APP-PLUS
+					webView.setTitleNViewButtonStyle(0,{
+						width: '100px'  
+					});
+					// #endif
+				} else if(newVal==2){ // 已下架
+					this.houseList=this.removeList
+					// #ifdef APP-PLUS
+					webView.setTitleNViewButtonStyle(0,{
+						width: '0px'  
+					});
+					// #endif
+				} else if(newVal==3){ // 收藏
+					this.houseList=this.collectList
+					if(this.collectList.length==0){
 						this.showModel=true
-						that.getCollect()
+						this.getCollect()
 					}
 					// #ifdef APP-PLUS
 					webView.setTitleNViewButtonStyle(0,{
 						width: '0'  
 					});
 					// #endif
-				}else{
-					if(newVal==1){ //已发布
-					that.houseList=that.publishedList
-					// #ifdef APP-PLUS
-					webView.setTitleNViewButtonStyle(0,{
-						width: '100px'  
-					});
-					// #endif
-					}else if(newVal==0){ //待审核
-					that.houseList=that.auditList
-					// #ifdef APP-PLUS
-					webView.setTitleNViewButtonStyle(0,{
-						width: '100px'  
-					});
-					// #endif
-					}
-					else{
-						that.houseList=that.removeList
-						// #ifdef APP-PLUS
-						webView.setTitleNViewButtonStyle(0,{
-							width: '0px'  
-						});
-						// #endif
-					}
-					if(that.houseList.length==0){
-						this.showModel=true
-						that.getstatusHouseList(Number(newVal)+1)
-					}
-					
+				} 
+				if(this.houseList.length==0){
+					this.showModel=true
+					this.getStatusHouseList(Number(newVal)+1)
 				}
+				// 编辑右上角按钮文字
 				editTitleText('管理')
 				this.isUpdate=false
 			}
 		}
 	},
 	onLoad(options) {
-		that=this
 		this.current=options.index
 	},
 	onPullDownRefresh() {
@@ -459,10 +154,11 @@ export default {
 			txt='管理'
 			this.isUpdate=false
 		}
-		if(this.$refs.ListItem&&this.$refs.ListItem.length>0){
+		if(this.$refs.ListItem && this.$refs.ListItem.length>0){
 			this.$refs.ListItem.forEach(item=>{
 				item.isUpdate=this.isUpdate
 			})
+			// 编辑右上角按钮文字
 			editTitleText(txt)
 		}
 	},
@@ -475,12 +171,11 @@ export default {
 					this.pageNum=1
 					this.houseList=[]
 					if(this.current!=3){
-						this.getstatusHouseList(Number(this.current)+1)
+						this.getStatusHouseList(Number(this.current)+1)
 					}else{
 						this.getCollect()
 					}
 				},1000)
-				
 			}		
 		},
 		onRestore() {
@@ -491,7 +186,7 @@ export default {
 			if(this.loadStatus=='loadmore'){
 				this.pageNum++
 				if(this.current!=3){
-					this.getstatusHouseList(Number(this.current)+1)
+					this.getStatusHouseList(Number(this.current)+1)
 				}else{
 					this.getCollect()
 				}
@@ -500,28 +195,27 @@ export default {
 		//下架  接口成功之后的刷新
 		updateHouseList(){
 			this.pageNum=1
-			this.getstatusHouseList(2)
+			this.getStatusHouseList(2)
 		},
 		//获取收藏的房源
 		getCollect(){
 			this.$H.get('/zf/v1/const/collect/rooms',{
-				userId:that.$store.state.userInfo.id,
-				page:that.pageNum,
+				userId:this.$store.state.userInfo.id,
+				page:this.pageNum,
 				size:10
 			},true).then(res=>{
-				that.showModel=false
-				that.triggered=false
+				this.showModel=false
+				this.triggered=false
 				if(res.status&&res.code==200){
-					that.houseList=[...that.houseList,...res.data]	
-					that.collectList=that.houseList
-					if(res.data&&res.data.length<10&&that.pageNum>1){
+					this.houseList=[...this.houseList,...res.data]	
+					this.collectList=this.houseList
+					if(res.data&&res.data.length<10 && this.pageNum>1){
 						this.loadStatus='end'
 						uni.showToast({
 							icon: 'none',
 							title: '已加载完成'
 						});
 					}
-					// that.$store.commit('houseInfo',that.houseList)
 				}else{
 					uni.showToast({
 						icon:'none',
@@ -539,51 +233,48 @@ export default {
 			this.current = index;
 		},
 		//获取不同状态的数据
-		getstatusHouseList(type){	
+		getStatusHouseList(type){	
 			let params={
 				"page":this.pageNum,
 				"size":"10",
 				"status":type, //(1:待审核,2:已发布,3:已下架)
-				"user_id": that.$store.state.userInfo.id,
+				"user_id": this.$store.state.userInfo.id,
 			}
-			//1 待审核 2 已发布  3已下架
+			// 1待审核 2已发布 3已下架
 			this.$H.post('/zf/v1/room/list',params,true).then(res=>{
-				that.triggered=false
-				that.showModel=false
-				if(res.data&&res.status&&res.data.length>0){
-					// that.houseList=[...that.houseList,...res.data]
-					that.houseList=res.data
-					switch(type){
-						case 1 :
-						that.auditList=that.houseList
-						break;
-						case 2:
-						that.publishedList=that.houseList
-						break;
-						case 3:
-						that.removeList=that.houseList
-						break;
-					}
-				}else if(res.data.length==0&&that.houseList.length==0){
-					this.houseList=[]
-				}else{
-					uni.showToast({
-						icon: 'none',
-						title: '已加载完成'
-					});
+				this.triggered=false
+				this.showModel=false
+				if(res.data && res.status && res.data.length>0){
+					this.houseList=res.data
+				} else if(res.data && res.status && res.data.length==0){
+					this.houseList=[];
 				}
+				switch(type){
+                    case 1 :
+                        this.auditList=this.houseList
+                        break;
+                    case 2:
+                        this.publishedList=this.houseList
+                        break;
+                    case 3:
+                        this.removeList=this.houseList
+                        break;
+					case 4:
+					    this.getCollect();
+					    break;
+                }
 				res.data.length<10?this.loadStatus='end':this.loadStatus='loadmore'
-				// that.$store.commit('houseInfo',that.houseList)
 				// 下架后关闭管理操作
 				this.isUpdate=false
-				if(this.$refs.ListItem&&this.$refs.ListItem.length>0){
+				if(this.$refs.ListItem && this.$refs.ListItem.length>0){
 					this.$refs.ListItem.forEach(item=>{
 						item.isUpdate=this.isUpdate
 					})
+					// 编辑右上角按钮文字
 					editTitleText('管理')
 				}
 			})
-		},
+		}
 	}
 }
 </script>

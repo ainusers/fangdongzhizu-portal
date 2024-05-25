@@ -1,3 +1,4 @@
+<template></template>
 <script>
 	export default{
 		onLoad() {
@@ -23,7 +24,7 @@
 					})
 				}
 				plus.navigator.closeSplashscreen()
-			},200)
+			},500)
 		}
 	}
 </script>

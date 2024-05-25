@@ -26,7 +26,7 @@
 		</view>
 		<view class="reward_text">
 			<view style="text-align: center;">
-				— — 温馨提示 — —
+				———— 温馨提示 ————
 			</view>
 			<view>
 				1、您的每一条建议，都是我们前进的动力
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-	import {htmlEncode,showToastTit} from '../../../../utils/utils.js'
+	import {htmlEncode,showToastTit} from '@/utils/utils.js'
 	export default {
 		data() {
 			return {

@@ -2,7 +2,7 @@
     page{
         width: 100%;
         height: 100%;
-		background-color: #f2f2f2;
+		background-color: #f7f7f7;
     }
 	.content {
 		background-color: #fff;

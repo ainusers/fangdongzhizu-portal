@@ -8,7 +8,7 @@
 		z-index: 999;
 	}
 	.content {
-		background-color: #f2f2f2;
+		background-color: #f7f7f7;
 	}
 	.home_top {
 		margin-top: calc(var(--status-bar-height));

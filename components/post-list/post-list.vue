@@ -302,17 +302,14 @@
 <style lang="scss" scoped>
 	// 总体样式
 	.main-style {
-		background: #f2f2f2
+		background: #f7f7f7
 	}
-
 	.post-item {
-		background: #fff;
+		background: #ffffff;
 		border: solid 1px #eee;
-		margin: 0px 0px 10px 0px;
+		margin: 0px 5px 5px 5px;
 		border-radius: 10px;
 		padding: 5px 5px 0 5px;
-		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 10px 0 rgba(0, 0, 0, 0.15);
-
 		.post-content {
 			margin-top: 10rpx;
 			.img-style-1 {
@@ -369,11 +366,6 @@
 			background-color: #fff;
 			.item {
 				padding:20rpx 0;
-				// &:last-child {
-				// 	border-top: 1px solid #d5d5d6;
-				// 	margin-bottom: 0;
-				// 	border-bottom: none;
-				// }
 			}
 		}
 
