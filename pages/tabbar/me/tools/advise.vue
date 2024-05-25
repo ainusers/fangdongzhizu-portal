@@ -1,5 +1,5 @@
 <template>
-	<form @submit="formSubmit">
+	<form>
 		<view class="flex-row">
 			<u-radio-group v-model="value" >
 				<u-radio 
@@ -22,7 +22,7 @@
 			<input name="contact" class="concactContent" placeholder="请留下任一联系方式" bindinput="userNameInput" />
 		</view>
 		<view class="footer">
-			<button form-type='submit' class="commit" type="primary" plain="true">提交</button>
+			<button @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 3000)">提交</button>
 		</view>
 		<view class="reward_text">
 			<view style="text-align: center;">
@@ -70,7 +70,6 @@
 			},
 			// 用户反馈内容提交
 			formSubmit(e) {
-				let contact=e.detail.value.contact
 				let words = this.list.filter(item => item.check == true).map(n => {
 					let {word} = {...n};
 					return {word}.word;
@@ -83,7 +82,7 @@
 					showToastTit('请输入意见或建议')
 					return
 				}
-				if(!contact){
+				if(!e.detail.value.contact){
 					showToastTit('请添加联系方式')
 					return
 				}
