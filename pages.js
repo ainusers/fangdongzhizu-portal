@@ -359,23 +359,6 @@ module.exports=()=>({
 			}
 		},
 		{
-			"path": "pages/tabbar/me/tools/fangyuan",
-			"style": {
-				"navigationBarTitleText": "房源信息",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#fafafa",
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle":"light",
-				"app-plus": {
-					"scrollIndicator": "none",
-					"bounce": "none"
-				}
-			},
-			meta:{
-				needLogin:true
-			}
-		},
-		{
 			"path": "pages/tabbar/me/tools/about",
 			"style": {
 				"navigationBarTitleText": "关于我们",
