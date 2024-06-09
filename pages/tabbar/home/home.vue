@@ -171,7 +171,7 @@
 	import notice from '@/components/common/noticeModel.vue'
 	import {constant} from "@/utils/constant.js";
 	import {MycheckUpdate,getLatest} from '@/utils/utils.js'
-	
+
 	let privateData = {
 		// 区域
 		region: {

@@ -1846,7 +1846,7 @@
 			},
 			// 发布房源
 			async publish() {
-				uni.showToast({title:'发布中',duration:15000,icon:'loading'});
+				uni.showToast({title:'发布中',duration:60000,icon:'loading'});
 				if(this.isEdit){
 					this.publishApi()
 				}else{

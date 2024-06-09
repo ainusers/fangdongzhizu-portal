@@ -284,7 +284,7 @@ export default {
                         content: '发布动态需要获取位置权限，用于展示动态的发布城市',
                         success: async (res) => {
                             if (res.confirm) {
-                                uni.showToast({ title: '发布中', duration: 15000, icon: 'loading' });
+                                uni.showToast({ title: '发布中', duration: 60000, icon: 'loading' });
                                 // 获取位置信息
                                 // #ifdef APP-PLUS
                                 let location = await this.getLocation();
