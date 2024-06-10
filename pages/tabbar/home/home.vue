@@ -323,7 +323,7 @@
 		onLoad() {
 			that = this
 			this.cityName = '北京市'
-      uni.setStorageSync('cityName', this.cityName)
+			uni.setStorageSync('cityName', this.cityName)
 			// 获取该城市的所有区
 			this.getArea()
 			// 查询房源列表

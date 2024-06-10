@@ -25,7 +25,6 @@ router.beforeEach((to,from,next)=>{
 		if(!to.meta.needLogin|| to.meta.needLogin&&token){  //不需要登录就直接跳转 ||需要token校验并且有token 直接next
 			next()
 		}
-		
 		if(to.meta.needLogin&&!token){ //需要token校验并且没有token 去登录页面登录
 			uni.navigateTo({
 				url: '/pages/auth/login'

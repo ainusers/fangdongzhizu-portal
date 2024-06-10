@@ -8,23 +8,21 @@ export default {
 				options.url = config.domain + url;
 			}
 			options.complete = (response) => {
-				uni.hideLoading()
-				if (response.statusCode == 200) {
-					if (response.data.code == 10010) {
-							uni.removeStorage({
-								key:'token'
-							})
-							uni.navigateTo({
-								url: '/pages/auth/login'
-							})
-					}
-					if (response.data.code == 500) {
-						uni.showToast({
-							title: response.data.message || '系统异常,请联系管理员',
-							icon: "none"
-						});
-					}
+				// uni.hideLoading()
+				if (response.data.code == 200) {
 					resolve(response.data)
+				} else if (response.data.status == 401) {
+					uni.removeStorage({
+						key:'token'
+					})
+					uni.navigateTo({
+						url: '/pages/auth/login'
+					})
+				} else if (response.data.code == 500) {
+					uni.showToast({
+						title: response.data.message || '系统异常,请联系管理员',
+						icon: "none"
+					});
 				} else {
 					uni.showToast({
 						title: response.data.message || '请求异常,请联系管理员',
@@ -39,8 +37,8 @@ export default {
 	post(url, data = {},isToken, header = {}) {
 		if(isToken){
 			header={
-					'content-type': 'application/json',
-					'Authorization': 'Bearer ' + store.state.token
+				'content-type': 'application/json',
+				'Authorization': 'Bearer ' + store.state.token
 			}
 		}
 		let options = {
@@ -55,8 +53,8 @@ export default {
 	patch(url, data = {},isToken, header = {}) {
 		if(isToken){
 			header={
-					'content-type': 'application/json',
-					'Authorization': 'Bearer ' + store.state.token
+				'content-type': 'application/json',
+				'Authorization': 'Bearer ' + store.state.token
 			}
 		}
 		let options = {
@@ -84,9 +82,9 @@ export default {
 	},
 	// 文件上传
 	fileUpload(url,files={},header={}){
-			header={
-					'Authorization': 'Bearer ' + store.state.token
-			}
+		header={
+				'Authorization': 'Bearer ' + store.state.token
+		}
 		let options = {
 			url: config.domain+url,
 			files: files,
@@ -94,24 +92,24 @@ export default {
 		}
 		return new Promise((resolve,reject)=>{
 			uni.uploadFile({
-					url: config.domain+url,
-					files: files,
-					header: header,
-					formData: {
-						'buketName': 'album'
+				url: config.domain+url,
+				files: files,
+				header: header,
+				formData: {
+					'buketName': 'album'
+				},
+				success:(res)=>{
+					try{
+					  resolve(JSON.parse(res.data).data);
+					}catch(e){
+					  console.log(e)
+					}
 					},
-					success:(res)=>{
-            try{
-              resolve(JSON.parse(res.data).data);
-            }catch(e){
-              console.log(e)
-            }
-			},
-			fail: (e) => {
-				uni.hideLoading();
-				reject(e);
-			}
-			}	
+					fail: (e) => {
+						uni.hideLoading();
+						reject(e);
+					}
+				}
 			);
 		})
 	}
