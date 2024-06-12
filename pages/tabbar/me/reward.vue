@@ -13,7 +13,7 @@
 					房东直租
 				</view>
 				<view class="val">
-					打赏人数<view class="num">99+</view>
+					支付人数<view class="num">99+</view>
 				</view>
 			</view>
 		</view>
@@ -33,23 +33,23 @@
 					支付宝
 				</view>
 			</view>
-			<u-button type="primary"  class="custom-style"  @click="goPay">立即打赏</u-button>
+			<u-button type="primary"  class="custom-style"  @click="goPay">立即支付</u-button>
 		</view>
 		<view class="reward_text">
 			<view>
 				温馨提示:
 			</view>
 			<view>
-				1、打赏金额用于APP服务器运行费用，不会计入个人账户
+				1、支付前请检查金额和支付方式是否正确 
 			</view>
 			<view>
-				2、已打赏金额不可转让、提现或退款
+				2、已支付金额不可转让、提现或退款
 			</view>
 			<view>
-				3、不建议军人/军属，教师，医生/护士进行打赏
+				3、支付金额用于APP运行费用，不会计入个人账户
 			</view>
 			<view>
-				4、如遇无法打赏问题，请在"反馈建议"中提交信息
+				4、如遇无法支付问题，请在"反馈建议"中提交信息
 			</view>
 		</view>
 		<view>
@@ -130,19 +130,24 @@
 </script>
 
 <style lang="scss" scoped>
+	.reward_main{
+		height: 100vh;
+		background-color: #f2f2f2;
+	}
 	.pay_ative{
-		box-shadow: 0 0px 5px 0 #5199ff;
+		background: #e5f3fe !important;
+		border-color: #7db5f0;
+		color: #5199ff;
+		border-radius: 20rpx;
 	}
 	.reward_bg{
-		height:250rpx;
-		background-image:linear-gradient( #5199ff 0%, #ffffff 100%);
+		height:190rpx;
 	}
 	.reward_info{
 		width:90%;
 		display: flex;
 		margin: 0 auto;
 		background: #ffffff;
-		box-shadow: 0 0 10px 3px #eee;
 		margin-top: -150rpx;
 		border-radius: 20rpx;
 		padding: 30rpx;
@@ -169,20 +174,20 @@
 		flex-wrap: wrap;
 		margin: 0 auto;
 		background: #ffffff;
-		box-shadow: 0 0 10px 3px #eee;
-		margin-top: 20rpx;
-		border-radius: 20rpx;
+		margin-top: 30rpx;
 		padding: 50rpx 20rpx;
+		border-radius: 20rpx;
 		.item{
 			width:180rpx;
 			height: 100rpx;
 			margin-bottom: 30rpx;
 			line-height: 100rpx;
-			background: #f2f2f2;
 			text-align: center;
+			border-radius: 20rpx;
+			border: solid 1px #eee;
 			.num{
 				display: inline-block;
-				font-size: 40rpx;
+				font-size: 30rpx;
 			}
 		}
 		.custom-style{
@@ -198,15 +203,16 @@
 		width: 90%;
 		margin: 0 auto;
 		margin-top: 60rpx;
-		color: #333;
+		color: #AAAAAA;
 		view{
 			margin-bottom: 10rpx;
 			line-height: 150%;
 		}
 	}
 	.active_item{
-		background: #5199ff !important;
-		color: #ffffff;
+		background: #e5f3fe !important;
+		border-color: #7db5f0;
+		color: #5199ff;
 	}
 	/deep/.u-drawer-content{
 		width:100% !important;
@@ -228,7 +234,7 @@
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			padding: 10px 30px;
+			padding: 10px 20px;
 		}
 	}
 </style>
