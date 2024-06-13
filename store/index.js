@@ -7,7 +7,6 @@ const store = new Vuex.Store({
 		userInfo:'',
 		token:'',
 		communityInfo:{},
-		currentCity:'定位中...',//当前城市
 		address:{},
 		ispublishSub:false, //是否点击到过开启定位服务界面
 		version:'1.0.5'
@@ -49,13 +48,6 @@ const store = new Vuex.Store({
 			uni.setStorage({
 				key:'communityInfo',
 				data:communityInfo
-			})
-		},
-		currentCity(state,city){
-			state.currentCity=city
-			uni.setStorage({
-				key:'currentCity',
-				data:city
 			})
 		},
 		address(state,address){

@@ -164,7 +164,6 @@
 				let	city=e.city.label
 				let	area=e.area.label
 				this.position.city = city == '市辖区' ? province : city
-				this.$store.commit('currentCity', this.position.city)
 				uni.navigateBack({
 					delta: 1,
 					success() {
@@ -219,7 +218,6 @@
 				return num.toFixed(2)
 			},
 			chooseCity(item){
-				this.$store.commit('currentCity',item.cityName)
 				uni.navigateBack({
 					delta: 1,
 					success() {
