@@ -1,35 +1,50 @@
 <template>
 	<view class="reward_main">
-		<view class="reward_bg">
-			
-		</view>
+		<!-- 占位使用 -->
+		<view style="height: 30rpx"></view>
+		
+		<!-- 图标部分 -->
 		<view class="reward_info">
 			<view class="reward_avatar">
 				<u-avatar :src="src" mode="square"></u-avatar>
 			</view>
-			
 			<view class="text">
 				<view class="tit">
 					房东直租
 				</view>
 				<view class="val">
-					支付人数<view class="num">99+</view>
+					支付人数:<view class="num">99+</view>
 				</view>
 			</view>
 		</view>
+		
+		<!-- 占位使用 -->
+		<view style="height: 30rpx"></view>
+		
+		<view class="reward_middle">
+			<view class="name">
+				<view class="left">商品名称:</view>
+				<view class="first-right">发布待售卖的商品房</view>
+			</view>
+			<view class="name">
+				<view class="left">商品数量:</view>
+				<view class="first-right">1个</view>
+			</view>
+			<view class="price">
+				<view class="left">商品价格:</view>
+				<view class="second-right">¥100元</view>
+			</view>
+		</view>
+		
+		<!-- 支付选项 -->
 		<view class="reward_bottom">
-			<block v-for="(item,index) in moneyList">
-				<view class="item" :class="{active_item :currentIndex==index}" @click="changeMoney(index)">
-					￥<view class="num">{{item}}</view>
-				</view>
-			</block>
 			<view class="pay_type">
 				<view class="item_pay" @click="pay('wxpay')" :class="{pay_ative:payType=='wxpay'}">
 					<image src="../../../static/me/wx.png" mode=""></image>
 					微信
 				</view>
 				<view class="item_pay" @click="pay('alipay')" :class="{pay_ative:payType=='alipay'}">
-						<image src="../../../static/me/zwb.png" mode=""></image>
+					<image src="../../../static/me/zwb.png" mode=""></image>
 					支付宝
 				</view>
 			</view>
@@ -43,7 +58,7 @@
 				1、支付前请检查金额和支付方式是否正确 
 			</view>
 			<view>
-				2、已支付金额不可转让、提现或退款
+				2、虚拟产品购买后不支持转让、提现或退款
 			</view>
 			<view>
 				3、支付金额用于APP运行费用，不会计入个人账户
@@ -63,7 +78,7 @@
 			return{
 				src: 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg',
 				currentIndex:0,
-				moneyList:[1,5,10,15,20,50],
+				moneyList:[100],
 				show:false,
 				payType:'wxpay'
 			}
@@ -140,17 +155,13 @@
 		color: #5199ff;
 		border-radius: 20rpx;
 	}
-	.reward_bg{
-		height:190rpx;
-	}
 	.reward_info{
-		width:90%;
+		width:95%;
 		display: flex;
 		margin: 0 auto;
 		background: #ffffff;
-		margin-top: -150rpx;
 		border-radius: 20rpx;
-		padding: 30rpx;
+		padding: 20rpx;
 		.reward_avatar{
 			margin-right: 20rpx;
 		}
@@ -163,19 +174,41 @@
 		}
 		.num{
 			display: inline-block;
-			margin-left: 10px;
-			color: #f17a25;
+			margin-left: 10rpx;
+		}
+	}
+	.reward_middle{
+		width:95%;
+		margin: 0 auto;
+		background: #ffffff;
+		border-radius: 20rpx;
+		padding: 20rpx;
+		.name{
+			display: flex;
+			padding: 8rpx 8rpx 18rpx 8rpx;
+			border-bottom: solid 1px #ebebeb;
+		}
+		.price{
+			display: flex;
+			padding: 8rpx;
+		}
+		.first-right{
+			padding-left: 20rpx;
+		}
+		.second-right{
+			padding-left: 20rpx;
+			color: #c10000
 		}
 	}
 	.reward_bottom{
-		width:90%;
+		width:95%;
 		display: flex;
 		justify-content: space-around;
 		flex-wrap: wrap;
 		margin: 0 auto;
 		background: #ffffff;
 		margin-top: 30rpx;
-		padding: 50rpx 20rpx;
+		padding: 30rpx 20rpx;
 		border-radius: 20rpx;
 		.item{
 			width:180rpx;
@@ -191,11 +224,11 @@
 			}
 		}
 		.custom-style{
-			width:90%;
+			width: 75%;
 			height: 80rpx;
 			background: #5199ff;
-			border-radius: 50rpx;
-			margin-top: 50rpx;
+			border-radius: 20rpx;
+			margin-top: 30rpx;
 		}
 	}
 	.reward_text{
