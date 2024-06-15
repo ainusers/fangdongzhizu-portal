@@ -8,7 +8,7 @@
 			<view class="reward_avatar">
 				<u-avatar :src="src" mode="square"></u-avatar>
 			</view>
-			<view class="text">
+			<view class="text" style="padding: 8rpx 0rpx 0rpx 30rpx">
 				<view class="tit">
 					房东直租
 				</view>
@@ -48,7 +48,7 @@
 					支付宝
 				</view>
 			</view>
-			<u-button type="primary"  class="custom-style"  @click="goPay">立即支付</u-button>
+			<u-button type="primary"  class="custom-style"  @click="goPay(payType)">立即支付</u-button>
 		</view>
 		<view class="reward_text">
 			<view>
@@ -76,7 +76,7 @@
 	export default{
 		data(){
 			return{
-				src: 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg',
+				src: 'http://43.143.148.105:9090/banner/logo-apple.png',
 				currentIndex:0,
 				moneyList:[100],
 				show:false,
@@ -84,61 +84,61 @@
 			}
 		},
 		methods:{
-			changeMoney(index){
-				this.currentIndex=index
-			},
 			pay(type){
 				this.payType=type
 			},
 			goPay(){
-				// this.$H.get('/zf/v1/ali/pay',{},true).then(res=>{
-				// 	if(res.status){
-				// 		console.log("-------------->" + res.data[0]);
-				// 		uni.requestPayment({
-				// 			provider: 'alipay',
-				// 			orderInfo: res.data[0],
-				// 			success(r) {
-				// 				uni.showToast({
-				// 					title:"支付成功",
-				// 					icon: "success"
-				// 				})
-				// 			},
-				// 			fail(e) {
-				// 				uni.showToast({
-				// 					title:"用户取消支付",
-				// 					icon: "error"
-				// 				})
-				// 			},
-				// 			complete: () => {
-				// 				console.log("payment结束")
-				// 			}
-				// 		})
-				// 	}
-				// })
-				// this.$H.get('/zf/v1/wx/pay?order=out_trade_no_005&money=0.01&desc=测试微信支付',{},true).then(res=>{
-				// 	if(res.status){
-				// 		console.log("-------------->" + JSON.stringify(res.data[0]));
-				// 		uni.requestPayment({
-				// 		    "provider": "wxpay", 
-				// 		    "orderInfo": {
-				// 		        "appid": res.data[0].appid,  // 微信开放平台 - 应用 - AppId，注意和微信小程序、公众号 AppId 可能不一致
-				// 		        "noncestr": res.data[0].nonceStr, // 随机字符串
-				// 		        "package": res.data[0].packageVal,        // 固定值
-				// 		        "partnerid": res.data[0].partnerId,      // 微信支付商户号
-				// 		        "prepayid": res.data[0].prepayId, // 统一下单订单号 
-				// 		        "timestamp": Number(res.data[0].timestamp),        // 时间戳（单位：秒）
-				// 		        "sign": res.data[0].sign // 签名，这里用的 MD5/RSA 签名
-				// 		    },
-				// 			success: function (res) {
-				// 				let rawdata = JSON.parse(res.rawdata);
-				// 				console.log("支付成功");
-				// 			},
-				// 			fail: function (err) {
-				// 				console.log('支付失败:' + JSON.stringify(err));
-				// 			}
-				// 		});
-				// 	}
-				// })
+				if("alipay" == this.payType){
+					this.$H.get('/zf/v1/ali/pay',{},true).then(res=>{
+						if(res.status){
+							console.log("-------------->" + res.data[0]);
+							uni.requestPayment({
+								provider: 'alipay',
+								orderInfo: res.data[0],
+								success(r) {
+									uni.showToast({
+										title:"支付成功",
+										icon: "success"
+									})
+								},
+								fail(e) {
+									uni.showToast({
+										title:"用户取消支付",
+										icon: "error"
+									})
+								},
+								complete: () => {
+									console.log("payment结束")
+								}
+							})
+						}
+					})
+				} else {
+					this.$H.get('/zf/v1/wx/pay?order=out_trade_no_1000&money=0.01&desc=发布待售卖的商品房',{},true).then(res=>{
+						if(res.status){
+							console.log("-------------->" + JSON.stringify(res.data[0]));
+							uni.requestPayment({
+							    "provider": "wxpay", 
+							    "orderInfo": {
+							        "appid": res.data[0].appid,  // 微信开放平台 - 应用 - AppId，注意和微信小程序、公众号 AppId 可能不一致
+							        "noncestr": res.data[0].nonceStr, // 随机字符串
+							        "package": res.data[0].packageVal,        // 固定值
+							        "partnerid": res.data[0].partnerId,      // 微信支付商户号
+							        "prepayid": res.data[0].prepayId, // 统一下单订单号 
+							        "timestamp": Number(res.data[0].timestamp),        // 时间戳（单位：秒）
+							        "sign": res.data[0].sign // 签名，这里用的 MD5/RSA 签名
+							    },
+								success: function (res) {
+									let rawdata = JSON.parse(res.rawdata);
+									console.log("支付成功");
+								},
+								fail: function (err) {
+									console.log('支付失败:' + JSON.stringify(err));
+								}
+							});
+						}
+					})
+				}
 			}
 		}
 	}
@@ -147,7 +147,7 @@
 <style lang="scss" scoped>
 	.reward_main{
 		height: 100vh;
-		background-color: #f2f2f2;
+		background-color: #f7f7f7;
 	}
 	.pay_ative{
 		background: #e5f3fe !important;
@@ -163,7 +163,7 @@
 		border-radius: 20rpx;
 		padding: 20rpx;
 		.reward_avatar{
-			margin-right: 20rpx;
+			margin: 1rpx;
 		}
 		.tit{
 			font-size: 35rpx;
@@ -185,12 +185,12 @@
 		padding: 20rpx;
 		.name{
 			display: flex;
-			padding: 8rpx 8rpx 18rpx 8rpx;
+			padding: 18rpx 8rpx 18rpx 8rpx;
 			border-bottom: solid 1px #ebebeb;
 		}
 		.price{
 			display: flex;
-			padding: 8rpx;
+			padding: 18rpx 8rpx 18rpx 8rpx;
 		}
 		.first-right{
 			padding-left: 20rpx;
