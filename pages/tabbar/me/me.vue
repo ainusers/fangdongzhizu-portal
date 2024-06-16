@@ -19,6 +19,7 @@
 	      height: 120rpx;
 	      .left {
 	        width: 15%;
+			padding-top: 15px;
 	        image {
 	          width: 40rpx;
 	          height: 40rpx;
@@ -150,7 +151,7 @@
 		        <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
 		      </view>
 		    </view>
-		  </view> -->
+		  </view>
 		  <view class="card">
 		    <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/feel')">
 		      <view class="left flex-center">
@@ -163,11 +164,11 @@
 		        <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
 		      </view>
 		    </view>
-		  </view>
+		  </view> -->
 	    <view class="card">
 	      <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/advise')">
 	        <view class="left flex-center">
-	          <image mode="aspectFit" src="../../../static/me/care.png"></image>
+			  <u-icon name="edit-pen" color="#606266" size="50"></u-icon>
 	        </view>
 	        <view class="center">
 	          <text>反馈建议</text>
@@ -180,7 +181,7 @@
 	    <view class="card">
 	      <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/about')">
 	        <view class="left flex-center">
-			  <image mode="aspectFit" src="../../../static/me/about.svg"></image>
+			  <u-icon name="info-circle" color="#606266" size="50"></u-icon>
 	        </view>
 	        <view class="center">
 	          <text>关于我们</text>

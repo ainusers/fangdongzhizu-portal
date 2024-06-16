@@ -171,6 +171,17 @@ width:0;
     border-radius: 10px;
     width: 200px;
 }
+.report_con{
+	font-size: 28rpx;
+	width: 100%;
+	margin: 0 auto;
+	color: #AAAAAA;
+	padding: 20px;
+	.row{
+		margin: 10rpx 0px;
+		line-height: 150%;
+	}
+}
 </style>
 <template>
     <view class="page" @touchstart="touchStart" @touchend="touchEnd">
@@ -216,6 +227,23 @@ width:0;
             <view class="footer">
                 <button type="primary" class="feedback-submit" plain="true" @click="publish" @tap="$u.throttle(publish, 3000)">发布</button>
             </view>
+			<!-- 温馨提示 -->
+			<u-modal :async-close="true" v-model="show" title="温馨提示" :content="content" confirm-text="知道了" @confirm="confirm">
+				<view class="report_con">
+					<view class="row">
+						1、每个用户发布 (房源) 不超过两个
+					</view>
+					<view class="row">
+						2、每个用户每天发布 (动态) 不超过三个
+					</view>
+					<view class="row">
+						3、如您发布出租信息，建议您添加房源关键信息(如：位置，照片，面积，价格，联系方式等其他信息)
+					</view>
+					<view class="row">
+						4、如您发布求租信息，建议您添加房源关键信息(如：位置，价格，联系方式等其他要求)
+					</view>
+				</view>
+			</u-modal>
         </form>
 
     </view>
@@ -247,11 +275,14 @@ export default {
             sizeType: ['压缩', '原图', '压缩或原图'],
             countIndex: 8,
             count: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            uploadType: 'image'
+            uploadType: 'image',
+			show: false,
         }
     },
     onLoad() {
-        that = this
+        that = this;
+		// 显示温馨提示框
+		that.show = true;
     },
     onUnload() {
         this.imageList = [],
@@ -266,6 +297,10 @@ export default {
         uploadTypeChange(val){
             this.imageList = []
         },
+        // 温馨提示确认事件
+		confirm() {
+			that.show = false;
+		},
         async publish() {
             if (!this.content) {
                 uni.showToast({
@@ -425,7 +460,6 @@ export default {
 					}
 				});
             }
-
         },
         // 查看放大图片
         previewImage: function (e) {

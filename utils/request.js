@@ -8,7 +8,6 @@ export default {
 				options.url = config.domain + url;
 			}
 			options.complete = (response) => {
-				// uni.hideLoading()
 				if (response.data.code == 200) {
 					resolve(response.data)
 				} else if (response.data.status == 401) {

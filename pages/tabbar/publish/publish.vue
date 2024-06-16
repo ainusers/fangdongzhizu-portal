@@ -1,11 +1,6 @@
 <template>
 	<view class="content" :class="{'active':active}">
 		<view class="container">
-			<view class="title">社区发布规则:</view>
-			<view class="title">1、每个用户发布 (房源) 不超过两个</view>
-			<view class="title">2、每个用户每天发布 (动态) 不超过三个</view>
-		</view>
-		<view class="container">
 			<view class="title">社区审核规则:</view>
 			<view class="title">1、发布动态：无需经过平台审核，私下联系需谨慎</view>
 			<view class="title">2、发布房源：需要经过平台审核<br/></view>
