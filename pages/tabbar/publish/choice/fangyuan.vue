@@ -395,7 +395,7 @@
 		
 					<!-- 月度租金 -->
 					<u-form-item :label-position="labelPosition" label="房间租金 :" prop="money" label-width="150" required>
-						<u-input :border="border" :type="Number" placeholder="请输入房间租金" type="number"
+						<u-input :border="border" :type="Number" placeholder="请输入房间租金 (单位:月)" type="number"
 							v-model="houseModel.money" :disabled="setpAll" @blur="rentMoney"></u-input>
 						<span>元</span>
 					</u-form-item>
