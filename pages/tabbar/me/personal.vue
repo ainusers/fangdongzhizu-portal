@@ -38,7 +38,7 @@
 	var that = ''
 	import postList from '@/components/post-list/post-list.vue';
 	import houseListItem from '@/components/house-list/house-list-item.vue';
-	import { getuserInfo } from '@/utils/utils.js'
+	import { getUserInfo } from '@/utils/utils.js'
 	import myInfoAavtar from '@/components/common/myInfoAvatar.vue'
 	export default {
 		data() {
@@ -89,8 +89,8 @@
 				})
 			},
 			getHead(userId) {
-				getuserInfo(this.userId).then(res => {
-					this.userInfo = res
+				getUserInfo(this.userId).then(res => {
+					this.userInfo = res.data[0]
 				})
 			},
 			change(index) {

@@ -215,7 +215,7 @@ const tranfTime = function(autoTime) {
 }
 
 //根据userid获取用户信息
-const getuserInfo = function(userId,type) {
+const getUserInfo = function(userId,type) {
 	let url='/zf/v1/user/id'
 	let data=''
 	if(type){
@@ -293,7 +293,7 @@ export {
 	htmlEncode,
 	isLoginCheck,
 	tranfTime,
-	getuserInfo,
+	getUserInfo,
 	compressImg,
 	showToastTit,
 	dateTime1,
