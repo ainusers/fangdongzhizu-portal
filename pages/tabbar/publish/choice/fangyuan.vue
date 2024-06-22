@@ -356,7 +356,7 @@
 					</u-form-item>
 		
 					<!-- 房屋位置 -->
-					<view class="region_new_title">房间位置</view>
+					<view class="region_new_title">房间位置 <text class="tipTxt">(地址越详细定位越准确)</text></view>
 					<u-form-item :label-position="labelPosition" prop="region1" label-width="150" borderBottom required>
 						<u-input :border="border" type="select" v-model="houseModel.region1" placeholder="请选择所属区域"
 							@click="showPickerArea"></u-input>
