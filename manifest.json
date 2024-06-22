@@ -60,11 +60,6 @@
             /* ios打包配置 */
             "sdkConfigs" : {
                 "geolocation" : {
-                    "amap" : {
-                        "__platform__" : [ "ios", "android" ],
-                        "appkey_ios" : "c48afbdf469abda4ae4515e52d4e6ee4",
-                        "appkey_android" : "c48afbdf469abda4ae4515e52d4e6ee4"
-                    },
                     "baidu" : {
                         "__platform__" : [ "ios", "android" ],
                         "appkey_ios" : "XUS7rr7tfF8FNcrNqroqkczFvpWtLpcY",
