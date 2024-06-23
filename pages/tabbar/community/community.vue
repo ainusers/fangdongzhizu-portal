@@ -110,12 +110,12 @@
 		},
 		// 默认展示
 		onShow() {
-      //加入cityName筛选
-      const cityName = uni.getStorageSync('cityName')
-      if(this.cityName !== cityName){
-        this.tuwen_default_page = 1
-        this.cityName = cityName
-      }
+			//加入cityName筛选
+			const cityName = uni.getStorageSync('cityName')
+			if(this.cityName !== cityName){
+				this.tuwen_default_page = 1
+				this.cityName = cityName
+			}
 			if(!this.tuwen_data.length || this.tuwen_default_page == 1){
 				this.getMomentPost();
 			}
