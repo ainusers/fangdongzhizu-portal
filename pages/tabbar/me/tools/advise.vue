@@ -11,7 +11,7 @@
 			</u-radio-group>
 		</view>
 		<view class="middle">
-			<textarea name="content" class="recordContent" maxlength="100" @input = "descInput($event)"
+			<textarea name="content" v-model="content" class="recordContent" maxlength="100" @input = "descInput($event)"
 				placeholder="输入内容帮我们了解您的意见或建议" />
 			<span class="wordwrap">{{number}}/100</span>
 		</view>
@@ -19,7 +19,7 @@
 			<view class="concact">
 				<text class="way">请留下真实联系方式 (邮箱/QQ/微信/手机号)</text>
 			</view>
-			<input name="contact" class="concactContent" placeholder="请留下任一联系方式" bindinput="userNameInput" />
+			<input name="contact" v-model="contact" class="concactContent" placeholder="请留下任一联系方式" bindinput="userNameInput" />
 		</view>
 		<view class="footer">
 			<button @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 3000)">提交</button>
@@ -46,7 +46,7 @@
 	export default {
 		data() {
 			return {
-				value:'',//建议反馈枚举
+				value:'', // 反馈建议枚举
 				number: 0, // 已输入字数
 				contact: '', // 联系方式
 				content: '', // 反馈内容
@@ -78,19 +78,19 @@
 					showToastTit('请选择反馈类型')
 					return
 				}
-				if(!e.detail.value.content){
+				if(!this.content){
 					showToastTit('请输入意见或建议')
 					return
 				}
-				if(!e.detail.value.contact){
+				if(!this.contact){
 					showToastTit('请添加联系方式')
 					return
 				}
 				let data={
 					username: this.$store.state.userInfo.username,
 					type: words.toString(),
-					content: htmlEncode(e.detail.value.content),
-					contact: htmlEncode(e.detail.value.contact)
+					content: htmlEncode(this.content),
+					contact: htmlEncode(this.contact)
 				}
 				this.$H.post('/zf/v1/advise/advises',data,true).then(res=>{
 					if(res.status){
