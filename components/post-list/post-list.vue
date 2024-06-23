@@ -14,7 +14,14 @@
 							<view style="display:flex;align-items: center;justify-content: space-between;">
 								<text class="nickname">{{ item.nickname?item.nickname.substring(0, 12):'' }}</text>
 								
-								<view style="float: right;padding-right: 10px;font-size: 18px;" @click.stop.prevent="goReport(index,$event)">
+								<view style="float: right;padding-right: 10px;font-size: 18px;" @click.stop.prevent="goReport(index,$event)"
+									  v-show="item.userid==$store.state.userInfo.id">
+									<u-icon name="more-dot-fill" color="rgb(203,203,203)" ></u-icon>
+									<view class="reportText" v-show="item.isReport">
+										<view @click="deletePost(index,item.id)" class="item" >删除</view>
+									</view>
+								</view>
+								<!-- <view style="float: right;padding-right: 10px;font-size: 18px;" @click.stop.prevent="goReport(index,$event)">
 									<u-icon name="more-dot-fill" color="rgb(203,203,203)" ></u-icon>
 									<view class="reportText" v-show="item.isReport">
 										<view @click="report" class="item"
@@ -22,7 +29,7 @@
 										<view @click="deletePost(index,item.id)" class="item"
 											v-show="item.userid==$store.state.userInfo.id">删除</view>
 									</view>
-								</view>
+								</view> -->
 							</view>
 							<view>
 								<text class="time">{{tranfTime(item.createtime)}}</text>
