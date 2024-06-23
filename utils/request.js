@@ -68,8 +68,8 @@ export default {
 	get(url, data = {},isToken, header = {}) {
 		if(isToken){
 			header={
-					'content-type': 'application/json',
-					'Authorization': 'Bearer ' + store.state.token
+				'content-type': 'application/json',
+				'Authorization': 'Bearer ' + store.state.token
 			}
 		}
 		let options = {
@@ -82,7 +82,7 @@ export default {
 	// 文件上传
 	fileUpload(url,files={},header={}){
 		header={
-				'Authorization': 'Bearer ' + store.state.token
+			'Authorization': 'Bearer ' + store.state.token
 		}
 		let options = {
 			url: config.domain+url,
@@ -98,18 +98,13 @@ export default {
 					'buketName': 'album'
 				},
 				success:(res)=>{
-					try{
 					  resolve(JSON.parse(res.data).data);
-					}catch(e){
-					  console.log(e)
-					}
-					},
-					fail: (e) => {
-						uni.hideLoading();
-						reject(e);
-					}
+				},
+				fail: (e) => {
+					uni.hideLoading();
+					reject(e);
 				}
-			);
+			});
 		})
 	}
 };

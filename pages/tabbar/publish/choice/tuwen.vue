@@ -387,7 +387,7 @@ export default {
                         resolve(res);
                     },
                     fail: (e) => {
-                        console.log(e)
+                        uni.showToast({ title: '请开启GPS定位功能', duration: 2000, icon: 'none' });
                         reject(e);
                     }
                 });
