@@ -33,6 +33,7 @@
 		box-sizing: border-box;
     }
     .er_house_img{
+		border-radius: 5px;
         width: 100%;
         height: 100%;
     }

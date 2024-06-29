@@ -87,7 +87,7 @@
 					<view>{{ cityName }}</view>
 					<view class="city_icon"></view>
 				</view>
-				<!-- 选项卡 -->
+				<!-- 选项卡（转租和直租） -->
 				<view class="type">
 					<!-- tabs -->
 					<u-tabs :list="tabList" barWidth="50" gutter="10" font-size="30" bg-color="#f2f2f2"
@@ -95,7 +95,6 @@
 				</view>
 			</view>
 			<!-- 筛选项 -->
-			<!-- 转租和直租 -->
 			<screenTab ref="screenTab" v-if="current == 0&&fixedContHeight || current == 1&&fixedContHeight"
 				:screenFormData="screenFormData" :roomList="roomList" :from="from" :regionLeftList="regionLeftList"
 				:regionRightMap="regionRightMap" :enterType="enterType" :roomPriceRange="roomPriceRange"
@@ -107,6 +106,7 @@
 		
 		<!-- 内容区域 -->
 		<swiper class="list-swiper" @change="swipeIndex" :current="current" :duration="300" ref="listSwiper">
+			<!-- 直租类型 -->
 			<swiper-item>
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
 					:refresher-triggered="triggered" :refresher-enabled="true" :refresher-threshold="100"
@@ -129,6 +129,7 @@
 					</view>
 				</scroll-view>
 			</swiper-item>
+			<!-- 二手房 -->
 			<swiper-item>
 				<scroll-view scroll-y="true" class=" list-content" @scrolltolower="scrolltolower"
 					:refresher-triggered="triggered" :refresher-enabled="true" :refresher-threshold="100"

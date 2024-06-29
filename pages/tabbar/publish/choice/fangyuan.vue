@@ -395,15 +395,15 @@
 		
 					<!-- 月度租金 -->
 					<u-form-item :label-position="labelPosition" label="房间租金 :" prop="money" label-width="150" required>
-						<u-input :border="border" :type="Number" placeholder="请输入房间租金 (单位:月)" type="number"
+						<u-input :border="border" :type="Number" placeholder="请输入房间租金" type="number"
 							v-model="houseModel.money" :disabled="setpAll" @blur="rentMoney"></u-input>
-						<span>元</span>
+						<span>元/月</span>
 					</u-form-item>
 					<!-- 房屋押金 -->
 					<u-form-item :label-position="labelPosition" label="房间押金 :" prop="mortgageMoney" label-width="150">
 						<u-input :border="border" :type="Number" placeholder="请输入房间押金" type="number"
 							v-model="houseModel.mortgageMoney" :disabled="setpAll"></u-input>
-						<span>元</span>
+						<span>元/月</span>
 					</u-form-item>
 					<!-- 服务费用 -->
 					<u-form-item :label-position="labelPosition" label="维修费用 :" prop="serviceMoney" label-width="150">
@@ -1303,7 +1303,7 @@
 				isEdit: false, //当前是否为编辑房源
 				isPublish1: false,
 				isPublish2: false,
-				tipTxt:'请提供完整清晰的房屋资质,如:租房合同或其他证明材料',
+				tipTxt:'请提供完整清晰的房屋资质,如:房产证或其他证明材料',
 			}
 		},
 		onShow(){
@@ -1660,7 +1660,7 @@
 						item.checked = true
 					}
 				})
-				index==0?this.tipTxt='请提供完整清晰的房屋资质,如:租房合同或其他证明材料':this.tipTxt='请提供完整清晰的房屋资质,如:房产证或其他证明材料'
+				index==0?this.tipTxt='请提供完整清晰的房屋资质,如:房产证或其他证明材料':this.tipTxt='请提供完整清晰的房屋资质,如:租房合同或其他证明材料'
 				this.houseModel.publishType = index + 1
 			},
 			// 选择地区回调
