@@ -224,7 +224,6 @@
 <template>
 	<view class="er_house_main">
 		<view @click="homeDetail(item,index)"  class="er_house_item f_r_s">
-			
 			<view class="er_house_item_con">
 				<view class="er_house_img_view">
 					<image mode="scaleToFill" class="er_house_img" :src="item.imgUrl.split(',')[0]" lazy-load></image>
@@ -238,13 +237,15 @@
 						<text v-if="item.roomType" class="item">{{ item.roomType.split('-')[0] }}</text>
 						<text v-if=" item.communityName" class="item">{{ item.communityName }}</text>
 					</view>
+					
 					<!-- 租房类型，两室一厅（配比），大小，楼层 -->
 					<view class="er_house_des">
 						<text v-if="item.homeType">{{item.homeType}}</text>
-						<text v-if="item.roomType.length>2">{{item.roomType.split('-')[1]}}</text>
+						<text v-if="item.roomType.length > 2">{{item.roomType.split('-')[1]}}</text>
 						<text v-if="item.size">{{ item.size }}m² </text>
 						<text v-if="item.floor">{{ item.floor }}层</text>
 					</view>
+					
 					<!-- 地理位置：距离昌平线沙河地铁站1020米 -->
 					<view class="er_house_tag_info f_r_s">
 						<text> {{item.distanceSubway}}</text>
@@ -262,19 +263,17 @@
 					</view>
 				</view>
 			</view>
-			<view style="font-size: 26rpx;padding: 10rpx;display: block;" v-if="item.checkIdea&&current==0">审核反馈： 
+			
+			<!-- 审核意见 -->
+			<view style="font-size: 26rpx;padding: 10rpx;display: block;" v-if="item.checkIdea && current==0">审核反馈： 
 				<view style="color: #ff002f;display: inline-block;">{{item.checkIdea}}</view>
 			</view>
 		</view>
 		
 		<!-- 管理房源功能 -->
 		<view class="detail_btn" v-show="isUpdate">
-			<view class="btn_item" @click="updateHouse(item)" v-show="current==0 || current==1">
-				编辑
-			</view>
-			<view class="btn_item" @click="offShelf(item)" v-show="current==1">
-				下架
-			</view>
+			<view class="btn_item" @click="updateHouse(item)" v-show="current==0 || current==1">编辑</view>
+			<view class="btn_item" @click="offShelf(item)" v-show="current==1">下架</view>
 		</view>
 	</view>
 </template>
@@ -287,9 +286,7 @@
 				isUpdate:false
 			}
 		},
-        computed:{},
         props: ["item","index","current"],
-		onLoad() {},
         methods: {
 			updateHouse(item){
 				let city=''
@@ -396,6 +393,6 @@
                     url: `/pages/tabbar/home/homeDetail?id=${item.id}&userId=${item.userId}`
                 });
         	}
-        },
+        }
 	}
 </script>

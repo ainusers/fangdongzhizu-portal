@@ -95,7 +95,7 @@
 				</view>
 			</view>
 			<!-- 筛选项 -->
-			<screenTab ref="screenTab" v-if="current == 0&&fixedContHeight || current == 1&&fixedContHeight"
+			<screenTab ref="screenTab" v-if="current == 0 && fixedContHeight || current == 1 && fixedContHeight"
 				:screenFormData="screenFormData" :roomList="roomList" :from="from" :regionLeftList="regionLeftList"
 				:regionRightMap="regionRightMap" :enterType="enterType" :roomPriceRange="roomPriceRange"
 				:fixedContHeight="fixedContHeight" :key="updateSearch" @screenBtn="screenBtn"
@@ -118,12 +118,12 @@
 								<house-list-item :item="item" :index="index"></house-list-item>
 							</block>
 						</view>
-						<view v-if="showModel&&houseList.length==0">
+						<view v-if="showModel && houseList.length==0">
 							<block v-for="item in houseJia" :key="item">
 								<houseListItemSkeleton />
 							</block>
 						</view>
-						<view class="home_nodata" v-else-if="!showModel&&houseList.length==0">
+						<view class="home_nodata" v-else-if="!showModel && houseList.length==0">
 							<u-empty text="暂无数据" mode="favor"></u-empty>
 						</view>
 					</view>
@@ -142,12 +142,13 @@
 								<house-list-item :item="item" :index="index"></house-list-item>
 							</block>
 						</view>
-						<view v-if="showModel&&houseList.length==0">
+						<!-- 骨架屏 -->
+						<view v-if="showModel && houseList.length==0">
 							<block v-for="item in houseJia" :key="item">
 								<houseListItemSkeleton />
 							</block>
 						</view>
-						<view class="home_nodata" v-else-if="!showModel&&houseList.length==0">
+						<view class="home_nodata" v-else-if="!showModel && houseList.length==0">
 							<u-empty text="暂无数据" mode="favor"></u-empty>
 						</view>
 					</view>
@@ -307,12 +308,12 @@
 			uni.$on('chooseCity', function(data) {
 				//触发更新后
 				that.cityName = data.cityName;
-        uni.setStorageSync('cityName', data.cityName) // 保存城市
+				uni.setStorageSync('cityName', data.cityName) // 保存城市
 				// 获取该城市的所有区
 				that.getArea()
 				// 查询房源列表
-        that.subleaseList = []
-        that.directList = []
+				that.subleaseList = []
+				that.directList = []
 				that.init(1)
 			})
 		},

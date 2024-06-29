@@ -30,6 +30,7 @@
 								<house-list-item ref="ListItem" :item="item" :index="index" @updateHouseList="updateHouseList" :current="current"></house-list-item>
 							</block>
 						</view>
+						<!-- 骨架屏 -->
 						<view v-show="showModel && houseList.length==0">
 							<block v-for=" item in houseJia" :key="item">
 								<houseListItemSkeleton/>
