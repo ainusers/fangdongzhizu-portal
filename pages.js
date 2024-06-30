@@ -25,8 +25,10 @@ module.exports=()=>({
 					"popGesture": "none",
 					"animationType": "fade-in",
 					"animationDuration": 200
-		
 				}
+			},
+			meta:{
+				needLogin:false
 			}
 		},
 		{
@@ -44,7 +46,7 @@ module.exports=()=>({
 				"transparentTitle":  "always"
 			},
 			meta:{
-				needLogin:true
+				needLogin:false
 			}
 		},
 		{
@@ -60,7 +62,7 @@ module.exports=()=>({
 				}
 			},
 			meta:{
-				needLogin:true
+				needLogin:false
 			}
 		},
 		{
@@ -94,7 +96,7 @@ module.exports=()=>({
 				}
 			},
 			meta:{
-				needLogin:true
+				needLogin:false
 			}
 		},
 		{
@@ -104,7 +106,7 @@ module.exports=()=>({
 				"enablePullDownRefresh": true
 			},
 			meta:{
-				needLogin:true
+				needLogin:false
 			}
 		},
 		{
@@ -457,8 +459,8 @@ module.exports=()=>({
 			meta:{
 				needLogin:true
 			}
-		}
-	    ,{
+		},
+		{
             "path" : "components/common/screen-tab/screen-tab",
             "style" :                                                                                    
             {
@@ -466,10 +468,9 @@ module.exports=()=>({
                 "enablePullDownRefresh": false
             },
 			meta:{
-				needLogin:true
+				needLogin:false
 			}
-        }
-        ,
+        },
 		{
             "path" : "pages/tabbar/me/update/updatephone",
             "style" :                                                                                    
@@ -505,6 +506,9 @@ module.exports=()=>({
 				"navigationBarTitleText": "个人主页",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
+			},
+			meta:{
+				needLogin:true
 			}
 		},
 		{
@@ -513,6 +517,9 @@ module.exports=()=>({
 				"navigationBarTitleText": "注册协议",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
+			},
+			meta:{
+				needLogin:false
 			}
 		},
 		{
@@ -521,6 +528,9 @@ module.exports=()=>({
 				"navigationBarTitleText": "隐私协议",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
+			},
+			meta:{
+				needLogin:false
 			}
 		},
 		{
@@ -529,6 +539,9 @@ module.exports=()=>({
 				"navigationBarTitleText": "用户协议",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa",
+			},
+			meta:{
+				needLogin:false
 			}
 		},
 		{
@@ -537,6 +550,9 @@ module.exports=()=>({
 				"navigationBarTitleText": "支付页面",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa"
+			},
+			meta:{
+				needLogin:true
 			}
 		}
     ],
