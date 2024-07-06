@@ -282,6 +282,7 @@
 				uni.showModal({
 					title: '温馨提示',
 					content: '获取相机和相册权限才可以选择图片',
+					showCancel: false,
 					success(res) {
 						if (res.confirm) {
 							uni.showActionSheet({
@@ -380,6 +381,14 @@
 				});
 				uni.removeStorage({
 					key: 'token',
+					success: function (res) {}
+				});
+				uni.removeStorage({
+					key: 'communityInfo',
+					success: function (res) {}
+				});
+				uni.removeStorage({
+					key: 'cityName',
 					success: function (res) {}
 				});
 				// 断开链接

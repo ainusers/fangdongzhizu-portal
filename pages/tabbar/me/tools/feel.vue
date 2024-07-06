@@ -139,6 +139,7 @@
 			    uni.showModal({
 			        title: '温馨提示',
 			        content: '获取相机或相册权限才可以上传图片',
+					showCancel: false,
 			        success(res) {
 			            if (res.confirm) {
 			                uni.chooseImage({

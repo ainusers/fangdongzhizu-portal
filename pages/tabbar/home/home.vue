@@ -95,7 +95,7 @@
 				</view>
 			</view>
 			<!-- 筛选项 -->
-			<screenTab ref="screenTab" v-if="current == 0 && fixedContHeight || current == 1 && fixedContHeight"
+			<screenTab ref="screenTab" v-if="current == 0 || current == 1"
 				:screenFormData="screenFormData" :roomList="roomList" :from="from" :regionLeftList="regionLeftList"
 				:regionRightMap="regionRightMap" :enterType="enterType" :roomPriceRange="roomPriceRange"
 				:fixedContHeight="fixedContHeight" :key="updateSearch" @screenBtn="screenBtn"

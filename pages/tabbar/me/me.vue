@@ -197,18 +197,26 @@
 
 <script>
 	import myInfoAvatar from '@/components/common/myInfoAvatar.vue'
-	import {isLoginCheck,getUserInfo} from '@/utils/utils.js'
+	import {getUserInfo} from '@/utils/utils.js'
 	export default {
 		data() {
 			return {
 				userInfo: '',
-				token:''
+				token: ''
 			}
 		},
 		components:{
 			myInfoAvatar
 		},
 		onShow() {
+			// 判断用户是否登录
+			if(!this.$store.state.token){
+				uni.navigateTo({
+					url: '/pages/auth/login',
+				})
+				return;
+			}
+			
 			this.userInfo=this.$store.state.userInfo
 			if(!this.userInfo || !this.userInfo.nickname){
 				this.getUserInfo()

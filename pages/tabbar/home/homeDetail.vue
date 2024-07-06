@@ -288,7 +288,7 @@
   import feiYongXiangQing from "@/components/house-detail/house-feiyong.vue";
   import zuLinXinXi from "@/components/house-detail/house-zulin.vue";
   import diLiWeiZhi from "@/components/house-detail/house-dili.vue";
-  import zhizuReport from '@/components/common/modal/report.vue'
+  import zhizuReport from '@/components/common/modal/report.vue';
 
   let that;
   export default {
@@ -343,29 +343,29 @@
         guaPaiAgentList: [],
         bottomAgentInfo: {},
         sheshiData: [
-							{'iconUrl':'../../../static/home/detail/xiyiji-bak.svg','text':'洗衣机',isShow:false,hIconUrl:'../../../static/home/detail/xiyiji.svg'}, 
-							{'iconUrl':'../../../static/home/detail/bingxiang-bak.svg','text':'冰箱',isShow:false,hIconUrl:'../../../static/home/detail/bingxiang.svg'},
-							{'iconUrl':'../../../static/home/detail/dianshi-bak.svg','text':'电视',isShow:false,hIconUrl:'../../../static/home/detail/dianshi.svg'},
-							{'iconUrl':'../../../static/home/detail/kongtiao-bak.svg','text':'空调',isShow:false,hIconUrl:'../../../static/home/detail/kongtiao.svg'},
-							{'iconUrl':'../../../static/home/detail/reshuiqi-bak.svg','text':'热水器',isShow:false,hIconUrl:'../../../static/home/detail/reshuiqi.svg'},
-							{'iconUrl':'../../../static/home/detail/ranqi-bak.svg','text':'天然气',isShow:false,hIconUrl:'../../../static/home/detail/ranqi.svg'},
-							{'iconUrl':'../../../static/home/detail/nuanqi-bak.svg','text':'暖气',isShow:false,hIconUrl:'../../../static/home/detail/nuanqi.svg'},
-							{'iconUrl':'../../../static/home/detail/wifi-bak.svg','text':'无线网',isShow:false,hIconUrl:'../../../static/home/detail/wifi.svg'},
-							{'iconUrl':'../../../static/home/detail/weibolu-bak.svg','text':'微波炉',isShow:false,hIconUrl:'../../../static/home/detail/weibolu.svg'}, 
-							{'iconUrl':'../../../static/home/detail/diancilu-bak.svg','text':'电磁炉',isShow:false,hIconUrl:'../../../static/home/detail/diancilu.svg'},
-					],
+			{'iconUrl':'../../../static/home/detail/xiyiji-bak.svg','text':'洗衣机',isShow:false,hIconUrl:'../../../static/home/detail/xiyiji.svg'}, 
+			{'iconUrl':'../../../static/home/detail/bingxiang-bak.svg','text':'冰箱',isShow:false,hIconUrl:'../../../static/home/detail/bingxiang.svg'},
+			{'iconUrl':'../../../static/home/detail/dianshi-bak.svg','text':'电视',isShow:false,hIconUrl:'../../../static/home/detail/dianshi.svg'},
+			{'iconUrl':'../../../static/home/detail/kongtiao-bak.svg','text':'空调',isShow:false,hIconUrl:'../../../static/home/detail/kongtiao.svg'},
+			{'iconUrl':'../../../static/home/detail/reshuiqi-bak.svg','text':'热水器',isShow:false,hIconUrl:'../../../static/home/detail/reshuiqi.svg'},
+			{'iconUrl':'../../../static/home/detail/ranqi-bak.svg','text':'天然气',isShow:false,hIconUrl:'../../../static/home/detail/ranqi.svg'},
+			{'iconUrl':'../../../static/home/detail/nuanqi-bak.svg','text':'暖气',isShow:false,hIconUrl:'../../../static/home/detail/nuanqi.svg'},
+			{'iconUrl':'../../../static/home/detail/wifi-bak.svg','text':'无线网',isShow:false,hIconUrl:'../../../static/home/detail/wifi.svg'},
+			{'iconUrl':'../../../static/home/detail/weibolu-bak.svg','text':'微波炉',isShow:false,hIconUrl:'../../../static/home/detail/weibolu.svg'}, 
+			{'iconUrl':'../../../static/home/detail/diancilu-bak.svg','text':'电磁炉',isShow:false,hIconUrl:'../../../static/home/detail/diancilu.svg'},
+		],
 		feiyongData: [
-				{'title':'付款方式','value':'-'},
-				{'title':'租金','value':'-'},
-				{'title':'押金','value':'-'},
-				{'title':'维修费用','value':'-'},
-				{'title':'中介费','value':'-'},
-				{'title':'','value':''},
-				{'title':'取暖费','value':'-'},
-				{'title':'无线费','value':'-'},
-				{'title':'物业费','value':'-'},
-				{'title':'水电费','value':'-'},
-			],
+			{'title':'付款方式','value':'-'},
+			{'title':'租金','value':'-'},
+			{'title':'押金','value':'-'},
+			{'title':'维修费用','value':'-'},
+			{'title':'中介费','value':'-'},
+			{'title':'','value':''},
+			{'title':'取暖费','value':'-'},
+			{'title':'无线费','value':'-'},
+			{'title':'物业费','value':'-'},
+			{'title':'水电费','value':'-'},
+		],
 		zulinData: [],
 		diliData: [{}],
         housePhone: "", // 按月付的电话
@@ -387,16 +387,16 @@
       };
     },
 	methods:{
-		//初始化数据
+		// 初始化数据
 		async initData(){
 			await this.getHouseDetail()
 			// 轮播图 img 数据初始化
 			await this.swiperImgInit()
-			//费用数据初始化
+			// 费用数据初始化
 			this.coseDataInit()
 			// 配套设施展示
 			this.showSupport()
-			//租赁信息
+			// 租赁信息
 			this.initzulinData()
 		},
 		getHouseDetail(){
@@ -404,25 +404,32 @@
 				roomId:this.houseId,
 				userId:this.$store.state.userInfo.id
 			}
-		 return	this.$H.get('/zf/v1/room/list/id',data,true).then(res=>{
+			return	this.$H.get('/zf/v1/room/list/id',data,true).then(res=>{
 				this.detailData=res.data[0]
-				this.markers.push(
-						{
-							latitude: this.detailData.latitude,
-							longitude:this.detailData.longitude,
-							title:this.detailData.communityName,
-							iconPath: require('../../../static/address.png'),
-							width:25,
-							height:25,
-						}
-						)
+				this.markers.push({
+					latitude: this.detailData.latitude,
+					longitude:this.detailData.longitude,
+					title:this.detailData.communityName,
+					iconPath: require('../../../static/address.png'),
+					width:25,
+					height:25,
+				})
 				if(this.detailData.like){
 					this.startIcon='heart-fill'
 					this.iconColor='#f91e08'
 				}
-			})
-		},
+				})
+			},
+		// 举报房源
 		reportShowFn(){
+			// 判断用户是否登录
+			if(!this.$store.state.token){
+				uni.navigateTo({
+					url: '/pages/auth/login',
+				})
+				return;
+			}
+			
 			if(!this.reportStatu){
 				this.reportStatu=true
 				setTimeout(()=>{
@@ -431,7 +438,6 @@
 				this.isMap=false
 				this.$refs.reportS.reportShow=true
 			}
-			
 		},
 		swiperImgInit(){
 			let imgUrl=this.detailData.imgUrl
@@ -493,8 +499,16 @@
 			}
 			this.zulinData.push(currentHome)
 		},
-		//举报，收藏，
+		// 收藏，立即沟通
 		report(index){
+			// 判断用户是否登录
+			if(!this.$store.state.token){
+				uni.navigateTo({
+					url: '/pages/auth/login',
+				})
+				return;
+			}
+			
 			let that = this;
 			let params={
 				"userId": this.$store.state.userInfo.id,
@@ -510,6 +524,7 @@
 					uni.showModal({
 						title: '温馨提示',
 						content: '每人每天有两次机会获取房东电话',
+						showCancel: false,
 						success(res) {
 							if (res.confirm) {
 								let data={
@@ -539,6 +554,7 @@
 														uni.showModal({
 															title: '温馨提示',
 															content: '获取电话权限才可以和房东联系',
+															showCancel: false,
 															success(res) {
 																if (res.confirm) {
 																	permision.gotoAppPermissionSetting()
@@ -550,6 +566,7 @@
 														uni.showModal({
 															title: '温馨提示',
 															content: '获取电话权限才可以和房东联系',
+															showCancel: false,
 															success(res) {
 																if (res.confirm) {
 																	permision.gotoAppPermissionSetting()

@@ -190,7 +190,7 @@ width:0;
                 <textarea placeholder="说点什么吧..." v-model="content" />
             </view>
             <view class="upload-type">
-                <view>上传类型(图片和视频只能选择一种)</view>
+                <view>上传类型：</view>
                 <u-radio-group v-model="uploadType" placement="column" @change="uploadTypeChange">
                     <u-radio name="image">图片</u-radio>
                     <u-radio name="video">视频</u-radio>
@@ -317,6 +317,7 @@ export default {
                     uni.showModal({
                         title: '温馨提示',
                         content: '发布动态需要获取位置权限，用于展示动态的发布城市',
+						showCancel: false,
                         success: async (res) => {
                             if (res.confirm) {
                                 uni.showToast({ title: '发布中', duration: 60000, icon: 'loading' });
@@ -403,6 +404,7 @@ export default {
 				uni.showModal({
 				    title: '温馨提示',
 				    content: '获取相机或相册(视频)权限才可以上传图片',
+					showCancel: false,
 				    success(res) {
 				        if (res.confirm) {
 							uni.chooseVideo({
@@ -435,6 +437,7 @@ export default {
 				uni.showModal({
 				    title: '温馨提示',
 				    content: '获取相机或相册(图片)权限才可以上传图片',
+					showCancel: false,
 				    success(res) {
 				        if (res.confirm) {
 							uni.chooseImage({

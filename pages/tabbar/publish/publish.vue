@@ -28,7 +28,7 @@
 		</view>
 		<u-modal v-model="show" :content="content" :mask-close-able="true" title="温馨提示" @confirm="confirm" :show-cancel-button="true"></u-modal>
 	</view>
-</template> 
+</template>
 
 <script>
 import {getCount,checkPush} from '@/utils/utils.js'
@@ -36,39 +36,43 @@ export default {
 	data() {
 		return {
 			active: false,
-			show:false,
+			show: false,
 			content:'需要实名认证，是否去认证'
 		};
 	},
-	onLoad() {},
 	onShow() {
-		// setTimeout(() => {
-			this.active = true;
-		// }, 500);
+		this.active = true;
 	},
 	onHide() {
 		this.active = false;
 	},
 	methods: {
 		goToPage(url,type) {
+			// 判断用户是否登录
+			if(!this.$store.state.token){
+				uni.navigateTo({
+					url: '/pages/auth/login',
+				})
+				return;
+			}
+			// 判断用户是否实名认证
 			if(!this.$store.state.userInfo.auth){
 				this.show=true
-				return
+				return;
 			}
-			// this.show=true
 			if (!url) return;
-			//房源
+			// 发布房源
 			if(type=='fangyuan'){
 				getCount().then(res=>{
 					if (res.code == 200 && res.data[0].status) {
 						uni.navigateTo({
 							url
 						});
-					}else{
+					} else{
 						uni.$u.toast('每个用户发布房源不超过两个')
 					}
 				})
-			}else if(type=='tuwen'){
+			} else if(type=='tuwen'){
 				checkPush().then(res=>{
 					if(res.status){
 						uni.navigateTo({
@@ -79,10 +83,8 @@ export default {
 					}
 				})
 			}
-			
-			
-			
 		},
+		// 跳转实名认证
 		confirm(){
 			uni.navigateTo({
 				url:'/pages/tabbar/me/update/realname'

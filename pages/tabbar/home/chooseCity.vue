@@ -71,7 +71,7 @@
 	}
 </style>
 <template>
-	<form report-submit :model="position">
+	<form report-submit>
 		<view class="choose_city" :style="{height: pageHeight}">
 			<scroll-view :scroll-with-animation="scrollAnimate" enable-back-to-top :scroll-into-view="scrollIntoId"
 				class="choose_city_scroll" scroll-y>
@@ -90,8 +90,8 @@
 					</view>
 					
 				   <view class='city_title'>手动选择城市：</view>
-				   <u-form-item label-position="left" prop="city" label-width="150" style="padding: 10px 15px" borderBottom >
-				   <u-input :border="false" v-model="position.city" placeholder="请选择所属区域"
+				   <u-form-item label-position="left" prop="region" label-width="150" style="padding: 10px 15px" borderBottom >
+				   <u-input :border="false" type="select" v-model="position.region" placeholder="请选择所属区域"
 				   		@click="pickerShow = true"></u-input>
 				   </u-form-item>
 				   <uPicker mode="region" v-model="pickerShow" @confirm="regionConfirm"></uPicker>
@@ -151,10 +151,6 @@
 			};
 		},
         onLoad() {
-			const city = uni.getStorageSync('currentSelCityName')
-			if(city){
-				this.position.city = city
-			}
 			this.resetAddress(false);
         },
         onReady() {
@@ -168,7 +164,6 @@
 				let	city=e.city.label
 				let	area=e.area.label
 				this.position.city = city == '市辖区' ? province : city
-				uni.setStorageSync('currentSelCityName', city) // 保存当前选中城市
 				uni.navigateBack({
 					delta: 1,
 					success() {

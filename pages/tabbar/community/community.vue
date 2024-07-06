@@ -90,8 +90,7 @@
 </template>
 
 <script>
-	import postList from '../../../components/post-list/post-list.vue';
-	import {isLoginCheck} from '../../../utils/utils.js'
+	import postList from '@/components/post-list/post-list.vue';
 	export default {
 		components: {
 			postList
@@ -102,7 +101,7 @@
 				tuwen_data: [],
 				load_status_tuwen: 'loadmore',
 				tuwen_default_page: 1,
-        cityName: ''
+				cityName: ''
 			}
 		},
 		onLoad() {
@@ -137,7 +136,7 @@
 			}else{
 				uni.showToast({
 					icon:'none',
-					title:"主人，已经到底了呦"
+					title:"主人，别使劲了，已经到底了"
 				})
 			}
 		},
@@ -173,7 +172,7 @@
 					"page":this.tuwen_default_page ,
 					"size": "10",
 					"userId":this.$store.state.userInfo.id,
-          "cityName": this.cityName,
+					"cityName": this.cityName,
 				}
 				this.$H.get('/zf/v1/dynamic/list',data,true).then(res=>{
 					if(res.status){

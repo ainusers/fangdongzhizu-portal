@@ -4,7 +4,7 @@
 	}
 </style>
 <template>
-	<view class="f_r_s map_item" @click="click()" >
+	<view class="f_r_s map_item">
 		<map style="width: 100%; height: 284upx;" :scale="15" :latitude="latitude" :longitude="longitude" :markers="markers"></map>
 	</view>
 </template>
@@ -22,6 +22,8 @@
 		onLoad() {
 			this.markers[0].latitude=this.latitude
 			this.markers[0].longitude=this.longitude
+			this.markers[0].width=50
+			this.markers[0].height=50
 		},
 		props: {
 			list: {
@@ -42,28 +44,14 @@
 			}
 		},
 		methods: {
-			click() {
-				uni.getLocation({
-					type: 'gcj02',
-					isHighAccuracy:true,
-					success: function (res) {
-						const latitude = res.latitude;
-						const longitude = res.longitude;
-						uni.openLocation({
-							latitude: latitude,
-							longitude: longitude,
-							success: function () {
-							}
-						});
-					}
-				});
-			},
 			//设置地图坐标
 			setMap(res){
 				this.longitude = res.longitude
 				this.latitude  = res.latitude
 				this.markers[0].longitude =  res.longitude
 				this.markers[0].latitude  =  res.latitude
+				this.markers[0].width=50
+				this.markers[0].height=50
 			}
 		}
 	}

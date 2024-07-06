@@ -178,7 +178,7 @@
 </template>
 
 <script>
-	import {htmlEncode,tranfTime} from '../../../utils/utils.js'
+import {htmlEncode,tranfTime} from '../../../utils/utils.js'
 export default {
 	data() {
 		return {
@@ -206,7 +206,7 @@ export default {
 		};
 	},
 	props:{
-		index:String
+		index: String
 	},
 	onLoad(options) {
 		if(options){
@@ -427,7 +427,12 @@ export default {
 							if(mm<10){
 								mm='0'+mm
 							}
-							item.create_time=tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm)
+							if (uni.getSystemInfoSync().platform == 'ios') {
+							    // 解决ios手机时间格式化NaN问题
+							    item.create_time = tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm).replace(/-/g, '-')
+							} else {
+								item.create_time=tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm)
+							}
 							that.commentList.push(item)
 							item.likeNum=0
 							that.getTwoList(item.comment_user_id,index,item.comment_id,item)
@@ -457,7 +462,12 @@ export default {
 					if(res.data.length>0){
 						item.replyList.forEach(item=>{
 							if(item.create_time.length>10){
-								item.create_time=tranfTime(item.create_time)
+								if (uni.getSystemInfoSync().platform == 'ios') {
+								    // 解决ios手机时间格式化NaN问题
+								    item.create_time = tranfTime(item.create_time).replace(/-/g, '-')
+								} else {
+									item.create_time=tranfTime(item.create_time)
+								}
 							}
 						})
 					}

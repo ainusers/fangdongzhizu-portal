@@ -226,16 +226,14 @@
 					this.$emit('changeStatus', index, !this.isReport,res)
 				})
 			},
-			//控制举报，删除 显示隐藏
+			//控制举报，删除，显示隐藏
 			goReport(index) {
 				this.currentIndex = index
 				this.list[index].isReport ? this.isReport = false : this.isReport = true
 				this.reportId = this.list[index].id
 				this.$emit('changeStatus', index, this.isReport)
 			},
-			cancelReport() {
-
-			},
+			cancelReport() {},
 			report() {
 				this.reportShows = true
 				this.$refs.report.reportShow=true
@@ -249,6 +247,14 @@
 			},
 			// 跳转详情页
 			toDetail(data,index) {
+				// 判断用户是否登录
+				if(!this.$store.state.token){
+					uni.navigateTo({
+						url: '/pages/auth/login',
+					})
+					return;
+				}
+				
 				this.isReport = false
 				this.$emit('changeStatus', index, false)
 				if (this.isDetail) {
@@ -271,7 +277,7 @@
 			},
 			// 跳转评论区
 			toComment(url) {
-				if (this.isDetail) return
+				if (this.isDetail) return;
 				uni.navigateTo({
 					url: url
 				});
@@ -299,8 +305,7 @@
 					userId:this.$store.state.userInfo.id,
 					type:'plus'
 				}
-				this.$H.patch('/zf/v1/dynamic/transfer',data,true).then(res=>{
-				})
+				this.$H.patch('/zf/v1/dynamic/transfer',data,true).then(res=>{})
 			}
 		}
 	};

@@ -104,81 +104,6 @@ const htmlEncode = function(str) {
 	return temp;
 }
 
-const isLoginCheck = function() {
-	let token = ''
-	uni.getStorage({
-		key: 'token',
-		success(res) {
-			if (res.data) {
-				token = res.data
-			}
-		}
-	})
-	if (!token) {
-		uni.navigateTo({
-			url: '/pages/auth/login'
-		})
-	}
-}
-
-// 聊天记录中的事件格式化
-const dateTime1=function(e){
-	let old=new Date(e)
-	let neT =new Date()
-	// 获取旧的具体时间
-	let d=old.getTime()
-	let h=old.getHours()
-	let m=old.getMinutes()
-	let Y=old.getFullYear()
-	let M=old.getMonth()+1
-	let D=old.getDate()
-	//获取新的具体时间
-	let nd=neT.getTime()
-	let nh=neT.getHours()
-	let n=neT.getMinutes()
-	let nY=neT.getFullYear()
-	let nM=neT.getMonth()+1
-	let nD=neT.getDate()
-	//当天的时间
-	if(D==nD&&M==nM&&Y==nY){
-		if(h<10){
-			h='0'+h
-		}
-		if(m<10){
-			m='0'+m
-		}
-		return h+':'+m
-	}
-	//昨天的时间
-	if(D+1==nD&&M==nM&&Y==nY){
-		if(h<10){
-			h='0'+h
-		}
-		if(m<10){
-			m='0'+m
-		}
-		return  '昨天'+h+':'+m
-	}
-	//当年的
-	if(Y==nY){
-		if(h<10){
-			h='0'+h
-		}
-		if(m<10){
-			m='0'+m
-		}
-		return  M+'月' +D+'日'+' '+h+':'+m
-	}else{
-		if(h<10){
-			h='0'+h
-		}
-		if(m<10){
-			m='0'+m
-		}
-		return  Y+'年'+M+'月'+D+'日'+' '+h+':'+m
-	}
-}
-
 // 控制时间间隔
 const spaceTime=function(old,now){
 	old=new Date(old);
@@ -291,12 +216,10 @@ export {
 	attachUpload,
 	editTitleText,
 	htmlEncode,
-	isLoginCheck,
 	tranfTime,
 	getUserInfo,
 	compressImg,
 	showToastTit,
-	dateTime1,
 	spaceTime,
 	getCount,
 	checkPush,
