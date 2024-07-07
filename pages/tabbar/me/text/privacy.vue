@@ -51,7 +51,7 @@
 		<view class="tit">
 			一、我们如何收集和使用您的个人信息
 		</view>
-		<view>我们的产品基于DCloud uni-app(5+ App/Wap2App)开发，应用运行期间需要收集您的设备唯一识别码（IMEI/android ID/DEVICE_ID/IDFA、SIM 卡 IMSI 信息、OAID）以提供统计分析服务，并通过应用启动数据及异常错误日志分析改进性能和用户体验，为用户提供更好的服务。</view>
+		<view>我们的产品基于DCloud uni-app(5+ App/Wap2App)开发，应用运行期间需要收集您的设备唯一识别码（IMEI/android ID/DEVICE_ID/IDFA、SIM 卡 IMSI 信息、OAID）以用于提供统计分析服务，并通过应用启动数据及异常错误日志分析改进性能和用户体验，为用户提供更好的服务。</view>
 		<view>
 			为实现向您提供我们产品及服务的基本功能，您须授权我们收集、使用的必要的信息；如您拒绝提供相应信息，您将无法正常使用我们的产品及服务。<br/>
 		</view>

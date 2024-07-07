@@ -251,8 +251,7 @@ width:0;
 
 <script>
 import image from '@/store/image.js';
-import permision from "@/sdk/wa-permission/permission.js"
-import { attachUpload, htmlEncode, compressImg, checkPush } from '@/utils/utils.js'
+import { attachUpload,htmlEncode,compressImg,checkPush,gotoAppSetting } from '@/utils/utils.js'
 var sourceType = [
     ['camera'],
     ['album'],
@@ -320,52 +319,59 @@ export default {
 						showCancel: false,
                         success: async (res) => {
                             if (res.confirm) {
-                                uni.showToast({ title: '发布中', duration: 60000, icon: 'loading' });
-                                // 获取位置信息
-                                // #ifdef APP-PLUS
-                                let location = await this.getLocation();
-                                // #endif
-                                // 获取上传图片地址
-                                let images;
-                                if (this.imageList.length == 0) {
-                                    images = [];
-                                } else {
-                                    images = await attachUpload(this.imageList);
-                                }
-                                let data = {
-                                    'imgUrl': images.toString(),
-                                    'nickname': this.$store.state.userInfo.nickname,
-                                    'avatar': this.$store.state.userInfo.avatar,
-                                    'userId': this.$store.state.userInfo.id,
-                                    'words': htmlEncode(this.content),
+								// 判断是否授权定位
+								uni.showToast({ title: '发布中', duration: 60000, icon: 'loading' });
+								// 获取位置信息
+								// #ifdef APP-PLUS
+								let location = await this.getLocation();
+								// #endif
+								// 获取上传图片地址
+								let images;
+								if (this.imageList.length == 0) {
+									images = [];
+								} else {
+									images = await attachUpload(this.imageList);
+								}
+								let data = {
+									'imgUrl': images.toString(),
+									'nickname': this.$store.state.userInfo.nickname,
+									'avatar': this.$store.state.userInfo.avatar,
+									'userId': this.$store.state.userInfo.id,
+									'words': htmlEncode(this.content),
 									'fileType': this.uploadType
-                                }
-                                // #ifdef APP-PLUS
-                                if (location != '未知') {
-                                    data['longitude'] = location.longitude// 经度
-                                    data['latitude'] = location.latitude// 纬度
-                                    data['country'] = location.address.country
-                                    data['province'] = location.address.province
-                                    data['city'] = location.address.city
-                                    data['address'] = location.address.district + "-" + location.address.street + "-" + location.address.streetNum + "-" + location.address.poiName
-                                    data['type'] = location.type
-                                }
-                                // #endif
-                                // 上传动态信息
-                                this.$H.post('/zf/v1/dynamic/dynamics', data, true).then(res => {
-                                    if (res.status) {
-                                        uni.hideToast();
-                                        uni.showToast({
-                                            icon: 'success',
-                                            title: "发布成功"
-                                        })
-                                        setTimeout(() => {
-                                            uni.switchTab({
-                                                url: '/pages/tabbar/community/community'
-                                            })
-                                        }, 1000)
-                                    }
-                                })
+								}
+								// #ifdef APP-PLUS
+								if (location != '未知') {
+									data['longitude'] = location.longitude// 经度
+									data['latitude'] = location.latitude// 纬度
+									data['country'] = location.address.country
+									data['province'] = location.address.province
+									data['city'] = location.address.city
+									data['address'] = location.address.district + "-" + location.address.street + "-" + location.address.streetNum + "-" + location.address.poiName
+									data['type'] = location.type
+								}
+								// #endif
+								// 上传动态信息
+								this.$H.post('/zf/v1/dynamic/dynamics', data, true).then(res => {
+									if (res.status) {
+										uni.hideToast();
+										uni.showToast({
+											icon: 'success',
+											title: "发布成功"
+										})
+										setTimeout(() => {
+											uni.switchTab({
+												url: '/pages/tabbar/community/community'
+											})
+										}, 1000)
+									} else {
+										uni.hideToast();
+										uni.showToast({
+											icon: 'success',
+											title: "发布失败，请重试!"
+										})
+									}
+								})
                             }
                         }
                     })
@@ -377,7 +383,7 @@ export default {
                 }
             })
         },
-        // 获取地理位置（h5中可能不支持）
+        // 获取地理位置（h5可能不支持）
         getLocation() {
             return new Promise((resolve, reject) => {
                 uni.getLocation({
@@ -388,7 +394,20 @@ export default {
                         resolve(res);
                     },
                     fail: (e) => {
-                        uni.showToast({ title: '请开启GPS定位功能', duration: 2000, icon: 'none' });
+						uni.hideToast();
+						if("authorized" == uni.getAppAuthorizeSetting().locationAuthorized){
+							uni.showToast({ title: '请打开手机GPS定位功能', duration: 2000, icon: 'none' });
+						} else {
+							uni.showModal({
+							    title: '温馨提示',
+							    content: '您还没有给APP地理位置权限，请在权限管理页面授权',
+								showCancel: false,
+							    success: async (res) => {
+									// 跳转应用权限管理页面
+									gotoAppSetting();
+								}
+							})
+						}
                         reject(e);
                     }
                 });

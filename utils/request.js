@@ -101,6 +101,7 @@ export default {
 					  resolve(JSON.parse(res.data).data);
 				},
 				fail: (e) => {
+					uni.hideToast();
 					uni.hideLoading();
 					reject(e);
 				}

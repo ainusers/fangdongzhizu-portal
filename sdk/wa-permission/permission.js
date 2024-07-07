@@ -44,17 +44,6 @@ function judgeIosPermissionLocation() {
 	var status = cllocationManger.authorizationStatus();
 	result = (status != 2)
 	console.log("定位权限开启：" + result);
-	// 以下代码判断了手机设备的定位是否关闭，推荐另行使用方法 checkSystemEnableLocation
-	/* var enable = cllocationManger.locationServicesEnabled();
-	var status = cllocationManger.authorizationStatus();
-	console.log("enable:" + enable);
-	console.log("status:" + status);
-	if (enable && status != 2) {
-		result = true;
-		console.log("手机定位服务已开启且已授予定位权限");
-	} else {
-		console.log("手机系统的定位没有打开或未给予定位权限");
-	} */
 	plus.ios.deleteObject(cllocationManger);
 	return result;
 }
@@ -176,10 +165,6 @@ function requestAndroidPermission(permissionID) {
 					result = -1
 				}
 				resolve(result);
-				// 若所需权限被拒绝,则打开APP设置界面,可以在APP设置界面打开相应权限
-				// if (result != 1) {
-				// gotoAppPermissionSetting()
-				// }
 			},
 			function(error) {
 				console.log('申请权限错误：' + error.code + " = " + error.message);
@@ -220,7 +205,6 @@ function gotoAppPermissionSetting() {
 		var UIApplication = plus.ios.import("UIApplication");
 		var application2 = UIApplication.sharedApplication();
 		var NSURL2 = plus.ios.import("NSURL");
-		// var setting2 = NSURL2.URLWithString("prefs:root=LOCATION_SERVICES");		
 		var setting2 = NSURL2.URLWithString("app-settings:");
 		application2.openURL(setting2);
 
@@ -228,7 +212,6 @@ function gotoAppPermissionSetting() {
 		plus.ios.deleteObject(NSURL2);
 		plus.ios.deleteObject(application2);
 	} else {
-		// console.log(plus.device.vendor);
 		var Intent = plus.android.importClass("android.content.Intent");
 		var Settings = plus.android.importClass("android.provider.Settings");
 		var Uri = plus.android.importClass("android.net.Uri");
@@ -242,7 +225,6 @@ function gotoAppPermissionSetting() {
 }
 
 // 检查系统的设备服务是否开启
-// var checkSystemEnableLocation = async function () {
 function checkSystemEnableLocation() {
 	if (isIos) {
 		var result = false;
