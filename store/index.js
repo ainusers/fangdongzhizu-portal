@@ -9,7 +9,7 @@ const store = new Vuex.Store({
 		communityInfo:{},
 		address:{},
 		ispublishSub:false, //是否点击到过开启定位服务界面
-		version:'1.0.7'
+		version:'1.0.8'
 	},
 	mutations: {
 		userInfo(state,obj){
