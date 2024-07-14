@@ -203,8 +203,7 @@ width:0;
                             <view class="uni-uploader__files">
                                 <block v-for="(image, index) in imageList" :key="index">
                                     <view class="uni-uploader__file" style="position: relative;">
-                                        <image v-if="uploadType==='image'" class="uni-uploader__img" mode="aspectFit" :src="image" :data-src="image"
-                                            @tap="previewImage"></image>
+                                        <image v-if="uploadType==='image'" class="uni-uploader__img" mode="aspectFit" :src="image" :data-src="image" @tap="previewImage"></image>
                                         <video v-if="uploadType==='video'" class="uni-uploader__video" :controls="false" :src="image" :data-src="image"></video>
                                         <cover-view v-if="uploadType==='video'" class="close-view-video">
                                           <cover-view @click="close(index)" class="close-text">x</cover-view>
@@ -219,7 +218,7 @@ width:0;
                         </view>
                         <view class="uni-uploader-head">
                             <view class="uni-uploader-title"></view>
-                            <view class="uni-uploader-info">{{ imageList.length }}/{{ uploadType === 'image' ? 9:1 }}</view>
+                            <view class="uni-uploader-info">{{ imageList.length }}/{{ uploadType === 'image' ? 9: 1 }}</view>
                         </view>
                     </view>
                 </view>

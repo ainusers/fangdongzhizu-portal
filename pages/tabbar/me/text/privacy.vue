@@ -504,7 +504,7 @@
 		                android.permission.READ_PHONE_STATE
 		</div>
 		<div>
-		    信息用途：存储的个人文件，设备信息（IMEI、ANDROID_ID、DEVICE_ID、IMSI），网络信息
+		    信息用途：存储的个人文件，设备信息（IMEI、ANDROID_ID、DEVICE_ID、IMSI、OAID），网络信息
 		</div>
 		<div>
 		    SDK隐私政策链接/目的：https://ask.dcloud.net.cn/protocol.html
@@ -601,7 +601,7 @@
 			SDK用途：增强广告
 		</view>
 		<view>
-			获取的个人信息类型：基站、附近的WIFI、连接的WIFI、位置信息、设备制造商、设备型号、操作系统版本、屏幕分辨率、屏幕方向、屏幕DPI、IP地址、加速度传感器、磁场传感器、OAID、IMEI/MEID（Device ID）、Android_ID、包名、版本号、进程名称、运行状态、可疑行为、应用安装信息
+			获取的个人信息类型：基站、附近的WIFI、连接的WIFI、位置信息、设备制造商、设备型号、操作系统版本、屏幕分辨率、屏幕方向、屏幕DPI、IP地址、加速度传感器、磁场传感器、OAID、IMEI/MEID（Device ID）、AndroidID、包名、版本号、进程名称、运行状态、可疑行为、应用安装信息
 		</view>
 		<view>
 			调用的设备权限： android.permission.INTERNET
@@ -656,7 +656,7 @@
 			SDK用途：增强广告
 		</view>
 		<view>
-			获取的个人信息类型：设备品牌、型号、操作系统版本、OAID、分辨率等基础设备信息，应用名称、应用包名、应用版本号，运营商信息、时区
+			获取的个人信息类型：设备品牌、型号、操作系统版本、OAID、分辨率等基础设备信息，应用名称、应用包名、应用版本号，运营商信息、时区、行动轨迹、应用安装列表
 		</view>
 		<view>
 			调用的设备权限：android.permission.ACCESS_NETWORK_STATE
