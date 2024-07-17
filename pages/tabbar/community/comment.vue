@@ -167,6 +167,9 @@
 			<view v-show="commentList.length <= 0" >
 				<u-empty text="暂无评论" mode="message"></u-empty>
 			</view>
+			
+			<!-- 信息流广告 -->
+			<ad adpid="1804384865"></ad>
 		</view>
 		<!-- 评论输入框 -->
 		<view class="comment-tool">
@@ -270,7 +273,7 @@ export default {
 				id:id?id:0
 			}
 			this.$H.patch('/zf/v1/dynamic/like',data,true).then(res=>{
-				if(res.status&&res.status!=500){
+				if(res.status && res.code==200){
 					res.data[0].status?this.tuwen_data[index].like+=1 :this.tuwen_data[index].like-=1
 					res.data[0].status?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
 				}

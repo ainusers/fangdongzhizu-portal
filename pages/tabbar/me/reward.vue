@@ -21,7 +21,7 @@
 		<!-- 占位使用 -->
 		<view style="height: 30rpx"></view>
 		
-		<view class="reward_middle">
+		<!-- <view class="reward_middle">
 			<view class="name">
 				<view class="left">商品名称:</view>
 				<view class="first-right">发布待售卖的商品房</view>
@@ -33,11 +33,19 @@
 			<view class="price">
 				<view class="left">商品价格:</view>
 				<view class="second-right">¥100元</view>
-			</view>
-		</view>
+			</view> 
+		</view> -->
 		
 		<!-- 支付选项 -->
 		<view class="reward_bottom">
+			
+			<!-- 打赏金额 -->
+			<block v-for="(item,index) in moneyList">
+				<view class="item" :class="{active_item :currentIndex==index}" @click="changeMoney(index,item)">
+					￥<view class="num">{{item}}</view>
+				</view>
+			</block>
+			
 			<view class="pay_type">
 				<view class="item_pay" @click="pay('wxpay')" :class="{pay_ative:payType=='wxpay'}">
 					<image src="../../../static/me/wx.png" mode=""></image>
@@ -55,7 +63,7 @@
 				温馨提示:
 			</view>
 			<view>
-				1、支付前请检查金额和支付方式是否正确 
+				1、支付前请检查金额和支付方式是否正确
 			</view>
 			<view>
 				2、虚拟产品购买后不支持转让、提现或退款
@@ -67,8 +75,9 @@
 				4、如遇无法支付问题，请在"反馈建议"中提交信息
 			</view>
 		</view>
-		<view>
-		</view>
+		
+		<!-- 信息流广告 -->
+		<ad adpid="1804384865"></ad>
 	</view>
 </template>
 
@@ -76,20 +85,25 @@
 	export default{
 		data(){
 			return{
+				money: 1,
 				src: 'http://43.143.148.105:9090/banner/logo-apple.png',
 				currentIndex:0,
-				moneyList:[100],
+				moneyList:[1,5,10,20,50,100],
 				show:false,
 				payType:'wxpay'
 			}
 		},
 		methods:{
+			changeMoney(index,money){
+				this.money = money
+				this.currentIndex=index
+			},
 			pay(type){
 				this.payType=type
 			},
 			goPay(){
 				if("alipay" == this.payType){
-					this.$H.get('/zf/v1/ali/pay',{},true).then(res=>{
+					this.$H.get('/zf/v1/ali/pay',{price: this.money,username: this.$store.state.userInfo.username},true).then(res=>{
 						if(res.status){
 							console.log("-------------->" + res.data[0]);
 							uni.requestPayment({
@@ -114,7 +128,7 @@
 						}
 					})
 				} else {
-					this.$H.get('/zf/v1/wx/pay?order=out_trade_no_1000&money=0.01&desc=发布待售卖的商品房',{},true).then(res=>{
+					this.$H.get('/zf/v1/wx/pay?order=app_dashang_&money='+this.money+'&desc=房东直租_app_打赏&username='+this.$store.state.userInfo.username,{},true).then(res=>{
 						if(res.status){
 							console.log("-------------->" + JSON.stringify(res.data[0]));
 							uni.requestPayment({

@@ -16,7 +16,8 @@
             "Geolocation" : {},
             "Maps" : {},
             "Camera" : {},
-            "VideoPlayer" : {}
+            "VideoPlayer" : {},
+            "Payment" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -79,6 +80,16 @@
                     "baidu" : {
                         "appkey_ios" : "XUS7rr7tfF8FNcrNqroqkczFvpWtLpcY",
                         "appkey_android" : "XUS7rr7tfF8FNcrNqroqkczFvpWtLpcY"
+                    }
+                },
+                "payment" : {
+                    "alipay" : {
+                        "__platform__" : [ "ios", "android" ]
+                    },
+                    "weixin" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "appid" : "wx2c28b021e15abad4",
+                        "UniversalLinks" : ""
                     }
                 }
             },

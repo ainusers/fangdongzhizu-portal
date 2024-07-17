@@ -422,7 +422,7 @@
 		display: block;
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 5;
+		-webkit-line-clamp: 10;
 		white-space: pre-wrap;
 		overflow: hidden;
 		padding: 0 10rpx 0 10rpx;

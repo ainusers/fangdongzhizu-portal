@@ -61,7 +61,6 @@
 				userId: ''
 			}
 		},
-		
 		onLoad(options) {
 			that = this
 			this.userId = options.userId
@@ -76,15 +75,15 @@
 		},
 		methods: {
 			//动态点赞
-			clickLikes(id,isLove,index){
+			clickLikes(id,index){
 				let data={
 					userId:this.$store.state.userInfo.id,
 					id:id?id:0,
-					type:isLove?'plus':'reduce',
 				}
-				this.$H.patch('/zf/v1/dynamic/follow',data,true).then(res=>{
-					if(res.status&&res.status!=500){
-						res.data[0].count?this.tuwen_data[index].likes+=1 :this.tuwen_data[index].likes-=1
+				this.$H.patch('/zf/v1/dynamic/like',data,true).then(res=>{
+					if(res.status && res.code==200){
+						res.data[0].status?this.tuwen_data[index].like+=1 :this.tuwen_data[index].like-=1
+						res.data[0].status?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
 					}
 				})
 			},
