@@ -673,6 +673,45 @@
 		<view>
 			SDK隐私政策链接/目的：<a href="https://doc.sigmob.com/Sigmob%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/%E9%9A%90%E7%A7%81%E6%9D%A1%E6%AC%BE/%E9%9A%90%E7%A7%81%E6%94%BF%E7%AD%96/" target="_blank">Sigmob隐私协议</a>
 		</view>
+		
+		<view class="bold">
+			8、微信开放平台
+		</view>
+		<view>
+			SDK包名/网址：com.tencent.mm
+		</view>
+		<view>
+			SDK用途：帮助用户在应用内使用微信
+		</view>
+		<view>
+			获取的个人信息类型：存储的个人文件、网络信息
+		</view>
+		<view>
+			调用的设备权限：android.permission.ACCESS_NETWORK_STATE
+							android.permission.ACCESS_WIFI_STATE
+		</view>
+		<view>
+			SDK隐私政策链接/目的：<a href="https://weixin.qq.com/cgi-bin/readtemplate?lang=zh_CN&amp;t=weixin_agreement&amp;s=privacy" target="_blank">微信隐私协议</a>
+		</view>
+		<view class="bold">
+			9、支付宝开放平台
+		</view>
+		<view>
+			SDK包名/网址：com.alipay
+		</view>
+		<view>
+			SDK用途：帮助用户在应用内使用支付宝
+		</view>
+		<view>
+			获取的个人信息类型：网络信息 设备id IP地址 OAID IMSI
+		</view>
+		<view>
+			调用的设备权限：android.permission.ACCESS_NETWORK_STATE
+							android.permission.ACCESS_WIFI_STATE
+		</view>
+		<view>
+			SDK隐私政策链接/目的：<a href="https://render.alipay.com/p/c/k2cx0tg8" target="_blank">支付宝隐私协议</a>
+		</view>
 	</view>
 </template>
 
