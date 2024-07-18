@@ -167,9 +167,6 @@
 			<view v-show="commentList.length <= 0" >
 				<u-empty text="暂无评论" mode="message"></u-empty>
 			</view>
-			
-			<!-- 信息流广告 -->
-			<ad adpid="1804384865"></ad>
 		</view>
 		<!-- 评论输入框 -->
 		<view class="comment-tool">

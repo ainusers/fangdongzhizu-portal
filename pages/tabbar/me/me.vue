@@ -96,7 +96,7 @@
 	      </view>
 	      <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=1')">
 	      	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-fabu" color="#5199ff" size="25"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-fabu" color="#5199ff" size="23"></uni-icons>
 	      	</view>
 	      	<view class="name">已发布</view>
 	      </view>
@@ -108,25 +108,25 @@
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=3')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-shoucang" color="#5199ff" size="25"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-shoucang" color="#5199ff" size="26"></uni-icons>
 		  	</view>
 		  	<view class="name">收藏记录</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=0')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-dongtai" color="#5199ff" size="30"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-dongtai" color="#5199ff" size="32"></uni-icons>
 		  	</view>
 		  	<view class="name">动态</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=1')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-dianzan" color="#5199ff" size="25"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-dianzan" color="#5199ff" size="23"></uni-icons>
 		  	</view>
 		  	<view class="name">点赞</view>
 		  </view>
 		 <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=2')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-jubao" color="#5199ff" size="25"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-jubao" color="#5199ff" size="23"></uni-icons>
 		  	</view>
 		  	<view class="name">举报</view>
 		  </view>

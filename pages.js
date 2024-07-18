@@ -547,7 +547,7 @@ module.exports=()=>({
 		{
 			"path": "pages/tabbar/me/reward",
 			"style": {
-				"navigationBarTitleText": "支付页面",
+				"navigationBarTitleText": "打赏页面",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#fafafa"
 			},
