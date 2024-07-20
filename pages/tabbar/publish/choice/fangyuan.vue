@@ -370,7 +370,7 @@
 							:disabled="setpAll"></u-input>
 					</u-form-item>
 					<!-- 详细地址 -->
-					<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="200"
+					<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150"
 						:label-position="labelPosition" label="详细地址 :" prop="communityName" ref="item1" required>
 						<u-input :border="border" placeholder="请输入详细地址具体到房间号" type="text" v-model="houseModel.roomName"
 							:disabled="setpAll"></u-input>
