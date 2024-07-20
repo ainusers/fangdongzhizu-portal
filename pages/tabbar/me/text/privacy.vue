@@ -673,7 +673,6 @@
 		<view>
 			SDK隐私政策链接/目的：<a href="https://doc.sigmob.com/Sigmob%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/%E9%9A%90%E7%A7%81%E6%9D%A1%E6%AC%BE/%E9%9A%90%E7%A7%81%E6%94%BF%E7%AD%96/" target="_blank">Sigmob隐私协议</a>
 		</view>
-		
 		<view class="bold">
 			8、微信开放平台
 		</view>

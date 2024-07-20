@@ -77,7 +77,13 @@
 			<view>
 				5、不建议军人/军属，教师，医生/护士进行打赏
 			</view>
+			<view>
+				6、每一份打赏都是对我们努力的认可，感谢您的支持
+			</view>
 		</view>
+		
+		<!-- 支付成功提示框 -->
+		<u-modal v-model="show" :content="content" title="温馨提示"></u-modal>
 		
 		<!-- 信息流广告 -->
 		<ad adpid="1804384865"></ad>
@@ -92,8 +98,9 @@
 				src: 'http://43.143.148.105:9090/banner/logo-apple.png',
 				currentIndex:0,
 				moneyList:[1,5,10,20,50,100],
-				show:false,
-				payType:'wxpay'
+				show: false,
+				payType:'wxpay',
+				content: '每一份打赏都是对我们努力的认可，感谢您的支持'
 			}
 		},
 		methods:{
@@ -109,31 +116,33 @@
 					this.$H.get('/zf/v1/ali/pay',{price: this.money,username: this.$store.state.userInfo.username},true).then(res=>{
 						if(res.status){
 							console.log("-------------->" + res.data[0]);
+							var that = this;
 							uni.requestPayment({
 								provider: 'alipay',
 								orderInfo: res.data[0],
 								success(r) {
-									uni.showToast({
-										title:"支付成功",
-										icon: "success"
+									// 上传打赏信息
+									that.$H.get('/zf/v1/ali/statistics', {}, true).then(res => {
+										// 反馈用户提示语
+										that.show = true;
 									})
 								},
-								fail(e) {
+								fail(err) {
 									uni.showToast({
-										title:"用户取消支付",
-										icon: "error"
+										title: err.errMsg,
+										icon: 'none',
+										duration: 3000
 									})
-								},
-								complete: () => {
-									console.log("payment结束")
 								}
 							})
 						}
 					})
 				} else {
-					this.$H.get('/zf/v1/wx/pay?order=app_dashang_&money='+this.money+'&desc=房东直租_app_打赏&username='+this.$store.state.userInfo.username,{},true).then(res=>{
+					let order = 'app_dashang_'+ Date.now().toString().slice(-7);
+					this.$H.get('/zf/v1/wx/pay?order='+order+'&money='+this.money+'&desc=房东直租_app_打赏&username='+this.$store.state.userInfo.username,{},true).then(res=>{
 						if(res.status){
 							console.log("-------------->" + JSON.stringify(res.data[0]));
+							var that = this;
 							uni.requestPayment({
 							    "provider": "wxpay", 
 							    "orderInfo": {
@@ -146,11 +155,24 @@
 							        "sign": res.data[0].sign // 签名，这里用的 MD5/RSA 签名
 							    },
 								success: function (res) {
-									let rawdata = JSON.parse(res.rawdata);
-									console.log("支付成功");
+									let data = {
+										'order': order,
+										'money': that.money,
+										'desc': '房东直租_app_打赏',
+										'username': that.$store.state.userInfo.username
+									}
+									// 上传打赏信息
+									that.$H.get('/zf/v1/wx/statistics', data, true).then(res => {
+										// 反馈用户提示语
+										that.show = true;
+									})
 								},
 								fail: function (err) {
-									console.log('支付失败:' + JSON.stringify(err));
+									uni.showToast({
+										title: err.errMsg,
+										icon: 'none',
+										duration: 3000
+									})
 								}
 							});
 						}

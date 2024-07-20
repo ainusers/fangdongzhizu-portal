@@ -8,7 +8,7 @@ export default {
 				options.url = config.domain + url;
 			}
 			options.complete = (response) => {
-				if (response.data.code == 200) {
+				if (response.data.code == 200 || response.statusCode == 200) {
 					resolve(response.data)
 				} else if (response.data.status == 401) {
 					uni.removeStorage({

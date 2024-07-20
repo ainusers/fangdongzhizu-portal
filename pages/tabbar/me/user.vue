@@ -330,7 +330,7 @@
 					 if(res.status&&res.code==200){
 							uni.showToast({
 								title: '修改成功',
-										icon: 'none',
+								icon: 'none',
 								duration: 2000
 							})
 							that.userInfo.avatar=imgAvtar
