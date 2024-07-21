@@ -132,7 +132,7 @@
 		},
         onLoad() {
 			getLatest().then(res=>{
-				if(res.version!=this.$store.state.version){
+				if(res.version < this.$store.state.version){
 					this.isShow=true
 				}
 			})
