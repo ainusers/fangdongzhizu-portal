@@ -178,7 +178,7 @@
 </template>
 
 <script>
-import {htmlEncode,tranfTime} from '../../../utils/utils.js'
+import {htmlEncode,tranfTime} from '@/utils/utils.js'
 export default {
 	data() {
 		return {
@@ -429,7 +429,7 @@ export default {
 							}
 							if (uni.getSystemInfoSync().platform == 'ios') {
 							    // 解决ios手机时间格式化NaN问题
-							    item.create_time = tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm).replace(/-/g, '-')
+							    item.create_time = tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm).replace(/-/g, '/')
 							} else {
 								item.create_time=tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm)
 							}
@@ -464,7 +464,7 @@ export default {
 							if(item.create_time.length>10){
 								if (uni.getSystemInfoSync().platform == 'ios') {
 								    // 解决ios手机时间格式化NaN问题
-								    item.create_time = tranfTime(item.create_time).replace(/-/g, '-')
+								    item.create_time = tranfTime(item.create_time).replace(/-/g, '/')
 								} else {
 									item.create_time=tranfTime(item.create_time)
 								}
