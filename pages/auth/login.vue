@@ -192,7 +192,12 @@
 			            uni.switchTab({
 			                url: '/pages/tabbar/home/home'
 			            })
-			        }
+			        } else {
+						uni.showToast({
+							icon: 'none',
+							title: res.message
+						});
+					}
 				})
 			},
 			// 手机号登录
@@ -240,6 +245,11 @@
 						uni.switchTab({
 							url: '/pages/tabbar/home/home'
 						})
+					} else {
+						uni.showToast({
+							icon: 'none',
+							title: res.message
+						});
 					}
 				})
 			},
