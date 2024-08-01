@@ -414,25 +414,6 @@ export default {
 							this.$set(item,'replyList',[])
 							item.AllReply=false
 							item.commentText='展开查看更多'
-							let time=new Date(item.create_time)
-							let y=time.getFullYear()
-							let m=time.getMonth()+1
-							let d=time.getDate()
-							let h=time.getHours()
-							let mm=time.getMinutes()
-							let s=time.getSeconds()
-							if(h<10){
-								h='0'+h
-							}
-							if(mm<10){
-								mm='0'+mm
-							}
-							if (uni.getSystemInfoSync().platform == 'ios') {
-							    // 解决ios手机时间格式化NaN问题
-							    item.create_time = tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm).replace(/-/g, '/')
-							} else {
-								item.create_time=tranfTime(y+'-'+m+'-'+d +'  '+h+':'+mm)
-							}
 							that.commentList.push(item)
 							item.likeNum=0
 							that.getTwoList(item.comment_user_id,index,item.comment_id,item)
