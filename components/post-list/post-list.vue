@@ -41,7 +41,7 @@
 					</view>
 					<!-- 列表内容 -->
 					<view class="post-content" >
-						<rich-text class="post-text" :nodes="item.words"></rich-text>
+						<rich-text :style="showRow" class="post-text" :nodes="item.words"></rich-text>
 						<view v-show="item.image&&item.image[0]!=''">
 							<block>
 								<!--一张图片-->
@@ -137,7 +137,8 @@
 			list: Array,
 			loadStatus: String,
 			isDetail: Boolean,
-			isPersonal: Boolean
+			isPersonal: Boolean,
+			showRow: String
 		},
 		components: {
 			zhizuReport,
@@ -188,7 +189,7 @@
 		},
 		methods: {
 			tranfTime(autoTime) {
-				var now = (Date.parse(new Date())) / 1000; //计算当前时间戳 
+				var now = (Date.parse(new Date())) / 1000; //计算当前时间戳
 				var occur = (Date.parse(new Date(autoTime))) / 1000;; //自动收货的时间戳 （字符串转时间戳）
 				var diff = (now - occur) * 1000; //时间差的毫秒数
 				// 差值计算日、时、分
@@ -422,7 +423,6 @@
 		display: block;
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 10;
 		white-space: pre-wrap;
 		overflow: hidden;
 		padding: 0 10rpx 0 10rpx;

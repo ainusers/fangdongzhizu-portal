@@ -85,7 +85,7 @@
 		</view>
  -->
 		<!-- 朋友圈 -->
-		<post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus" @clickLike="clickLike"></post-list>
+		<post-list :showRow="'-webkit-line-clamp: 2'" :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus" @clickLike="clickLike"></post-list>
 	</view>
 </template>
 
