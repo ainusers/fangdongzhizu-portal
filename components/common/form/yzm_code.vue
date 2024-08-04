@@ -10,7 +10,7 @@
 				v-model="code" placeholder="请输入验证码" maxlength="6"/>
 		</view>
 		<view>
-			<view style="opacity: 0.8;" class="yzm fs28  main-color" @click="sendCode">
+			<view class="yzm fs28  main-color" @click="sendCode">
 				{{codeDuration ? codeDuration + 's' : '获取验证码' }}</view>
 		</view>
 	</view>
@@ -64,6 +64,11 @@
 										clearInterval(timer);
 									}
 								}, 1000)
+							} else{
+								uni.showToast({
+									icon: 'none',
+									title: res.message
+								});
 							}
 						});
 					}else{
