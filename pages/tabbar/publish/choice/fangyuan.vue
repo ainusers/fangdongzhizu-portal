@@ -1867,32 +1867,38 @@
 				let imagesNatureArr = ''
 				let imagesHouseArr = ''
 				// #ifdef APP-PLUS
-				var location=''
-				let address =''
+				var location = ''
+				let address = ''
+				let platform = 'android'
 				if(this.$store.state.address&&this.$store.state.address.province){
 					address=this.$store.state.address
 				} else {
-					// 先判断是否授权,再判断是否开启定位服务
-					let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
-					if(result!=1){
-						uni.hideToast();
-						uni.showToast({
-							title: "发布失败，未开启定位权限",
-							icon: 'none',
-							duration: 2000
-						})
-						return
-					} else{
-						// 没开启定位服务就弹窗
-						const systemSetting = uni.getSystemSetting()
-						if(!systemSetting.locationEnabled){
-							checkOpenGPSServiceByAndroid()
-							return 
-						}else{
-							location = await this.getLocation();
+					// 判断当前定位平台（ios还是android）
+					if (uni.getSystemInfoSync().platform == 'ios') {
+						// 检查是否开启位置信息权限
+						if (!permision.judgeIosPermission("location")) {
+						    // 打开权限设置界面
+						    gotoAppSetting();
+						} else {
+						    // ios手机定位服务（GPS）已授权
+							location = await this.getIosLocation();
 							address=location.address
 							this.$store.commit('address',location.address)
 						}
+						platform = 'ios'
+					} else {
+						// 先判断是否授权,再判断是否开启定位服务
+						let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
+						if (result != 1) {
+						    // 打开权限设置界面
+						    permision.gotoAppPermissionSetting();
+						} else {
+						    // android手机定位服务（GPS）已授权
+							location = await this.getAndroidLocation();
+							address=location.address
+							this.$store.commit('address',location.address)
+						}
+						platform = 'android'
 					}
 				}
 				let position = address.province + '-' + address.city + '-' + address.district + '-' +
@@ -1928,7 +1934,8 @@
 					waterElectricMoney: this.houseModel.hydropowerType,
 					support: this.houseModel.houseConfigStr,
 					status: 1,
-					liveTime: this.houseModel.live_time
+					liveTime: this.houseModel.live_time,
+					platform: platform
 				}
 				// #ifdef APP-PLUS
 				params['longitude'] = location.longitude
@@ -1974,18 +1981,62 @@
 					}
 				})
 			},
-			getLocation() { //h5中可能不支持,自己选择
+			// android定位获取
+			getAndroidLocation() {
 				return new Promise((resolve, reject) => {
+					// android平台使用gcj02坐标
 					uni.getLocation({
 						type: 'gcj02',
+						isHighAccuracy:true,
 						geocode: true,
-						isHighAccuracy: true,
-						success: function(res) {
+						success: function (res) {
 							resolve(res);
-							console.log(res)
 						},
 						fail: (e) => {
-							reject(e)
+							if("authorized" == uni.getAppAuthorizeSetting().locationAuthorized){
+								uni.showToast({ title: '请打开手机GPS定位功能', duration: 2000, icon: 'none' });
+							} else {
+								uni.showModal({
+									title: '温馨提示',
+									content: '您还没有给APP地理位置权限，请在权限管理页面授权',
+									showCancel: false,
+									success: async (res) => {
+										// 跳转应用权限管理页面
+										gotoAppSetting();
+									}
+								})
+							}
+							reject(e);
+						}
+					});
+				})
+			},
+			// ios定位获取
+			getIosLocation() {
+				return new Promise((resolve, reject) => {
+					// ios平台使用wgs84坐标
+					uni.getLocation({
+						type: 'wgs84',
+						isHighAccuracy:true,
+						geocode: true,
+						success: function (res) {
+							resolve(res);
+						},
+						fail: (e) => {
+							if("authorized" == uni.getAppAuthorizeSetting().locationAuthorized){
+								uni.showToast({ title: '请通过设置-隐私-定位服务，打开手机GPS定位功能', duration: 2000, icon: 'none' });
+							} else {
+								uni.showModal({
+									title: '温馨提示',
+									content: '您还没有给APP地理位置权限，请在权限管理页面授权',
+									showCancel: false,
+									success: async (res) => {
+										// 跳转应用权限管理页面
+										gotoAppSetting();
+									}
+								})
+							}
+							reject(e);
 						}
 					});
 				})

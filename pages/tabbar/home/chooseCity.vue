@@ -72,57 +72,54 @@
 </style>
 <template>
 	<form report-submit>
-		<view class="choose_city" :style="{height: pageHeight}">
-			<scroll-view :scroll-with-animation="scrollAnimate" enable-back-to-top :scroll-into-view="scrollIntoId"
-				class="choose_city_scroll" scroll-y>
-				<view class="choose_city_cont">
-					<view class='city_title'>当前定位城市 :</view>
-					<view class="choose_title">
-						<button form-type="submit" hover-class="none" class="gps_city f_r_s" @click="chooseCity(gpsCityName)">
-								  {{ gpsCityName.cityName }}
-						</button>
-						<view class="dingwei">
-							<image class="gps_icon" src="@/static/home/position.svg"></image>
-							<view class="reset"  @click="resetAddress(true)">
-								重新定位
-							</view>
+		<view class="choose_city">
+			<view class="choose_city_cont">
+				<view class='city_title'>当前定位城市 :</view>
+				<view class="choose_title">
+					<button form-type="submit" hover-class="none" class="gps_city f_r_s" @click="chooseCity(gpsCityName)">
+							  {{ gpsCityName.cityName }}
+					</button>
+					<view class="dingwei">
+						<u-icon name="map" color="#2979ff" size="33"></u-icon>
+						<view class="reset"  @click="resetAddress(true)">
+							重新定位
 						</view>
 					</view>
-					
-				   <view class='city_title'>手动选择城市：</view>
-				   <u-form-item label-position="left" prop="region" label-width="150" style="padding: 10px 15px" borderBottom >
-				   <u-input :border="false" type="select" v-model="position.region" placeholder="请选择所属区域"
-				   		@click="pickerShow = true"></u-input>
-				   </u-form-item>
-				   <uPicker mode="region" v-model="pickerShow" @confirm="regionConfirm"></uPicker>
-				   
-				   <view class="choose_title">热门城市：</view>
-				   <view class="hot_city_list f_r_s">
-					   <block v-for="(item, hotIndex) in hotCityList" :index="hotIndex" :key="hotIndex">
-						   <button form-type="submit" hover-class="none" @click="chooseCity(item)"
-								class="hot_city_item">{{ item.cityName }}</button>
-					   </block>
-				   </view>
 				</view>
-			</scroll-view>
+				
+			   <view class='city_title'>手动选择城市：</view>
+			   <u-form-item label-position="left" prop="region" label-width="150" style="padding: 10px 15px" borderBottom >
+			   <u-input :border="false" type="select" v-model="position.region" placeholder="请选择所属区域"
+					@click="pickerShow = true"></u-input>
+			   </u-form-item>
+			   <uPicker mode="region" v-model="pickerShow" @confirm="regionConfirm"></uPicker>
+			   
+			   <view class="choose_title">热门城市：</view>
+			   <view class="hot_city_list f_r_s">
+				   <block v-for="(item, hotIndex) in hotCityList" :index="hotIndex" :key="hotIndex">
+					   <button form-type="submit" hover-class="none" @click="chooseCity(item)"
+							class="hot_city_item">{{ item.cityName }}</button>
+				   </block>
+			   </view>
+			</view>
 		</view>
 	</form>
 </template>
 
 <script>
+	import {gotoAppSetting} from '@/utils/utils.js';
 	import uPicker from '@/components/common/u-picker.vue';
 	import permision from "@/sdk/wa-permission/permission.js";
+	
 	export default {
 		components: {
 			uPicker
 		},
 		data() {
 			return {
-                scrollIntoId: "",
                 gpsCityName: {
-                    cityName: "定位中.."
+                    cityName: "定位中..."
                 },
-                pageHeight: "100%",
 				pickerShow: false,
 				position: {
 					province: '', //省
@@ -130,7 +127,6 @@
 					area: '', //区，县城
 					region: '', //所属区域
 				},
-                scrollAnimate: true,
 				hotCityList: [
 					{ cityName: "北京市" },
 					{ cityName: "上海市" },
@@ -153,9 +149,6 @@
         onLoad() {
 			this.resetAddress(false);
         },
-        onReady() {
-        	this.getPhoneInfo();
-        },
         methods: {
 			// 选择地区回调
 			regionConfirm(e) {
@@ -171,28 +164,50 @@
 					}
 				});
 			},
+			
+			// 平台重新定位（判断平台ios还是android）
 			async resetAddress(status){
+				// 判断平台是否是ios
+				if (uni.getSystemInfoSync().platform == 'ios') {
+					this.resetIosAddress(status);
+				} else {
+					// 调用android权限判断
+					this.resetAndroidAddress(status);
+				}
+			},
+			
+			// ios平台重新定位
+			async resetIosAddress(status){
+				// 检查是否开启位置信息权限
+			    if (!permision.judgeIosPermission("location")) {
+			        // 打开权限设置界面
+			        gotoAppSetting();
+			    } else {
+			        // ios手机定位服务（GPS）已授权
+			        this.getIosLocation(status);
+			    }
+			},
+			
+			// android平台重新定位
+			async resetAndroidAddress(status){
 				// 检查是否开启位置信息权限
                 let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
                 if (result != 1) {
                     // 打开权限设置界面
                     permision.gotoAppPermissionSetting();
                 } else {
-                    //手机定位服务（GPS）已授权
-                    this.getlocation(status);
+                    // android手机定位服务（GPS）已授权
+                    this.getAndroidLocation(status);
                 }
 			},
-            // 获取设备信息
-            getPhoneInfo() {
-                let res = uni.getSystemInfoSync();
-                this.pageHeight = res.screenHeight + "px";
-            },
-			// 定位获取
-			getlocation(status) {
+
+			// ios定位获取
+			getIosLocation(status) {
 				let that = this;
+				// ios平台使用wgs84坐标
 				uni.getLocation({
-					type: 'gcj02',
-					// isHighAccuracy:true,
+					type: 'wgs84',
+					isHighAccuracy:true,
 					geocode: true,
 					success: function (res) {
 						that.gpsCityName.cityName=res.address.city
@@ -206,22 +221,66 @@
 						}
 					},
 					fail: (e) => {
-						uni.showToast({
-							title: "定位失败，未开启定位服务",
-							icon: 'none',
-							duration: 2000
-						})
+						if("authorized" == uni.getAppAuthorizeSetting().locationAuthorized){
+							uni.showToast({ title: '请通过设置-隐私-定位服务，打开手机GPS定位功能', duration: 2000, icon: 'none' });
+						} else {
+							uni.showModal({
+								title: '温馨提示',
+								content: '您还没有给APP地理位置权限，请在权限管理页面授权',
+								showCancel: false,
+								success: async (res) => {
+									// 跳转应用权限管理页面
+									gotoAppSetting();
+								}
+							})
+						}
 					}
 				});
 			},
-			changeTwoDecimal_f(num){
-				return num.toFixed(2)
+			
+			// android定位获取
+			getAndroidLocation(status) {
+				let that = this;
+				// android平台使用gcj02坐标
+				uni.getLocation({
+					type: 'gcj02',
+					isHighAccuracy:true,
+					geocode: true,
+					success: function (res) {
+						that.gpsCityName.cityName=res.address.city
+						//只有点击重新定位的时候出来
+						if (status) {
+							uni.showToast({
+								title: "已更新定位",
+								icon: 'none',
+								duration: 2000
+							})
+						}
+					},
+					fail: (e) => {
+						if("authorized" == uni.getAppAuthorizeSetting().locationAuthorized){
+							uni.showToast({ title: '请打开手机GPS定位功能', duration: 2000, icon: 'none' });
+						} else {
+							uni.showModal({
+								title: '温馨提示',
+								content: '您还没有给APP地理位置权限，请在权限管理页面授权',
+								showCancel: false,
+								success: async (res) => {
+									// 跳转应用权限管理页面
+									gotoAppSetting();
+								}
+							})
+						}
+					}
+				});
 			},
+			
+			// 选择城市确定后操作
 			chooseCity(item){
 				uni.navigateBack({
 					delta: 1,
 					success() {
-						uni.$emit('chooseCity',{cityName: item.cityName})
+						uni.$emit('chooseCity',{cityName: item.cityName});
 					}
 				});
 			}

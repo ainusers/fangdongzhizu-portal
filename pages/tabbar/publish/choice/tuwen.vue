@@ -153,15 +153,14 @@ textarea {
     top: 1upx;
     right: 1upx;
     z-index: 200;
-    
 }
 .hide{
-  display:none;
-opacity:0;
-left:-99999px;
-height:0;
-width:0;
-    }
+	display:none;
+	opacity:0;
+	left:-99999px;
+	height:0;
+	width:0;
+}
 .page {
     width: 100%;
     height: 100%;
@@ -247,7 +246,6 @@ width:0;
 				</view>
 			</u-modal>
         </form>
-
     </view>
 </template>
 
@@ -347,7 +345,7 @@ export default {
 									data['longitude'] = location.longitude// 经度
 									data['latitude'] = location.latitude// 纬度
 									data['country'] = location.address.country
-									data['province'] = location.address.province
+									data['province'] = location.address.province == null ? location.address.city : location.address.province
 									data['city'] = location.address.city
 									data['address'] = location.address.district + "-" + location.address.street + "-" + location.address.streetNum + "-" + location.address.poiName
 									data['type'] = location.type
@@ -388,31 +386,61 @@ export default {
         // 获取地理位置（h5可能不支持）
         getLocation() {
             return new Promise((resolve, reject) => {
-                uni.getLocation({
-                    type: 'gcj02',
-                    geocode: true,
-                    isHighAccuracy: true,
-                    success: function (res) {
-                        resolve(res);
-                    },
-                    fail: (e) => {
-						uni.hideToast();
-						if("authorized" == uni.getAppAuthorizeSetting().locationAuthorized){
-							uni.showToast({ title: '请打开手机GPS定位功能', duration: 2000, icon: 'none' });
-						} else {
-							uni.showModal({
-							    title: '温馨提示',
-							    content: '您还没有给APP地理位置权限，请在权限管理页面授权',
-								showCancel: false,
-							    success: async (res) => {
-									// 跳转应用权限管理页面
-									gotoAppSetting();
-								}
-							})
-						}
-                        reject(e);
-                    }
-                });
+				// ios平台使用wgs84坐标
+				if (uni.getSystemInfoSync().platform == 'ios') {
+					uni.getLocation({
+					    type: 'wgs84',
+					    geocode: true,
+					    isHighAccuracy: true,
+					    success: function (res) {
+					        resolve(res);
+					    },
+					    fail: (e) => {
+							uni.hideToast();
+							if("authorized" == uni.getAppAuthorizeSetting().locationAuthorized){
+								uni.showToast({ title: '请通过设置-隐私-定位服务，打开手机GPS定位功能', duration: 2000, icon: 'none' });
+							} else {
+								uni.showModal({
+									title: '温馨提示',
+									content: '您还没有给APP地理位置权限，请在权限管理页面授权',
+									showCancel: false,
+									success: async (res) => {
+										// 跳转应用权限管理页面
+										gotoAppSetting();
+									}
+								})
+							}
+					        reject(e);
+					    }
+					});
+				} else {
+					// android平台使用gcj02坐标
+					uni.getLocation({
+					    type: 'gcj02',
+					    geocode: true,
+					    isHighAccuracy: true,
+					    success: function (res) {
+					        resolve(res);
+					    },
+					    fail: (e) => {
+							uni.hideToast();
+							if("authorized" == uni.getAppAuthorizeSetting().locationAuthorized){
+								uni.showToast({ title: '请打开手机GPS定位功能', duration: 2000, icon: 'none' });
+							} else {
+								uni.showModal({
+									title: '温馨提示',
+									content: '您还没有给APP地理位置权限，请在权限管理页面授权',
+									showCancel: false,
+									success: async (res) => {
+										// 跳转应用权限管理页面
+										gotoAppSetting();
+									}
+								})
+							}
+					        reject(e);
+					    }
+					});
+				}
             })
         },
         close(e) {
