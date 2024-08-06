@@ -283,6 +283,7 @@
 					title: '温馨提示',
 					content: '获取相机和相册权限才可以选择图片',
 					showCancel: false,
+					confirmText: '继续',
 					success(res) {
 						if (res.confirm) {
 							uni.showActionSheet({

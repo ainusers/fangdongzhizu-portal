@@ -317,6 +317,7 @@ export default {
                         title: '温馨提示',
                         content: '发布动态需要获取位置权限，用于展示动态的发布城市',
 						showCancel: false,
+						confirmText: '继续',
                         success: async (res) => {
                             if (res.confirm) {
 								// 判断是否授权定位
@@ -454,6 +455,7 @@ export default {
 				    title: '温馨提示',
 				    content: '获取相机或相册(视频)权限才可以上传图片',
 					showCancel: false,
+					confirmText: '继续',
 				    success(res) {
 				        if (res.confirm) {
 							uni.chooseVideo({
@@ -487,6 +489,7 @@ export default {
 				    title: '温馨提示',
 				    content: '获取相机或相册(图片)权限才可以上传图片',
 					showCancel: false,
+					confirmText: '继续',
 				    success(res) {
 				        if (res.confirm) {
 							uni.chooseImage({

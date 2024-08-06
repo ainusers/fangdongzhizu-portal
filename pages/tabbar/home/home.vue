@@ -324,8 +324,14 @@
 		},
 		onLoad() {
 			that = this
-			this.cityName = '北京市'
-			uni.setStorageSync('cityName', this.cityName)
+			// 从本地缓存中获取城市名称，如果没有则使用默认
+			let cityName = uni.getStorageSync('cityName');
+			if(cityName){
+				that.cityName = cityName;
+			} else {
+				that.cityName = '北京市'
+				uni.setStorageSync('cityName', this.cityName)
+			}
 			// 获取该城市的所有区
 			this.getArea()
 			// 查询房源列表
