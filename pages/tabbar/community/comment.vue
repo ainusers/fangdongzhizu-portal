@@ -126,10 +126,6 @@
 		<!-- 评论区 -->
 		<view class="comment_main">
 			<block v-show="commentList.length > 0&&commentListShow" >
-
-				<!-- 信息流广告 -->
-				<ad adpid="1804384865">{{commentList.length}}</ad>
-				
 				<view class="comment_con">
 					<view   class="comment" v-for="(res, index1) in commentList" :key="res.id">
 						<view class="left">
@@ -169,6 +165,9 @@
 				</view>
 			</block>
 			<view v-show="commentList.length <= 0" >
+				<!-- 信息流广告 -->
+				<ad adpid="1804384865"></ad>
+				
 				<u-empty text="暂无评论" mode="message"></u-empty>
 			</view>
 		</view>
