@@ -164,7 +164,7 @@
 					</view>
 				</view>
 			</block>
-			<view v-show="commentList.length <= 0" >
+			<view v-show="commentList.length < 1" >
 				<!-- 信息流广告 -->
 				<ad adpid="1804384865"></ad>
 				

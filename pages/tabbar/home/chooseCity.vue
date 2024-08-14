@@ -167,13 +167,23 @@
 			
 			// 平台重新定位（判断平台ios还是android）
 			async resetAddress(status){
-				// 判断平台是否是ios
-				if (uni.getSystemInfoSync().platform == 'ios') {
-					this.resetIosAddress(status);
-				} else {
-					// 调用android权限判断
-					this.resetAndroidAddress(status);
-				}
+				// 提示用户获取权限
+				uni.showModal({
+				    title: '温馨提示',
+				    content: '选择城市需要获取位置权限，用于获取您所在城市的房源数据',
+					confirmText: '继续',
+				    success: async (res) => {
+				        if (res.confirm) {
+							// 判断平台是否是ios
+							if (uni.getSystemInfoSync().platform == 'ios') {
+								this.resetIosAddress(status);
+							} else {
+								// 调用android权限判断
+								this.resetAndroidAddress(status);
+							}
+				        }
+				    }
+				})
 			},
 			
 			// ios平台重新定位
