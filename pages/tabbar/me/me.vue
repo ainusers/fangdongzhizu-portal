@@ -42,7 +42,7 @@
 	  }
 	}
 	.item-bottom-solid {
-	  border-bottom: 1px solid #d4d6da;
+	  border-bottom: 1px solid #f2f2f2;
 	}
 	.func {
 		display: flex;

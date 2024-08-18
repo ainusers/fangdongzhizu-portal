@@ -186,7 +186,7 @@ textarea {
     <view class="page" @touchstart="touchStart" @touchend="touchEnd">
         <form>
             <view class="uni-textarea">
-                <textarea placeholder="说点什么吧..." v-model="content" />
+                <textarea placeholder="在这里，你的声音将被世界听见..." v-model="content" />
             </view>
             <view class="upload-type">
                 <view>上传类型：</view>

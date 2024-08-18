@@ -4,7 +4,7 @@
 	@import "@/style/login/skin.scss";     
 	.forget_btn{
 		position: absolute;
-		bottom:100rpx;
+		bottom: 40rpx;
 		width: $boxWidth
 	}
 </style>

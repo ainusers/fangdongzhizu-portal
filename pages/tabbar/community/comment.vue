@@ -116,6 +116,7 @@
 }
 .comment-tool .u-btn {
 	margin-left: 10rpx;
+	border-radius: 20rpx;
 }
 </style>
 <template>
@@ -175,7 +176,7 @@
 		<view class="comment-tool">
 			<textarea :placeholder="placeholder" :focus="focus" fixed="true" cursor-spacing="10"
 				v-model="content" auto-height="true" placeholder-class="txt-placeholder"></textarea>
-			<u-button type="primary" @click="addComment" :disabled="isSubmitD" style="border-radius: 0;" >发布</u-button>
+			<u-button type="primary" @click="addComment" :disabled="isSubmitD">发布</u-button>
 		</view>
 	</view>
 </template>
@@ -188,7 +189,7 @@ export default {
 			content: '',
 			focus: false,
 			isSubmitD: false,
-			placeholder: '说点什么...',
+			placeholder: '文字是桥梁，连接心与心的距离...',
 			commlistOne:[],//一级评论
 			beCommentUserId:0,//被回复id，如果没有就默认0
 			AllReply:false,

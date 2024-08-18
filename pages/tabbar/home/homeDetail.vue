@@ -143,10 +143,10 @@
 		  align-items: center;
 	  }
 	  .contact{
-		  width: 60%;
-		  padding: 0px 4px 4px 0px;
+		  width: 50%;
+		  margin: 0px 8px 8px 0px;
 		  background: #5199ff;
-		   border-radius: 50upx;
+		  border-radius: 20upx;
 		  .u-btn--default{
 			  background: none;
 			  color:#fff;
@@ -158,12 +158,12 @@
 	  }
 	  .target{
 		  font-size: 14px;
-		  margin-left: 10upx;
+		  margin-left: 5upx;
 	  }
   }
-  .pei_tao_she_shi{
-	  padding:10upx;
-  }
+	.pei_tao_she_shi{
+		padding:10upx;
+	}
 	.map_con{
 		padding: 20upx;
 	}
