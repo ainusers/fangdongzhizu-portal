@@ -29,6 +29,8 @@
 		<view class="form" v-if="tabIndex ==1">
 			<!-- 手机号 -->
 			<phoneTab type="phone" ref="phone"></phoneTab>
+			<!-- 图形验证码 -->
+			<imgCode ref="imgCode" />
 			<!-- 验证码 -->
 			<yzmCode ref="yzmCode" />
 		</view>
@@ -82,6 +84,7 @@
 	import phoneTab from '@/components/common/form/phone_tab.vue'
 	import pwdTab from '@/components/common/form/pwd_tab.vue'
 	import yzmCode from '@/components/common/form/yzm_code.vue'
+	import imgCode from '@/components/common/form/img_code.vue'
 	import {MycheckUpdate} from '@/utils/utils.js'
 	export default {
 		data() {
@@ -102,7 +105,8 @@
 		components:{
 			phoneTab,
 			pwdTab,
-			yzmCode
+			yzmCode,
+			imgCode
 		},
 		onLoad() {
 			that = this;
@@ -213,6 +217,13 @@
 					uni.showToast({
 						icon: 'none',
 						title: '请填写正确的手机号'
+					});
+					return;
+				}
+				if (this.$refs.imgCode.code.length < 1) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入图形验证码'
 					});
 					return;
 				}

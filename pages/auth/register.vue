@@ -21,9 +21,11 @@
 				<image class="label_icon" src="/static/login/phone.png" mode=""></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input placeholder-class="placeholder" class="qui-input" type="number" value="" v-model="phone" placeholder="请输入手机号" />
+					<input placeholder-class="placeholder" class="qui-input" type="number" value="" v-model="phone" @input="inputPhone" placeholder="请输入手机号" />
 				</view>
 			</view>
+			<!-- 图形验证码 -->
+			<imgCode ref="imgCode" />
 			<view class="flex a-center form-item">
 				<view class="label">
 					<text>验证码</text>
@@ -81,6 +83,7 @@
 <script>
 	var that=''
 	import {checkExist} from '../../utils/utils.js'
+	import imgCode from '@/components/common/form/img_code.vue'
 	export default {
 		data() {
 			return {
@@ -89,13 +92,25 @@
 				password: '',
 				codeDuration: 0,
 				checked:false,
-				isShow:false
+				isShow:false,
+				random:''
 			}
+		},
+		components:{
+			imgCode
+		},
+		created() {
+			uni.$on('random',val=>{
+				this.random = val
+			})
 		},
 		onLoad(){
 			that=this
 		},
 		methods: {
+			inputPhone(e){
+				uni.$emit('getUserName',this.phone)
+			},
 			checkboxChange(){},
 			sendCode() {
 				if (this.phone.length < 1) {
@@ -112,7 +127,8 @@
 					if(!res.status){
 						// 获取验证码
 						this.$H.get('/zf/v1/code/sendCode',{
-							phone:this.phone
+							phone:this.phone,
+							random:this.random
 						}).then(res => {
 							if (res.code === 200) {
 								this.$u.toast('短信发送成功');

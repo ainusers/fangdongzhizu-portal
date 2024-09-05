@@ -24,14 +24,18 @@
 			return {
 				code:'',
 				codeDuration: 0,
-				username:''
+				username: '',
+				random: ''
 			}
 		},
 		
 		created() {
 			that=this
 			uni.$on('getUserName',val=>{
-				this.username=val
+				this.username = val
+			})
+			uni.$on('random',val=>{
+				this.random = val
 			})
 		},
 		onHide(){
@@ -47,7 +51,8 @@
 					if(res.status){
 						// 获取验证码
 						this.$H.get('/zf/v1/code/sendCode', {
-							phone: this.username
+							phone: this.username,
+							random: this.random
 						},false).then(res => {
 							if (res.code === 200) {
 								this.$u.toast('发送成功！');
