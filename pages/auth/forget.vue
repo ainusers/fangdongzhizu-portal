@@ -16,9 +16,11 @@
 				<image class="label_icon" src="/static/login/phone.png" mode=""></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input placeholder-class="placeholder" class="qui-input" type="number" value="" v-model="phone" maxlength="11" placeholder="请输入手机号" />
+					<input placeholder-class="placeholder" class="qui-input" type="number" value="" @input="inputPhone" v-model="phone" maxlength="11" placeholder="请输入手机号" />
 				</view>
 			</view>
+			<!-- 图形验证码 -->
+			<imgCode ref="imgCode" />
 			<view class="flex a-center form-item">
 				<view class="label">
 					<text>验证码</text>
@@ -61,22 +63,39 @@
 	var that='';
 	let timer =''
 	import {checkExist} from '@/utils/utils.js'
+	import imgCode from '@/components/common/form/img_code.vue'
 	export default {
 		data() {
 			return {
 				password: '',
 				phone: '',
 				code: '',
-				codeDuration: 0
+				codeDuration: 0,
+				random:'',
+				imgCode: ''
 			}
+		},
+		components:{
+			imgCode
 		},
 		onLoad(){
 			that=this
+		},
+		created() {
+			uni.$on('random',val=>{
+				this.random = val
+			})
+			uni.$on('getImgCode',val=>{
+				this.imgCode = val
+			})
 		},
 		onHide(){
 			clearInterval(timer);
 		},
 		methods: {
+			inputPhone(){
+				uni.$emit('getUserName',this.phone)
+			},
 			// 发送验证码
 			sendCode() {
 				if (this.phone.length < 1) {
@@ -86,6 +105,13 @@
 				  });
 				  return;
 				}
+				if (this.imgCode.length < 1) {
+					uni.showToast({
+						icon: 'none',
+						title: '请填写正确的图形验证码'
+					});
+					return;
+				}
 				if (this.codeDuration > 0) {
 				  return;
 				}
@@ -93,8 +119,14 @@
 					if(res.status){
 						// 获取验证码
 						this.$H.get('/zf/v1/code/sendCode',{
-							phone:this.phone
+							phone:this.phone,
+							random:this.random,
+							code: this.imgCode
 						}).then(res => {
+							if (res.code === 500) {
+								this.$u.toast(res.message);
+								return
+							}
 							if (res.code === 200) {
 								this.$u.toast('发送成功');
 								this.codeDuration = 60;

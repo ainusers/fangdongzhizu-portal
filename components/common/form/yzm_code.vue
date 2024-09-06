@@ -25,7 +25,8 @@
 				code:'',
 				codeDuration: 0,
 				username: '',
-				random: ''
+				random: '',
+				imgCode: ''
 			}
 		},
 		
@@ -37,6 +38,9 @@
 			uni.$on('random',val=>{
 				this.random = val
 			})
+			uni.$on('getImgCode',val=>{
+				this.imgCode = val
+			})
 		},
 		onHide(){
 			clearInterval(timer);
@@ -47,12 +51,17 @@
 					this.$u.toast('请填写正确的手机号');
 					return;
 				}
+				if (this.imgCode.length < 1) {
+					this.$u.toast('请填写正确的图形验证码');
+					return;
+				}
 				checkExist(this.username).then(res=>{
 					if(res.status){
 						// 获取验证码
 						this.$H.get('/zf/v1/code/sendCode', {
 							phone: this.username,
-							random: this.random
+							random: this.random,
+							code: this.imgCode
 						},false).then(res => {
 							if (res.code === 200) {
 								this.$u.toast('发送成功！');

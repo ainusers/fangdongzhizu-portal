@@ -2,7 +2,7 @@
 	<view class="main">
 		<form action="">
 			<u-form-item :label-position="labelPosition" label="当前手机号 :" prop="region" label-width="200">
-				<u-input v-model="oldPhone" type="number" :border="border" placeholder="请输入当前手机号"/>
+				<u-input v-model="oldPhone" @input="inputPhone" type="number" :border="border" placeholder="请输入当前手机号"/>
 			</u-form-item>
 			<u-form-item :label-position="labelPosition" label="更换手机号 :" prop="region" label-width="200">
 						<u-input v-model="newphone" type="number" :border="border" placeholder="请输入需要更换的手机号" maxlength="11"/>
@@ -10,6 +10,8 @@
 			<u-form-item :label-position="labelPosition" label="确认手机号 :" prop="region" label-width="200">
 						<u-input v-model="newphone1" type="number" :border="border" placeholder="请输入需要确认手机号"  maxlength="11"/>
 			</u-form-item>
+			<!-- 图形验证码 -->
+			<imgCode ref="imgCode" />
 			<view class="flex a-center form-item">
 				<view class="flex-1">
 					<input placeholder-class="placeholder"  class="qui-input" type="number" value=""
@@ -27,6 +29,7 @@
 
 <script>
 	import {checkExist} from '@/utils/utils.js'
+	import imgCode from '@/components/common/form/img_code.vue'
 	var that, timer;
 	export default {
 		data() {
@@ -38,19 +41,42 @@
 				Verification:'',
 				codeDuration: 0,
 				labelPosition: 'left',
-				userInfo:''
+				userInfo:'',
+				random:'',
+				imgCode: ''
 			}
+		},
+		created() {
+			uni.$on('random',val=>{
+				this.random = val
+			})
+			uni.$on('getImgCode',val=>{
+				this.imgCode = val
+			})
+		},
+		components:{
+			imgCode
 		},
 		onLoad(options){
 			that=this
 			this.userInfo=this.$store.state.userInfo
 		},
 		methods: {
+			inputPhone(){
+				uni.$emit('getUserName',this.oldPhone)
+			},
 			sendCode() {
 				if(this.newphone!=this.newphone1){
 					uni.showToast({
 						icon: 'none',
 						title: '更换手机号与确认手机号填写不一样'
+					});
+					return;
+				}
+				if (this.imgCode.length < 1) {
+					uni.showToast({
+						icon: 'none',
+						title: '请填写正确的图形验证码'
 					});
 					return;
 				}
@@ -66,7 +92,9 @@
 					if(!res.status){
 						this.codeDuration = 60;
 						this.$H.get('/zf/v1/code/sendCode', {
-							phone: this.newphone
+							phone: this.newphone,
+							random:this.random,
+							code: this.imgCode
 						},false).then(res => {
 							if (res.code === 200) {
 								this.$u.toast('发送成功');

@@ -6,8 +6,14 @@
 		<image class="label_icon" src="/static/login/code.png" mode=""></image>
 		<view class="label_fgs"></view>
 		<view class="flex-1">
-			<input placeholder-class="placeholder"  class="qui-input" value=""
-				v-model="code" placeholder="请输入图形验证码" maxlength="4" @blur="onBlurCode"/>
+			<input 
+				placeholder-class="placeholder"  
+				class="qui-input"
+				v-model="code" 
+				placeholder="请输入图形验证码" 
+				maxlength="4"
+				@input="inputCode"
+				@blur="onBlurCode"/>
 		</view>
 		<view class="code-canvas" @click="updateImageCode">
 		  {{this.dataMsg.code}}
@@ -16,7 +22,6 @@
 </template>
 
 <script>
-	import {checkExist} from '../../../utils/utils.js'
 	export default{
 		data(){
 			return {
@@ -44,12 +49,17 @@
 			}
 		},
 		methods:{
+			inputCode() {
+				uni.$emit('getImgCode',this.code)
+			},
 			onBlurCode() {
+				uni.$emit('random',this.dataMsg.key)
 				if(this.code!== this.dataMsg.code){
 					uni.showToast({
 						icon: 'none',
-						title: '图形验证码输入错误'
+						title: '请填写正确的图形验证码'
 					});
+					return
 				}
 			},
 			// 刷新验证码
@@ -63,6 +73,7 @@
 						if (res.code === 200) {
 							if(res.data && res.data.length > 0) {  
 								this.dataMsg.code = res.data[0].code
+								this.dataMsg.key = res.data[0].key
 								uni.$emit('random',res.data[0].key)
 							}
 						} else{

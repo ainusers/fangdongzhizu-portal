@@ -93,7 +93,8 @@
 				codeDuration: 0,
 				checked:false,
 				isShow:false,
-				random:''
+				random:'',
+				imgCode: ''
 			}
 		},
 		components:{
@@ -103,12 +104,15 @@
 			uni.$on('random',val=>{
 				this.random = val
 			})
+			uni.$on('getImgCode',val=>{
+				this.imgCode = val
+			})
 		},
 		onLoad(){
 			that=this
 		},
 		methods: {
-			inputPhone(e){
+			inputPhone(){
 				uni.$emit('getUserName',this.phone)
 			},
 			checkboxChange(){},
@@ -128,8 +132,13 @@
 						// 获取验证码
 						this.$H.get('/zf/v1/code/sendCode',{
 							phone:this.phone,
-							random:this.random
+							random:this.random,
+							code: this.imgCode
 						}).then(res => {
+							if (res.code === 500) {
+								this.$u.toast(res.message);
+								return
+							}
 							if (res.code === 200) {
 								this.$u.toast('短信发送成功');
 								this.codeDuration = 60;
