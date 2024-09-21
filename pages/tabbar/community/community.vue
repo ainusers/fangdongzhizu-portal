@@ -29,10 +29,10 @@
 <template>
 	<view>
 		<!-- 轮播图 -->
-		<u-swiper :list="swiperList"  radius="20rpx"></u-swiper>
+		<u-swiper :list="swiperList" radius="20rpx" height="350" mode="rect"></u-swiper>
 
 		<!-- 功能菜单 -->
-<!-- 		<view class="community">
+ 		<!-- <view class="community">
 			<view class="option" @click="goto('/pages/index/check/index')">
 				<view class="icon">
 					<image mode="aspectFit" src="../../../static/community/function/ad.png"></image>
@@ -82,8 +82,8 @@
 				</view>
 				<view class="name">商务合作</view>
 			</view>
-		</view>
- -->
+		</view> -->
+
 		<!-- 朋友圈 -->
 		<post-list :showRow="'-webkit-line-clamp: 1'" :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus" @clickLike="clickLike"></post-list>
 	</view>
