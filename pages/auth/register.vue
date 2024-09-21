@@ -2,15 +2,22 @@
 	/* 每个页面公共css */
 	@import "@/style/login/weex.scss";
 	@import "@/style/login/skin.scss";
-	.qradio{
-		transform: scale(0.6);
-		color: #FF5A5F;
+	.top{
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		width:100%;
+		image{
+			width:150rpx;
+			height:150rpx;
+			margin-top:100rpx;
+		}
 	}
 </style>
 <template>
 	<view class="abslrtb flex-column a-center wrap">
-		<view class="topbox flex-column aj-center">
-			<image class="logoimg" src="/static/logo.png" mode=""></image>
+		<view class="top">
+			<image src="@/static/me/logo.png"></image>
 		</view>
 		<!-- 用户信息表单 -->
 		<view class="form">
@@ -54,18 +61,17 @@
 			<view class="qbtn" @click="bindRegister" @tap="$u.throttle(bindRegister, 3000)">
 				<text class="btn-text-color fs30">立即注册</text>
 			</view>
-			<view class="blue_link" :class="{'animShake':isShow}">
-				<u-checkbox-group>
+			<view class="blue_link" :class="{'animShake':isShow}" style="display: flex;flex-direction: inherit;">
+				<u-checkbox-group width="25px">
 							<u-checkbox 
 								@change="checkboxChange" 
 								v-model="checked" 
 								name="注册协议"
-								shape="circle"
-								active-color="#7dc3f2"
-							>
+								shape="square"
+								active-color="#7dc3f2">
 							</u-checkbox>
 				</u-checkbox-group>
-				我已阅读并同意
+				<view>我已阅读并同意</view>
 				<view class="blue" @click="goUrl">
 					《注册协议》
 				</view>
@@ -82,7 +88,7 @@
 
 <script>
 	var that=''
-	import {checkExist} from '../../utils/utils.js'
+	import {checkExist} from '@/utils/utils.js'
 	import imgCode from '@/components/common/form/img_code.vue'
 	export default {
 		data() {

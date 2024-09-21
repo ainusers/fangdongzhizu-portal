@@ -48,10 +48,7 @@ async function _compress(_image) {
 				reject(e);
 			}
 		)
-
 	})
-
-
 }
 
 function get_image_info(_image) {

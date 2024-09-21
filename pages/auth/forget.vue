@@ -2,21 +2,32 @@
 	/* 每个页面公共css */
 	@import "@/style/login/weex.scss";
 	@import "@/style/login/skin.scss";
+	.top{
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		width:100%;
+		image{
+			width:150rpx;
+			height:150rpx;
+			margin-top:100rpx;
+		}
+	}
 </style>
 <template>
 	<view class="abslrtb flex-column a-center wrap">
-		<view class="topbox flex-column aj-center">
-			<image class="logoimg" src="/static/logo.png" mode=""></image>
+		<view class="top">
+			<image src="@/static/me/logo.png"></image>
 		</view>
 		<view class="form">
 			<view class="flex a-center form-item">
 				<view class="label">
 					<text>手机号</text>
 				</view>
-				<image class="label_icon" src="/static/login/phone.png" mode=""></image>
+				<image class="label_icon" src="/static/login/phone.png"></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input placeholder-class="placeholder" class="qui-input" type="number" value="" @input="inputPhone" v-model="phone" maxlength="11" placeholder="请输入手机号" />
+					<input placeholder-class="placeholder" class="qui-input" type="number" @input="inputPhone" v-model="phone" maxlength="11" placeholder="请输入手机号" />
 				</view>
 			</view>
 			<!-- 图形验证码 -->
@@ -25,10 +36,10 @@
 				<view class="label">
 					<text>验证码</text>
 				</view>
-				<image class="label_icon" src="/static/login/code.png" mode=""></image>
+				<image class="label_icon" src="/static/login/code.png"></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input placeholder-class="placeholder"  class="qui-input" type="number" v-model="code" value="" placeholder="请输入验证码" maxlength="6"/>
+					<input placeholder-class="placeholder"  class="qui-input" type="number" v-model="code" placeholder="请输入验证码" maxlength="6"/>
 				</view>
 				<view>
 					<text style="opacity: 0.8;" class="fs28 ptb20 main-color yzm" @tap="sendCode">{{codeDuration ? codeDuration + 's' : '获取验证码' }}</text>
@@ -38,10 +49,10 @@
 				<view class="label">
 					<text>新密码</text>
 				</view>
-				<image class="label_icon" src="/static/login/pw.png" mode=""></image>
+				<image class="label_icon" src="/static/login/pw.png"></image>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
-					<input :password="password" placeholder-class="placeholder" class="qui-input" type="text" v-model="password" value="" placeholder="请输入新密码" />
+					<input :password="password" placeholder-class="placeholder" class="qui-input" type="text" v-model="password" placeholder="请输入新密码" />
 				</view>
 			</view>
 		</view>
@@ -50,7 +61,7 @@
 				<text class="btn-text-color fs30">确认</text>
 			</view>
 			<view class="flex ptb30 mlr20 aj-center">
-				<view @click="goLogin()" class="">
+				<view @click="goLogin()">
 					<text class="fs28 nav-text-color underline">返回登录</text>
 				</view>
 			</view>

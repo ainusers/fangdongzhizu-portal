@@ -26,7 +26,7 @@
 					<view v-show="current == index">
 						<!-- 内容区域 -->
 						<block v-if="status&& currPage==1">
-							<view v-for="(key,index) in jiaL">
+							<view v-for="(key,i) in jiaL">
 								<postListSkeleton/>
 							</view>
 						</block>
@@ -48,7 +48,6 @@
 import screenTab from '@/components/common/screen-tab/screen-tab.vue'
 import postList from '@/components/post-list/post-list.vue';
 import postListSkeleton from '@/components/post-list/post-list-skeleton.vue'
-import tuwenVue from '../../publish/choice/tuwen.vue';
 
 export default {
 	components: {

@@ -29,9 +29,8 @@
 		line-height: 150%;
 		color: #5199ff;
 		font-weight: bold;
-		.con{
-			padding: 5rpx;
-			/* box-shadow: 1px 1px 1px #eee; */
-		}
+	}
+	.main_notice .con{
+		padding: 5rpx;
 	}
 </style>

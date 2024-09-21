@@ -16,7 +16,7 @@
 		</u-sticky>
 		<!-- 内容区域 -->
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
-			<swiper-item v-for=" (item,index) in tabList" :key="index">
+			<swiper-item v-for="(item,index) in tabList" :key="index">
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
 				:refresher-triggered="triggered"
 				:refresher-enabled="true"
@@ -26,13 +26,13 @@
 					<view v-show="current == index">
 						<view class="content" v-show="houseList.length>0">
 							<!-- 列表 -->
-							<block v-for="(item, index) in houseList" :key="index">
-								<house-list-item ref="ListItem" :item="item" :index="index" @updateHouseList="updateHouseList" :current="current"></house-list-item>
+							<block v-for="(item, i) in houseList" :key="i">
+								<house-list-item ref="ListItem" :item="item" :index="i" @updateHouseList="updateHouseList" :current="current"></house-list-item>
 							</block>
 						</view>
 						<!-- 骨架屏 -->
 						<view v-show="showModel && houseList.length==0">
-							<block v-for=" item in houseJia" :key="item">
+							<block v-for="item in houseJia" :key="item">
 								<houseListItemSkeleton/>
 							</block>
 						</view>

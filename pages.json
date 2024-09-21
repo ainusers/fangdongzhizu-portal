@@ -1,474 +1,474 @@
 {
-   "easycom": {
-   	"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue",
-   	"^q-(.*)": "@/components/q-$1/q-$1.vue"
-   },
-   "pages": [
-   	{
-   		"path": "pages/auth/login",
-   		"style": {
-   			"transparentTitle":  "always"
-   		}
-   	},
-	{
-		"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
-		"style": {
-			"disableScroll": true,
-			"app-plus": {
-				"backgroundColorTop": "transparent",
-				"background": "transparent",
-				"titleNView": false,
-				"scrollIndicator": false,
-				"popGesture": "none",
-				"animationType": "fade-in",
-				"animationDuration": 200
-			}
-		}
-	},
-   	{
-   		"path": "pages/tabbar/home/homeDetail",
-   		"style": {
-   			"transparentTitle":  "always",
-   			"navigationBarTitleText": "房屋详情页"
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/home/chooseCity",
-   		"style": {
-   			"navigationBarTitleText": "选择城市",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none"
-   			}
-   		}
-   	},
-   	{
-   		"path": "pages/auth/forget",
-   		"style": {
-   			"transparentTitle":  "always"
-   		}
-   	},
-   	{
-   		"path": "pages/auth/register",
-   		"style": {
-   			"transparentTitle":  "always"
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/home/home",
-   		"style": {
-   			"navigationBarTitleText": "",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#f2f2f2",
-   			"enablePullDownRefresh": true,
-   			"backgroundTextStyle":"light",
-   			"backgroundColor":"#fff",
-   			"onReachBottomDistance":200,
-   			"app-plus": {}
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/community/community",
-   		"style": {
-   			"transparentTitle":  "always",
-   			"enablePullDownRefresh": true
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/community/comment",
-   		"style": {
-   			"enablePullDownRefresh": false,
-   			"navigationBarTitleText": "图文详情",
-   			"navigationBarTextStyle": "black",
-			"backgroundTextStyle":"light"
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/publish/publish",
-   		"style": {
-   			"navigationBarTitleText": "发布",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none"
-   			}
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/me/me",
-   		"style": {
-   			"transparentTitle":  "always"
-   		}
+    "easycom": {
+    "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue",
+        "^q-(.*)": "@/components/q-$1/q-$1.vue"
+},
+    "pages": [
+    {
+        "path": "pages/auth/login",
+        "style": {
+            "transparentTitle":  "always"
+        }
+    },
+    {
+        "path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
+        "style": {
+            "disableScroll": true,
+            "app-plus": {
+                "backgroundColorTop": "transparent",
+                "background": "transparent",
+                "titleNView": false,
+                "scrollIndicator": false,
+                "popGesture": "none",
+                "animationType": "fade-in",
+                "animationDuration": 200
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/home/homeDetail",
+        "style": {
+            "transparentTitle":  "always",
+            "navigationBarTitleText": "房屋详情页"
+        }
+    },
+    {
+        "path": "pages/tabbar/home/chooseCity",
+        "style": {
+            "navigationBarTitleText": "选择城市",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none"
+            }
+        }
+    },
+    {
+        "path": "pages/auth/forget",
+        "style": {
+            "transparentTitle":  "always"
+        }
+    },
+    {
+        "path": "pages/auth/register",
+        "style": {
+            "transparentTitle":  "always"
+        }
+    },
+    {
+        "path": "pages/tabbar/home/home",
+        "style": {
+            "navigationBarTitleText": "",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#f2f2f2",
+            "enablePullDownRefresh": true,
+            "backgroundTextStyle":"light",
+            "backgroundColor":"#fff",
+            "onReachBottomDistance":200,
+            "app-plus": {}
+        }
+    },
+    {
+        "path": "pages/tabbar/community/community",
+        "style": {
+            "transparentTitle":  "always",
+            "enablePullDownRefresh": true
+        }
+    },
+    {
+        "path": "pages/tabbar/community/comment",
+        "style": {
+            "enablePullDownRefresh": false,
+            "navigationBarTitleText": "图文详情",
+            "navigationBarTextStyle": "black",
+            "backgroundTextStyle":"light"
+        }
+    },
+    {
+        "path": "pages/tabbar/publish/publish",
+        "style": {
+            "navigationBarTitleText": "发布",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none"
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/me/me",
+        "style": {
+            "transparentTitle":  "always"
+        }
 
-   	},
-   	{
-   		"path": "pages/tabbar/me/tools/check",
-   		"style": {
-   			"navigationBarTitleText": "房源信息",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": true,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none",
-   				"bounce": "none",
-				"titleNView": {
-					"buttons": [
-						{
-							"background": "red",
-							"margin":"20px",
-							"text": "管理",
-							"fontSize": "16px",
-							"float": "right"
-						}
-					]
-				}
-   			}
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/me/user",
-   		"style": {
-   			"navigationBarTitleText": "个人信息",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none"
-   			}
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/me/update/nickname",
-   		"style": {
-   			"navigationBarTitleText": "修改昵称",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none",
-   				"bounce": "none",
-   				"titleNView": {
-   					"buttons": [
-   						{
-   							"background": "red",
-   							"margin":"20px",
-   							"text": "保存",
-   							"fontSize": "16px",
-   							"float": "right"
-   						}
-   					]
-   				}
-   			}
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/me/update/realname",
-   		"style": {
-   			"navigationBarTitleText": "实名认证",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none",
-   				"bounce": "none",
-   				"titleNView": {
-   					"buttons": [
-   						{
-   							"background": "red",
-   							"margin":"20px",
-   							"text": "保存",
-   							"fontSize": "16px",
-   							"float": "right"
-   						}
-   					]
-   				}
-   			}
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/me/update/sex",
-   		"style": {
-   			"navigationBarTitleText": "设置性别",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none",
-   				"bounce": "none",
-   				"titleNView": {
-   					"buttons": [
-   						{
-   							"background": "red",
-   							"margin":"20px",
-   							"text": "保存",
-   							"fontSize": "16px",
-   							"float": "right"
-   						}
-   					]
-   				}
-   			}
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/me/update/region",
-   		"style": {
-   			"navigationBarTitleText": "选择地区",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none",
-   				"bounce": "none",
-   				"titleNView": {
-   					"buttons": [
-   						{
-   							"background": "red",
-   							"margin":"20px",
-   							"text": "保存",
-   							"fontSize": "16px",
-   							"float": "right"
-   						}
-   					]
-   				}
-   			}
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/me/update/pwd",
-   		"style": {
-   			"navigationBarTitleText": "修改密码",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none",
-   				"bounce": "none",
-   				"titleNView": {
-   					"buttons": [
-   						{
-   							"background": "red",
-   							"margin":"20px",
-   							"text": "保存",
-   							"fontSize": "16px",
-   							"float": "right"
-   						}
-   					]
-   				}
-   			}
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/me/update/sign",
-   		"style": {
-   			"navigationBarTitleText": "个性签名",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none",
-   				"bounce": "none",
-   				"titleNView": {
-   					"buttons": [
-   						{
-   							"background": "red",
-   							"margin":"20px",
-   							"text": "保存",
-   							"fontSize": "16px",
-   							"float": "right"
-   						}
-   					]
-   				}
-   			}
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/me/tools/about",
-   		"style": {
-   			"navigationBarTitleText": "关于我们",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none",
-   				"bounce": "none"
-   			}
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/me/tools/feel",
-   		"style": {
-   			"navigationBarTitleText": "租房心得",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none",
-   				"bounce": "none"
-   			}
-   		}
-   	},
-	{
-		"path": "pages/tabbar/me/tools/advise",
-		"style": {
-			"navigationBarTitleText": "反馈建议",
-			"navigationBarTextStyle": "black",
-			"navigationBarBackgroundColor": "#fafafa",
-			"enablePullDownRefresh": false,
-			"backgroundTextStyle":"light",
-			"app-plus": {
-				"scrollIndicator": "none",
-				"bounce": "none"
-			}
-		}
-	},
-   	{
-   		"path": "pages/tabbar/me/tools/shuoshuo",
-   		"style": {
-   			"navigationBarTitleText": "动态信息",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none",
-   				"bounce": "none"
-   			}
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/publish/choice/tuwen",
-   		"style": {
-   			"navigationBarTitleText": "发布动态",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none"
-   			}
-   		}
-   	},
-   	{
-   		"path": "pages/tabbar/publish/choice/fangyuan",
-   		"style": {
-   			"navigationBarTitleText": "发布房源",
-   			"navigationBarTextStyle": "black",
-   			"navigationBarBackgroundColor": "#fafafa",
-   			"enablePullDownRefresh": false,
-   			"backgroundTextStyle":"light",
-   			"app-plus": {
-   				"scrollIndicator": "none"
-   			}
-   		}
-   	}
-       ,{
-           "path" : "components/common/screen-tab/screen-tab",
-           "style" :                                                                                    
-           {
-               "navigationBarTitleText": "",
-               "enablePullDownRefresh": false
-           }
-           
-       }
-       ,{
-           "path" : "pages/tabbar/me/update/updatephone",
-           "style" :                                                                                    
-           {
-              "navigationBarTitleText": "修改手机号",
-              "navigationBarTextStyle": "black",
-              "navigationBarBackgroundColor": "#fafafa",
-              "enablePullDownRefresh": false,
-              "backgroundTextStyle":"light",
-              "app-plus": {
-              	"scrollIndicator": "none",
-              	"bounce": "none",
-              	"titleNView": {
-              		"buttons": [
-              			{
-              				"background": "red",
-              				"margin":"20px",
-              				"text": "保存",
-              				"fontSize": "16px",
-              				"float": "right"
-              			}
-              		]
-              	}
-              }
-           }
+    },
+    {
+        "path": "pages/tabbar/me/tools/check",
+        "style": {
+            "navigationBarTitleText": "房源信息",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": true,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none",
+                "bounce": "none",
+                "titleNView": {
+                    "buttons": [
+                        {
+                            "background": "red",
+                            "margin":"20px",
+                            "text": "管理",
+                            "fontSize": "16px",
+                            "float": "right"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/me/user",
+        "style": {
+            "navigationBarTitleText": "个人信息",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none"
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/me/update/nickname",
+        "style": {
+            "navigationBarTitleText": "修改昵称",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none",
+                "bounce": "none",
+                "titleNView": {
+                    "buttons": [
+                        {
+                            "background": "red",
+                            "margin":"20px",
+                            "text": "保存",
+                            "fontSize": "16px",
+                            "float": "right"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/me/update/realname",
+        "style": {
+            "navigationBarTitleText": "实名认证",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none",
+                "bounce": "none",
+                "titleNView": {
+                    "buttons": [
+                        {
+                            "background": "red",
+                            "margin":"20px",
+                            "text": "保存",
+                            "fontSize": "16px",
+                            "float": "right"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/me/update/sex",
+        "style": {
+            "navigationBarTitleText": "设置性别",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none",
+                "bounce": "none",
+                "titleNView": {
+                    "buttons": [
+                        {
+                            "background": "red",
+                            "margin":"20px",
+                            "text": "保存",
+                            "fontSize": "16px",
+                            "float": "right"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/me/update/region",
+        "style": {
+            "navigationBarTitleText": "选择地区",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none",
+                "bounce": "none",
+                "titleNView": {
+                    "buttons": [
+                        {
+                            "background": "red",
+                            "margin":"20px",
+                            "text": "保存",
+                            "fontSize": "16px",
+                            "float": "right"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/me/update/pwd",
+        "style": {
+            "navigationBarTitleText": "修改密码",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none",
+                "bounce": "none",
+                "titleNView": {
+                    "buttons": [
+                        {
+                            "background": "red",
+                            "margin":"20px",
+                            "text": "保存",
+                            "fontSize": "16px",
+                            "float": "right"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/me/update/sign",
+        "style": {
+            "navigationBarTitleText": "个性签名",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none",
+                "bounce": "none",
+                "titleNView": {
+                    "buttons": [
+                        {
+                            "background": "red",
+                            "margin":"20px",
+                            "text": "保存",
+                            "fontSize": "16px",
+                            "float": "right"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/me/tools/about",
+        "style": {
+            "navigationBarTitleText": "关于我们",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none",
+                "bounce": "none"
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/me/tools/feel",
+        "style": {
+            "navigationBarTitleText": "租房心得",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none",
+                "bounce": "none"
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/me/tools/advise",
+        "style": {
+            "navigationBarTitleText": "反馈建议",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none",
+                "bounce": "none"
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/me/tools/shuoshuo",
+        "style": {
+            "navigationBarTitleText": "动态信息",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none",
+                "bounce": "none"
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/publish/choice/tuwen",
+        "style": {
+            "navigationBarTitleText": "发布动态",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none"
+            }
+        }
+    },
+    {
+        "path": "pages/tabbar/publish/choice/fangyuan",
+        "style": {
+            "navigationBarTitleText": "发布房源",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#fafafa",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none"
+            }
+        }
+    }
+    ,{
+        "path" : "components/common/screen-tab/screen-tab",
+        "style" :
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
 
-       },
-		{
-			"path": "pages/auth/binding",
-			"style": {
-				"navigationBarTitleText": "修改手机号",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#5199ff",
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle":"light",
-				"app-plus": {
-					"scrollIndicator": "none",
-					"bounce": "none",
-					"titleNView": {
-						"buttons": [
-							{
-								"background": "red",
-								"margin":"20px",
-								"text": "保存",
-								"fontSize": "16px",
-								"float": "right"
-							}
-						]
-					}
-				}
-			}
-			
-		}
-   ],
-   "tabBar": {
-   	"color": "#7A7E83",
-   	"backgroundColor": "#eee",
-   	"borderStyle": "#ffffff",
-   	"selectedColor": "#000000",
-   	"list": [
-   		{
-   			"pagePath": "pages/tabbar/home/home",
-   			"iconPath": "static/tabbar/home.png",
-   			"selectedIconPath": "static/tabbar/homeactive.png",
-   			"text": "首页"
-   		},
-   		{
-   			"pagePath": "pages/tabbar/community/community",
-   			"iconPath": "static/tabbar/community.png",
-   			"selectedIconPath": "static/tabbar/communityactive.png",
-   			"text": "社区"
-   		},
-   		{
-   			"pagePath": "pages/tabbar/publish/publish",
-   			"iconPath": "static/tabbar/publish-temp.png",
-   			"selectedIconPath": "static/tabbar/publishactive-temp.png",
-   			"text": "发布"
-   		},
-   		{
-   			"pagePath": "pages/tabbar/me/me",
-   			"iconPath": "static/tabbar/me.png",
-   			"selectedIconPath": "static/tabbar/meactive.png",
-   			"text": "我的"
-   		}
-   	]
-   }
+    }
+    ,{
+        "path" : "pages/tabbar/me/update/updatephone",
+        "style" :
+            {
+                "navigationBarTitleText": "修改手机号",
+                "navigationBarTextStyle": "black",
+                "navigationBarBackgroundColor": "#fafafa",
+                "enablePullDownRefresh": false,
+                "backgroundTextStyle":"light",
+                "app-plus": {
+                    "scrollIndicator": "none",
+                    "bounce": "none",
+                    "titleNView": {
+                        "buttons": [
+                            {
+                                "background": "red",
+                                "margin":"20px",
+                                "text": "保存",
+                                "fontSize": "16px",
+                                "float": "right"
+                            }
+                        ]
+                    }
+                }
+            }
+
+    },
+    {
+        "path": "pages/auth/binding",
+        "style": {
+            "navigationBarTitleText": "修改手机号",
+            "navigationBarTextStyle": "black",
+            "navigationBarBackgroundColor": "#5199ff",
+            "enablePullDownRefresh": false,
+            "backgroundTextStyle":"light",
+            "app-plus": {
+                "scrollIndicator": "none",
+                "bounce": "none",
+                "titleNView": {
+                    "buttons": [
+                        {
+                            "background": "red",
+                            "margin":"20px",
+                            "text": "保存",
+                            "fontSize": "16px",
+                            "float": "right"
+                        }
+                    ]
+                }
+            }
+        }
+
+    }
+],
+    "tabBar": {
+    "color": "#7A7E83",
+        "backgroundColor": "#eee",
+        "borderStyle": "#ffffff",
+        "selectedColor": "#000000",
+        "list": [
+        {
+            "pagePath": "pages/tabbar/home/home",
+            "iconPath": "static/tabbar/home.png",
+            "selectedIconPath": "static/tabbar/homeactive.png",
+            "text": "首页"
+        },
+        {
+            "pagePath": "pages/tabbar/community/community",
+            "iconPath": "static/tabbar/community.png",
+            "selectedIconPath": "static/tabbar/communityactive.png",
+            "text": "社区"
+        },
+        {
+            "pagePath": "pages/tabbar/publish/publish",
+            "iconPath": "static/tabbar/publish-temp.png",
+            "selectedIconPath": "static/tabbar/publishactive-temp.png",
+            "text": "发布"
+        },
+        {
+            "pagePath": "pages/tabbar/me/me",
+            "iconPath": "static/tabbar/me.png",
+            "selectedIconPath": "static/tabbar/meactive.png",
+            "text": "我的"
+        }
+    ]
+}
 }

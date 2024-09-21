@@ -61,10 +61,8 @@
 	.slogan{
 		color: #AAAAAA;
 	}
-	.mb20{
-		margin-bottom: 20rpx;
-	}
 	.about_tit{
+		margin-bottom: 20rpx;
 		font-size: 36upx;
 	}
 	.icon{
@@ -80,7 +78,7 @@
 <template>
 	<view class="content">
 		<view class="top">
-			<image src="../../../../static/me/logo.png" mode=""></image>
+			<image src="@/static/me/logo.png"></image>
 			<view class="mb20 about_tit">
 				房东直租
 			</view>

@@ -4,13 +4,27 @@
 	@import "@/style/login/skin.scss";     
 	.forget_btn{
 		position: absolute;
-		bottom: 40rpx;
+		bottom: 30rpx;
 		width: $boxWidth
+	}
+	.top{
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		width:100%;
+		image{
+			width:150rpx;
+			height:150rpx;
+			margin-top:100rpx;
+		}
 	}
 </style>
 <template>
 	<view class="abslrtb flex-column a-center wrap">
-		<view class="topbox flex-column aj-center"></view>
+		<view class="top">
+			<image src="@/static/me/logo.png"></image>
+		</view>
+		
 		<view class="flex tabs mb30">
 			<view @click="tab(0)" class="flex-1 flex aj-center" :class="tabIndex==0&&'active'">
 				<text class="fs34 fw600 text-gray" :class="tabIndex==0&&'curtext'">账号登录</text>
@@ -19,6 +33,7 @@
 				<text class="fs34 fw600 text-gray" :class="tabIndex==1&&'curtext'">手机登录</text>
 			</view>
 		</view>
+		
 		<view class="form" v-show="tabIndex ==0">
 			<!-- //用户名 -->
 			<phoneTab type="user" ref="userName"></phoneTab>
@@ -39,31 +54,25 @@
 			<button @click="login" class="qbtn" @tap="$u.throttle(login, 3000)">
 				<view class="btn-text-color fs30">登录</view>
 			</button>
-			<view class="blue_link" :class="{'animShake':isShow}">
-				<u-checkbox-group>
-							<u-checkbox 
-								v-model="checked" 
-								name="隐私协议"
-								shape="circle"
-								active-color="#7dc3f2"
-							>
-							</u-checkbox>
+			<view class="blue_link" :class="{'animShake':isShow}" style="display: flex;flex-direction: inherit;">
+				<u-checkbox-group width="25px">
+					<u-checkbox 
+						v-model="checked" 
+						name="隐私协议"
+						shape="square"
+						active-color="#7dc3f2">
+					</u-checkbox>
 				</u-checkbox-group>
-				我已阅读并同意
-				<view class="blue" @click="goUserUrl">
-					《用户协议》
-				</view>
-				<view class="blue" @click="goUrl">
-					《隐私协议》
-				</view>
+				<view>我已阅读并同意</view>
+				<view class="blue" @click="goUserUrl">《用户协议》</view>
+				<view class="blue" @click="goUrl">《隐私协议》</view>
 			</view>
 				
 			<view class="flex ptb30 mlr20 space-between forget_btn">
-				<view @click="goRegister" class="">
+				<view @click="goRegister">
 					<text class="fs28 nav-text-color ">注册用户</text>
 				</view>
-				<view @click="goForget" class="">
-					 <!-- underline -->
+				<view @click="goForget">
 					<text class="fs28 nav-text-color">忘记密码</text>
 				</view>
 			</view>

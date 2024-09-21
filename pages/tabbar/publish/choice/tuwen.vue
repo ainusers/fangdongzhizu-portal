@@ -176,10 +176,10 @@ textarea {
 	margin: 0 auto;
 	color: #AAAAAA;
 	padding: 20px;
-	.row{
-		margin: 10rpx 0px;
-		line-height: 150%;
-	}
+}
+.report_con .row{
+	margin: 10rpx 0px;
+	line-height: 150%;
 }
 </style>
 <template>

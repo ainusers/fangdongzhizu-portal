@@ -1,16 +1,16 @@
 <template>
-	<view class="content" :class="{'active':active}">
+	<view class="content">
 		<view class="container">
 			<view class="title">社区审核规则:</view>
 			<view class="title">1、发布动态：无需经过平台审核，私下联系需谨慎</view>
 			<view class="title">2、发布房源：需要经过平台审核<br/></view>
-			<view class="title-content">暂未审核：会在<待审核>中展示<br/>
-			审核不过：会在<待审核>中展示并附上审核意见<br/>
-			审核通过：会在<首页>中展示</view>
+			<view class="title-content">暂未审核：会在[待审核]中展示<br/></view>
+			<view class="title-content">审核不过：会在[待审核]中展示并附上审核意见<br/></view>
+			<view class="title-content">审核通过：会在[首页]中展示</view>
 		</view>
 		<view class="container">
 			<view class="title">发布房源规则:</view>
-			<view class="title">1、房源类型：<br/>租客选择<我要转租>(默认)，房东选择<我是房东></view>
+			<view class="title">1、房源类型：<br/>租客选择[我要转租](默认)，房东选择[我是房东]</view>
 			<view class="title">2、资质上传：<br/>租客选择：租房合同或其他证明材料<br/>房东选择：清晰的房产证内容页或其他证明材料<br/></view>
 			<view class="title" style="color: #bd1212;">注意事项：如发现在资质中上传房源照片的，因平台无法核实您的身份和房源的真实性，一律审核不过</view>
 		</view>
