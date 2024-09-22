@@ -3,11 +3,9 @@
 		<view class="person_info">
 			<!-- 个人信息 -->
 			<myInfoAavtar :userInfo="userInfo" :isShow="false"/>
-			<u-tabs :list="list" :is-scroll="false" :current="current" bg-color="#f7f7f7" @change="change"></u-tabs>
+			<u-tabs :list="list" :is-scroll="false" :current="current" bg-color="#f7f7f7" @change="change" style="position: relative;bottom: 90px;"></u-tabs>
 		</view>
-		<view class="person_info_ti">
-			
-		</view>
+		<view class="person_info_ti"></view>
 		<view class="personal_bottom">
 			<view v-show="current==0">
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
@@ -173,7 +171,8 @@
 	.personal_bottom {
 		width: 100%;
 		overflow-y: scroll;
-		webkit-overflow-scrolling: touch;
+		position: relative;
+		bottom: 90px;
 	}
 
 	//个人信息

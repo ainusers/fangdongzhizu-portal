@@ -11,7 +11,6 @@
 		background-color: #f7f7f7;
 	}
 	.home_top {
-		margin-top: calc(var(--status-bar-height));
 		position: relative;
 		width: 100%;
 		display: flex;

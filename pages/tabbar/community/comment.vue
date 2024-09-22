@@ -158,7 +158,7 @@
 								</view>
 								<view :class="[res.commentText?'all-reply':'']" @tap="toAllReply(index1,res.comment_id)" v-show="res.replyList&&res.replyList.length>0">
 									 {{res.commentText}}
-									<u-icon class="more" name="arrow-right" :size="26"v-if="res.commentText"></u-icon>
+									<u-icon class="more" name="arrow-right" :size="26" v-if="res.commentText"></u-icon>
 								</view>
 							</view>
 						</view>
