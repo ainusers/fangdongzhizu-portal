@@ -196,17 +196,16 @@
 		color: #A6A6A6;
 	}
 	.detail_btn{
-		width:100%;
+		width:140upx;
 		height:80upx;
-		display: flex;
 		justify-content: end;
 		.btn_item{
 			display: flex;
 			align-items: center;
 			padding: 10upx 30upx;
-			border:1px solid #18acf0;
+			border:1px solid #5199ff;
 			margin: 0 10upx 10upx 10upx;
-			color: #18acf0;
+			color: #5199ff;
 		}
 	}
 	.type_icon{

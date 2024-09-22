@@ -22,7 +22,7 @@
 			<input name="contact" v-model="contact" class="concactContent" placeholder="请留下任一联系方式" bindinput="userNameInput" />
 		</view>
 		<view class="footer">
-			<button @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 3000)">提交</button>
+			<button style="color: #5199ff;border-color: #5199ff;" @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 3000)">提交</button>
 		</view>
 		<view class="reward_text">
 			<view style="text-align: center;">

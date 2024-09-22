@@ -29,7 +29,8 @@ module.exports=()=>({
             "path": "pages/auth/login",
             "style": {
                 "transparentTitle":  "always",
-				"navigationBarBackgroundColor": "#75c8ef",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#5199ff",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
             }
@@ -39,7 +40,8 @@ module.exports=()=>({
             "style": {
                 "transparentTitle":  "always",
 				"navigationBarTitleText": "房屋详情页",
-				"navigationBarBackgroundColor": "#fafafa",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#5199ff",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
             }
@@ -48,8 +50,8 @@ module.exports=()=>({
             "path": "pages/tabbar/home/chooseCity",
             "style": {
                 "navigationBarTitleText": "选择城市",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -58,7 +60,8 @@ module.exports=()=>({
             "path": "pages/auth/forget",
             "style": {
                 "transparentTitle":  "always",
-				"navigationBarBackgroundColor": "#75c8ef",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#5199ff",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
             }
@@ -67,7 +70,8 @@ module.exports=()=>({
             "path": "pages/auth/register",
             "style": {
                 "transparentTitle":  "always",
-				"navigationBarBackgroundColor": "#75c8ef",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#5199ff",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
             }
@@ -76,11 +80,11 @@ module.exports=()=>({
             "path": "pages/tabbar/home/home",
             "style": {
                 "transparentTitle":  "always",
-                "navigationBarTextStyle": "black",
+                "navigationBarTextStyle": "white",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "backgroundColor":"#ffffff",
-				"navigationBarBackgroundColor": "#fafafa",
+				"navigationBarBackgroundColor": "#5199ff",
             }
         },
         {
@@ -88,7 +92,8 @@ module.exports=()=>({
             "style": {
                 "transparentTitle":  "always",
                 "enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#fafafa",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#5199ff",
 				"backgroundTextStyle":"light"
             }
         },
@@ -97,8 +102,8 @@ module.exports=()=>({
             "style": {
                 "enablePullDownRefresh": false,
                 "navigationBarTitleText": "图文详情",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "backgroundTextStyle":"light"
             }
         },
@@ -106,8 +111,8 @@ module.exports=()=>({
             "path": "pages/tabbar/publish/publish",
             "style": {
                 "navigationBarTitleText": "发布",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -116,7 +121,8 @@ module.exports=()=>({
             "path": "pages/tabbar/me/me",
             "style": {
                 "transparentTitle":  "always",
-				"navigationBarBackgroundColor": "#fafafa",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#5199ff",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
             }
@@ -125,8 +131,8 @@ module.exports=()=>({
             "path": "pages/tabbar/me/tools/check",
             "style": {
                 "navigationBarTitleText": "房源信息",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "backgroundColor":"#ffffff",
@@ -151,8 +157,8 @@ module.exports=()=>({
             "path": "pages/tabbar/me/user",
             "style": {
                 "navigationBarTitleText": "个人信息",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -161,8 +167,8 @@ module.exports=()=>({
             "path": "pages/tabbar/me/update/nickname",
             "style": {
                 "navigationBarTitleText": "修改昵称",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "app-plus": {
@@ -186,8 +192,8 @@ module.exports=()=>({
             "path": "pages/tabbar/me/update/realname",
             "style": {
                 "navigationBarTitleText": "实名认证",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "app-plus": {
@@ -211,8 +217,8 @@ module.exports=()=>({
             "path": "pages/tabbar/me/update/sex",
             "style": {
                 "navigationBarTitleText": "设置性别",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "app-plus": {
@@ -236,8 +242,8 @@ module.exports=()=>({
             "path": "pages/tabbar/me/update/region",
             "style": {
                 "navigationBarTitleText": "选择地区",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "app-plus": {
@@ -261,8 +267,8 @@ module.exports=()=>({
             "path": "pages/tabbar/me/update/pwd",
             "style": {
                 "navigationBarTitleText": "修改密码",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "app-plus": {
@@ -286,8 +292,8 @@ module.exports=()=>({
             "path": "pages/tabbar/me/update/sign",
             "style": {
                 "navigationBarTitleText": "个性签名",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "app-plus": {
@@ -311,8 +317,8 @@ module.exports=()=>({
             "path": "pages/tabbar/me/tools/about",
             "style": {
                 "navigationBarTitleText": "关于我们",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -321,8 +327,8 @@ module.exports=()=>({
             "path": "pages/tabbar/me/tools/feel",
             "style": {
                 "navigationBarTitleText": "租房心得",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -331,8 +337,8 @@ module.exports=()=>({
             "path": "pages/tabbar/me/tools/advise",
             "style": {
                 "navigationBarTitleText": "反馈建议",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -341,8 +347,8 @@ module.exports=()=>({
             "path": "pages/tabbar/me/tools/shuoshuo",
             "style": {
                 "navigationBarTitleText": "动态信息",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -351,8 +357,8 @@ module.exports=()=>({
             "path": "pages/tabbar/publish/choice/tuwen",
             "style": {
                 "navigationBarTitleText": "发布动态",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -361,8 +367,8 @@ module.exports=()=>({
             "path": "pages/tabbar/publish/choice/fangyuan",
             "style": {
                 "navigationBarTitleText": "发布房源",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -380,8 +386,8 @@ module.exports=()=>({
             "style" :
                 {
                     "navigationBarTitleText": "修改手机号",
-                    "navigationBarTextStyle": "black",
-                    "navigationBarBackgroundColor": "#fafafa",
+                    "navigationBarTextStyle": "white",
+                    "navigationBarBackgroundColor": "#5199ff",
                     "enablePullDownRefresh": false,
                     "backgroundTextStyle":"light",
                     "app-plus": {
@@ -405,40 +411,40 @@ module.exports=()=>({
             "path": "pages/tabbar/me/personal",
             "style": {
                 "navigationBarTitleText": "个人主页",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
             }
         },
         {
             "path": "pages/tabbar/me/text/register",
             "style": {
                 "navigationBarTitleText": "注册协议",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
             }
         },
         {
             "path": "pages/tabbar/me/text/privacy",
             "style": {
                 "navigationBarTitleText": "隐私协议",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
             }
         },
         {
             "path": "pages/tabbar/me/text/server",
             "style": {
                 "navigationBarTitleText": "用户协议",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa",
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff",
             }
         },
         {
             "path": "pages/tabbar/me/reward",
             "style": {
                 "navigationBarTitleText": "打赏页面",
-                "navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#fafafa"
+                "navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#5199ff"
             }
         }
     ],

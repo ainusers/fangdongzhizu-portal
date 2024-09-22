@@ -223,7 +223,7 @@ textarea {
                 </view>
             </view>
             <view class="footer">
-                <button type="primary" class="feedback-submit" plain="true" @click="publish" @tap="$u.throttle(publish, 3000)">发布</button>
+                <button style="color: #5199ff;border-color: #5199ff;" type="primary" class="feedback-submit" plain="true" @click="publish" @tap="$u.throttle(publish, 3000)">发布</button>
             </view>
 			<!-- 温馨提示 -->
 			<u-modal :async-close="true" v-model="show" title="温馨提示" :content="content" confirm-text="知道了" @confirm="confirm">
