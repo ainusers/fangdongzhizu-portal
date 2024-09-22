@@ -1,12 +1,9 @@
 <template>
 	<view class="flex a-center form-item">
-		<view class="label">
-			<text>验证码</text>
-		</view>
-		<image class="label_icon" src="/static/login/code.png" mode=""></image>
+		<view class="label_icon">验证码</view>
 		<view class="label_fgs"></view>
 		<view class="flex-1">
-			<input placeholder-class="placeholder"  class="qui-input" type="number" value=""
+			<input placeholder-class="placeholder"  class="qui-input" type="number"
 				v-model="code" placeholder="请输入验证码" maxlength="6"/>
 		</view>
 		<view>
@@ -29,7 +26,6 @@
 				imgCode: ''
 			}
 		},
-		
 		created() {
 			that=this
 			uni.$on('getUserName',val=>{
@@ -52,7 +48,7 @@
 					return;
 				}
 				if (this.imgCode.length < 1) {
-					this.$u.toast('请填写正确的图形验证码');
+					this.$u.toast('请填写正确的图形码');
 					return;
 				}
 				checkExist(this.username).then(res=>{

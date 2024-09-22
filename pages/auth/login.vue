@@ -44,7 +44,7 @@
 		<view class="form" v-if="tabIndex ==1">
 			<!-- 手机号 -->
 			<phoneTab type="phone" ref="phone"></phoneTab>
-			<!-- 图形验证码 -->
+			<!-- 图形码 -->
 			<imgCode ref="imgCode" />
 			<!-- 验证码 -->
 			<yzmCode ref="yzmCode" />
@@ -94,7 +94,6 @@
 	import pwdTab from '@/components/common/form/pwd_tab.vue'
 	import yzmCode from '@/components/common/form/yzm_code.vue'
 	import imgCode from '@/components/common/form/img_code.vue'
-	import {MycheckUpdate} from '@/utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -232,7 +231,7 @@
 				if (this.$refs.imgCode.code.length < 1) {
 					uni.showToast({
 						icon: 'none',
-						title: '请输入图形验证码'
+						title: '请输入图形码'
 					});
 					return;
 				}

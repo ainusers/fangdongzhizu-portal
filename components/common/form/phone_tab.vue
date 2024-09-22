@@ -1,10 +1,6 @@
 <template>
 	<view class="flex a-center form-item">
-		<view class="label">
-			<text>账号</text>
-		</view>
-		<image class="label_icon" src="/static/login/user.png" mode="" v-if="type=='user'"></image>
-			<image class="label_icon" src="/static/login/phone.png" mode="" v-if="type=='phone'"></image>
+		<view class="label_icon" v-if="type=='user' || type=='phone'">账号</view>
 		<view class="label_fgs"></view>
 		<view class="flex-1">
 			<input placeholder-class="placeholder" class="qui-input" type="text" value="" v-model="username"
@@ -25,9 +21,6 @@
 			return{
 				username:''
 			}
-		},
-		onLoad(){
-			
 		},
 		methods:{
 			inputPhone(e){

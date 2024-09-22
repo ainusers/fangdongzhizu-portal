@@ -10,7 +10,7 @@
 			<u-form-item :label-position="labelPosition" label="确认手机号 :" prop="region" label-width="200">
 						<u-input v-model="newphone1" type="number" :border="border" placeholder="请输入需要确认手机号"  maxlength="11"/>
 			</u-form-item>
-			<!-- 图形验证码 -->
+			<!-- 图形码 -->
 			<imgCode ref="imgCode" />
 			<view class="flex a-center form-item">
 				<view class="flex-1">
@@ -76,7 +76,7 @@
 				if (this.imgCode.length < 1) {
 					uni.showToast({
 						icon: 'none',
-						title: '请填写正确的图形验证码'
+						title: '请填写正确的图形码'
 					});
 					return;
 				}
@@ -111,8 +111,6 @@
 						this.$u.toast('当前手机号已被注册！');
 					}
 				})
-				// 获取验证码
-				
 			},
 		onNavigationBarButtonTap(e) {
 				if(!that.oldPhone) {

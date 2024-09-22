@@ -21,22 +21,16 @@
 		</view>
 		<view class="form">
 			<view class="flex a-center form-item">
-				<view class="label">
-					<text>手机号</text>
-				</view>
-				<image class="label_icon" src="/static/login/phone.png"></image>
+				<view class="label_icon">账号</view>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
 					<input placeholder-class="placeholder" class="qui-input" type="number" @input="inputPhone" v-model="phone" maxlength="11" placeholder="请输入手机号" />
 				</view>
 			</view>
-			<!-- 图形验证码 -->
+			<!-- 图形码 -->
 			<imgCode ref="imgCode" />
 			<view class="flex a-center form-item">
-				<view class="label">
-					<text>验证码</text>
-				</view>
-				<image class="label_icon" src="/static/login/code.png"></image>
+				<view class="label_icon">验证码</view>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
 					<input placeholder-class="placeholder"  class="qui-input" type="number" v-model="code" placeholder="请输入验证码" maxlength="6"/>
@@ -46,10 +40,7 @@
 				</view>
 			</view>
 			<view class="flex a-center form-item">
-				<view class="label">
-					<text>新密码</text>
-				</view>
-				<image class="label_icon" src="/static/login/pw.png"></image>
+				<view class="label_icon">密码</view>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
 					<input :password="password" placeholder-class="placeholder" class="qui-input" type="text" v-model="password" placeholder="请输入新密码" />
@@ -119,7 +110,7 @@
 				if (this.imgCode.length < 1) {
 					uni.showToast({
 						icon: 'none',
-						title: '请填写正确的图形验证码'
+						title: '请填写正确的图形码'
 					});
 					return;
 				}

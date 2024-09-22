@@ -1,16 +1,13 @@
 <template>
 	<view v-if='isTwelveDigits' class="flex a-center form-item">
-		<view class="label">
-			<text>图形验证码</text>
-		</view>
-		<image class="label_icon" src="/static/login/code.png" mode=""></image>
+		<view class="label_icon">图形码</view>
 		<view class="label_fgs"></view>
 		<view class="flex-1">
 			<input 
 				placeholder-class="placeholder"  
 				class="qui-input"
 				v-model="code" 
-				placeholder="请输入图形验证码" 
+				placeholder="请输入图形码" 
 				maxlength="4"
 				@input="inputCode"
 				@blur="onBlurCode"/>
@@ -57,7 +54,7 @@
 				if(this.code!== this.dataMsg.code){
 					uni.showToast({
 						icon: 'none',
-						title: '请填写正确的图形验证码'
+						title: '请填写正确的图形码'
 					});
 					return
 				}

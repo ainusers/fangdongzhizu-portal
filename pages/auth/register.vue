@@ -22,22 +22,16 @@
 		<!-- 用户信息表单 -->
 		<view class="form">
 			<view class="flex a-center form-item">
-				<view class="label">
-					<text>手机号</text>
-				</view>
-				<image class="label_icon" src="/static/login/phone.png" mode=""></image>
+				<view class="label_icon">账号</view>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
 					<input placeholder-class="placeholder" class="qui-input" type="number" value="" v-model="phone" @input="inputPhone" placeholder="请输入手机号" />
 				</view>
 			</view>
-			<!-- 图形验证码 -->
+			<!-- 图形码 -->
 			<imgCode ref="imgCode" />
 			<view class="flex a-center form-item">
-				<view class="label">
-					<text>验证码</text>
-				</view>
-				<image class="label_icon" src="/static/login/code.png" mode=""></image>
+				<view class="label_icon">验证码</view>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
 					<input placeholder-class="placeholder"  class="qui-input" type="number" value="" maxlength="6" v-model="code" placeholder="请输入验证码" />
@@ -47,10 +41,7 @@
 				</view>
 			</view>
 			<view class="flex a-center form-item">
-				<view class="label">
-					<text>密码</text>
-				</view>
-				<image class="label_icon" src="/static/login/pw.png" mode=""></image>
+				<view class="label_icon">密码</view>
 				<view class="label_fgs"></view>
 				<view class="flex-1">
 					<input :password="password" placeholder-class="placeholder" class="qui-input" type="text" value="" v-model="password" placeholder="请输入密码" />
