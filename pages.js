@@ -446,6 +446,13 @@ module.exports=()=>({
                 "navigationBarTextStyle": "white",
                 "navigationBarBackgroundColor": "#5199ff"
             }
+        },
+		{
+            "path": "pages/tabbar/community/lifeServe/formaldehyde",
+            "style": {
+                "transparentTitle":  "always",
+                "enablePullDownRefresh": true
+            }
         }
     ],
     "tabBar": {
