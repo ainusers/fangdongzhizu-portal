@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="shadow_top"></view>
+		<view class="shadow_top" :style="{height: height + 'rpx'}"></view>
 		  <view class="card" @click="goto('/pages/tabbar/me/user')" >
 		    <view class="top">
 		      <view class="userImage">
@@ -29,11 +29,7 @@
 
 <script>
 	export default{
-		data(){
-			return{}
-		},
-		props:['userInfo','isShow'],
-		mounted(){},
+		props:['userInfo','isShow','height'],
 		methods:{
 			goto(url){
 				if(!this.isShow)  return
@@ -50,7 +46,6 @@
 		background-color: #5199ff;
 		border-bottom-left-radius: 22px;
 		border-bottom-right-radius: 22px;
-		height: 250rpx;
 		width: 100%;
 	}
   .card {

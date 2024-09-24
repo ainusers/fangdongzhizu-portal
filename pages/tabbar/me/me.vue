@@ -89,7 +89,7 @@
 <template>
 	<!-- 个人信息区域 -->
 	<view class="content">
-		<myInfoAvatar :userInfo="userInfo" :isShow="true"/>
+	  <myInfoAvatar :userInfo="userInfo" :isShow="true" :height="350" />
 	  <!-- 功能区域 -->
 	  <view class="func">
 	      <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=0')">

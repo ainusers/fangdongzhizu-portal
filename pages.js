@@ -120,11 +120,8 @@ module.exports=()=>({
         {
             "path": "pages/tabbar/me/me",
             "style": {
-                "transparentTitle":  "always",
-				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#5199ff",
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle":"light"
+				"transparentTitle":  "always",
+				"enablePullDownRefresh": false
             }
         },
         {
@@ -451,7 +448,7 @@ module.exports=()=>({
             "path": "pages/tabbar/community/lifeServe/formaldehyde",
             "style": {
                 "transparentTitle":  "always",
-                "enablePullDownRefresh": true
+                "enablePullDownRefresh": false
             }
         }
     ],

@@ -2,7 +2,7 @@
 	<view class="personal_main">
 		<view class="person_info">
 			<!-- 个人信息 -->
-			<myInfoAavtar :userInfo="userInfo" :isShow="false"/>
+			<myInfoAavtar :userInfo="userInfo" :isShow="false" :height="250"/>
 			<u-tabs :list="list" :is-scroll="false" :current="current" bg-color="#f7f7f7" @change="change" style="position: relative;bottom: 90px;"></u-tabs>
 		</view>
 		<view class="person_info_ti"></view>
