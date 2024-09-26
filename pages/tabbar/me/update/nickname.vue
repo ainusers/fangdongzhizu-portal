@@ -16,7 +16,7 @@
 </template>
 <script>
 	var that;
-	import {htmlEncode} from '../../../../utils/utils.js'
+	import {htmlEncode} from '@/utils/utils.js'
     export default {
         data() {
 			return {
@@ -30,10 +30,6 @@
 			that=this
 			this.userInfo = this.$store.state.userInfo;
 			this.value = this.userInfo.nickname;
-        },
-        onShow() {
-        },
-        onUnload() {
         },
         methods: {
 		},

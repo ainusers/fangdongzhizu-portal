@@ -10,6 +10,10 @@
 	.content {
 		background-color: #f7f7f7;
 	}
+	.empty{
+		height: calc(var(--status-bar-height));
+		background-color: #5199ff;
+	}
 	.home_top {
 		position: relative;
 		width: 100%;
@@ -80,6 +84,7 @@
 	<view class="main">
 		<!-- 顶部区域 -->
 		<u-sticky offset-top="0">
+			<view class="empty"></view>
 			<view class="home_top">
 				<!-- 城市 -->
 				<view class="city" @click.stop="chooseCity">

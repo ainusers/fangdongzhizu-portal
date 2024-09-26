@@ -1,4 +1,8 @@
 <style lang="scss" scoped>
+	.empty{
+		height: calc(var(--status-bar-height));
+		background-color: #5199ff;
+	}
 	.community {
 		display: flex;
 		width: 100%;
@@ -28,6 +32,7 @@
 </style>
 <template>
 	<view>
+		<view class="empty"></view>
 		<!-- 轮播图 -->
 		<u-swiper :list="swiperList" radius="20rpx" height="350" mode="rect" @click="navigateToPage"></u-swiper>
 

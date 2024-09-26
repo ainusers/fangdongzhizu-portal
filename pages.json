@@ -1,8 +1,8 @@
 {
     "easycom": {
-    "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue",
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue",
         "^q-(.*)": "@/components/q-$1/q-$1.vue"
-},
+	},
     "pages": [
     {
         "path": "pages/auth/login",

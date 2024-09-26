@@ -29,10 +29,6 @@
 			this.userInfo = this.$store.state.userInfo
 			this.value = this.userInfo.signature;
         },
-        onShow() {
-        },
-        onUnload() {
-        },
         methods: {
 		},
 		onNavigationBarButtonTap(e) {

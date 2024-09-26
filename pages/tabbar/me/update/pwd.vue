@@ -20,7 +20,7 @@
 	</view>
 </template>
 <script>
-	import {htmlEncode} from '../../../../utils/utils.js'
+	import {htmlEncode} from '@/utils/utils.js'
 	var that=''
     export default {
         data() {
@@ -36,10 +36,6 @@
         onLoad(options) {
 			that=this
 			this.username=options.username
-        },
-        onShow() {
-        },
-        onUnload() {
         },
         methods: {
 		},

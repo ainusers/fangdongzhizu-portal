@@ -63,8 +63,6 @@
 		line-height:60upx;
 		display: flex;
 		align-items: center;
-		height:80upx;
-		line-height:80upx;
 		font-size:27upx;
 		margin-left: 33upx;
 		box-sizing: border-box;

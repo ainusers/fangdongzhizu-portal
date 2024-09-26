@@ -72,8 +72,7 @@
 <script>
 	import uPicker from '@/uview-ui/components/u-picker/u-picker.vue';
 	import image from '@/store/image.js';
-	import permision from "@/sdk/wa-permission/permission.js"
-	import { attachUpload, htmlEncode, compressImg, checkPush, showToastTit } from '@/utils/utils.js'
+	import { attachUpload, compressImg, showToastTit } from '@/utils/utils.js'
 	var sourceType = [
 	    ['camera'],
 	    ['album'],

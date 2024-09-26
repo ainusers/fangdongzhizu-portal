@@ -612,14 +612,8 @@
 <script>
 	import permision from "@/sdk/wa-permission/permission.js";
 	import {checkOpenGPSServiceByAndroid } from '@/utils/openSettings.js'
-	import image from '@/store/image.js';
 	import {constant} from "@/utils/constant.js";
-	import {
-		attachUpload,
-		htmlEncode,
-		compressImg,
-		getCount
-	} from '../../../../utils/utils';
+	import {attachUpload,htmlEncode,compressImg,getCount} from '@/utils/utils.js';
 
 	var sourceType = [
 		['camera'],

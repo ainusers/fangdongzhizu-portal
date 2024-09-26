@@ -49,10 +49,6 @@
 			this.userInfo = this.$store.state.userInfo
 			this.model.sex = this.userInfo.sex == 1 ? '男' : '女';
         },
-        onShow() {
-        },
-        onUnload() {
-        },
         methods: {
 			// 选择地区回调
 			regionConfirm(e) {
