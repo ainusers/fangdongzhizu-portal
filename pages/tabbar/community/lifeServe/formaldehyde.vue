@@ -2,7 +2,7 @@
 	<view class="main">
 		<image class="jq_ldy_main" src="/static/community/function/jq-ldy.png"></image>
 		<view class="contact">
-		<u-button class="jq_ldy_phone" shape="square" @click="report">立即沟通</u-button>
+			<u-button class="jq_ldy_phone" shape="square" @click="report" :throttleTime="3000">立即沟通</u-button>
 		</view>
 	</view>
 </template>
@@ -13,6 +13,16 @@
 			uni.makePhoneCall({
 				phoneNumber: '15711058934'
 			})
+			// 用户审计埋点
+			this.saveThirdServer();
+		},
+		// 保存登录人的设备
+		async saveThirdServer() {
+			let params = {
+				"userId": this.$store.state.userInfo.id,
+				"name": '空气净化(除甲醛)'
+			}
+			this.$H.post('/zf/v1/const/third/server', params, true).then(res => {})
 		}
 	}
 }

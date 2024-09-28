@@ -166,7 +166,6 @@
 	.person_info {
 		position: relative;
 		width: 100%;
-		z-index: 10;
 	}
 	.personal_bottom {
 		width: 100%;

@@ -51,7 +51,7 @@
   .card {
 	margin: 10px 10px 0 10px;
 	position: relative;
-	bottom: 180rpx;
+	bottom: 188rpx;
 	height: 250rpx;
 	background-color: #ffffff;
 	border-radius: 5px;
