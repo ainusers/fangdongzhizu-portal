@@ -28,7 +28,7 @@ module.exports=()=>({
         {
             "path": "pages/auth/login",
             "style": {
-                "transparentTitle":  "always",
+				"navigationBarTitleText": "登录",
 				"navigationBarTextStyle": "white",
 				"navigationBarBackgroundColor": "#5199ff",
 				"enablePullDownRefresh": false,
@@ -59,7 +59,7 @@ module.exports=()=>({
         {
             "path": "pages/auth/forget",
             "style": {
-                "transparentTitle":  "always",
+                "navigationBarTitleText": "忘记密码",
 				"navigationBarTextStyle": "white",
 				"navigationBarBackgroundColor": "#5199ff",
 				"enablePullDownRefresh": false,
@@ -69,7 +69,7 @@ module.exports=()=>({
         {
             "path": "pages/auth/register",
             "style": {
-                "transparentTitle":  "always",
+                "navigationBarTitleText": "注册",
 				"navigationBarTextStyle": "white",
 				"navigationBarBackgroundColor": "#5199ff",
 				"enablePullDownRefresh": false,
