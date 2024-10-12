@@ -5,7 +5,7 @@ export default function() {
 			const data = {
 				action: 'checkVersion',
 				appid: '__UNI__190F3AB', //plus.runtime.appid,
-				appVersion:'1.0.10',
+				appVersion:'1.0.11',
 				wgtVersion: widgetInfo.version
 			}
 			uniCloud.callFunction({
