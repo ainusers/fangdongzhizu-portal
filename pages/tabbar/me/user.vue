@@ -131,7 +131,7 @@
             <view class="item f_r_b" @click="goto('/pages/tabbar/me/update/nickname')">
                 <view class="item_text">昵称</view>
                 <view class="item_val">
-					{{ this.userInfo.nickname }}
+					{{ userInfo.nickname }}
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
             </view>
@@ -190,7 +190,7 @@
 			<view class="item f_r_b"  @click="goto(`/pages/tabbar/me/update/sign`)">
 			    <view class="item_text">个性签名</view>
 			    <view class="item_val">
-					{{ this.userInfo.signature }}
+					{{ userInfo.signature }}
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
 			</view>

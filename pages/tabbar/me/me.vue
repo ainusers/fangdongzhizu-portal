@@ -80,16 +80,14 @@
 	/deep/.renzheng_icon{
 		width:120upx;
 		height: 40upx;
-		position: relative;
 		bottom: 90rpx;
-		left:auto;
-		margin-left: 0;
-		}
+		display: block;
+	}
 </style>
 <template>
 	<!-- 个人信息区域 -->
 	<view class="content">
-	  <myInfoAvatar :userInfo="userInfo" :isShow="true" :height="350" />
+	  <myInfoAvatar :userInfo="userInfo" :isShow="true" :height="300" />
 	  <!-- 功能区域 -->
 	  <view class="func">
 	      <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=0')">

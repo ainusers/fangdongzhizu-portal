@@ -23,5 +23,6 @@ export default {
 
 <!-- 加入公共样式uview-ui -->
 <style lang="scss">
-@import 'uview-ui/index.scss';
+	@import 'uview-ui/index.scss';
+	@import "@/css/iconfont.css";
 </style>

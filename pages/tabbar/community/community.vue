@@ -32,62 +32,11 @@
 </style>
 <template>
 	<view>
+		<!-- #ifdef APP-PLUS -->
 		<view class="empty"></view>
+		<!-- #endif -->
 		<!-- 轮播图 -->
 		<u-swiper :list="swiperList" radius="20rpx" height="350" mode="rect" @click="navigateToPage"></u-swiper>
-
-		<!-- 功能菜单 -->
- 		<!-- <view class="community">
-			<view class="option" @click="goto('/pages/index/check/index')">
-				<view class="icon">
-					<image mode="aspectFit" src="../../../static/community/function/ad.png"></image>
-				</view>
-				<view class="name">热点资讯</view>
-			</view>								
-			<view class="option" @click="goto('/pages/tabbar/community/tools/news')">
-				<view class="icon">
-					<image mode="aspectFit" src="../../../static/community/function/churuku.png"></image>
-				</view>
-				<view class="name">万人群聊</view>
-			</view>
-		
-			<view class="option" @click="goto('/pages/tabbar/me/tools/advise')">
-				<view class="icon">
-					<image mode="aspectFit" src="../../../static/community/function/jiaoyu.png"></image>
-				</view>
-				<view class="name">吐槽专区</view>
-			</view>
-			<view class="option" @click="goto('/pages/index/news/state')">
-				<view class="icon">
-					<image mode="aspectFit" src="../../../static/community/function/fujin.png"></image>
-				</view>
-				<view class="name">分享返现</view>
-			</view>
-			<view class="option" @click="goto('/pages/index/news/kepu')">
-				<view class="icon">
-					<image mode="aspectFit" src="../../../static/community/function/qushi.png"></image>
-				</view>
-				<view class="name">房屋清洁</view>
-			</view>
-			<view class="option" @click="goto('/pages/index/news/yaoyan')">
-				<view class="icon">
-					<image mode="aspectFit" src="../../../static/community/function/tongzhi.png"></image>
-				</view>
-				<view class="name">设备维修</view>
-			</view>
-			<view class="option" @click="goto('/pages/index/minsheng/index')">
-				<view class="icon">
-					<image mode="aspectFit" src="../../../static/community/function/wuye.png"></image>
-				</view>
-				<view class="name">货运搬家</view>
-			</view>
-			<view class="option" @click="goto('/pages/index/wuye/index')">
-				<view class="icon">
-					<image mode="aspectFit" src="../../../static/community/function/zhoubianzhanlichaxun.png"></image>
-				</view>
-				<view class="name">商务合作</view>
-			</view>
-		</view> -->
 
 		<!-- 朋友圈 -->
 		<post-list :showRow="'-webkit-line-clamp: 1'" :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus" @clickLike="clickLike"></post-list>

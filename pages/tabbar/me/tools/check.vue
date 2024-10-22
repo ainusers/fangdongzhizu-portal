@@ -49,13 +49,11 @@
 <script>
 import houseListItem from '@/components/house-list/house-list-item.vue';
 import houseListItemSkeleton from '@/components/house-list/house-list-item-skeleton.vue'
-import loadinM from '@/components/common/modal/loading_model.vue'
 import {editTitleText} from '@/utils/utils.js'
 
 export default {
 	components: {
 		houseListItem,
-		loadinM,
 		houseListItemSkeleton
 	},
 	data() {

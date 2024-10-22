@@ -84,7 +84,9 @@
 	<view class="main">
 		<!-- 顶部区域 -->
 		<u-sticky offset-top="0">
+		    <!-- #ifdef APP-PLUS -->
 			<view class="empty"></view>
+		    <!-- #endif -->
 			<view class="home_top">
 				<!-- 城市 -->
 				<view class="city" @click.stop="chooseCity">
@@ -173,7 +175,6 @@
 	import houseListItem from '@/components/house-list/house-list-item.vue';
 	import houseListItemSkeleton from '@/components/house-list/house-list-item-skeleton.vue';
 	import screenTab from '@/components/common/screen-tab/screen-tab.vue'
-	import LodingM from '@/components/common/modal/loading_model.vue'
 	import notice from '@/components/common/noticeModel.vue'
 	import {constant} from "@/utils/constant.js";
 	import {MycheckUpdate,getLatest} from '@/utils/utils.js'
@@ -201,7 +202,6 @@
 		components: {
 			houseListItem,
 			screenTab,
-			LodingM,
 			houseListItemSkeleton,
 			notice
 		},

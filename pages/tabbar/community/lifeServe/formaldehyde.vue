@@ -1,6 +1,6 @@
 <template>
 	<view class="main">
-		<image class="jq_ldy_main" src="/static/community/function/jq-ldy.png"></image>
+		<image class="jq_ldy_main" src="http://43.143.148.105:9090/remote/jq-ldy.png"></image>
 		<view class="contact">
 			<u-button class="jq_ldy_phone" shape="square" @click="report" :throttleTime="3000">立即沟通</u-button>
 		</view>
