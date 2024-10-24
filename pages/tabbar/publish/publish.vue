@@ -17,11 +17,11 @@
 		<view class="tabbar-box-wrap">
 			<view class="tabbar-box">
 				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/tuwen','tuwen')">
-					<image class="box-image" src="../../../static/publish/release.png" mode="aspectFit"></image>
+					<image class="box-image" src="http://43.143.148.105:9090/remote/fangdongzhizu/release.png" mode="aspectFit"></image>
 					<text class="explain">发布动态</text>
 				</view>
 				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/fangyuan','fangyuan')">
-					<image class="box-image" src="../../../static/publish/qa.png" mode="aspectFit"></image>
+					<image class="box-image" src="http://43.143.148.105:9090/remote/fangdongzhizu/qa.png" mode="aspectFit"></image>
 					<text class="explain">发布房源</text>
 				</view>
 			</view>

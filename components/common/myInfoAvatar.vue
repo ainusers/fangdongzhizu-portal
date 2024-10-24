@@ -6,15 +6,15 @@
 		      <view class="userImage">
 				<u-avatar class="avatar" :src="userInfo.avatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
 			  </view>
-			  <image mode="aspectFit" src="@/static/me/renzheng.png" class="renzheng_icon" v-if="userInfo.auth==1"></image>
-			  <image mode="aspectFit" src="@/static/me/weirenzheng.png" class="renzheng_icon" v-else></image>
+			  <image mode="aspectFit" src="http://43.143.148.105:9090/remote/fangdongzhizu/renzheng.png" class="renzheng_icon" v-if="userInfo.auth==1"></image>
+			  <image mode="aspectFit" src="http://43.143.148.105:9090/remote/fangdongzhizu/weirenzheng.png" class="renzheng_icon" v-else></image>
 		    </view>
 		    <view class="bottom">
 		      <view class="left">
 		        <view class="user-text">
 					<view class="userNickName">{{ userInfo.nickname }}
-						<image mode="aspectFit" src="@/static/me/boy_icon.png" class="sex_con" v-if="userInfo.sex == 1"></image>
-						<image mode="aspectFit" src="@/static/me/girl_icon.png" class="sex_con" v-else></image>
+						<image mode="aspectFit" src="http://43.143.148.105:9090/remote/fangdongzhizu/boy_icon.png" class="sex_con" v-if="userInfo.sex == 1"></image>
+						<image mode="aspectFit" src="http://43.143.148.105:9090/remote/fangdongzhizu/girl_icon.png" class="sex_con" v-else></image>
 					</view>
 						<view class="option" v-if="isShow">
 						<u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>

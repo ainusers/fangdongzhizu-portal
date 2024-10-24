@@ -20,7 +20,7 @@
 	.main_notice{
 		width:280px;
 		height:370px;
-		background: url('../../static/home/notice.png') no-repeat;
+		background: url('http://43.143.148.105:9090/remote/fangdongzhizu/notice.png') no-repeat;
 		background-size: 280px 400px;
 		overflow: hidden;
 		padding: 40px 15px 0px 15px;

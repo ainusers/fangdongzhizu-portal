@@ -14,11 +14,6 @@
 		border-radius: 10upx;
 		margin-bottom:10rpx;
 	}
-	.pei_icon{
-		width: 50upx;
-		height: 50upx;
-		margin: 0 auto;
-	}
 	.pei_text{
 		font-size: 24upx;
 		color: #101D36;
@@ -33,7 +28,7 @@
 	<view class="f_r_s pei_tao_she_shi">
 		<block v-for="(item, index) in list" :key="index">
 			<view class="pei_item f_c_c" >
-				<image mode="widthFix" class="pei_icon" :src="item.iconUrl"></image>
+				<uni-icons custom-prefix="iconfont" :type="item.iconUrl" size="20"></uni-icons>
 				<view class="pei_text" :class="{'isNoHas':!item.isShow}">{{ item.text }}</view>
 			</view>
 		</block>

@@ -120,8 +120,10 @@ module.exports=()=>({
         {
             "path": "pages/tabbar/me/me",
             "style": {
-				"transparentTitle":  "always",
-				"enablePullDownRefresh": false
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#5199ff",
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle":"light"
             }
         },
         {

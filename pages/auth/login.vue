@@ -22,7 +22,7 @@
 <template>
 	<view class="abslrtb flex-column a-center wrap">
 		<view class="top">
-			<image src="@/static/me/logo.png"></image>
+			<image src="http://43.143.148.105:9090/remote/fangdongzhizu/logo.png"></image>
 		</view>
 		
 		<view class="flex tabs mb30">

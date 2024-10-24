@@ -27,7 +27,7 @@
 			justify-content: center;
 			width: 100%;
 			height: 135rpx;
-			background: url('../../../../static/publish/default.gif')no-repeat;
+			background: url('http://43.143.148.105:9090/remote/fangdongzhizu/default.png')no-repeat;
 			background-size: 100% 135rpx;
 			color: #333;
 			margin-right: 34rpx;
@@ -38,7 +38,7 @@
 		}
 		.active {
 			font-size: 18px;
-			background: url('../../../../static/publish/active.gif') no-repeat;
+			background: url('http://43.143.148.105:9090/remote/fangdongzhizu/active.png') no-repeat;
 			background-size: 100% 135rpx;
 			color: #fff;
 		}
