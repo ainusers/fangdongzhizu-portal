@@ -121,7 +121,7 @@
                 <view class="f_r_e img_view_info">
                     <view class="img_view">
 					<view class="userImage">
-					  <u-avatar class="avatar" :src="this.userInfo.avatar" level-bg-color="#8072f3" size="110rpx" img-mode="scaleToFill"></u-avatar>
+					  <u-avatar class="avatar" :src="userInfo.avatar" level-bg-color="#8072f3" size="110" img-mode="scaleToFill"></u-avatar>
 					</view>
 						<u-icon class="arrow_right" name="arrow-right"></u-icon>
 					</view>
@@ -163,7 +163,7 @@
             <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/updatephone`)">
                 <view class="item_text">手机号</view>
                 <view class="item_val">
-					{{ this.userInfo.username?this.userInfo.username.replace(/^(.{3})(?:\d+)(.{4}$)/,"$1****$2"):'' }}
+					{{ userInfo.username ? userInfo.username.replace(/^(.{3})(?:\d+)(.{4}$)/,"$1****$2"):'' }}
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
             </view>

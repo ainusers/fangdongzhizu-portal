@@ -36,7 +36,9 @@
 		<view class="empty"></view>
 		<!-- #endif -->
 		<!-- 轮播图 -->
-		<u-swiper :list="swiperList" radius="20rpx" height="350" mode="rect" @click="navigateToPage"></u-swiper>
+		<div style="padding: 0px 5px 5px;background: #f7f7f7;">
+			<u-swiper :list="swiperList" radius="20rpx" height="350" mode="rect" @click="navigateToPage"></u-swiper>
+		</div>
 
 		<!-- 朋友圈 -->
 		<post-list :showRow="'-webkit-line-clamp: 1'" :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus" @clickLike="clickLike"></post-list>

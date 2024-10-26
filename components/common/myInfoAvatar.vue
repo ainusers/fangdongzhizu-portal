@@ -4,7 +4,7 @@
 		  <view class="card" @click="goto('/pages/tabbar/me/user')" >
 		    <view class="top">
 		      <view class="userImage">
-				<u-avatar class="avatar" :src="userInfo.avatar" level-bg-color="#8072f3" size="140rpx" img-mode="scaleToFill"></u-avatar>
+				<u-avatar class="avatar" :src="userInfo.avatar" level-bg-color="#8072f3" size="140" img-mode="scaleToFill"></u-avatar>
 			  </view>
 			  <image mode="aspectFit" src="http://43.143.148.105:9090/remote/fangdongzhizu/renzheng.png" class="renzheng_icon" v-if="userInfo.auth==1"></image>
 			  <image mode="aspectFit" src="http://43.143.148.105:9090/remote/fangdongzhizu/weirenzheng.png" class="renzheng_icon" v-else></image>
@@ -64,16 +64,16 @@
 		position: relative;
 		bottom: 30px;
 		margin: 0 auto;
-		width: 160rpx;
-		height: 160rpx;
+		width: 75px;
+		height: 75px;
 		overflow: hidden;
 		border-radius: 50%;
 		image {
 			display: initial;
 		}
 		/deep/.avatar{
-			width: 160rpx;
-			height: 160rpx;
+			width: 75px;
+			height: 75px;
 		}
 	  }
 	}
@@ -122,7 +122,7 @@
 
 	.renzheng_icon{
 		position: relative;
-		bottom:94rpx;
+		bottom:80rpx;
 		left:50%;
 		width:120upx;
 		height: 40upx;
