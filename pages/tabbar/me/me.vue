@@ -3,7 +3,7 @@
 	.content {
 		background-color: #f7f7f7;
 		text-align: center;
-		height: 100vh;
+		height: calc(100vh - var(--window-bottom) - var(--window-top));
 	}
 	.list-card {
 	  background-color: #ffffff;

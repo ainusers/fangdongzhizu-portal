@@ -20,7 +20,6 @@
 		display: flex;
 		justify-content: space-between;
 		padding: 0 30rpx;
-		padding-bottom: 0;
 		align-items: center;
 		background: #ffffff;
 		.type {
@@ -179,25 +178,6 @@
 	import {constant} from "@/utils/constant.js";
 	import {MycheckUpdate,getLatest} from '@/utils/utils.js'
 
-	let privateData = {
-		// 区域
-		region: {
-			height: ""
-		},
-		// 价格
-		price: {
-			height: ""
-		},
-		// 户型
-		room: {
-			height: ""
-		},
-		// 更多
-		more: {
-			height: ""
-		}
-	};
-	
 	export default {
 		components: {
 			houseListItem,
