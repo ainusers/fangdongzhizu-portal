@@ -94,7 +94,7 @@
 							版本号
 						</view>
 						<view>
-							{{$store.state.version}}
+							{{version}}
 							<view class="icon"  v-show="isShow"></view>
 						</view>
 					</view>
@@ -126,6 +126,12 @@
         data() {
 			return {
 				isShow:false
+			}
+		},
+		computed:{
+      // 适配微信小程序
+			version(){
+				return this.$store.state.version;
 			}
 		},
         onLoad() {

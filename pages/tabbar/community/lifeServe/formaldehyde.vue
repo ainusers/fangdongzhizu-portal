@@ -3,15 +3,13 @@
   width: 100%;
   height: 1500px;
 }
-
 .contact {
   padding: 5px 0 30px;
-
-  .jq_ldy_phone {
-    width: 90%;
-    color: #fff;
-    background: #cf1a17;
-  }
+}
+.jq_ldy_phone {
+	width: 88%;
+	color: #fff;
+	background: #cf1a17;
 }
 </style>
 
@@ -19,7 +17,7 @@
   <view class="main">
     <image class="jq_ldy_main" src="http://43.143.148.105:9090/remote/fangdongzhizu/jq-ldy.png"></image>
     <view class="contact">
-      <u-button class="jq_ldy_phone" shape="square" @click="report" :throttleTime="3000">立即沟通</u-button>
+      <u-button class="jq_ldy_phone" type="error" shape="square" @click="report" :throttleTime="3000">立即沟通</u-button>
     </view>
   </view>
 </template>

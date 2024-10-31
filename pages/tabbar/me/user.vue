@@ -139,14 +139,14 @@
             <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/sex`)">
                 <view class="item_text">性别</view>
                 <view class="item_val">
-					{{ this.userInfo.sex == 1 ? '男' : '女'}}
+					{{ userInfo.sex == 1 ? '男' : '女'}}
 					<u-icon class="arrow_right" name="arrow-right"></u-icon>
 				</view>
             </view>
             <!--地区-->
             <view class="item f_r_b" @click="goto(`/pages/tabbar/me/update/region`)">
                 <view class="item_text">地区</view>
-				<block v-if="!this.userInfo.province">
+				<block v-if="!userInfo.province">
 					<view class="item_val">
 						请选择地区
 						<u-icon class="arrow_right" name="arrow-right"></u-icon>
@@ -154,7 +154,7 @@
 				</block>
                 <block v-else>
 					<view class="item_val">
-						{{ this.userInfo.province }} 
+						{{ userInfo.province }} 
 						<u-icon class="arrow_right" name="arrow-right"></u-icon>
 					</view>
 				</block>
