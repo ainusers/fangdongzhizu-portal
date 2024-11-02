@@ -6,9 +6,6 @@ module.exports=()=>({
     "pages": [
         {
             "path": "pages/auth/guide",
-            "style": {
-                "transparentTitle":  "always"
-            }
         },
         {
             "path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
@@ -38,7 +35,6 @@ module.exports=()=>({
         {
             "path": "pages/tabbar/home/homeDetail",
             "style": {
-                "transparentTitle":  "always",
 				"navigationBarTitleText": "房屋详情页",
 				"navigationBarTextStyle": "white",
 				"navigationBarBackgroundColor": "#5199ff",
@@ -79,7 +75,6 @@ module.exports=()=>({
         {
             "path": "pages/tabbar/home/home",
             "style": {
-                "transparentTitle":  "always",
                 "navigationBarTextStyle": "white",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
@@ -90,7 +85,6 @@ module.exports=()=>({
         {
             "path": "pages/tabbar/community/community",
             "style": {
-                "transparentTitle":  "always",
                 "enablePullDownRefresh": true,
 				"navigationBarTextStyle": "white",
 				"navigationBarBackgroundColor": "#5199ff",
@@ -449,7 +443,6 @@ module.exports=()=>({
 		{
             "path": "pages/tabbar/community/lifeServe/formaldehyde",
             "style": {
-                "transparentTitle":  "always",
                 "enablePullDownRefresh": false
             }
         }

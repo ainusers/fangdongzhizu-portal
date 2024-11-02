@@ -20,7 +20,7 @@
 		line-height: 34upx;
 		margin-top: 10upx;
 	}
-	.isNoHas{
+	.icon_color{
 		color: #9e9fa3;
 	}
 </style>
@@ -28,26 +28,25 @@
 	<view class="f_r_s pei_tao_she_shi">
 		<block v-for="(item, index) in list" :key="index">
 			<view class="pei_item f_c_c" >
-				<uni-icons custom-prefix="iconfont" :type="item.iconUrl" size="20"></uni-icons>
-				<view class="pei_text" :class="{'isNoHas':!item.isShow}">{{ item.text }}</view>
+				<view v-if='item.isShow'>
+					<uni-icons custom-prefix="iconfont" :type="item.icon" size="20"></uni-icons>
+					<view class="pei_text" :class="{'icon_color':!item.isShow}">{{ item.text }}</view>
+				</view>
+				<view v-if='!item.isShow'>
+					<uni-icons custom-prefix="iconfont" :type="item.icon" size="20" color="#e6e6e6"></uni-icons>
+					<view class="pei_text" :class="{'icon_color':!item.isShow}">{{ item.text }}</view>
+				</view>
 			</view>
 		</block>
 	</view>
 </template>
-
 <script>
 	export default {
-		data() {
-			return {
-				iconUrl: "",   // 标签图片路径
-				tex: "",  	// 标签的中文名
-			}
-		},
 		props: {
 			list: {
 				type: Array,
 				default: []
-			},
+			}
 		}
 	}
 </script>

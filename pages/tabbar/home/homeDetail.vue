@@ -350,16 +350,16 @@
         guaPaiAgentList: [],
         bottomAgentInfo: {},
         sheshiData: [
-			{'iconUrl':'icon-xiyiji-bak','text':'洗衣机',isShow:false,hIconUrl:'icon-xiyiji'}, 
-			{'iconUrl':'icon-bingxiang-bak','text':'冰箱',isShow:false,hIconUrl:'icon-bingxiang'},
-			{'iconUrl':'icon-dianshi-bak','text':'电视',isShow:false,hIconUrl:'icon-dianshi'},
-			{'iconUrl':'icon-kongtiao-bak','text':'空调',isShow:false,hIconUrl:'icon-kongtiao'},
-			{'iconUrl':'icon-reshuiqi-bak','text':'热水器',isShow:false,hIconUrl:'icon-reshuiqi'},
-			{'iconUrl':'icon-ranqi-bak','text':'天然气',isShow:false,hIconUrl:'icon-ranqi'},
-			{'iconUrl':'icon-nuanqi-bak','text':'暖气',isShow:false,hIconUrl:'icon-nuanqi'},
-			{'iconUrl':'icon-wifi-bak','text':'无线网',isShow:false,hIconUrl:'icon-wifi'},
-			{'iconUrl':'icon-weibolu-bak','text':'微波炉',isShow:false,hIconUrl:'icon-weibolu'}, 
-			{'iconUrl':'icon-diancilu-bak','text':'电磁炉',isShow:false,hIconUrl:'icon-diancilu'},
+			{'text':'洗衣机',isShow:false,icon:'icon-xiyiji'}, 
+			{'text':'冰箱',isShow:false,icon:'icon-bingxiang'},
+			{'text':'电视',isShow:false,icon:'icon-dianshi'},
+			{'text':'空调',isShow:false,icon:'icon-kongtiao'},
+			{'text':'热水器',isShow:false,icon:'icon-reshuiqi'},
+			{'text':'天然气',isShow:false,icon:'icon-ranqi'},
+			{'text':'暖气',isShow:false,icon:'icon-nuanqi'},
+			{'text':'无线网',isShow:false,icon:'icon-wifi'},
+			{'text':'微波炉',isShow:false,icon:'icon-weibolu'}, 
+			{'text':'电磁炉',isShow:false,icon:'icon-diancilu'}
 		],
 		feiyongData: [
 			{'title':'付款方式','value':'-'},
@@ -613,13 +613,12 @@
 			})
 		},
 		showSupport(){
-			let support=this.detailData.support
-			if(support){
+      let support=this.detailData.support
+      if(support){
 				support=support.split(',')
 				this.sheshiData.forEach(item=>{
-					if(support.indexOf(item.text)!=-1){
+					if(support.indexOf(item.text) != -1){
 						item.isShow=true
-						item.iconUrl=item.hIconUrl
 					}
 				})
 			}

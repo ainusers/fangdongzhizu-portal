@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "iconfont"; /* Project id 4620581 */
-  src: url('/static/iconfont/iconfont.ttf') format('truetype');
+	font-family: "iconfont"; /* Project id 4620581 */
+	src: url('/static/iconfont/iconfont.ttf?t=1730554686834') format('truetype');
 }
 
 .iconfont {
@@ -15,48 +15,20 @@
   content: "\eb73";
 }
 
-.icon-diancilu-bak:before {
-  content: "\eb5c";
-}
-
 .icon-diancilu:before {
   content: "\e647";
-}
-
-.icon-bingxiang-bak:before {
-  content: "\e608";
 }
 
 .icon-bingxiang:before {
   content: "\e607";
 }
 
-.icon-xiyiji-bak:before {
-  content: "\e60c";
-}
-
 .icon-xiyiji:before {
   content: "\e60d";
 }
 
-.icon-wifi-bak:before {
-  content: "\e60b";
-}
-
-.icon-weibolu-bak:before {
-  content: "\e60e";
-}
-
-.icon-nuanqi-bak:before {
-  content: "\e60a";
-}
-
 .icon-weibolu:before {
   content: "\e60f";
-}
-
-.icon-reshuiqi-bak:before {
-  content: "\e610";
 }
 
 .icon-reshuiqi:before {
@@ -71,24 +43,12 @@
   content: "\e609";
 }
 
-.icon-ranqi-bak:before {
-  content: "\e613";
-}
-
 .icon-ranqi:before {
   content: "\e614";
 }
 
-.icon-kongtiao-bak:before {
-  content: "\e615";
-}
-
 .icon-nuanqi:before {
   content: "\e61c";
-}
-
-.icon-dianshi-bak:before {
-  content: "\e61d";
 }
 
 .icon-dianshi:before {
