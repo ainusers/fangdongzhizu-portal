@@ -569,7 +569,10 @@
 				let screenFormData = this.screenFormData;
 				let enterType = this.enterType;
 				if (!item.id) {
+					screenFormData[enterType].room.text = "户型";
+					screenFormData[enterType].room.show = false
 					this.home_type = ''
+					this.roomListIndex = -1
 					this.init(true)
 					return
 				}
@@ -577,10 +580,6 @@
 				screenFormData[enterType].room.id = item.id;
 				screenFormData[enterType].room.show = true;
 				screenFormData[enterType].room.text = item.text;
-				if (!item.id) {
-					screenFormData[enterType].room.text = "户型";
-					screenFormData[enterType].room.show = false
-				}
 				this.screenFormData = screenFormData;
 				this.init(true)
 			}

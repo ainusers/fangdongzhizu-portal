@@ -580,14 +580,14 @@
 																}
 															}
 														});
-													} 
+													}
 												})
+												// #endif
 												// 使用手机号联系房东
 												uni.makePhoneCall({
 													phoneNumber: that.detailData.username
 												})
-												// #endif
-											} 
+											}
 										})
 									}
 								})
