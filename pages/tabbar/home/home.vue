@@ -266,8 +266,7 @@
 				home_type: '', //筛选三居室
 				moreChooseStr: [], //更多选中的筛选
 				fixedContHeight: 0, //屏幕的高度
-				moreSubKey: ['room_type', 'has_elevator', 'heat_type',
-				'room_type'], //更多提交接口的key 与screen-tab组件中moreType顺序相同
+				moreSubKey: ['room_type', 'has_elevator', 'heat_type', 'room_type'], //更多提交接口的key 与screen-tab组件中moreType顺序相同
 			};
 		},
 		props: {
@@ -431,7 +430,6 @@
 						if (res.data.length < 10) {
 							this.isLoad = true
 						}
-						// that.$store.commit('houseInfo', that.houseList)
 					}
 				})
 			},
@@ -501,8 +499,21 @@
 				}
 			},
 			// 确认价格
-			confirmPrice(val) {
-				this.screenMoney = val
+			confirmPrice(item, index) {
+				let screenFormData = this.screenFormData;
+				let enterType = this.enterType;
+				if (!item.id) {
+					screenFormData[enterType].price.text = "价格";
+					screenFormData[enterType].price.show = false
+					this.screenMoney=''
+					this.init(true)
+					return
+				}
+				this.screenMoney = item.val
+				screenFormData[enterType].price.id = item.id;
+				screenFormData[enterType].price.show = true;
+				screenFormData[enterType].price.text = item.text;
+				this.screenFormData = screenFormData;
 				this.init(true)
 			},
 			// 更多选项卡 - 确定按钮
@@ -560,8 +571,8 @@
 					this.subway = item
 					this.screenArea = ''
 				}
-        this.directList = []
-        this.subleaseList = []
+				this.directList = []
+				this.subleaseList = []
 				this.init(true)
 			},
 			// 户型的确认

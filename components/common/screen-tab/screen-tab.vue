@@ -17,7 +17,7 @@
 						<view hover-class="none" form-type="submit" @click="screenBtn('price')"
 							class="screen_item f_r_c">
 							<view
-								:style="{color: screenFormData.erHouse.price.show || screenFormData.erHouse.price.text != priceApiDataMap[from].defaultText ? '#5199ff' : '#494949'}"
+								:style="{color: screenFormData.erHouse.price.show || screenFormData.erHouse.price.text != '价格' ? '#5199ff' : '#494949'}"
 								class="screent_text f_c_c">{{ screenFormData.erHouse.price.text }}</view>
 							<image :class="{screen_icon_active: screenFormData.erHouse.price.show}" class="screen_icon"
 								:src="screenFormData.erHouse.price.show ? topIcon : downIcon"></image>
@@ -97,7 +97,7 @@
 							</scroll-view>
 							<view class="room_new_btn_view">
 								<view hover-class="none" form-type="submit" @click='priceReset()'>重置</view>
-								<view hover-class="none" form-type="submit" @click="confirmPrice"
+								<view hover-class="none" form-type="submit" @click="confirmPrice(priceItem, 0)"
 									class="price_bottom_confirm">确认</view>
 							</view>
 						</view>
@@ -205,34 +205,8 @@
 						currentStr: ''
 					},
 				],
-				// 面积
-				// areaLsit: constant.areaList,
-				// areaLsitIndex: -1,
 				stationData: [], //地铁站数据
 				stationStr: '', //地铁站线
-				// 价格列表的map
-				priceApiDataMap: {
-					"erHouse": {
-						apiKey: "SALE_PRICE_DATA",
-						unit: "万",
-						defaultText: "价格"
-					},
-					"lease": {
-						apiKey: "LEASE_PRICE_DATA",
-						unit: "元",
-						defaultText: "租金"
-					},
-					"newHouse": {
-						apiKey: "NEW_HOUSE_PRICE",
-						unit: "万",
-						defaultText: "价格"
-					},
-					"apartment": {
-						apiKey: "APARTMENT_PRICE_DATA",
-						unit: "元",
-						defaultText: "租金"
-					},
-				},
 				priceItem: {
 					id:'',
 					text:'',
@@ -240,9 +214,6 @@
 				}
 			}
 		},
-		onShow() {},
-		mounted() {},
-		onLoad() {},
 		methods: {
 			screenBtn(str) {
 				if(this.currentClickType==str){
@@ -257,7 +228,6 @@
 				this.listTcShow = false;
 				let screenFormData = this.screenFormData;
 				let enterType = this.enterType;
-				let moreIds = ["source", "area"];
 				for (let key in (screenFormData[enterType] || {})) {
 					let item = screenFormData[enterType][key];
 					if (key === "region") {
@@ -339,8 +309,6 @@
 					item.currentStr = ''
 				})
 			},
-			// 选项卡点击事件
-			screenContBtn() {},
 			regionLeftBtn(item, index) {
 				this.regionLeftIndex = index
 				this.areaOrLineIndex = 0
@@ -485,68 +453,17 @@
 				})
 				this.$emit('roomConfirm', item)
 			},
-			formSubmit() {},
 			// 价格确认
-			confirmPrice() {
-				if (!this.minPriceVal && this.priceItem.text == '不限' || !this.maxPriceVal && this.priceItem.text == '不限') {
-					uni.showToast({
-						title: '请输入价格',
-						duration: 2000,
-						icon: 'none'
-					});
-					return;
+			confirmPrice(item, index) {
+				let screenFormData = this.screenFormData
+				if (item.id) {
+					screenFormData[this.enterType]['price'].show = true;
 				}
-				if (Number(this.minPriceVal) > Number(this.maxPriceVal)) {
-					uni.$u.toast('最低价格不能大于最高价格')
-					return;
-				}
-				let screenFormData = this.screenFormData;
-				let val = this.priceItem.val
-				let enterType = this.enterType;
-				screenFormData[enterType].price.id = this.priceItem.id;
-				screenFormData[enterType].price.show = false;
-				screenFormData[enterType].price.text = this.priceItem.text;
-				if (!this.priceItem.id) {
-					screenFormData[enterType].price.text = this.priceApiDataMap[this.from].defaultText;
-					uni.removeStorage({
-						key:'price'
-					})
-					this.priceItem.id=''
-					this.priceItem.text=''
-				}
-				this.screenFormData = screenFormData
-				if (this.minPriceVal || this.maxPriceVal) {
-					this.priceItem.id=''
-					this.priceItem.text=''
-					val = this.minPriceVal + '-' + this.maxPriceVal
-					uni.setStorage({
-						key:'priceArea',
-						data:{
-							minPriceVal:this.minPriceVal,
-							maxPriceVal:this.maxPriceVal
-						}
-					})
-					uni.removeStorage({
-						key:'price'
-					})
-					uni.removeStorage({
-						key:'priceArea'
-					})
-					screenFormData[this.enterType].price.text = this.minPriceVal + '-' + this.maxPriceVal
-				}
-				if (val || this.priceItem.id) {
-					this.screenFormData[this.enterType]['price'].show = true;
-				}
-				if(this.priceItem.id){
-					uni.setStorage({
-						key:'price',
-						data:this.priceItem
-					})
-					uni.removeStorage({
-						key:'priceArea'
-					})
-				}
-				this.$emit('confirmPrice', val)
+				uni.setStorage({
+					key:'price',
+					data:this.priceItem
+				})
+				this.$emit('confirmPrice', item)
 			},
 			priceReset() {
 				let screenFormData = this.screenFormData
@@ -555,10 +472,8 @@
 				this.priceItem = {
 					id: '',
 					text: '',
-					val:''
+					val: ''
 				}
-				this.minPriceVal = ''
-				this.maxPriceVal = ''
 			}
 		}
 	}
