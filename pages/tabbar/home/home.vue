@@ -133,7 +133,7 @@
 			</swiper-item>
 			<!-- 二手房 -->
 			<swiper-item>
-				<scroll-view scroll-y="true" class=" list-content" @scrolltolower="scrolltolower"
+				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
 					:refresher-triggered="triggered" :refresher-enabled="true" :refresher-threshold="100"
 					@refresherrefresh="onRefresh" @refresherrestore="onRestore">
 					<view v-if="current === 1">
