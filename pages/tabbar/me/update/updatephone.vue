@@ -2,13 +2,13 @@
 	<view class="main">
 		<form action="">
 			<u-form-item :label-position="labelPosition" label="当前手机号 :" prop="region" label-width="200">
-				<u-input v-model="oldPhone" @input="inputPhone" type="number" :border="border" placeholder="请输入当前手机号"/>
+				<u-input v-model="oldPhone" type="number" :border="border" placeholder="请输入当前手机号"/>
 			</u-form-item>
 			<u-form-item :label-position="labelPosition" label="更换手机号 :" prop="region" label-width="200">
 						<u-input v-model="newphone" type="number" :border="border" placeholder="请输入需要更换的手机号" maxlength="11"/>
 			</u-form-item>
 			<u-form-item :label-position="labelPosition" label="确认手机号 :" prop="region" label-width="200">
-						<u-input v-model="newphone1" type="number" :border="border" placeholder="请输入需要确认手机号"  maxlength="11"/>
+						<u-input v-model="newphone1" @input="inputPhone" type="number" :border="border" placeholder="请输入需要确认手机号"  maxlength="11"/>
 			</u-form-item>
 			<!-- 图形码 -->
 			<imgCode ref="imgCode" />
@@ -63,7 +63,7 @@
 		},
 		methods: {
 			inputPhone(){
-				uni.$emit('getUserName',this.oldPhone)
+				uni.$emit('getUserName',this.newphone)
 			},
 			sendCode() {
 				if(this.newphone!=this.newphone1){
