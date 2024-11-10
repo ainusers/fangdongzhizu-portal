@@ -4,9 +4,16 @@ module.exports=()=>({
         "^q-(.*)": "@/components/q-$1/q-$1.vue"
     },
     "pages": [
-        {
-            "path": "pages/auth/guide",
-        },
+		{
+		    "path": "pages/tabbar/home/home",
+		    "style": {
+		        "navigationBarTextStyle": "white",
+		        "enablePullDownRefresh": false,
+		        "backgroundTextStyle":"light",
+		        "backgroundColor":"#ffffff",
+				"navigationBarBackgroundColor": "#5199ff",
+		    }
+		},
         {
             "path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
             "style": {
@@ -70,16 +77,6 @@ module.exports=()=>({
 				"navigationBarBackgroundColor": "#5199ff",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
-            }
-        },
-        {
-            "path": "pages/tabbar/home/home",
-            "style": {
-                "navigationBarTextStyle": "white",
-                "enablePullDownRefresh": false,
-                "backgroundTextStyle":"light",
-                "backgroundColor":"#ffffff",
-				"navigationBarBackgroundColor": "#5199ff",
             }
         },
         {

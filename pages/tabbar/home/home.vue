@@ -303,6 +303,10 @@
 			uni.$off('chooseCity');
 		},
 		onLoad() {
+			/*#ifdef APP-PLUS*/
+			plus.navigator.closeSplashscreen()
+			/*#endif*/
+			
 			that = this
 			// 从本地缓存中获取城市名称，如果没有则使用默认
 			let cityName = uni.getStorageSync('cityName');
