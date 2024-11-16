@@ -196,16 +196,18 @@
 		color: #A6A6A6;
 	}
 	.detail_btn{
-		width:140upx;
-		height:80upx;
-		justify-content: end;
+		height:74upx;
+		display: flex;
+		flex-direction: row;
 		.btn_item{
 			display: flex;
+			width:126upx;
 			align-items: center;
-			padding: 10upx 30upx;
+			padding: 14upx 30upx;
 			border:1px solid #5199ff;
-			margin: 0 10upx 10upx 10upx;
+			margin: 10upx -12upx 10upx 22upx;
 			color: #5199ff;
+			border-radius: 6px;
 		}
 	}
 	.type_icon{
@@ -213,6 +215,7 @@
 		height: 40rpx;
 		line-height: 40rpx;
 		z-index: 20;
+		border-radius: 5px;
 		padding:0rpx 10rpx;
 		font-weight: normal;
 		background: rgba(81, 153, 255,0.7);
@@ -271,7 +274,7 @@
 		
 		<!-- 管理房源功能 -->
 		<view class="detail_btn" v-show="isUpdate">
-			<view class="btn_item" @click="updateHouse(item)" v-show="current==0 || current==1">编辑</view>
+			<view class="btn_item" @click="updateHouse(item)" v-show="current==0 || current==1 || current==2">编辑</view>
 			<view class="btn_item" @click="offShelf(item)" v-show="current==1">下架</view>
 		</view>
 	</view>

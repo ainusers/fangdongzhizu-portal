@@ -113,22 +113,7 @@
             "navigationBarTextStyle": "black",
             "navigationBarBackgroundColor": "#fafafa",
             "enablePullDownRefresh": true,
-            "backgroundTextStyle":"light",
-            "app-plus": {
-                "scrollIndicator": "none",
-                "bounce": "none",
-                "titleNView": {
-                    "buttons": [
-                        {
-                            "background": "red",
-                            "margin":"20px",
-                            "text": "管理",
-                            "fontSize": "16px",
-                            "float": "right"
-                        }
-                    ]
-                }
-            }
+            "backgroundTextStyle":"light"
         }
     },
     {

@@ -7,6 +7,11 @@
 	height: calc(100vh - var(--status-bar-height));
 	background-color: #f7f7f7;
 }
+.operate {
+	 position: absolute;
+	 bottom: 60px;
+	 left: 80%;
+}
 </style>
 <template>
 	<view>
@@ -43,13 +48,17 @@
 				</scroll-view>
 			</swiper-item>
         </swiper>
+		
+		<!-- 编辑按钮 (当待审核、已发布、已下架时显示)-->
+		<view class="operate" @click="roomOperate()" v-show="current==0 || current==1 || current==2">
+			<uni-icons custom-prefix="iconfont" type="icon-bianji" color="#5199ff" size="30"></uni-icons>
+		</view>
 	</view>
 </template>
 
 <script>
 import houseListItem from '@/components/house-list/house-list-item.vue';
 import houseListItemSkeleton from '@/components/house-list/house-list-item-skeleton.vue'
-import {editTitleText} from '@/utils/utils.js'
 
 export default {
 	components: {
@@ -132,8 +141,6 @@ export default {
 					this.showModel=true
 					this.getStatusHouseList(Number(newVal)+1)
 				}
-				// 编辑右上角按钮文字
-				editTitleText('管理')
 				this.isUpdate=false
 			}
 		}
@@ -143,23 +150,6 @@ export default {
 	},
 	onPullDownRefresh() {
 		uni.stopPullDownRefresh();
-	},
-	onNavigationBarButtonTap(e){
-		let txt=''
-		if(!this.isUpdate){
-			txt='退出管理'
-			this.isUpdate=true
-		}else{
-			txt='管理'
-			this.isUpdate=false
-		}
-		if(this.$refs.ListItem && this.$refs.ListItem.length>0){
-			this.$refs.ListItem.forEach(item=>{
-				item.isUpdate=this.isUpdate
-			})
-			// 编辑右上角按钮文字
-			editTitleText(txt)
-		}
 	},
 	methods: {
 		//自定义刷新
@@ -263,16 +253,27 @@ export default {
 					    break;
                 }
 				res.data.length<10?this.loadStatus='end':this.loadStatus='loadmore'
-				// 下架后关闭管理操作
+				// 关闭管理操作
 				this.isUpdate=false
 				if(this.$refs.ListItem && this.$refs.ListItem.length>0){
 					this.$refs.ListItem.forEach(item=>{
 						item.isUpdate=this.isUpdate
 					})
-					// 编辑右上角按钮文字
-					editTitleText('管理')
 				}
 			})
+		},
+		// 编辑房源按钮
+		roomOperate(){
+			if(!this.isUpdate){
+				this.isUpdate=true
+			} else{
+				this.isUpdate=false
+			}
+			if(this.$refs.ListItem && this.$refs.ListItem.length>0){
+				this.$refs.ListItem.forEach(item=>{
+					item.isUpdate=this.isUpdate
+				})
+			}
 		}
 	}
 }

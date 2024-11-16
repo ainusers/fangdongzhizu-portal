@@ -74,23 +74,6 @@ const compressImg = function(img, res) {
 	})
 }
 
-//编辑右上角按钮文字
-const editTitleText = function(txt) {
-	let pages = getCurrentPages();
-	let page = pages[pages.length - 1];
-	// #ifdef APP-PLUS
-	let currentWebview = page.$getAppWebview();
-	let titleObj = currentWebview.getStyle().titleNView;
-	if (!titleObj.buttons) {
-		return;
-	}
-	titleObj.buttons[0].text = txt; //修改文字
-	currentWebview.setStyle({
-		titleNView: titleObj
-	});
-	// #endif
-}
-
 // 转义代码
 const htmlEncode = function(str) {
 	var temp = "";
@@ -239,7 +222,6 @@ export {
 	getStoreData,
 	initStorestate,
 	attachUpload,
-	editTitleText,
 	htmlEncode,
 	tranfTime,
 	getUserInfo,

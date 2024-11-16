@@ -132,22 +132,7 @@ module.exports=()=>({
                 "navigationBarBackgroundColor": "#5199ff",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
-                "backgroundColor":"#ffffff",
-                "app-plus": {
-                    "scrollIndicator": "none",
-                    "bounce": "none",
-                    "titleNView": {
-                        "buttons": [
-                            {
-                                "background": "red",
-                                "margin":"20px",
-                                "text": "管理",
-                                "fontSize": "16px",
-                                "float": "right"
-                            }
-                        ]
-                    }
-                }
+                "backgroundColor":"#ffffff"
             }
         },
         {

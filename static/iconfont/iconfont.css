@@ -11,6 +11,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-bianji:before {
+  content: "\e610";
+}
+
+.icon-add:before {
+  content: "\e622";
+}
+
 .icon-weixin:before {
   content: "\eb73";
 }
