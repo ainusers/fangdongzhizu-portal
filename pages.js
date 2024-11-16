@@ -7,11 +7,14 @@ module.exports=()=>({
 		{
 		    "path": "pages/tabbar/home/home",
 		    "style": {
-		        "navigationBarTextStyle": "white",
-		        "enablePullDownRefresh": false,
-		        "backgroundTextStyle":"light",
-		        "backgroundColor":"#ffffff",
+				"transparentTitle":  "always",
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#5199ff",
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle":"light",
+				"backgroundColor":"#fff",
+				"onReachBottomDistance":200
 		    }
 		},
         {
@@ -82,10 +85,14 @@ module.exports=()=>({
         {
             "path": "pages/tabbar/community/community",
             "style": {
-                "enablePullDownRefresh": true,
-				"navigationBarTextStyle": "white",
+				"transparentTitle":  "always",
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#5199ff",
-				"backgroundTextStyle":"light"
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle":"light",
+				"backgroundColor":"#fff",
+				"onReachBottomDistance":200
             }
         },
         {

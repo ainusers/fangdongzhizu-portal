@@ -167,16 +167,9 @@
 	.map_con{
 		padding: 20upx;
 	}
-	.empty{
-		height: calc(var(--status-bar-height));
-		background-color: #5199ff;
-	}
 </style>
 <template>
     <view class="er_house_detail">
-		<!-- #ifdef APP-PLUS -->
-		<view class="empty"></view>
-		<!-- #endif -->
 		<!-- 详情页 - 轮播图 -->
 		<house-swiper :list="swiperList"></house-swiper>
 		
