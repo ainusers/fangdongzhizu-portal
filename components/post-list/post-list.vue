@@ -191,7 +191,6 @@
 		},
 		methods: {
 			tranfTime(autoTime) {
-				autoTime = autoTime + ":00"
 				return tranfTime(new Date(autoTime));
 			},
 			//删除动态
