@@ -87,12 +87,12 @@
 				<!-- 城市 -->
 				<view class="city" @click.stop="chooseCity">
 					<view>{{ cityName }}</view>
-					<view class="city_icon"></view>
+					<uni-icons custom-prefix="iconfont" type="icon-xiangxia" color="#333" size="6" style="padding-left: 2px;"></uni-icons>
 				</view>
 				<!-- 选项卡（转租和直租） -->
 				<view class="type">
 					<u-tabs :list="tabList" barWidth="50" gutter="10" font-size="30" bg-color="#f2f2f2"
-						:current="current" @change="tabChange"></u-tabs>
+						height="70" :current="current" @change="tabChange"></u-tabs>
 				</view>
 			</view>
 			<!-- 筛选项 -->

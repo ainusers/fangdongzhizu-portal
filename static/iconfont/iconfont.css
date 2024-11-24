@@ -11,6 +11,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-xiangxia:before {
+  content: "\e62c";
+}
+
 .icon-bianji:before {
   content: "\e610";
 }

@@ -11,7 +11,7 @@ module.exports=()=>({
 				"navigationBarTitleText": "",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#5199ff",
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light",
 				"backgroundColor":"#fff",
 				"onReachBottomDistance":200
