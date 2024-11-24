@@ -77,6 +77,11 @@
     margin-left: 0;
 }
 
+.uni-uploader__img,.uni-uploader__video{
+	width: 100px;
+	height: 100px;
+}
+
 .upload-type {
     height: 50px;
     display: flex;

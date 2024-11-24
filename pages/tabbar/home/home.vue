@@ -41,13 +41,6 @@
 		display: inline-flex;
 		font-size: 32upx;
 	}
-	.city_icon {
-		margin-left: 10upx;
-		background: url(http://cdn.haofang.net/static/wxPlusApp/yjk/arr_down.png) no-repeat;
-		background-size: contain;
-		height: 8upx;
-		width: 13upx;
-	}
 	.u-tab-item .u-line-1 {
 		line-height: 0px !important;
 	}

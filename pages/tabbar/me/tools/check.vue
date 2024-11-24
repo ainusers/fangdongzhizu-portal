@@ -28,7 +28,7 @@
 				:refresher-threshold="100"
 				@refresherrefresh="onPulling"
 				@refresherrestore="onRestore">
-					<view v-if="current == index">
+					<view v-show="current == index">
 						<view class="content" v-if="houseList.length>0">
 							<!-- 列表 -->
 							<block v-for="(item, i) in houseList" :key="i">

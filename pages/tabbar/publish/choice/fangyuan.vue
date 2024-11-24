@@ -151,10 +151,15 @@
 	}
 
 	.uni-uploader__file {
-		margin: 4px 31upx;
+		margin: 8rpx 16rpx;
 		width: 200upx;
 		height: 200upx;
 		margin-left: 0;
+	}
+	
+	.uni-uploader__img{
+		width: 100px;
+		height: 100px;
 	}
 
 	uni-image {
@@ -210,7 +215,7 @@
 		background: #ef5350;
 		color: #FFFFFF;
 		position: absolute;
-		top: 1upx;
+		top: 0upx;
 		right: 1upx;
 		font-size: 35upx;
 		border-radius: 8upx;
@@ -536,7 +541,7 @@
 					</u-form-item>
 					<view class="region_new_title">房间设施</view>
 					<!-- 房源配置 -->
-					<u-form-item :label-position="labelPosition" label-width="150" prop="houseConfigStr">
+					<u-form-item :label-position="labelPosition" label-width="150" prop="houseConfigStr" style="padding: 0px;">
 						<u-checkbox-group @change="houseConfig" :width="radioCheckWidth" :wrap="false">
 							<u-checkbox v-model="item.checked" v-for="(item, index) in houseConfigList" :key="index"
 								:name="item.name" :disabled="setpAll">
