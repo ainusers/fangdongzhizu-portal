@@ -95,7 +95,7 @@
 						</view>
 						<view>
 							{{version}}
-							<view class="icon"  v-show="isShow"></view>
+							<view class="icon"  v-if="isShow"></view>
 						</view>
 					</view>
 					<view class="item">

@@ -23,7 +23,7 @@
 				:refresher-threshold="100"
 				@refresherrefresh="onPulling"
 				@refresherrestore="onRestore">
-					<view v-show="current == index">
+					<view v-if="current == index">
 						<!-- 内容区域 -->
 						<block v-if="status&& currPage==1">
 							<view v-for="(key,i) in jiaL">

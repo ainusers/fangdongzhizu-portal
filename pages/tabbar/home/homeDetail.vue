@@ -247,7 +247,7 @@
 			 <view class="modelName">地理位置</view>
 			 <view class="map_con">
 				<view>{{detailData.distanceSubway}}</view>
-				<di-li-wei-zhi :list="diliData"  v-show="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi>
+				<di-li-wei-zhi :list="diliData"  v-if="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi>
 			 </view>
 		   </block>
 		</view>

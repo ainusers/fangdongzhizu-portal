@@ -79,7 +79,7 @@
 <template>
 	<view class="main">
 		<!-- 顶部区域 -->
-		<u-sticky offset-top="0">
+		<u-sticky offset-top="0" h5-nav-height="0">
 		    <!-- #ifdef APP-PLUS -->
 			<view class="empty"></view>
 		    <!-- #endif -->
@@ -91,7 +91,6 @@
 				</view>
 				<!-- 选项卡（转租和直租） -->
 				<view class="type">
-					<!-- tabs -->
 					<u-tabs :list="tabList" barWidth="50" gutter="10" font-size="30" bg-color="#f2f2f2"
 						:current="current" @change="tabChange"></u-tabs>
 				</view>

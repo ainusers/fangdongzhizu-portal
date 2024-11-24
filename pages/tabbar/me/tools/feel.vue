@@ -28,7 +28,7 @@
 		                            <view class="close-view" @click="close(index)">×</view>
 		                        </view>
 		                    </block>
-		                    <view class="uni-uploader__input-box" v-show="uploadType === 'image' ? imageList.length < 9 : imageList <= 1">
+		                    <view class="uni-uploader__input-box" v-if="uploadType === 'image' ? imageList.length < 9 : imageList <= 1">
 		                        <view class="uni-uploader__input" @tap="chooseImage"></view>
 		                    </view>
 		                </view>

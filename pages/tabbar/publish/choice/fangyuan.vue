@@ -315,7 +315,7 @@
 		<view class="main">
 			<u-form labelPosition="left" :model="houseModel" ref="form1">
 				<!-- 发布类型 -->
-				<view v-show="stepNum==1 || setpAll">
+				<view v-if="stepNum==1 || setpAll">
 					<view class="region_new_title">选择角色</view>
 					<view class="Hometype_con">
 						<view class="item" v-for="(item,index) in radioList" :key="index" @click="radioGroupChange(index)"
@@ -324,7 +324,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="step_1" v-show="stepNum==1||setpAll">
+				<view class="step_1" v-if="stepNum==1||setpAll">
 					<!-- 资质上传 -->
 					<view class="region_new_title">资质上传  <text class="tipTxt">({{tipTxt}})</text></view>
 					<u-form-item prop="naturalImageList" required :border-bottom="false">
@@ -334,7 +334,7 @@
 									<view class="uni-uploader-body">
 										<view class="uni-uploader__files">
 											<view class="uni-uploader__input-box"
-												v-show="houseModel.naturalImageList.length < 9">
+												v-if="houseModel.naturalImageList.length < 9">
 												<view class="uni-uploader__input" @tap="chooseImage('natural')"></view>
 											</view>
 											<block v-for="(image,index) in houseModel.naturalImageList" :key="index">
@@ -378,7 +378,7 @@
 				</view>
 			</u-form>
 			<u-form labelPosition="left" :model="houseModel" ref="form2">
-				<view class="step_2" v-show="stepNum==2 ||setpAll">
+				<view class="step_2" v-if="stepNum==2 ||setpAll">
 					<!-- 费用信息 -->
 					<view class="region_new_title">费用信息<text class="tipTxt">(&nbsp;客观地评估价格,有助于更快出租&nbsp;)</text></view>
 					<u-form-item :label-position="labelPosition" label="房间布局 :" prop="layout" label-width="150">
@@ -453,7 +453,7 @@
 				</view>
 			</u-form>
 			<u-form labelPosition="left" :model="houseModel" ref="form3">
-				<view class="step_3" v-show="stepNum==3 || setpAll">
+				<view class="step_3" v-if="stepNum==3 || setpAll">
 					<!-- 费用信息 -->
 					<view class="region_new_title">房间信息</view>
 					<!-- 出租房屋 -->
@@ -464,7 +464,7 @@
 							@cancel="leaseCancel"></u-select>
 					</u-form-item>
 					<!-- 几室 -->
-					<view v-show="isHomeArr">
+					<view v-if="isHomeArr">
 						<view class="" v-for="(item,index) in houseModel.homeArr">
 							<u-form-item :label-position="labelPosition" :label="item.name" prop="homeArr" label-width="150"
 								v-if="houseModel.chekcNum!=0&&index<houseModel.chekcNum">
@@ -514,7 +514,7 @@
 									<view class="uni-uploader-body">
 										<view class="uni-uploader__files">
 											<view class="uni-uploader__input-box"
-												v-show="houseModel.houseImageList.length < 9">
+												v-if="houseModel.houseImageList.length < 9">
 												<view class="uni-uploader__input" @tap="chooseImage('house')"></view>
 											</view>
 											<block v-for="(image,index) in houseModel.houseImageList" :key="index">
@@ -601,10 +601,10 @@
 			</u-form>
 		</view>
 		<view class="footer">
-			<button type="default" class="feedback-pre" @click="preStep" v-show="stepNum>1||setpAll">上一步</button>
-			<button type="default" class="feedback-next" @click="nextStep" v-show="stepNum==1 || stepNum<3 ">下一步</button>
-			<button type="default" class="feedback-pre" @click="nextStep" v-show="stepNum==3&!setpAll">预览</button>
-			<button type="default" class="feedback-next" @click="publish" v-show="setpAll" @tap="$u.throttle(publish, 2000)">发布</button>
+			<button type="default" class="feedback-pre" @click="preStep" v-if="stepNum>1||setpAll">上一步</button>
+			<button type="default" class="feedback-next" @click="nextStep" v-if="stepNum==1 || stepNum<3 ">下一步</button>
+			<button type="default" class="feedback-pre" @click="nextStep" v-if="stepNum==3&!setpAll">预览</button>
+			<button type="default" class="feedback-next" @click="publish" v-if="setpAll" @tap="$u.throttle(publish, 2000)">发布</button>
 		</view>
 	</view>
 </template>

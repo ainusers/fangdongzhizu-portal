@@ -126,7 +126,7 @@
 		
 		<!-- 评论区 -->
 		<view class="comment_main">
-			<block v-show="commentList.length > 0&&commentListShow" >
+			<block v-if="commentList.length > 0&&commentListShow" >
 				<view class="comment_con">
 					<view   class="comment" v-for="(res, index1) in commentList" :key="res.id">
 						<view class="left">
@@ -156,7 +156,7 @@
 										</view>
 									</view>
 								</view>
-								<view :class="[res.commentText?'all-reply':'']" @tap="toAllReply(index1,res.comment_id)" v-show="res.replyList&&res.replyList.length>0">
+								<view :class="[res.commentText?'all-reply':'']" @tap="toAllReply(index1,res.comment_id)" v-if="res.replyList&&res.replyList.length>0">
 									 {{res.commentText}}
 									<u-icon class="more" name="arrow-right" :size="26" v-if="res.commentText"></u-icon>
 								</view>
@@ -165,7 +165,7 @@
 					</view>
 				</view>
 			</block>
-			<view v-show="commentList.length < 1" >
+			<view v-if="commentList.length < 1" >
 				<!-- 信息流广告 -->
 				<ad adpid="1804384865"></ad>
 				

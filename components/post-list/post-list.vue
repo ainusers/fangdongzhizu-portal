@@ -15,19 +15,19 @@
 								<text class="nickname">{{ item.nickname?item.nickname.substring(0, 12):'' }}</text>
 								
 								<view style="float: right;padding-right: 10px;font-size: 18px;" @click.stop.prevent="goReport(index,$event)"
-									  v-show="item.userid==$store.state.userInfo.id">
+									  v-if="item.userid==$store.state.userInfo.id">
 									<u-icon name="more-dot-fill" color="rgb(203,203,203)" ></u-icon>
-									<view class="reportText" v-show="item.isReport">
+									<view class="reportText" v-if="item.isReport">
 										<view @click="deletePost(index,item.id)" class="item" >删除</view>
 									</view>
 								</view>
 								<!-- <view style="float: right;padding-right: 10px;font-size: 18px;" @click.stop.prevent="goReport(index,$event)">
 									<u-icon name="more-dot-fill" color="rgb(203,203,203)" ></u-icon>
-									<view class="reportText" v-show="item.isReport">
+									<view class="reportText" v-if="item.isReport">
 										<view @click="report" class="item"
-											v-show="item.userid!=$store.state.userInfo.id">举报</view>
+											v-if="item.userid!=$store.state.userInfo.id">举报</view>
 										<view @click="deletePost(index,item.id)" class="item"
-											v-show="item.userid==$store.state.userInfo.id">删除</view>
+											v-if="item.userid==$store.state.userInfo.id">删除</view>
 									</view>
 								</view> -->
 							</view>
@@ -42,7 +42,7 @@
 					<!-- 列表内容 -->
 					<view class="post-content" >
 						<rich-text :style="showRow" class="post-text" :nodes="item.words"></rich-text>
-						<view v-show="item.image&&item.image[0]!=''">
+						<view v-if="item.image&&item.image[0]!=''">
 							<block>
 								<!--一张图片-->
 								<block v-if="item.filetype==='image'&&item.image&&item.image.length == 1">
@@ -87,12 +87,12 @@
 							<text class="count">{{ item.comment }}</text>
 						</view>
 						<!-- 点赞和取消点赞 -->
-						<view v-show="item.status&&item.status==1" class="p-item"
+						<view v-if="item.status&&item.status==1" class="p-item"
 							@click.stop="cancelCollection(item.id, index)">
 							<u-icon name="heart-fill" color="#cc0000" size="38"></u-icon>
 							<text class="count">{{ item.like ?item.like :'' }}</text>
 						</view>
-						<view v-show="!item.status" class="p-item" @click.stop="addCollection(item.id, index)">
+						<view v-if="!item.status" class="p-item" @click.stop="addCollection(item.id, index)">
 							<u-icon name="heart" size="38"></u-icon>
 							<text class="count">{{ item.like?item.like:'' }}</text>
 						</view>
@@ -121,7 +121,7 @@
 			<!-- 此处空白，用于朋友圈详情页 -->
 		</block>
 		<!-- //举报模态框 -->
-		<view v-show="reportShows">
+		<view v-if="reportShows">
 			<zhizuReport @cancelReport="cancelReport" @goReport="goReportText" :typeStr="reportType" :reportId="reportId" ref="report" />
 		</view>
 	</view>
@@ -131,6 +131,8 @@
 	let that = null;
 	import zhizuReport from '@/components/common/modal/report.vue'
 	import postListSkeleton from '@/components/post-list/post-list-skeleton.vue'
+	import {tranfTime} from '@/utils/utils.js'
+	
 	export default {
 		name: 'post-list',
 		props: {
@@ -189,25 +191,8 @@
 		},
 		methods: {
 			tranfTime(autoTime) {
-				var now = (Date.parse(new Date())) / 1000; //计算当前时间戳
-				var occur = (Date.parse(new Date(autoTime))) / 1000;; //自动收货的时间戳 （字符串转时间戳）
-				var diff = (now - occur) * 1000; //时间差的毫秒数
-				// 差值计算日、时、分
-				var day = Math.floor(diff / (24 * 3600 * 1000));
-				var hour = Math.floor(diff / (3600 * 1000));
-				var minute = Math.floor(diff / (60 * 1000));
-				//计算显示数值
-				if (minute < 1) {
-					return "刚刚"
-				} else if (hour < 1) {
-					return minute + "分钟前"
-				} else if(day < 1) {
-					return hour + '小时前'
-				} else if (day <= 31) {
-					return day + "天前"
-				} else {
-					return autoTime
-				}
+				autoTime = autoTime + ":00"
+				return tranfTime(new Date(autoTime));
 			},
 			//删除动态
 			deletePost(index,id) {

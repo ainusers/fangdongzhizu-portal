@@ -37,7 +37,7 @@
       </view>
     </view>
 
-    <view class="form" v-show="tabIndex ==0">
+    <view class="form" v-if="tabIndex == 0">
       <!-- //用户名 -->
       <phoneTab type="user" ref="userName"></phoneTab>
       <!-- //密码 -->

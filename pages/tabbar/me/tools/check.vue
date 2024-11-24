@@ -28,15 +28,15 @@
 				:refresher-threshold="100"
 				@refresherrefresh="onPulling"
 				@refresherrestore="onRestore">
-					<view v-show="current == index">
-						<view class="content" v-show="houseList.length>0">
+					<view v-if="current == index">
+						<view class="content" v-if="houseList.length>0">
 							<!-- 列表 -->
 							<block v-for="(item, i) in houseList" :key="i">
 								<house-list-item ref="ListItem" :item="item" :index="i" @updateHouseList="updateHouseList" :current="current"></house-list-item>
 							</block>
 						</view>
 						<!-- 骨架屏 -->
-						<view v-show="showModel && houseList.length==0">
+						<view v-if="showModel && houseList.length==0">
 							<block v-for="item in houseJia" :key="item">
 								<houseListItemSkeleton/>
 							</block>
@@ -50,7 +50,7 @@
         </swiper>
 		
 		<!-- 编辑按钮 (当待审核、已发布、已下架时显示)-->
-		<view class="operate" @click="roomOperate()" v-show="current==0 || current==1 || current==2">
+		<view class="operate" @click="roomOperate()" v-if="current==0 || current==1 || current==2">
 			<uni-icons custom-prefix="iconfont" type="icon-bianji" color="#5199ff" size="30"></uni-icons>
 		</view>
 	</view>

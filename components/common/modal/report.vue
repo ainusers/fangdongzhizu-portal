@@ -12,7 +12,7 @@
 									{{item.name}}
 								</u-radio>
 					</u-radio-group>
-					<u-input v-model="otherReport" :type="typeStr" :border="border" :height="height" :auto-height="autoHeight" v-show="isOtherR"/>
+					<u-input v-model="otherReport" :type="typeStr" :border="border" :height="height" :auto-height="autoHeight" v-if="isOtherR"/>
 					<view class="hink">
 						注：举报次数大于100次，将自动屏蔽该记录
 					</view>

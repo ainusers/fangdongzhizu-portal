@@ -7,7 +7,7 @@
 		</view>
 		<view class="person_info_ti"></view>
 		<view class="personal_bottom">
-			<view v-show="current==0">
+			<view v-if="current==0">
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower">
 					<view>
 						<view class="content">
@@ -25,7 +25,7 @@
 					</view>
 				</scroll-view>
 			</view>
-			<view v-show="current==1">
+			<view v-if="current==1">
 				<post-list :list="tuwen_data" :loadStatus="load_status_tuwen"  @clickLike="clickLikes" :isPersonal="true"></post-list>
 			</view>
 		</view>

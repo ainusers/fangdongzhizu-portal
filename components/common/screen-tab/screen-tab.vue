@@ -40,7 +40,7 @@
 						</view>
 					</view>
 					<view @click="screenClose" :style="{height: fixedContHeight+'px', top: fixedTcTop}"
-						class="screen_fixed_list" v-show="listTcShow">
+						class="screen_fixed_list" v-if="listTcShow">
 						<!-- 区域 -->
 						<view :style="{height: contHeight}" @click.stop="screenContBtn"
 							v-if="currentClickType == 'region'" class="region_list_view f_r_b">
