@@ -49,9 +49,7 @@ const compressImg = function(img, res) {
 				if (file.size > 504800) { //   如果大于500Kb进行压缩
 					plus.zip.compressImage({ // 5+ plus.zip.compressImage 了解一下，有详细的示例
 						src: img, //src: 压缩原始图片的路径    
-						dst: img.replace('.png', '2222.png').replace('.PNG',
-								'2222.PNG').replace('.jpg', '2222.jpg')
-							.replace('.JPG', '2222.JPG'),
+						dst: img.replace('.png', '2222.png').replace('.PNG','2222.PNG').replace('.jpg', '2222.jpg').replace('.JPG', '2222.JPG'),
 						width: '40%', //dst: (String 类型 )压缩转换目标图片的路径，这里先在后面原始名后面加一个2222区分一下
 						height: '40%', //width,height: (String 类型 )缩放图片的宽度,高度
 						quality: 60, //quality: (Number 类型 )压缩图片的质量

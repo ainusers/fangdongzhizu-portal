@@ -97,6 +97,13 @@
 			}
 		}
 	}
+  // 一二级回复新增几天前和IP归属城市的样式
+  .newtimeip{
+    display: flex;
+    .date{
+      margin-right:10rpx;
+    }
+  }
 }
 /* 评论tool */
 .comment-tool {
@@ -137,10 +144,14 @@
 								<view class="top">
 									<view class="desc">
 										<view class="name"  @tap.stop="onReply(res, index1,1)">{{ res.nickname }}</view>
-										<view class="date"  @tap.stop="onReply(res, index1,1)">{{res.create_time  }}</view>
 									</view>
 								</view>
 								<view class="content"  @tap.stop="onReply(res, index1,1)">{{ res.words }}</view>
+								<!-- 新增几天前和获取IP归属城市 -->
+								<view class="newtimeip">
+									<view class="date"  @tap.stop="onReply(res, index1,1)" style="color: #999;font-size: 12px;">{{ tranfTime(res.create_time) }}</view>
+									<view style="color: #999;font-size: 12px;">{{ getCity(res.location) }}</view>
+								</view>
 							</view>
 							
 							<view class="reply-box">
@@ -150,9 +161,12 @@
 										<view class="right" @longpress="delComment(item, index,index1)">
 											<view class="desc">
 												<view class="nickname">{{ item.nickname }}</view>
-												<view class="date">{{ item.create_time?item.create_time:'' }}</view>
 											</view>
 											<view class="text">{{ item.words }}</view>
+											<view class="newtimeip">
+												<view class="date"  @tap.stop="onReply(item, index1,1)" style="color: #999;font-size: 12px;">{{ tranfTime(item.create_time) }}</view>
+												<view style="color: #999;font-size: 12px;">{{ getCity(item.location) }}</view>
+											</view>
 										</view>
 									</view>
 								</view>
@@ -207,6 +221,7 @@ export default {
 			dyId:'',//动态id
 			parentId:'',//二级评论的父id
 			expand:0,//当前展开的第几层
+			locationCicy:''//IP归属的城市
 		};
 	},
 	props:{
@@ -228,6 +243,9 @@ export default {
 		}
 	},
 	methods: {
+		tranfTime(autoTime) {
+			return tranfTime(new Date(autoTime));
+		},
 		commontInt(){
 			this.comment_id=''
 			this.beCommentUserId=0
@@ -475,6 +493,20 @@ export default {
 			}
 			this.$H.patch('/zf/v1/dynamic/look',data,true).then(res=>{
 			})
+		},
+    // 获取IP属地
+		getCity(location){
+			// 中国|0|北京|北京市|联通
+			// 将字符串按“|”分割成数组
+			if(!location) return '';
+			let parts = location.split('|');
+			if(location){
+				if (parts[2] === '0') {
+				  return '';
+				} else{
+					return parts[2]
+				}
+			}
 		}
 	}
 }

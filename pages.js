@@ -115,6 +115,17 @@ module.exports=()=>({
                 "backgroundTextStyle":"light"
             }
         },
+		{
+			"path" : "pages/tabbar/news/news",
+			"style" : 
+			{
+				"navigationBarTitleText" : "消息",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#5199ff",
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle":"light"
+			}
+		},
         {
             "path": "pages/tabbar/me/me",
             "style": {
@@ -434,7 +445,40 @@ module.exports=()=>({
             "style": {
                 "enablePullDownRefresh": false
             }
-        }
+        },
+		{
+			"path" : "pages/tabbar/news/like",
+			"style" : 
+			{
+				"navigationBarTitleText" : "收到的点赞",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#5199ff",
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle":"light"
+			}
+		},
+		{
+			"path" : "pages/tabbar/news/bookmark",
+			"style" : 
+			{
+				"navigationBarTitleText" : "收到的收藏",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#5199ff",
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle":"light"
+			}
+		},
+		{
+			"path" : "pages/tabbar/news/comment",
+			"style" : 
+			{
+				"navigationBarTitleText" : "收到的评论",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#5199ff",
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle":"light"
+			}
+		}
     ],
     "tabBar": {
         "color": "#7A7E83",
@@ -456,10 +500,16 @@ module.exports=()=>({
             },
             {
                 "pagePath": "pages/tabbar/publish/publish",
-                "iconPath": "static/tabbar/publish-temp.png",
-                "selectedIconPath": "static/tabbar/publishactive-temp.png",
+                "iconPath": "static/tabbar/publish.png",
+                "selectedIconPath": "static/tabbar/publishactive.png",
                 "text": "发布"
             },
+			{
+			    "pagePath": "pages/tabbar/news/news",
+			    "iconPath": "static/tabbar/news.png",
+			    "selectedIconPath": "static/tabbar/newsactive.png",
+			    "text": "消息"
+			},
             {
                 "pagePath": "pages/tabbar/me/me",
                 "iconPath": "static/tabbar/me.png",
