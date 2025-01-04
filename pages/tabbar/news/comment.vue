@@ -1,117 +1,230 @@
 <template>
-	<view class="likeLayout">
-		<view class="content">
-			<view class="item" v-for="i in likeList.length"  @click="goComment()" >
-				<view class="left" >
-					<image src="/static/tabbar/home.png" mode="aspectFill" @click.stop="toUcenter('1867140002673090560')"></image>
+	<view class="layout">
+		<view class="content" v-if="!nodataFlag">
+			<view class="item" v-for="(item,index) in commentList" :key="index"  @click="goComment(item.dynamic_id,userid)" >
+				<view class="left" @click.stop="toUcenter(item.comment_user_id)">
+					<u-avatar class="detail" level-bg-color="#8072f3" :src="item.avatar" size="100"></u-avatar>
 				</view>
+				
 				<view class="middle">
-					<view class="nickname">昵称昵称昵称</view>
-					
+					<view class="nickname">{{item.nickname}}</view>
 					<view class="second">
 						<view class="text">回复了你的评论</view>
-						<view class="date">{{ new Date().toISOString().slice(0, 10)}}</view>
+						<view class="date">{{ tranfTime(item.create_time) }}</view>
 					</view>
-					
-					<view class="respond">回复的内容XXXXXXXX</view>
-					<view class="quote">被引用的内容</view>
-					
+					<view class="respond">{{item.words}}</view>
 				</view>
 				
-				<view class="right" >
-					<image src="http://43.143.148.105:9090/remote/fangdongzhizu/logo.png" mode="aspectFill"></image>
+				<view class="right">
+					<image v-if="item.img_url" :src="item.img_url" mode="aspectFill"></image>
+					<image v-else style="background: #f2f2f2;" mode="aspectFill"></image>
 				</view>
-				
-
+			</view>
+			<view class="loading">
+				<u-loadmore
+				        :status="status" 
+				        :loading-text="loadingText" 
+				        :loadmore-text="loadmoreText" 
+				        :nomore-text="nomoreText"
+						icon-color="#5199ff"
+						color="#999"
+				/>
 			</view>
 		</view>
-		
-		<view class="footer" @click="refreshLike()">
-			查看更多历史消息
+		<view class="noMessage" v-else>
+			<u-empty text="暂无未读消息" mode="favor" ></u-empty>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {tranfTime} from '@/utils/utils.js'
 	export default {
 		data() {
 			return {
-				likeList:[1,2,3]
+				commentList:[],
+				userid:'',
+				dynamicUserId:'',
+				listPage:1,
+				nodataFlag:false,
+				isShow:false,
+				loadingFlag:false,
+				status: 'loadmore',
+				loadingText: '努力加载中',
+				loadmoreText: '轻轻上拉',
+				nomoreText: '实在没有了'
+			}
+		},
+		onLoad() {
+			this.userid = this.$store.state.userInfo.id
+			this.getUrdCommentList();
+		},
+		onUnload() {
+			let data = uni.getStorageSync("unreadMsgCnt");
+			data.commentCount=0;
+			uni.setStorageSync("unreadMsgCnt",data)
+		},
+		// 下拉刷新
+		onPullDownRefresh() {
+			this.listPage = 1;
+			this.nodataFlag= false;
+			this.commentList =[];
+			this.getUrdCommentList();
+			uni.stopPullDownRefresh();
+		},
+		// 上拉加载
+		onReachBottom() {
+			if(!this.nodataFlag && !this.isShow){
+				this.listPage++;
+				this.getUrdCommentList();
+				uni.stopPullDownRefresh();
+			}else{
+				uni.showToast({
+					icon:'none',
+					title:"主人，别使劲了，已经到底了"
+				})
+				uni.stopPullDownRefresh();
 			}
 		},
 		methods: {
-			refreshLike(){
-				//调后端获取全部点赞接口，并将结果放入likeList里
-				this.likeList = [...this.likeList, ...this.likeList]
+			// 格式化时间
+			tranfTime(autoTime) {
+				return tranfTime(new Date(autoTime));
+			},
+			// 获取所有评论
+			getAllCommentList(){
+				let data={
+					"userId": this.userid,
+					"page": this.listPage,
+					"size": 10
+				}
+				//分页请求，但是这样请求时，后端返回的数据为空
+				if(!this.nodataFlag){
+					this.$H.get("/zf/v1/comment/statistics/comment", data, true).then(res => {
+						if (200 == res.code && res.data.length == 0) {
+							this.nodataFlag= true;
+							this.loadingFlag = false;
+							this.status='nomore';
+						}else if(200 == res.code && res.data.length ==10){
+							this.commentList = this.commentList.concat(res.data);
+							this.loadingFlag = false;
+							this.status='loadmore';
+						}else if(200 == res.code && res.data.length <10){
+							this.commentList = this.commentList.concat(res.data);
+							this.isShow = true;
+							this.loadingFlag = false;
+							this.status="nomore";
+						}
+					})
+				}
 			},
 			//点击右侧图片进入对应的动态
-			goComment(){
-				uni.navigateTo({
-					url:"/pages/tabbar/community/comment"
+			goComment(dynamicId,userId){
+				this.$H.get("/zf/v1/dynamic/detail?id="+dynamicId+"&userId="+userId, {}, true).then(res => {
+					if (200 == res.code && res.data.length>0) {
+						let detail = res.data;
+						detail.forEach(item=>{
+							item.image=item.imgurl.split(',')
+						})
+						if(detail){
+							uni.stopPullDownRefresh();
+							this.$store.commit('communityInfo', detail[0]);
+							uni.navigateTo({
+								url: "/pages/tabbar/community/comment?data=" + JSON.stringify(detail[0])
+							})
+						}
+					}else {
+						uni.showToast({
+							title:"未知异常，请联系管理员"
+						})
+					}
 				})
-			}
-			,
+			},
 			toUcenter(userId) {
 				uni.navigateTo({
 					url: '/pages/tabbar/me/personal?userId=' + userId
 				})
+			},
+			getUrdCommentList(){
+				let data={
+					"userId": this.userid,
+					"page": this.listPage,
+					"size": 10
+				}
+				//分页请求，但是这样请求时，后端返回的数据为空
+				if(!this.nodataFlag){
+					this.status = 'loading';
+					this.loadingFlag = true;
+					this.$H.get("/zf/v1/comment/statistics/unread/comment", data, true).then(res => {
+						if (200 == res.code && res.data.length == 0) {
+							this.getAllCommentList();
+						}else if(200 == res.code && res.data.length ==10){
+							this.commentList = this.commentList.concat(res.data);
+							this.loadingFlag = false;
+							this.status='loadmore';
+						}else if(200 == res.code && res.data.length <10){
+							this.commentList = this.commentList.concat(res.data);
+							this.isShow = true;
+							this.loadingFlag = false;
+							this.status='nomore';
+						}
+					})
+				}
 			}
 		}
 	}
 </script>
 
-<style>
-.likeLayout{
-	margin: 30rpx;
+<style lang="scss" scoped>
+.layout{
+	padding: 0rpx 20rpx;
 	.content{
 		.item{
 			display: flex;	
 			width: 100%;
 			margin-top: 30rpx;
-			border-bottom: #999 solid 2rpx;
-			/* border: red solid 2rpx; */
+			border-bottom: #f2f2f2 solid 1px;;
+			position: relative;
 			.left{
-				flex:2;
-				image{
-					height: 80%;
-					width: 80%;
-					border-radius: 50%;
-					border: green solid 2rpx;
-				}	
+				flex:1;
+				width: 140rpx;
+				height: 140rpx;		
 			};
 			.middle{
-				flex:6;
-				.nickname{
-					font-weight: bold;
-				}
+				flex:7;
+				margin-bottom: 10rpx;
 				.second{
 					display: flex;
-					font-size: 20rpx;
+					font-size: 23rpx;
+					color: #999;
 					.text{
-						margin-right: 20rpx;
+						color: #999;
+						margin:0 10rpx;
 					}
 				}
-				.quote{
-					font-size: 20rpx;
-					margin: 10rpx;
-					border-left: #ccc solid 5rpx;
-				}
 				.respond{
-					font-weight: 600;
+					width: 380rpx;
+					padding: 4rpx;
+					font-size: 24rpx;
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
+					-webkit-box-orient: vertical;
+					white-space: pre-wrap;
+					overflow: hidden;    /* 隐藏溢出内容 */
+					text-overflow: ellipsis; /* 显示省略号  未生效 */ 
 				}
-			} ;
+			}
 			.right{
 				flex:2;
 				image{
-					height:80%;
-					width: 80%;
-					border: aqua solid 2rpx;
-					border-radius: 20rpx;
+					width: 180rpx;
+					height: 120rpx;
+					border: #f2f2f2 solid 1px;
+					border-radius: 16rpx;
 				}
 			}
 		}
 	}
-	
 	.footer{
 		display: flex;
 		justify-content: center;

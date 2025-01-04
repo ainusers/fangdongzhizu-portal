@@ -387,7 +387,8 @@
 				// 用户浏览统计
 				let data={
 					userId: this.$store.state.userInfo.id,
-					roomId: item.id
+					roomId: item.id,
+					roomUserId:item.userId
 				}
 				this.$H.post('/zf/v1/const/look/statistics',data,true).then(res=>{})
 				// 跳转详情页

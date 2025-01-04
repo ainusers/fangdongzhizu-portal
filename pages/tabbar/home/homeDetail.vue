@@ -517,6 +517,7 @@
 			// 1 举报  2 收藏  3立即沟通
 			switch (index){
 				case 2:
+          params.roomUserId = this.targetId;
 					this.statistics(params)
 					break;
 				case 3:

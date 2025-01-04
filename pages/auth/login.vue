@@ -193,7 +193,7 @@ export default {
       this.$H.post('/zf/v1/user/login', data, false).then(res => {
         if (res.status) {
           this.$store.commit('token', res.data[0].token)
-          this.getUserInfo()
+          this.getUserInfo();
           uni.switchTab({
             url: '/pages/tabbar/home/home'
           })
@@ -253,7 +253,9 @@ export default {
       this.$H.post('/zf/v1/user/login', data, false).then(res => {
         if (res.status) {
           this.$store.commit('token', res.data[0].token)
-          this.getUserInfo()
+          this.getUserInfo();
+          //获取未读消息数量
+          this.getUnreadMsgCnt();
           uni.switchTab({
             url: '/pages/tabbar/home/home'
           })
@@ -293,6 +295,7 @@ export default {
             key: 'userInfo',
             data: this.userInfo
           })
+		  this.getUnreadMsgCnt();
         }
       })
     },
@@ -311,7 +314,25 @@ export default {
       uni.navigateTo({
         url: '/pages/auth/forget'
       })
-    }
+    },
+	//设置未读消息数量
+	getUnreadMsgCnt(){
+		let data ={
+			userId:uni.getStorageSync("userInfo").id
+		}
+		this.$H.get('/zf/v1/const/news/count', data, true).then(res => {
+			if (200 == res.code && res.data.length > 0) {
+				this.unReadMsgCnt=res.data[0].commentCount+res.data[0].dynamicCount+res.data[0].roomCount;
+				uni.setStorageSync("unreadMsgCnt",res.data[0]);
+				if(this.unReadMsgCnt > 0){
+					uni.setTabBarBadge({
+						index:3,
+						text: this.unReadMsgCnt.toString()
+					})
+				}
+			}
+		})
+	}
   }
 }
 </script>

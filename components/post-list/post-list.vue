@@ -46,23 +46,32 @@
 							<block>
 								<!--一张图片-->
 								<block v-if="item.filetype==='image'&&item.image&&item.image.length == 1">
-									<image :lazy-load="true" mode="aspectFill" class="img-style-1" :src="item.image[0]"
-										@tap.stop="previewImage(item.image[0], item.image, item.integral, item.id,index)"></image>
+									<image :lazy-load="true" mode="aspectFill" class="img-style-1" :src="item.image[0]" v-if="imageFlag"
+									@tap.stop="previewImage(item.image[0], item.image, item.integral, item.id,index)"></image>
+									<image :lazy-load="true" mode="aspectFill" class="img-style-1" :src="item.image[0]" v-else></image>
 								</block>
 								<!--二张图片-->
 								<block v-if="item.filetype==='image'&&item.image&&item.image.length == 2">
 									<view class="img-style-2">
-										<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
-											@tap.stop="previewImage(imgItem, item.image, item.integral, item.id,index)"
-											mode="aspectFill" :src="imgItem"></image>
+										<template v-if="imageFlag">
+											<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag" mode="aspectFill" :src="imgItem" 
+											@tap.stop="previewImage(imgItem, item.image, item.integral, item.id,index)" ></image>
+										</template>
+										<template v-else>
+											<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag" mode="aspectFill" :src="imgItem" ></image>
+										</template>
 									</view>
 								</block>
 								<!--三张以上图片-->
 								<block v-if="item.filetype==='image'&&item.image&&item.image.length > 2">
 									<view class="img-style-3">
-										<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag"
-											@tap.stop="previewImage(imgItem, item.image, item.integral, item.id,index)"
-											mode="aspectFill" :src="imgItem"></image>
+										<template v-if="imageFlag">
+											<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag" mode="aspectFill" :src="imgItem" 
+											@tap.stop="previewImage(imgItem, item.image, item.integral, item.id,index)"  ></image>
+										</template>
+										<template v-else>
+											<image :lazy-load="true" v-for="(imgItem, flag) in item.image" :key="flag" mode="aspectFill" :src="imgItem" ></image>
+										</template>
 									</view>
 								</block>
 								<!--一个视频-->
@@ -88,11 +97,11 @@
 						</view>
 						<!-- 点赞和取消点赞 -->
 						<view v-if="item.status&&item.status==1" class="p-item"
-							@click.stop="cancelCollection(item.id, index)">
+							@click.stop="cancelCollection(item.id, index, item.userid)">
 							<u-icon name="heart-fill" color="#cc0000" size="38"></u-icon>
 							<text class="count">{{ item.like ?item.like :'' }}</text>
 						</view>
-						<view v-if="!item.status" class="p-item" @click.stop="addCollection(item.id, index)">
+						<view v-if="!item.status" class="p-item" @click.stop="addCollection(item.id, index, item.userid)">
 							<u-icon name="heart" size="38"></u-icon>
 							<text class="count">{{ item.like?item.like:'' }}</text>
 						</view>
@@ -140,7 +149,8 @@
 			loadStatus: String,
 			isDetail: Boolean,
 			isPersonal: Boolean,
-			showRow: String
+			showRow: String,
+			imageFlag: Boolean
 		},
 		components: {
 			zhizuReport,
@@ -268,12 +278,12 @@
 				});
 			},
 			// 点赞
-			addCollection(id, index, isLove) {
-				this.$emit('clickLike', id, index)
+			addCollection(id, index, ownerid) {
+				this.$emit('clickLike', id, index, ownerid)
 			},
 			// 取消点赞
-			cancelCollection(id, index, isLove) {
-				this.$emit('clickLike', id, index)
+			cancelCollection(id, index, ownerid) {
+				this.$emit('clickLike', id, index, ownerid)
 			},
 			// 预览图片
 			previewImage(url, urls, integral, post_id,index) {

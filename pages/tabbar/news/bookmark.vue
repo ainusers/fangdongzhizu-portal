@@ -1,116 +1,212 @@
 <template>
-	<view class="likeLayout">
-		<view class="content">
-			<view class="item" v-for="i in likeList.length" @click="goHomeDetail('1864534068870701056','1859066705199587328')">
-				<view class="left">
-					<image src="/static/tabbar/home.png" mode="aspectFill"  @click.stop="toUcenter('1867140002673090560')"></image>
-				</view>
-				<view class="middle">
-					<view class="nickname">昵称昵称昵称</view>
-					
-					<view class="second">
-						<view class="text">收藏了你的房源</view>
-						<view class="date">{{ new Date().toISOString().slice(0, 10)}}</view>
-					</view>
-					
-					
-				</view>
-				<view class="right" >
-					<image src="http://43.143.148.105:9090/remote/fangdongzhizu/logo.png" mode="aspectFill"></image>
+	<view class="layout">
+		<view class="content" v-if="!nodataFlag">
+			<view class="item" v-for="(item,index) in roomList" :key="index"   @click="goHomeDetail(item.room_id,userInfo.id)">
+				<view class="left" @click.stop="toUcenter(item.user_id)">
+					<u-avatar class="detail" level-bg-color="#8072f3" :src="item.avatar" size="100"></u-avatar>
 				</view>
 				
+				<view class="middle">
+					<view class="nickname">{{item.nickname}}</view>
+					<view class="second">
+						<view class="text">收藏了你的房源</view>
+						<view class="date">{{ tranfTime(item.create_time) }} </view>
+					</view>
+				</view>
+				
+				<view class="right">
+					<image v-if="item.img_url" :src="item.img_url" mode="aspectFill"></image>
+					<image v-else style="background: #f2f2f2;" mode="aspectFill"></image>
+				</view>
+			</view>
+			<view class="loading">
+				<u-loadmore
+				        :status="status" 
+				        :loading-text="loadingText" 
+				        :loadmore-text="loadmoreText" 
+				        :nomore-text="nomoreText"
+						icon-color="#5199ff"
+						color="#999"
+				/>
 			</view>
 		</view>
 		
-		<view class="footer" @click="refreshLike()">
-			查看更多历史消息
+		<view class="noMessage" v-else >
+			<u-empty  text="暂无未读消息" mode="favor" ></u-empty>
 		</view>
 	</view>
 </template>
 
 <script>
-	
+	import {tranfTime} from '@/utils/utils.js'
 	export default {
 		data() {
 			return {
-				likeList:[1,2,3]
+				roomList:[],
+				id:'',
+				dynamicUserId:'',
+				userInfo:'',
+				listPage:1,
+				nodataFlag:false,
+				isShow:false,
+				loadingFlag:false,
+				status: 'loadmore',
+				loadingText: '努力加载中',
+				loadmoreText: '轻轻上拉',
+				nomoreText: '实在没有了'
+			}
+		},
+		onLoad() {
+			this.userInfo = this.$store.state.userInfo
+			this.getUrdBookmarkList();
+		},
+		onUnload() {
+			let data = uni.getStorageSync("unreadMsgCnt");
+			data.roomCount=0;
+			uni.setStorageSync("unreadMsgCnt",data)
+		},
+		// 下拉刷新
+		onPullDownRefresh() {
+			this.listPage = 1;
+			this.nodataFlag= false;
+			this.roomList =[];
+			this.getUrdBookmarkList();
+			uni.stopPullDownRefresh();
+		},
+		// 上拉加载
+		onReachBottom() {
+			if(!this.nodataFlag && !isShow){
+				this.listPage++;
+				this.getUrdBookmarkList();
+			}else{
+				uni.showToast({
+					icon:'none',
+					title:"主人，别使劲了，已经到底了"
+				});
+				uni.stopPullDownRefresh();
 			}
 		},
 		methods: {
-			refreshLike(){
-				//调后端获取全部点赞接口，并将结果放入likeList里
-				this.likeList = [...this.likeList, ...this.likeList]
+			tranfTime(autoTime) {
+				return tranfTime(new Date(autoTime));
+			},
+			getAllBookmarkList(){
+				let data={
+					"userId": this.userInfo.id,
+					"page": this.listPage,
+					"size": 10
+				}
+				//分页请求，但是这样请求时，后端返回的数据为空
+				if(!this.nodataFlag){
+					this.$H.get("/zf/v1/const/statistics/room", data, true).then(res => {
+						if (200 == res.code && res.data.length == 0) {
+							this.nodataFlag=true;
+							this.loadingFlag = false;
+							this.status='nomore'
+						}else if(200 == res.code && res.data.length ==10){
+							this.roomList = this.roomList.concat(res.data);
+							this.loadingFlag = false;
+							this.status='loadmore'
+						}else if(200 == res.code && res.data.length <10){
+							this.roomList = this.roomList.concat(res.data);
+							this.isShow = true;
+							this.loadingFlag = false;
+							this.status="nomore"
+						}
+					})
+				}
 			},
 			//点击右侧图片进入对应的动态
-			goHomeDetail(id,userid){//id,userid
-			//http://localhost:8080/#/pages/tabbar/home/homeDetail?id=1864534068870701056&userId=1859066705199587328
-			// let id ='1864534068870701056';
-			// let userid='1859066705199587328'
+			goHomeDetail(id,userid){
 				uni.navigateTo({
 					url:'/pages/tabbar/home/homeDetail?id=' + id + '&userId=' + userid
 				})
-			}
-			,
+			},
 			toUcenter(userId) {
 				uni.navigateTo({
 					url: '/pages/tabbar/me/personal?userId=' + userId
 				})
+			},
+			getUrdBookmarkList(){
+				let data={
+					"userId": this.userInfo.id,
+					"page": this.listPage,
+					"size": 10
+				}
+				//分页请求，但是这样请求时，后端返回的数据为空
+				if(!this.nodataFlag){
+					this.status = 'loading';
+					this.loadingFlag = true;
+					this.$H.get("/zf/v1/const/statistics/unread/room", data, true).then(res => {
+						if (200 == res.code && res.data.length == 0) {
+							this.getAllBookmarkList();
+						}else if(200 == res.code && res.data.length ==10){
+							this.roomList = this.roomList.concat(res.data);
+							this.loadingFlag = false;
+							this.status='loadmore';
+						}else if(200 == res.code && res.data.length <10){
+							this.roomList = this.roomList.concat(res.data);
+							this.isShow = true;
+							this.loadingFlag = false;
+							this.status='nomore';
+						}
+					})
+				}
 			}
 		}
 	}
 </script>
 
-<style>
-.likeLayout{
-	margin: 30rpx;
+<style lang="scss" scoped>
+.layout{
+	padding: 0rpx 20rpx;
 	.content{
 		.item{
 			display: flex;	
+			flex-direction: row;
 			width: 100%;
-			margin-top: 20rpx;
-			border-bottom: #999 solid 2rpx;
-			/* border: red solid 2rpx; */
+			padding: 10rpx 0;
+			border-bottom: #f2f2f2 solid 1px;
 			.left{
-				flex:2;
-				image{
-					height: 80%;
-					width: 80%;
-					border-radius: 50%;
-					border: green solid 2rpx;
-				}		
-			};
+				flex: 1;
+				padding-top: 16rpx;
+				width: 100rpx;
+				height: 100rpx;
+			}
 			.middle{
-				flex:6;
-				margin-bottom: 20rpx;
+				flex: 7;
+				display: flex;
+				padding-top: 16rpx;
+				flex-direction: column;
 				.nickname{
-					font-weight: bold;
+					font-size: 28rpx;
+					padding: 5px 0px 0px 10px;
 				}
 				.second{
 					display: flex;
-					font-size: 20rpx;
+					flex-direction: row;
+					font-size: 23rpx;
 					.text{
-						margin-right: 20rpx;
+						padding: 5px 0px 0px 10px;
+						color: #999;
+					}
+					.date{
+						color: #999;
+						padding: 5px 0px 0px 10px;
 					}
 				}
-				.quote{
-					font-size: 20rpx;
-					margin: 10rpx;
-					border-left: #ccc solid 5rpx;
-				}
-				border: pink solid 2rpx;
-			} ;
+			}
 			.right{
-				flex:2;
+				flex: 2;
 				image{
-					height: 80%;
-					width: 80%;
-					border: aqua solid 2rpx;
-					border-radius: 20rpx;
+					width: 180rpx;
+					height: 120rpx;
+					border: #f2f2f2 solid 1px;
+					border-radius: 16rpx;
 				}
 			}
 		}
 	}
-	
 	.footer{
 		display: flex;
 		justify-content: center;

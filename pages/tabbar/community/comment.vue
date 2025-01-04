@@ -289,7 +289,8 @@ export default {
 		clickLike(id,index){
 			let data={
 				userId:this.$store.state.userInfo.id,
-				id:id?id:0
+				id:id?id:0,
+				dynamicUserId:this.options.userId
 			}
 			this.$H.patch('/zf/v1/dynamic/like',data,true).then(res=>{
 				if(res.status && res.code==200){
@@ -341,6 +342,7 @@ export default {
 			}
 			let data={
 				words:htmlEncode(this.content),
+				dynamicUserId: this.options.userid,
 				commentUserId:this.$store.state.userInfo.id,//回复用户id，也就是用户本人
 				beCommentUserId:this.beCommentUserId,//被回复id也就别人id
 				dynamicId:this.$store.state.communityInfo.id,//动态id
@@ -485,11 +487,13 @@ export default {
 			this.$H.patch('/zf/v1/dynamic/dynamics',data,true).then(res=>{
 			})
 		},
+		//动态详情浏览统计
 		lookCount(id){
 			let data={
 				id:id,
 				userId:this.$store.state.userInfo.id,
-				type:'plus'
+				type:'plus',
+				dynamicUserId:this.options.userid
 			}
 			this.$H.patch('/zf/v1/dynamic/look',data,true).then(res=>{
 			})
