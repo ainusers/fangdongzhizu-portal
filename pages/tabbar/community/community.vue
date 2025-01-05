@@ -1,4 +1,7 @@
 <style lang="scss" scoped>
+	.cmtyLayout{
+		background: #f7f7f7
+	}
 	.empty{
 		height: calc(var(--status-bar-height));
 		background-color: #5199ff;
@@ -29,19 +32,87 @@
 			}
 		}
 	}
+	.notice{
+		background: #fff;
+		width: 730rpx;
+		height: 80rpx;
+		line-height: 72rpx;
+	    margin: 6rpx 10rpx 0rpx 10rpx;
+		border-radius: 20rpx;
+		border: #eee 2px solid; 
+		display: flex;
+		.left{
+			width: 140rpx;
+			display: flex;
+			align-items: center;
+			padding-left: 10rpx;
+			.text{
+				color: #5199ff;
+				font-weight: 600;
+				font-size: 28rpx;
+			}
+		}
+		.center{
+			width: 100%;
+			swiper{
+				height: 100%;
+				&-item{
+					.noticetittle{
+						color: #5199ff;
+						width: 100%;
+						font-size: 28rpx;
+						overflow: hidden;
+						padding-left: 5px;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+					}
+				}
+			}
+		}
+	}
+	.report_con{
+		font-size: 28rpx;
+		width: 100%;
+		margin: 0 auto;
+		color: #AAAAAA;
+		padding: 20px;
+	}
+
 </style>
 <template>
-	<view>
+	<view class="cmtyLayout">
 		<!-- #ifdef APP-PLUS -->
 		<view class="empty"></view>
 		<!-- #endif -->
 		<!-- 轮播图 -->
-		<div style="padding: 0px 5px 5px;background: #f7f7f7;">
+		<div style="padding: 0px 5px;background: #f7f7f7;">
 			<u-swiper :list="swiperList" radius="20rpx" height="350" mode="rect" @click="navigateToPage"></u-swiper>
 		</div>
 
+    <!-- 公告 -->
+		<view class="notice">
+			<view class="left">
+				<uni-icons type="sound-filled" size="20" color="#5199ff"></uni-icons>
+				<text class="text">公告</text>
+			</view>
+			<view class="center">
+				<swiper vertical autoplay circular interval="1500" duration="300">
+					<swiper-item v-for="(item,index) in noticeList" :key="index">
+						<view class="noticetittle" @click="chgIndexShow(index,show)">{{item.title}}</view>
+					</swiper-item>
+				</swiper>
+			</view>
+		</view>
+		
 		<!-- 朋友圈 -->
-		<post-list :showRow="'-webkit-line-clamp: 1'" :list="tuwen_data" :loadStatus="load_status_tuwen" @changeStatus="changeStatus" @clickLike="clickLike"></post-list>
+		<post-list :showRow="'-webkit-line-clamp: 1'" :list="tuwen_data" :loadStatus="load_status_tuwen" 
+		:imageFlag="false"
+		@changeStatus="changeStatus" @clickLike="clickLike"></post-list>
+
+		<!-- 公告弹框 -->
+		<u-modal :async-close="true" v-model="show" title="公告"  confirm-text="知道了" @confirm="chgShow(show)">
+			<rich-text :nodes="noticeList[curentIndex].content" class="report_con"></rich-text>
+		</u-modal>
 	</view>
 </template>
 
@@ -57,11 +128,16 @@
 				tuwen_data: [],
 				load_status_tuwen: 'loadmore',
 				tuwen_default_page: 1,
-				cityName: ''
+				cityName: '',
+				show: false,
+				noticeList:[],
+				curentIndex:0
 			}
 		},
 		onLoad() {
-			this.getBanner()
+			this.getBanner();
+      // 获取社区公告标题和内容
+			this.getNoticeList();
 		},
 		// 默认展示
 		onShow() {
@@ -156,10 +232,12 @@
 					}
 				})
 			},
-			clickLike(id,index){
+			// 收藏房源
+			clickLike(id,index,ownerid){
 				let data={
 					userId:this.$store.state.userInfo.id,
-					id:id?id:0
+					id:id?id:0,
+					dynamicUserId:ownerid
 				}
 				this.$H.patch('/zf/v1/dynamic/like',data,true).then(res=>{
 					if(res.status && res.code==200){		
@@ -175,6 +253,21 @@
 					}
 				})
 			},
+			chgIndexShow(index,show) {
+				this.curentIndex = index;
+				this.show = !this.show;
+			},
+			chgShow() {
+				this.show = !this.show;
+			},
+      // 获取社区公告标题和内容
+			getNoticeList(){
+				this.$H.get('/zf/v1/publicize',{},true).then(res=>{
+					if(res.status && res.code==200){
+						this.noticeList = res.data;
+					}
+				})
+			}
 		}
 	}
 </script>

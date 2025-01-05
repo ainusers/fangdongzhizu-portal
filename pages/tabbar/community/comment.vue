@@ -129,7 +129,7 @@
 <template>
 	<view>
 		<!-- 展示区 -->
-		<post-list :showRow="'-webkit-line-clamp: 10'"  :list="tuwen_data" :loadStatus="load_status_tuwen" :isDetail="true" @changeStatus="changeStatus" @clickLike="clickLike" @commontInt="commontInt" @deletePostFn="deletePostFn"></post-list>
+		<post-list :showRow="'-webkit-line-clamp: 10'"  :imageFlag="true" :list="tuwen_data" :loadStatus="load_status_tuwen" :isDetail="true" @changeStatus="changeStatus" @clickLike="clickLike" @commontInt="commontInt" @deletePostFn="deletePostFn"></post-list>
 		
 		<!-- 评论区 -->
 		<view class="comment_main">

@@ -50,7 +50,7 @@
         </swiper>
 		
 		<!-- 编辑按钮 (当待审核、已发布、已下架时显示)-->
-		<view class="operate" @click="roomOperate()" v-if="current==0 || current==1 || current==2">
+		<view class="operate" @click="roomOperate()" v-if="(current==0 || current==1 || current==2) && houseList.length>0">
 			<uni-icons custom-prefix="iconfont" type="icon-bianji" color="#5199ff" size="30"></uni-icons>
 		</view>
 	</view>
