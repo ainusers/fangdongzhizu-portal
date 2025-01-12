@@ -295,7 +295,7 @@ export default {
             key: 'userInfo',
             data: this.userInfo
           })
-		  this.getUnreadMsgCnt();
+		      this.getUnreadMsgCnt(this.userInfo.id);
         }
       })
     },
@@ -316,14 +316,14 @@ export default {
       })
     },
 	//设置未读消息数量
-	getUnreadMsgCnt(){
+	getUnreadMsgCnt(userId){
 		let data ={
-			userId:uni.getStorageSync("userInfo").id
+			userId: userId
 		}
 		this.$H.get('/zf/v1/const/news/count', data, true).then(res => {
 			if (200 == res.code && res.data.length > 0) {
 				this.unReadMsgCnt=res.data[0].commentCount+res.data[0].dynamicCount+res.data[0].roomCount;
-				uni.setStorageSync("unreadMsgCnt",res.data[0]);
+				uni.setStorage("unreadMsgCnt",res.data[0]);
 				if(this.unReadMsgCnt > 0){
 					uni.setTabBarBadge({
 						index:3,

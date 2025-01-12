@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<form report-submit @submit="formSubmit">
+		<form report-submit>
 			<view>
 				<view class="screen_view">
 					<!-- 租房用这个 -->

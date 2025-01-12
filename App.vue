@@ -7,9 +7,23 @@ export default {
 			key:'token',
 			success(res) {
 				if(res.data){
+					uni.switchTab({
+						url: '/pages/tabbar/home/home'
+					})
+				}
+			}
+		})
+	},
+	onShow(){
+		// 持久化内存数据
+		initStorestate();
+		uni.getStorage({
+			key:'token',
+			success(res) {
+				if(res.data){
 					//设置未读消息数量
 					uni.getStorage({
-						key:"unreadMsgCnt",
+						key:'unreadMsgCnt',
 						success(res) {
 							if(res.data){
 								let unReadMsgCnt =res.data.commentCount+res.data.dynamicCount+res.data.roomCount;
@@ -38,16 +52,9 @@ export default {
 							}
 						}
 					});
-					uni.switchTab({
-						url: '/pages/tabbar/home/home'
-					})
 				}
 			}
 		})
-	},
-	onShow(){
-		// 持久化内存数据
-		initStorestate();
 	}
 };
 </script>

@@ -6,7 +6,7 @@
 					<uni-icons type="heart" size="35" color="#5199ff"></uni-icons>
 					<view class="down">点赞</view>
 					<u-badge numberType="overflow" type="error" :overflow-count='99' :count="likeCnt"
-						:offset="[8,chgPosition(likeCnt,zany)]" absolute></u-badge>
+						:offset="[10,chgPosition(likeCnt,zany)]" absolute></u-badge>
 				</view>
 			</view>
 
@@ -14,7 +14,7 @@
 				<view class="top">
 					<uni-icons type="star" size="40" color="#5199ff"></uni-icons>
 					<u-badge numberType="overflow" type="error" :count="bookMarkCnt"
-						:offset="[8,chgPosition(bookMarkCnt,shoucangy)]" :overflow-count='99'></u-badge>
+						:offset="[10,chgPosition(bookMarkCnt,shoucangy)]" :overflow-count='99'></u-badge>
 				</view>
 				<view class="down">收藏</view>
 			</view>
@@ -119,7 +119,7 @@
 
 <style lang="scss" scoped>
 	.layout {
-		margin: 30rpx;
+		margin: 0 30rpx;
 		.title {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
