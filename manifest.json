@@ -2,7 +2,7 @@
     "name" : "房东直租",
     "appid" : "__UNI__190F3AB",
     "description" : "面对面交易，拒绝中间商",
-    "versionName" : "1.0.11",
+    "versionName" : "1.0.12",
     "versionCode" : 1011,
     "transformPx" : false,
     "compatConfig" : {
