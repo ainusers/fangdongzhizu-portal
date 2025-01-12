@@ -87,11 +87,6 @@
 	  .way{
 	  	  padding-left: 8px;
 	  }
-	  .datetime{
-		  margin-right: 8px;
-		  color: #999999;
-		  font-size: 24upx;
-	  }
   }
   .detail{
 	  display: flex;
@@ -186,7 +181,6 @@
 						<view class="price"><view class="num">{{detailData.money}}</view>元</view>
 						<view class="way">({{detailData.payType}})</view>
 					</view>
-					<view class="datetime">{{detailData.updateTime}}</view>
 				</view>
 			 </view>
 			 <view class="detail">

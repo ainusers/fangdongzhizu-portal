@@ -130,13 +130,13 @@
 				tuwen_default_page: 1,
 				cityName: '',
 				show: false,
-				noticeList:[],
+				noticeList:[{"title":"","content":''}],
 				curentIndex:0
 			}
 		},
 		onLoad() {
 			this.getBanner();
-      // 获取社区公告标题和内容
+			// 获取社区公告标题和内容
 			this.getNoticeList();
 		},
 		// 默认展示
@@ -260,11 +260,11 @@
 			chgShow() {
 				this.show = !this.show;
 			},
-      // 获取社区公告标题和内容
+			// 获取社区公告标题和内容
 			getNoticeList(){
 				this.$H.get('/zf/v1/publicize',{},true).then(res=>{
 					if(res.status && res.code==200){
-						this.noticeList = res.data;
+						this.noticeList = res.data[0];
 					}
 				})
 			}

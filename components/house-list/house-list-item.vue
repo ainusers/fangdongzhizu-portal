@@ -203,9 +203,9 @@
 			display: flex;
 			width:126upx;
 			align-items: center;
-			padding: 14upx 30upx;
+			padding: 0upx 30upx;
 			border:1px solid #5199ff;
-			margin: 10upx -12upx 10upx 22upx;
+			margin: 0upx -12upx 16upx 22upx;
 			color: #5199ff;
 			border-radius: 6px;
 		}
@@ -274,7 +274,7 @@
 		
 		<!-- 管理房源功能 -->
 		<view class="detail_btn" v-if="isUpdate">
-			<view class="btn_item" @click="updateHouse(item)" v-if="current==0 || current==1 || current==2">编辑</view>
+			<view class="btn_item" @click="updateHouse(item)" v-if="current==0 || current==1 || current==2">修改</view>
 			<view class="btn_item" @click="offShelf(item)" v-if="current==1">下架</view>
 		</view>
 	</view>
