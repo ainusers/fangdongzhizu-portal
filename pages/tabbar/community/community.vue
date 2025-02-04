@@ -89,7 +89,7 @@
 			<u-swiper :list="swiperList" radius="20rpx" height="350" mode="rect" @click="navigateToPage"></u-swiper>
 		</div>
 
-    <!-- 公告 -->
+		<!-- 公告 -->
 		<view class="notice">
 			<view class="left">
 				<uni-icons type="sound-filled" size="20" color="#5199ff"></uni-icons>
@@ -106,8 +106,7 @@
 		
 		<!-- 朋友圈 -->
 		<post-list :showRow="'-webkit-line-clamp: 1'" :list="tuwen_data" :loadStatus="load_status_tuwen" 
-		:imageFlag="false"
-		@changeStatus="changeStatus" @clickLike="clickLike"></post-list>
+		:imageFlag="false" @changeStatus="changeStatus" @clickLike="clickLike"></post-list>
 
 		<!-- 公告弹框 -->
 		<u-modal :async-close="true" v-model="show" title="公告"  confirm-text="知道了" @confirm="chgShow(show)">
@@ -232,7 +231,7 @@
 					}
 				})
 			},
-			// 收藏房源
+			// 动态点赞
 			clickLike(id,index,ownerid){
 				let data={
 					userId:this.$store.state.userInfo.id,

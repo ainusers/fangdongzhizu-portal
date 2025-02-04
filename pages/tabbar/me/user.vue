@@ -397,7 +397,7 @@
 					url: '/pages/auth/login'
 				})
 				//清除未读消息数量缓存
-				uni.clearStorageSync("unreadMsgCnt");
+				uni.clearStorageSync('unreadMsgCnt');
 			}
         }
     }

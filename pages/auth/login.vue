@@ -323,7 +323,10 @@ export default {
 		this.$H.get('/zf/v1/const/news/count', data, true).then(res => {
 			if (200 == res.code && res.data.length > 0) {
 				this.unReadMsgCnt=res.data[0].commentCount+res.data[0].dynamicCount+res.data[0].roomCount;
-				uni.setStorage("unreadMsgCnt",res.data[0]);
+				uni.setStorage({
+				  key: 'unreadMsgCnt',
+				  data: res.data[0]
+				})
 				if(this.unReadMsgCnt > 0){
 					uni.setTabBarBadge({
 						index:3,

@@ -7,7 +7,7 @@
 					<view class="post-item-top-user">
 						<!-- 用户头像 -->
 						<view class="avatar-img" @click.stop="toUcenter(item.userid)">
-							<u-avatar class="avatar" :src="item.avatar" level-bg-color="#8072f3"></u-avatar>
+							<u-avatar class="avatar" :src="item.avatar" level-bg-color="#8072f3" mode="square"></u-avatar>
 						</view>
 						<!-- 用户名称 -->
 						<view class="center">
@@ -129,7 +129,7 @@
 		<block v-else>
 			<!-- 此处空白，用于朋友圈详情页 -->
 		</block>
-		<!-- //举报模态框 -->
+		<!-- 举报模态框 -->
 		<view v-if="reportShows">
 			<zhizuReport @cancelReport="cancelReport" @goReport="goReportText" :typeStr="reportType" :reportId="reportId" ref="report" />
 		</view>
@@ -170,7 +170,7 @@
 				reportType: '动态',
 				reportId: '',
 				currentIndex: '',
-				follow: '' ,//当前是否点赞状态
+				follow: '',//当前是否点赞状态
 				shareId:'',
 				jiaL:[1,2,3]
 			};
@@ -200,10 +200,11 @@
 			that = this
 		},
 		methods: {
+			// 格式化时间
 			tranfTime(autoTime) {
 				return tranfTime(new Date(autoTime));
 			},
-			//删除动态
+			// 删除动态
 			deletePost(index,id) {
 				this.isReport ? this.isReport = false : this.isReport = true
 				this.reportShows = false
@@ -221,7 +222,7 @@
 					this.$emit('changeStatus', index, !this.isReport,res)
 				})
 			},
-			//控制举报，删除，显示隐藏
+			// 控制举报，删除，显示隐藏
 			goReport(index) {
 				this.currentIndex = index
 				this.list[index].isReport ? this.isReport = false : this.isReport = true
@@ -249,7 +250,6 @@
 					})
 					return;
 				}
-				
 				this.isReport = false
 				this.$emit('changeStatus', index, false)
 				if (this.isDetail) {
@@ -326,10 +326,8 @@
 				border-radius: 5px;
 				overflow: hidden;
 			}
-
 			.img-style-2 {
 				display: flex;
-
 				image {
 					margin: 5rpx;
 					border-radius: 5px;
@@ -337,11 +335,9 @@
 					height: 294rpx;
 				}
 			}
-
 			.img-style-3 {
 				display: flex;
 				flex-wrap: wrap;
-
 				image {
 					width: 31.3%;
 					height: 200rpx;
@@ -356,33 +352,27 @@
 	.post-item-top-user {
 		display: flex;
 		align-items: center;
-
 		.avatar-img {
 			padding: 5px;
 		}
-
 		.reportText {
-			width: 200rpx;
-			padding: 10rpx 10rpx;
+			width: 176rpx;
 			position: absolute;
 			right: 10rpx;
 			text-align: center;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 			font-size: 28rpx;
 			z-index: 9999;
-			background-color: #fff;
 			.item {
-				padding:20rpx 0;
+				padding: 16rpx 0;
 			}
 		}
-
 		.avatar {
 			width: 85rpx;
 			height: 85rpx;
-			border-radius: 50%;
+			border-radius: 20rpx;
 			margin-right: 20rpx;
 		}
-
 		.center {
 			flex: 1;
 			display: flex;
@@ -411,7 +401,6 @@
 			}
 		}
 	}
-
 	// 列表操作（文本）
 	.post-text {
 		display: block;
@@ -422,29 +411,24 @@
 		padding: 0 10rpx 0 10rpx;
 		margin-bottom: 5px;
 	}
-
 	// 列表操作（分享，评论，点赞）
 	.p-footer {
 		display: flex;
 		margin: 20rpx 0;
-
 		.p-item {
 			margin: 0 auto;
 			color: #616161;
 			display: flex;
 			align-items: center;
-
 			.count {
 				margin-left: 10rpx;
 				font-size: 28rpx;
 			}
 		}
-
 		.p-item[hidden] {
 			display: none !important;
 		}
 	}
-
 	// 分享弹窗
 	.share-wrap {
 		display: flex;
@@ -452,19 +436,16 @@
 		width: 80%;
 		margin: 0 auto;
 		padding: 30rpx;
-
 		.share-item {
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
 			margin: 0;
-
 			image {
 				width: 100rpx;
 				height: 100rpx;
 			}
-
 			text {
 				font-size: 24rpx;
 				margin-top: 20rpx;

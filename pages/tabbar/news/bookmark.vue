@@ -61,9 +61,9 @@
 			this.getUrdBookmarkList();
 		},
 		onUnload() {
-			let data = uni.getStorageSync("unreadMsgCnt");
+			let data = uni.getStorageSync('unreadMsgCnt');
 			data.roomCount=0;
-			uni.setStorageSync("unreadMsgCnt",data)
+			uni.setStorageSync('unreadMsgCnt',data)
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
