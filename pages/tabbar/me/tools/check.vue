@@ -129,7 +129,7 @@ export default {
 					this.houseList=this.collectList
 					if(this.collectList.length==0){
 						this.showModel=true
-						this.getCollect()
+						// this.getCollect()
 					}
 					// #ifdef APP-PLUS
 					webView.setTitleNViewButtonStyle(0,{
@@ -223,44 +223,46 @@ export default {
 		},
 		//获取不同状态的数据
 		getStatusHouseList(type){	
-			let params={
-				"page":this.pageNum,
-				"size":"10",
-				"status":type, //(1:待审核,2:已发布,3:已下架)
-				"user_id": this.$store.state.userInfo.id,
+			if(type == 4){
+				// 查询收藏房源
+				this.getCollect();
+			} else {
+				let params={
+					"page":this.pageNum,
+					"size":"10",
+					"status":type, //(1:待审核,2:已发布,3:已下架)
+					"user_id": this.$store.state.userInfo.id,
+				}
+				// 1待审核 2已发布 3已下架
+				this.$H.post('/zf/v1/room/list',params,true).then(res=>{
+					this.triggered=false
+					this.showModel=false
+					if(res.data && res.status && res.data.length>0){
+						this.houseList=res.data
+					} else if(res.data && res.status && res.data.length==0){
+						this.houseList=[];
+					}
+					switch(type){
+              case 1 :
+                  this.auditList=this.houseList
+                  break;
+              case 2:
+                  this.publishedList=this.houseList
+                  break;
+              case 3:
+                  this.removeList=this.houseList
+                  break;
+          }
+					res.data.length<10?this.loadStatus='end':this.loadStatus='loadmore'
+					// 关闭管理操作
+					this.isUpdate=false
+					if(this.$refs.ListItem && this.$refs.ListItem.length>0){
+						this.$refs.ListItem.forEach(item=>{
+							item.isUpdate=this.isUpdate
+						})
+					}
+				})
 			}
-			// 1待审核 2已发布 3已下架
-			this.$H.post('/zf/v1/room/list',params,true).then(res=>{
-				this.triggered=false
-				this.showModel=false
-				if(res.data && res.status && res.data.length>0){
-					this.houseList=res.data
-				} else if(res.data && res.status && res.data.length==0){
-					this.houseList=[];
-				}
-				switch(type){
-                    case 1 :
-                        this.auditList=this.houseList
-                        break;
-                    case 2:
-                        this.publishedList=this.houseList
-                        break;
-                    case 3:
-                        this.removeList=this.houseList
-                        break;
-					case 4:
-					    this.getCollect();
-					    break;
-                }
-				res.data.length<10?this.loadStatus='end':this.loadStatus='loadmore'
-				// 关闭管理操作
-				this.isUpdate=false
-				if(this.$refs.ListItem && this.$refs.ListItem.length>0){
-					this.$refs.ListItem.forEach(item=>{
-						item.isUpdate=this.isUpdate
-					})
-				}
-			})
 		},
 		// 编辑房源按钮
 		roomOperate(){

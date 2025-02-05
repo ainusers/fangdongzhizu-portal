@@ -294,7 +294,7 @@ export default {
 			}
 			this.$H.patch('/zf/v1/dynamic/like',data,true).then(res=>{
 				if(res.status && res.code==200){
-          // 当没有返回like字段的时候，则赋值:0
+					// 当没有返回like字段的时候，则赋值:0
 					if(!this.tuwen_data[index].like){this.tuwen_data[index].like=0}
 					res.data[0].status?this.tuwen_data[index].like+=1 :this.tuwen_data[index].like-=1
 					res.data[0].status?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0

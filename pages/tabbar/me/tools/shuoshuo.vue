@@ -146,6 +146,7 @@ export default {
 			let data={
 				userId:this.$store.state.userInfo.id,
 				id:id?id:0,
+				dynamicUserId:this.tuwen_data[index].userid
 			}
 			this.$H.patch('/zf/v1/dynamic/like',data,true).then(res=>{
 				if(res.status && res.code==200){
