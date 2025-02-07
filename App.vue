@@ -1,6 +1,7 @@
 <script>
-import {initStorestate} from '@/utils/utils.js'
-import store from '@/store/index.js'
+import {initStorestate} from '@/utils/utils.js';
+import store from '@/store/index.js';
+import config from '@/utils/config.js';
 
 export default {
   onLaunch: function () {
@@ -18,6 +19,7 @@ export default {
   onShow() {
     // 持久化内存数据
     initStorestate();
+    // 获取消息数量
     uni.getStorage({
       key: 'token',
       success(res) {
@@ -34,7 +36,7 @@ export default {
                 })
               } else {
                 uni.request({
-                  url: 'http://43.143.148.105:31002/zf/v1/const/news/count', // 后端接口地址
+                  url: config.domain + '/zf/v1/const/news/count', // 后端接口地址
                   method: 'GET', // 请求方法
 				  header: {
 				    'content-type': 'application/json',
