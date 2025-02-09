@@ -58,7 +58,7 @@
 				nomoreText: '实在没有了'
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.userId=this.$store.state.userInfo.id;
 			this.getUnreadLikeList();
 		},

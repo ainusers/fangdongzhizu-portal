@@ -314,6 +314,18 @@
 		margin-left: 10rpx;
 		color: #FF0000;
 	}
+
+  .report_con{
+    font-size: 28rpx;
+    width: 100%;
+    margin: 0 auto;
+    color: #AAAAAA;
+    padding: 20px;
+  }
+  .report_con .row{
+    margin: 10rpx 0px;
+    line-height: 150%;
+  }
 </style>
 <template>
 	<view class="page" @touchstart="touchStart" @touchend="touchEnd">
@@ -611,6 +623,21 @@
 			<button type="default" class="feedback-pre" @click="nextStep" v-if="stepNum==3&!setpAll">预览</button>
 			<button type="default" class="feedback-next" @click="publish" v-if="setpAll" @tap="$u.throttle(publish, 2000)">发布</button>
 		</view>
+		
+		<!-- 温馨提示 -->
+		<u-modal :async-close="true" v-model="show" title="发布成功" :content="content" confirm-text="知道了" @confirm="confirm">
+		  <view class="report_con">
+		    <view class="row">
+		      1、房源会在3个工作日内审核完成
+		    </view>
+		    <view class="row">
+		      2、审核成功后,在首页房源列表查看
+		    </view>
+		    <view class="row">
+		      3、租客会拨打当前手机号(注册)和您联系
+		    </view>
+		  </view>
+		</u-modal>
 	</view>
 </template>
 
@@ -1303,6 +1330,7 @@
 				isPublish1: false,
 				isPublish2: false,
 				tipTxt:'请提供完整清晰的房屋资质,如:房产证或其他证明材料',
+        show: false,
 			}
 		},
 		onShow(){
@@ -1313,7 +1341,6 @@
 				checkOpenGPSServiceByAndroid()
 			}
 			// #endif
-			
 		},
 		onLoad(options) {
 			this.isEdit = options.isUpdate
@@ -1483,8 +1510,14 @@
 			opencaendar() {
 				this.$refs.calendar.open();
 			},
-			confirm(e) {
-			},
+      // 关闭dialog弹框
+      confirm() {
+        this.show = false;
+        // 返回首页
+        uni.switchTab({
+          url: '/pages/tabbar/home/home'
+        })
+      },
 			nextStep() {
 				if (this.stepNum == 1) {
 					this.validateParam().then(res => {
@@ -1960,7 +1993,7 @@
 				this.$H.post(url, params, true).then(res => {
 					uni.hideToast();
 					if (res.data && res.status) {
-						uni.$u.toast('发布成功,房源会在3个工作日内审核完毕')
+            this.show = true;
 						uni.removeStorage({
 							key: 'houseModel'
 						})
@@ -1970,11 +2003,6 @@
 						uni.removeStorage({
 							key: 'houseConfigList'
 						})
-						setTimeout(() => {
-							uni.switchTab({
-								url: '/pages/tabbar/home/home'
-							})
-						}, 1000)
 					} else {
 						uni.$u.toast('发布失败')
 					}
