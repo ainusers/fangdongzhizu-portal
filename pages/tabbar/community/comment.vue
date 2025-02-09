@@ -285,19 +285,29 @@ export default {
 			this.beforeIndex=index
 			this.getTwoList(this.commentList[index].comment_user_id,index,id,this.commentList[index])
 		},
-		//动态点赞
-		clickLike(id,index){
+		// 动态点赞
+		clickLike(id,index,ownerid){
 			let data={
 				userId:this.$store.state.userInfo.id,
 				id:id?id:0,
-				dynamicUserId:this.options.userid
+				dynamicUserId:ownerid
 			}
 			this.$H.patch('/zf/v1/dynamic/like',data,true).then(res=>{
-				if(res.status && res.code==200){
-					// 当没有返回like字段的时候，则赋值:0
-					if(!this.tuwen_data[index].like){this.tuwen_data[index].like=0}
-					res.data[0].status?this.tuwen_data[index].like+=1 :this.tuwen_data[index].like-=1
-					res.data[0].status?this.tuwen_data[index].status=1 :this.tuwen_data[index].status=0
+				if(res.status && res.code==200){		
+					if(!this.tuwen_data[index].like){
+						 this.$set(this.tuwen_data[index],'like',0)
+					}
+					if(res.data[0].status){
+						this.$set(this.tuwen_data[index],'status',1)
+            this.tuwen_data[index].like+=1
+					}else{
+						this.$set(this.tuwen_data[index],'status',0)
+            if(this.tuwen_data[index].like>0){
+              this.tuwen_data[index].like-=1
+            }else{
+              this.tuwen_data[index].like=0
+            }
+					}
 				}
 			})
 		},

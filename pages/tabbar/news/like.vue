@@ -124,7 +124,9 @@
 					if (200 == res.code) {
 						let detail = res.data;
 						detail.forEach(item=>{
-							item.image=item.imgurl.split(',')
+							item.image=item.imgurl.split(',');
+							// 设置动态操作默认值为false
+							this.$set(item,'isReport',false);
 						})
 						if(detail){
 							uni.stopPullDownRefresh();

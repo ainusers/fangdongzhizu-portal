@@ -96,14 +96,14 @@
 							<text class="count">{{ item.comment }}</text>
 						</view>
 						<!-- 点赞和取消点赞 -->
-						<view v-if="item.status&&item.status==1" class="p-item"
+						<view v-if="item.status==1" class="p-item"
 							@click.stop="cancelCollection(item.id, index, item.userid)">
 							<u-icon name="heart-fill" color="#cc0000" size="38"></u-icon>
-							<text class="count">{{ item.like ?item.like :'' }}</text>
+							<text class="count">{{ item.like>0 ?item.like :'' }}</text>
 						</view>
-						<view v-if="!item.status" class="p-item" @click.stop="addCollection(item.id, index, item.userid)">
+						<view v-else class="p-item" @click.stop="addCollection(item.id, index, item.userid)">
 							<u-icon name="heart" size="38"></u-icon>
-							<text class="count">{{ item.like?item.like:'' }}</text>
+							<text class="count">{{ item.like>0?item.like:'' }}</text>
 						</view>
 					</view>
 				</view>
@@ -226,6 +226,8 @@
 			goReport(index) {
 				this.currentIndex = index
 				this.list[index].isReport ? this.isReport = false : this.isReport = true
+				console.log(this.list[index].isReport)
+				console.log(this.isReport);
 				this.reportId = this.list[index].id
 				this.$emit('changeStatus', index, this.isReport)
 			},
