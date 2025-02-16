@@ -207,7 +207,7 @@
 			<button type="primary" plain="true" class="commit" style="border-color: #5199ff;color:#5199ff;">退出登录</button>
 		</view>
 		<!-- 注销用户 - 温馨提示 -->
-		<u-modal :async-close="true" v-model="show" title="请选择注销用户原因" :content="content" confirm-text="确认注销" :show-cancel-button="true" cancel-text="再想想" @confirm="confirm">
+		<u-modal v-model="show" title="请选择注销用户原因" :content="content" confirm-text="确认注销" :show-cancel-button="true" cancel-text="再想想" @confirm="confirm">
 			<view class="report_con">
 				<u-radio-group v-model="reportValue" @change="radioGroupChange" width="50%">
 							<u-radio 
@@ -227,7 +227,7 @@
 </template>
 <script>
 	var that;
-	import {compressImg,attachUpload} from '@/utils/utils.js'
+	import {compressImg,attachUpload,logout} from '@/utils/utils.js'
 
     export default {
         data() {
@@ -356,6 +356,7 @@
 			confirm(e) {
 				if(!this.reason) {
 					this.$u.toast('请选择注销用户原因')
+					this.show = true;
 					return
 				}
 				let data={
@@ -365,40 +366,15 @@
 				this.$H.get('/zf/v1/user/remove',data,true).then(res=>{
 					if (res.status) {
 						// 退出登录
-						this.logout()
+						logout()
 					}
 				})
 				this.show = false;
 			},
 			// 退出登录
 			logout() {
-				uni.removeStorage({
-					key: 'userInfo',
-					success: function (res) {}
-				});
-				uni.removeStorage({
-					key: 'phoneInfo',
-					success: function (res) {}
-				});
-				uni.removeStorage({
-					key: 'token',
-					success: function (res) {}
-				});
-				uni.removeStorage({
-					key: 'communityInfo',
-					success: function (res) {}
-				});
-				uni.removeStorage({
-					key: 'cityName',
-					success: function (res) {}
-				});
-				// 断开链接
-				uni.navigateTo({
-					url: '/pages/auth/login'
-				})
-				//清除未读消息数量缓存
-				uni.clearStorageSync('unreadMsgCnt');
-			}
-        }
+        logout()
+      }
     }
+  }
 </script>

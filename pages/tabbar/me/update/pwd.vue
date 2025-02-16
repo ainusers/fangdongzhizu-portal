@@ -20,7 +20,7 @@
 	</view>
 </template>
 <script>
-	import {htmlEncode} from '@/utils/utils.js'
+	import {htmlEncode,logout} from '@/utils/utils.js'
 	var that=''
     export default {
         data() {
@@ -71,12 +71,8 @@
 					icon: 'none',
 					duration: 2000
 				})
-				// 返回上一页
-				setTimeout(() => {
-					uni.navigateBack({
-						delta: 1
-					});
-				},2000)
+				// 修改密码后重新登录
+				logout()
 			}else{
 				uni.showToast({
 					title: res.message,
