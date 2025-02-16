@@ -85,6 +85,39 @@ const htmlEncode = function(str) {
 	return temp;
 }
 
+// 退出登录
+const logout = function() {
+	uni.removeStorage({
+		key: 'userInfo',
+		success: function (res) {}
+	});
+	uni.removeStorage({
+		key: 'phoneInfo',
+		success: function (res) {}
+	});
+	uni.removeStorage({
+		key: 'token',
+		success: function (res) {}
+	});
+	uni.removeStorage({
+		key: 'communityInfo',
+		success: function (res) {}
+	});
+	uni.removeStorage({
+		key: 'cityName',
+		success: function (res) {}
+	});
+	//清除未读消息数量缓存
+	uni.removeStorage({
+		key: 'unreadMsgCnt',
+		success: function (res) {}
+	});
+	// 跳转至登录页面
+	uni.navigateTo({
+		url: '/pages/auth/login'
+	})
+}
+
 // 控制时间间隔
 const spaceTime=function(old,now){
 	old=new Date(old);
@@ -272,5 +305,6 @@ export {
 	checkExist,
 	getLatest,
 	MycheckUpdate,
-	gotoAppSetting
+	gotoAppSetting,
+	logout
 }
