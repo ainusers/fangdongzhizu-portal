@@ -76,7 +76,8 @@
 								</block>
 								<!--一个视频-->
 								<block v-if="item.filetype==='video'&&item.image&&item.image.length == 1">
-									<video :lazy-load="true" mode="aspectFill" class="img-style-1" :controls="true" :src="item.image[0]" :data-src="item.image[0]"></video>
+									<video :lazy-load="true" mode="aspectFill" class="img-style-1" 
+									:poster="item.videofirstimage" :controls="true" :src="item.image[0]" :data-src="item.image[0]"></video>
 								</block>
 							</block>
 						</view>

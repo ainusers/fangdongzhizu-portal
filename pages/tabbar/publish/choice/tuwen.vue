@@ -334,14 +334,26 @@ export default {
 								} else {
 									images = await attachUpload(this.imageList);
 								}
-								let data = {
-									'imgUrl': images.toString(),
-									'nickname': this.$store.state.userInfo.nickname,
-									'avatar': this.$store.state.userInfo.avatar,
-									'userId': this.$store.state.userInfo.id,
-									'words': htmlEncode(this.content),
-									'fileType': this.uploadType
-								}
+                let data = {
+                  'imgUrl': images.toString(),
+                  'nickname': this.$store.state.userInfo.nickname,
+                  'avatar': this.$store.state.userInfo.avatar,
+                  'userId': this.$store.state.userInfo.id,
+                  'words': htmlEncode(this.content),
+                  'fileType': this.uploadType
+                }
+                // 当上传类型为视频时，解析images的格式为List<Map>(包含视频和首帧图片),当上传类型为图片时，解析images的格式为List<String>
+                if("video" == this.uploadType) {
+                  // 获取 [{firstImage: "http://43.143.148.105:9090/album/2025-02-16/13473015185/1739443647766.jpeg"}] 中的firstImage
+                  let video = images.map(item => {
+                    return item.video
+                  })
+                  let firstImage = images.map(item => {
+                    return item.firstImage
+                  })
+                  data.videoFirstImage = firstImage.toString()
+                  data.imgUrl = video.toString()
+                }
 								// 上传动态信息
 								this.$H.post('/zf/v1/dynamic/dynamics', data, true).then(res => {
 									if (res.status) {

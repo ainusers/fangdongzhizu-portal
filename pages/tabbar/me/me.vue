@@ -200,7 +200,6 @@
 
 <script>
 	import myInfoAvatar from '@/components/common/myInfoAvatar.vue'
-	import {getUserInfo} from '@/utils/utils.js'
 	export default {
 		data() {
 			return {
