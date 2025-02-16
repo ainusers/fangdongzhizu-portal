@@ -327,10 +327,6 @@ export default {
                             if (res.confirm) {
 								// 判断是否授权定位
 								uni.showToast({ title: '发布中', duration: 60000, icon: 'loading' });
-								// 获取位置信息
-								// #ifdef APP-PLUS
-								let location = await this.getLocation();
-								// #endif
 								// 获取上传图片地址
 								let images;
 								if (this.imageList.length == 0) {
@@ -346,17 +342,6 @@ export default {
 									'words': htmlEncode(this.content),
 									'fileType': this.uploadType
 								}
-								// #ifdef APP-PLUS
-								if (location != '未知') {
-									data['longitude'] = location.longitude// 经度
-									data['latitude'] = location.latitude// 纬度
-									data['country'] = location.address.country
-									data['province'] = location.address.province == null ? location.address.city : location.address.province
-									data['city'] = location.address.city
-									data['address'] = location.address.district + "-" + location.address.street + "-" + location.address.streetNum + "-" + location.address.poiName
-									data['type'] = location.type
-								}
-								// #endif
 								// 上传动态信息
 								this.$H.post('/zf/v1/dynamic/dynamics', data, true).then(res => {
 									if (res.status) {
@@ -387,66 +372,6 @@ export default {
                         title: "每天发布动态不能超过三个!"
                     })
                 }
-            })
-        },
-        // 获取地理位置（h5可能不支持）
-        getLocation() {
-            return new Promise((resolve, reject) => {
-				// ios平台使用wgs84坐标
-				if (uni.getSystemInfoSync().platform == 'ios') {
-					uni.getLocation({
-					    type: 'wgs84',
-					    geocode: true,
-					    isHighAccuracy: true,
-					    success: function (res) {
-					        resolve(res);
-					    },
-					    fail: (e) => {
-							uni.hideToast();
-							if("authorized" == uni.getAppAuthorizeSetting().locationAuthorized){
-								uni.showToast({ title: '请通过设置-隐私-定位服务，打开手机GPS定位功能', duration: 2000, icon: 'none' });
-							} else {
-								uni.showModal({
-									title: '温馨提示',
-									content: '您还没有给APP地理位置权限，请在权限管理页面授权',
-									showCancel: false,
-									success: async (res) => {
-										// 跳转应用权限管理页面
-										gotoAppSetting();
-									}
-								})
-							}
-					        reject(e);
-					    }
-					});
-				} else {
-					// android平台使用gcj02坐标
-					uni.getLocation({
-					    type: 'gcj02',
-					    geocode: true,
-					    isHighAccuracy: true,
-					    success: function (res) {
-					        resolve(res);
-					    },
-					    fail: (e) => {
-							uni.hideToast();
-							if("authorized" == uni.getAppAuthorizeSetting().locationAuthorized){
-								uni.showToast({ title: '请打开手机GPS定位功能', duration: 2000, icon: 'none' });
-							} else {
-								uni.showModal({
-									title: '温馨提示',
-									content: '您还没有给APP地理位置权限，请在权限管理页面授权',
-									showCancel: false,
-									success: async (res) => {
-										// 跳转应用权限管理页面
-										gotoAppSetting();
-									}
-								})
-							}
-					        reject(e);
-					    }
-					});
-				}
             })
         },
         close(e) {
