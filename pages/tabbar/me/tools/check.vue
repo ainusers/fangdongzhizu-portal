@@ -12,6 +12,19 @@
 	 bottom: 60px;
 	 left: 80%;
 }
+.report_con{
+	width:100%;
+	padding: 15upx 60upx 0upx 80upx;
+	/deep/.u-radio{
+		width: 50%;
+		margin-bottom: 30upx;				
+	}
+};
+.hink{
+	font-size: 26upx;
+	color: #aaa;
+	margin: 0upx 30upx 10upx 40upx;
+}		
 </style>
 <template>
 	<view>
@@ -32,7 +45,7 @@
 						<view class="content" v-if="houseList.length>0">
 							<!-- 列表 -->
 							<block v-for="(item, i) in houseList" :key="i">
-								<house-list-item ref="ListItem" :item="item" :index="i" @updateHouseList="updateHouseList" :current="current"></house-list-item>
+								<house-list-item ref="ListItem" :item="item" :index="i" @updateHouseList="updateHouseList" :current="current" @updateRemoveShow="changeRemoveShow"></house-list-item>
 							</block>
 						</view>
 						<!-- 骨架屏 -->
@@ -53,6 +66,25 @@
 		<view class="operate" @click="roomOperate()" v-if="(current==0 || current==1 || current==2) && houseList.length>0">
 			<uni-icons custom-prefix="iconfont" type="icon-bianji" color="#5199ff" size="30"></uni-icons>
 		</view>
+		
+		<!-- 下架 - 温馨提示 -->
+		<u-modal  v-model="removeShow"   title="请选择房源下架原因" confirm-text="确认下架" :show-cancel-button="true" cancel-text="再想想" @confirm="confirm">
+			<view class="report_con">
+				<u-radio-group v-model="reportValue" @change="radioGroupChange" width="50%">
+							<u-radio 
+								v-for="(item, index) in reportList" :key="index" 
+								:name="item.name"
+								v-model="item.checked"
+								:disabled="item.disabled">
+								{{item.name}}
+							</u-radio>
+				</u-radio-group>
+			</view>
+			<view class="hink">
+				注：非常感谢您一直以来对房东直租app的支持与关注，我们深知房源的数量和质量对于用户来说至关重要，因此我们一直在努力拓展房源和丰富功能，以满足更多用户的需求，我们真诚地希望您能够继续留在这里，一同见证app的成长与发展
+			</view>
+		</u-modal>
+		
 	</view>
 </template>
 
@@ -92,7 +124,37 @@ export default {
 			],
 			pageNum:1,//当前请求页码
 			loadStatus:'loadmore',
-			isUpdate:false
+			isUpdate:false,
+			removeShow:false,
+			reason: '',
+			itemId:'',
+			reportValue:'',
+			reportList:[
+				{
+					name:'虚假房源',
+					checked:false
+				},
+				{
+					name:'房源较少',
+					checked:false
+				},
+				{
+					name:'已租到房',
+					checked:false
+				},
+				{
+					name:'用户体验',
+					checked:false
+				},
+				{
+					name:'信息安全',
+					checked:false
+				},
+				{
+					name:'其它',
+					checked:false
+				}
+			]
 		};
 	},
 	watch:{
@@ -276,6 +338,37 @@ export default {
 					item.isUpdate=this.isUpdate
 				})
 			}
+		},
+    // 展示下架dialog
+		changeRemoveShow(show,item){
+			this.removeShow = show
+      this.itemId = item.id
+		},
+		// 切换注销原因事件
+		radioGroupChange(e){
+			this.reason=e
+		},
+		// 确认下架
+		confirm(e) {
+			if(!this.reason) {
+				this.$u.toast('请选择下架原因')
+				this.removeShow = true;
+				return
+			}
+      let data={
+        id:this.itemId,
+        status:3,
+        reason:this.reason
+      }
+      // 刷新页面
+      this.$H.post('/zf/v1/room/status',data,true).then(res=>{
+        if(res.status){
+          this.updateHouseList();
+          this.reportValue = ''
+          this.$u.toast('下架房源成功！')
+        }
+      })
+			this.removeShow = false;
 		}
 	}
 }

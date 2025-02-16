@@ -1,12 +1,4 @@
 <style scoped lang="scss" scoped>
-	.isTopHouse_view{
-		position: absolute;
-		bottom: 30upx;
-		right: 0;
-		color: #c8c8c9;
-		font-size: 22upx;
-		text-align: right;
-	}
 	.er_house_main {
 		background-color: #f2f2f2
 	}
@@ -275,7 +267,7 @@
 		<!-- 管理房源功能 -->
 		<view class="detail_btn" v-if="isUpdate">
 			<view class="btn_item" @click="updateHouse(item)" v-if="current==0 || current==1 || current==2">修改</view>
-			<view class="btn_item" @click="offShelf(item)" v-if="current==1">下架</view>
+			<view class="btn_item" @click="removeRoom(item)" v-if="current==1">下架</view>
 		</view>
 	</view>
 </template>
@@ -372,17 +364,10 @@
 					url:'/pages/tabbar/publish/choice/fangyuan?isUpdate=true'
 				})
 			},
-			offShelf(item){
-				let data={
-					id:item.id,
-					status:3
-				}
-				this.$H.post('/zf/v1/room/status',data,true).then(res=>{
-					if(res.status){
-						this.$emit('updateHouseList')
-					}
-				})
-			},
+          // 下架房源
+          removeRoom(item) {
+            this.$emit('updateRemoveShow', true, item)
+          },
         	homeDetail(item,index) {
 				// 用户浏览统计
 				let data={
