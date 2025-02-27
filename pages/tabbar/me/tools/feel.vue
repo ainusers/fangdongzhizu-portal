@@ -243,12 +243,16 @@
 		width: 100%;
 	}
 	.uni-textarea {
-	    width: 100%;
-	    padding: 10upx 15upx;
+	    width: 97%;
+		padding: 10upx 15upx;
+	    margin: 10upx 15upx;
 	    line-height: 1.6;
 	    height: 130px;
 		border-top: 1px solid #f2f2f2;
 		border-bottom: 1px solid #f2f2f2;
+		border-radius: 20rpx;
+		background:#f6f8f9;
+		box-sizing: border-box;
 	}
 	.uni-uploader-head {
 	    display: flex;
@@ -335,12 +339,6 @@
 	}
 	.cell-pd {
 	    padding: 12upx 30upx;
-	}
-	.uni-textarea {
-	    width: 100%;
-	    padding: 10upx 15upx;
-	    line-height: 1.6;
-	    height: 130px;
 	}
 	.uni-list::before {
 	    height: 0;
