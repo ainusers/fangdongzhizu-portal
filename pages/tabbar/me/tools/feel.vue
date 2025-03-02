@@ -1,18 +1,18 @@
 <template  style="color: #fafafa;">
 	<form>
 		<!-- 房源位置 -->
-		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" style="padding: 10px 15px" 
+		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" style="padding: 6px 15px" 
 			label-position="left" label="房源位置 :" prop="communityName" ref="item">
 			<u-input :border="false" type="select" v-model="region" label-position="left" placeholder="请选择所属区域" @click="showPickerArea"></u-input>
 		</u-form-item>
 		<!-- 适用全国 -->
 		<uPicker mode="region" v-model="pickerShow" @confirm="regionConfirm"></uPicker>
 		<!-- 小区名称 -->
-		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" style="padding: 10px 15px" label-position="left" label="小区名称 :" prop="communityName" ref="item">
+		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" style="padding: 6px 15px" label-position="left" label="小区名称 :" prop="communityName" ref="item">
 			<u-input :border="false" placeholder="请输入小区名称" type="text" v-model="communityName" :disabled="false"></u-input>
 		</u-form-item>
 		<!-- 详细地址 -->
-		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" style="padding: 10px 15px" label-position="left" label="详细地址 :" prop="communityName" ref="item">
+		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" style="padding: 6px 15px" label-position="left" label="详细地址 :" prop="communityName" ref="item">
 			<u-input :border="false" placeholder="请输入详细地址 (具体到房间号)" type="text" v-model="roomName" :disabled="false"></u-input>
 		</u-form-item>
 		
@@ -232,10 +232,10 @@
 
 <style lang="scss" scope>
 	.footer {
-	    margin: 20upx;
+	    margin: 5rpx 20rpx;
 	}
 	.commit {
-		width: 200px;
+		width: 380rpx;
 		border-radius: 10px;
 	}
 	uni-textarea{
@@ -247,7 +247,7 @@
 		padding: 10upx 15upx;
 	    margin: 10upx 15upx;
 	    line-height: 1.6;
-	    height: 130px;
+	    height: 100px;
 		border-top: 1px solid #f2f2f2;
 		border-bottom: 1px solid #f2f2f2;
 		border-radius: 20rpx;
@@ -333,9 +333,6 @@
 	uni-image {
 	    width: 100px;
 	    height: 100px;
-	}
-	.footer {
-	    margin: 20upx;
 	}
 	.cell-pd {
 	    padding: 12upx 30upx;
