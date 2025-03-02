@@ -19,7 +19,7 @@
 	    border-radius: 5px;
 	    .item {
 	      display: flex;
-	      height: 120rpx;
+	      height: 100rpx;
 	      .left {
 	        width: 15%;
 			padding-top: 15px;
@@ -38,7 +38,7 @@
 	      }
 	      .right {
 	        width: 15%;
-	        padding: 25px 2px;
+	        padding: 15px 2px;
 	      }
 	    }
 	  }
@@ -48,7 +48,7 @@
 	}
 	.func {
 		display: flex;
-		height: 280upx;
+		height: 260upx;
 		align-items: center;
 		bottom: 180rpx;
 		position: relative;
@@ -63,7 +63,6 @@
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
-			height: 140upx;
 			.icon {
 				image {
 					height: 50upx;
@@ -73,7 +72,11 @@
 			.name {
 				color: #333;
 				line-height: 30upx;
-				margin-top: 20upx;
+				margin-top: 10upx;
+			}
+			.name-no-space{
+				color: #333;
+				line-height: 30upx;
 			}
 		}
 	}
@@ -118,7 +121,7 @@
 		  	<view class="icon">
 				<uni-icons custom-prefix="iconfont" type="icon-dongtai" color="#5199ff" size="32"></uni-icons>
 		  	</view>
-		  	<view class="name">动态</view>
+		  	<view class="name-no-space">动态</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=1')">
 		  	<view class="icon">
@@ -155,10 +158,10 @@
 		      </view>
 		    </view>
 		  </view>
-		  <!-- <view class="card">
+		  <view class="card">
 		    <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/feel')">
 		      <view class="left flex-center">
-		        <image mode="aspectFit" src="../../../static/me/feel.png"></image>
+				    <u-icon name="file-text" color="#5199ff" size="50"></u-icon>
 		      </view>
 		      <view class="center">
 		        <text>租房心得</text>
@@ -167,7 +170,7 @@
 		        <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
 		      </view>
 		    </view>
-		  </view> -->
+		  </view>
 	    <view class="card">
 	      <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/advise')">
 	        <view class="left flex-center">
