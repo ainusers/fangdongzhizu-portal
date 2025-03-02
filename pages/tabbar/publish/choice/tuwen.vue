@@ -317,74 +317,64 @@ export default {
             // 检查发布动态数量是否达到上限
             checkPush().then(async res => {
                 if (res.status) {
-                    // 提示用户获取权限
-                    uni.showModal({
-                        title: '温馨提示',
-                        content: '发布动态需要获取位置权限，用于展示动态的发布城市',
-						showCancel: false,
-						confirmText: '继续',
-                        success: async (res) => {
-                            if (res.confirm) {
-								// 判断是否授权定位
-								uni.showToast({ title: '发布中', duration: 60000, icon: 'loading' });
-								// 获取上传图片地址
-								let images;
-								if (this.imageList.length == 0) {
-									images = [];
-								} else {
-									images = await attachUpload(this.imageList);
-								}
-                let data = {
-                  'imgUrl': images.toString(),
-                  'nickname': this.$store.state.userInfo.nickname,
-                  'avatar': this.$store.state.userInfo.avatar,
-                  'userId': this.$store.state.userInfo.id,
-                  'words': htmlEncode(this.content),
-                  'fileType': this.uploadType
-                }
-                // 当上传类型为视频时，解析images的格式为List<Map>(包含视频和首帧图片),当上传类型为图片时，解析images的格式为List<String>
-                if("video" == this.uploadType) {
-                  // 获取 [{firstImage: "http://43.143.148.105:9090/album/2025-02-16/13473015185/1739443647766.jpeg"}] 中的firstImage
-                  let video = images.map(item => {
-                    return item.video
-                  })
-                  let firstImage = images.map(item => {
-                    return item.firstImage
-                  })
-                  data.videoFirstImage = firstImage.toString()
-                  data.imgUrl = video.toString()
-                }
-								// 上传动态信息
-								this.$H.post('/zf/v1/dynamic/dynamics', data, true).then(res => {
-									if (res.status) {
-										uni.hideToast();
-										uni.showToast({
-											icon: 'success',
-											title: "发布成功"
-										})
-										setTimeout(() => {
-											uni.switchTab({
-												url: '/pages/tabbar/community/community'
-											})
-										}, 1000)
-									} else {
-										uni.hideToast();
-										uni.showToast({
-											icon: 'success',
-											title: "发布失败，请重试!"
-										})
-									}
+					// 判断是否授权定位
+					uni.showToast({ title: '发布中', duration: 60000, icon: 'loading' });
+					// 获取上传图片地址
+					let images;
+					if (this.imageList.length == 0) {
+						images = [];
+					} else {
+						images = await attachUpload(this.imageList);
+					}
+					let data = {
+					  'imgUrl': images.toString(),
+					  'nickname': this.$store.state.userInfo.nickname,
+					  'avatar': this.$store.state.userInfo.avatar,
+					  'userId': this.$store.state.userInfo.id,
+					  'words': htmlEncode(this.content),
+					  'fileType': this.uploadType
+					}
+					// 当上传类型为视频时，解析images的格式为List<Map>(包含视频和首帧图片),当上传类型为图片时，解析images的格式为List<String>
+					if("video" == this.uploadType) {
+					  // 获取 [{firstImage: "http://43.143.148.105:9090/album/2025-02-16/13473015185/1739443647766.jpeg"}] 中的firstImage
+					  let video = images.map(item => {
+					    return item.video
+					  })
+					  let firstImage = images.map(item => {
+					    return item.firstImage
+					  })
+					  data.videoFirstImage = firstImage.toString()
+					  data.imgUrl = video.toString()
+					}
+					// 上传动态信息
+					this.$H.post('/zf/v1/dynamic/dynamics', data, true).then(res => {
+						if (res.status) {
+							uni.hideToast();
+							uni.showToast({
+								icon: 'success',
+								title: "发布成功"
+							})
+							setTimeout(() => {
+								uni.switchTab({
+									url: '/pages/tabbar/community/community'
 								})
-                            }
-                        }
-                    })
-                } else {
-                    uni.showToast({
-                        icon: 'none',
-                        title: "每天发布动态不能超过三个!"
-                    })
-                }
-            })
+							}, 1000)
+						} else {
+							uni.hideToast();
+							uni.showToast({
+								icon: 'success',
+								title: "发布失败，请重试!"
+							})
+						}
+					})
+				}
+				else {
+				    uni.showToast({
+				        icon: 'none',
+				        title: "每天发布动态不能超过三个!"
+				    })
+				}
+			})
         },
         close(e) {
             this.imageList.splice(e, 1);
