@@ -11,6 +11,26 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-weixinhaoyou:before {
+  content: "\e613";
+}
+
+.icon-wechatEnshrine:before {
+  content: "\e600";
+}
+
+.icon-shejiaotubiao-02:before {
+  content: "\e641";
+}
+
+.icon-fuzhilianjie:before {
+  content: "\e740";
+}
+
+.icon-dongtai:before {
+  content: "\e60e";
+}
+
 .icon-xiangxia:before {
   content: "\e62c";
 }
@@ -95,7 +115,7 @@
   content: "\e618";
 }
 
-.icon-dongtai:before {
+.icon-dongtai1:before {
   content: "\e69d";
 }
 

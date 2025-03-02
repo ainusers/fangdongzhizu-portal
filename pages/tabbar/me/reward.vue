@@ -48,11 +48,11 @@
 			
 			<view class="pay_type">
 				<view class="item_pay" @click="pay('wxpay')" :class="{pay_ative:payType=='wxpay'}">
-					<uni-icons custom-prefix="iconfont" type="icon-weixin" color="#2aae67" size="50"></uni-icons>
+					<uni-icons custom-prefix="iconfont" type="icon-weixin" size="50"></uni-icons>
 					微信
 				</view>
 				<view class="item_pay" @click="pay('alipay')" :class="{pay_ative:payType=='alipay'}">
-					<uni-icons custom-prefix="iconfont" type="icon-zhifubao" color="#5199ff" size="45"></uni-icons>
+					<uni-icons custom-prefix="iconfont" type="icon-zhifubao" size="45"></uni-icons>
 					支付宝
 				</view>
 			</view>

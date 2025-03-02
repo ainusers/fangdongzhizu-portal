@@ -30,14 +30,14 @@
 	        }
 	      }
 	      .center {
-	        width: 70%;
+	        width: 75%;
 	        display: flex;
 	        justify-content: start;
 	        align-items: center;
 	        font-size: 1.1em;
 	      }
 	      .right {
-	        width: 15%;
+	        width: 10%;
 	        padding: 15px 2px;
 	      }
 	    }
@@ -73,10 +73,6 @@
 				color: #333;
 				line-height: 30upx;
 				margin-top: 10upx;
-			}
-			.name-no-space{
-				color: #333;
-				line-height: 30upx;
 			}
 		}
 	}
@@ -119,9 +115,9 @@
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=0')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-dongtai" color="#5199ff" size="32"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-dongtai" color="#5199ff" size="23"></uni-icons>
 		  	</view>
-		  	<view class="name-no-space">动态</view>
+		  	<view class="name">动态</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=1')">
 		  	<view class="icon">
