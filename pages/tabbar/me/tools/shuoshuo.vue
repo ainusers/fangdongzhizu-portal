@@ -4,8 +4,14 @@
 }
 .scroll-view-height {
 	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
+	/* #ifdef APP */
 	height: calc(100vh - var(--status-bar-height));
+	/* #endif */
+	/* #ifdef H5 */
+	height: calc(100vh - 156rpx);
+	/* #endif */
 	background-color: #f7f7f7;
+	margin: 10rpx 0;
 }
 </style>
 <template>
@@ -20,7 +26,7 @@
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
 				:refresher-triggered="triggered"
 				:refresher-enabled="true"
-				:refresher-threshold="100"
+				:refresher-threshold="40"
 				@refresherrefresh="onPulling"
 				@refresherrestore="onRestore">
 					<view v-if="current == index">
@@ -30,12 +36,9 @@
 								<postListSkeleton/>
 							</view>
 						</block>
-						<block v-if="!status&&tuwen_data.length === 0 && currPage==1">
-							<u-empty  text="暂无数据" mode="favor"></u-empty>
-						</block>
 						<view class="content" v-else>
 							<!-- 圈子 -->
-						    <post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @clickLike="clickLike"  @changeStatus="changeStatus"></post-list>					
+              <post-list :list="tuwen_data" :loadStatus="load_status_tuwen" @clickLike="clickLike"  @changeStatus="changeStatus" :isDetail="false"></post-list>
 						</view>
 					</view>
 				</scroll-view>
@@ -187,7 +190,7 @@ export default {
 				size:10,
 			}
 			if(this.current==1) data['type']='like'; 
-			if(this.current==3) data['type']="look"; 
+			if(this.current==3) data['type']="look";
 			this.$H.get(url,data,true).then(res=>{
 				if(this.currPage==1){
 					 this.tuwen_data=[]
@@ -200,9 +203,10 @@ export default {
 			this.load_status_tuwen='loading'
 			this.triggered=false
 			if(res.status){
-				if(res.data.length==0 &&this.currPage!=1 || res.data.length<10&&this.currPage!=1){
+				if(res.data.length < 10){
 					this.load_status_tuwen='nomore'
-					this.$u.toast('已加载完成')
+				} else if (res.data.length == 10){
+					this.load_status_tuwen='loadmore'
 				}
 				this.tuwen_dataAll[type]=(this.tuwen_dataAll[type]?this.tuwen_dataAll[type]:[])
 				this.tuwen_dataAll[type]=[...this.tuwen_data,...res.data]
@@ -234,9 +238,10 @@ export default {
 						}
 						this.$set(item,'isReport',false)
 					})
-					if(res.data.length==0 &&this.currPage!=1 || res.data.length<10&&this.currPage!=1){
+					if(res.data.length<10){
 						this.load_status_tuwen='nomore'
-						this.$u.toast('已加载完成')
+					} else if (res.data.length == 10){
+						this.load_status_tuwen='loadmore'
 					}
 				}
 			})
