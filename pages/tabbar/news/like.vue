@@ -20,21 +20,19 @@
 					<image v-else style="background: #f2f2f2;" mode="aspectFill"></image>
 				</view>
 			</view>
-			
-			<view class="loading">
-				<u-loadmore
-					:status="status" 
-					:loading-text="loadingText" 
-					:loadmore-text="loadmoreText" 
-					:nomore-text="nomoreText"
-					icon-color="#5199ff"
-					color="#999"
-				/>
-			</view>
 		</view>
-		
-		<view class="noMessage" v-else >
-			<u-empty text="暂无未读消息" mode="favor" ></u-empty>
+		<view class="loading">
+			<u-loadmore  v-if="LikeList.length>0"
+				:status="status" 
+				:loading-text="loadingText" 
+				:loadmore-text="loadmoreText" 
+				:nomore-text="nomoreText"
+				icon-color="#5199ff"
+				color="#999"
+			/>
+			<view v-else >
+				<u-empty text="暂无数据" mode="favor" ></u-empty>
+			</view>
 		</view>
 	</view>
 </template>
@@ -53,9 +51,9 @@
 				isShow:false,
 				loadingFlag:false,
 				status: 'loadmore',
-				loadingText: '努力加载中',
-				loadmoreText: '轻轻上拉',
-				nomoreText: '实在没有了'
+        loadmoreText: '轻轻上拉加载更多...',
+        loadingText: '努力加载中...',
+        nomoreText: '没有更多了'
 			}
 		},
 		onShow() {
@@ -130,7 +128,6 @@
 						})
 						if(detail){
 							uni.stopPullDownRefresh();
-							this.$store.commit('communityInfo', detail[0]);
 							uni.navigateTo({
 								url: "/pages/tabbar/community/comment?data=" + JSON.stringify(detail[0])
 							})
@@ -235,10 +232,6 @@
 					border-radius: 16rpx;
 				}
 			}
-		}
-		.loading{
-			display: flex;
-			justify-content: center;
 		}
 	}
 	.footer{
