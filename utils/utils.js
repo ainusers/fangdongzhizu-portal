@@ -85,39 +85,6 @@ const htmlEncode = function(str) {
 	return temp;
 }
 
-// 退出登录
-const logout = function() {
-	uni.removeStorage({
-		key: 'userInfo',
-		success: function (res) {}
-	});
-	uni.removeStorage({
-		key: 'phoneInfo',
-		success: function (res) {}
-	});
-	uni.removeStorage({
-		key: 'token',
-		success: function (res) {}
-	});
-	uni.removeStorage({
-		key: 'communityInfo',
-		success: function (res) {}
-	});
-	uni.removeStorage({
-		key: 'cityName',
-		success: function (res) {}
-	});
-	//清除未读消息数量缓存
-	uni.removeStorage({
-		key: 'unreadMsgCnt',
-		success: function (res) {}
-	});
-	// 跳转至登录页面
-	uni.navigateTo({
-		url: '/pages/auth/login'
-	})
-}
-
 // 控制时间间隔
 const spaceTime=function(old,now){
 	old=new Date(old);
@@ -189,8 +156,8 @@ function timeFormat(dateTime = null, fmt = 'yyyy-mm-dd') {
 		ret = new RegExp("(" + k + ")").exec(fmt);
 		if (ret) {
 			fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
-		};
-	};
+		}
+	}
 	return fmt;
 }
 
@@ -237,7 +204,7 @@ const showToastTit=function(tit){
 	})
 }
 
-//检测是否注册过用户
+// 检测是否注册过用户
 const checkExist=function(username){
 	return request.get('/zf/v1/user/exist',{username:username},false).then(res=>{
 		if(res.code==200){
@@ -246,7 +213,7 @@ const checkExist=function(username){
 	})
 }
 
-//获取最新APP版本
+// 获取最新APP版本
 const getLatest= function(){
 	return request.get('/zf/v1/version/latest',{},true).then(res=>{
 		if(res.code==200){
@@ -290,6 +257,70 @@ const gotoAppSetting = function() {
 	}
 }
 
+// 退出登录
+const logout = function() {
+	uni.removeStorage({
+		key: 'userInfo',
+		success: function (res) {}
+	});
+	uni.removeStorage({
+		key: 'phoneInfo',
+		success: function (res) {}
+	});
+	uni.removeStorage({
+		key: 'token',
+		success: function (res) {}
+	});
+	uni.removeStorage({
+		key: 'communityInfo',
+		success: function (res) {}
+	});
+	uni.removeStorage({
+		key: 'cityName',
+		success: function (res) {}
+	});
+	//清除未读消息数量缓存
+	uni.removeStorage({
+		key: 'unreadMsgCnt',
+		success: function (res) {}
+	});
+	//清除城市区域信息 
+	uni.removeStorage({
+		key: 'regionInfo',
+		success: function (res) {}
+	});
+	//清除城市地铁信息
+	uni.removeStorage({
+		key: 'stationInfo',
+		success: function (res) {}
+	});
+	// 跳转至登录页面
+	uni.navigateTo({
+		url: '/pages/auth/login'
+	})
+}
+
+// 获取访问时的页面地址
+const getCurrentUrl = function() {
+	// http://localhost:8080/#/pages/tabbar/home/homeDetail?id=1889631499114082304&userId=1889321058324279296
+	let pages = getCurrentPages();
+	// 获取当前页面的路由地址和参数
+	let currentPage = pages[pages.length - 1];
+	let route = currentPage.route;
+	let options = currentPage.options;
+	// 组合成完整的访问地址
+	let url = route + '?';
+	
+	for (let key in options) {
+	    url += key + '=' + options[key] + '&';
+	}
+	url = url.substr(0, url.length - 1);
+	// http://ainusers.asia:31080/#/
+	url = "http://www.ainusers.asia:31080/#/"+url;
+	// this.shareUrl = url.substring(0,url.indexOf('&'))	
+	return url.substring(0,url.indexOf('&'))
+}
+
 export {
 	getStoreData,
 	initStorestate,
@@ -306,5 +337,6 @@ export {
 	getLatest,
 	MycheckUpdate,
 	gotoAppSetting,
-	logout
+	logout,
+	getCurrentUrl
 }
