@@ -4,8 +4,14 @@
 }
 .scroll-view-height {
 	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
-	height: calc(100vh - var(--status-bar-height));
+	/* #ifdef APP */
+	height: calc(100vh - var(--status-bar-height) );
+	/* #endif */
+	/* #ifdef H5 */
+	height: calc(100vh - 172rpx);
+	/* #endif */
 	background-color: #f7f7f7;
+	margin: 5rpx 0;
 }
 .operate {
 	 position: absolute;
@@ -34,11 +40,12 @@
 		</u-sticky>
 		<!-- 内容区域 -->
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
-			<swiper-item v-for="(item,index) in tabList" :key="index">
-				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
+			<swiper-item class="scroll-view-height"  v-for="(item,index) in tabList" :key="index">
+				<scroll-view scroll-y="true" class="scroll-view-height list-content" 
+				@scrolltolower="scrolltolower"
 				:refresher-triggered="triggered"
 				:refresher-enabled="true"
-				:refresher-threshold="100"
+				:refresher-threshold="40"
 				@refresherrefresh="onPulling"
 				@refresherrestore="onRestore">
 					<view v-show="current == index">
@@ -54,9 +61,11 @@
 								<houseListItemSkeleton/>
 							</block>
 						</view>
+            <!-- loadmore -->
 						<block v-if="!showModel && houseList.length===0 && pageNum==1">
 							<u-empty  text="暂无数据" mode="favor"></u-empty>
 						</block>
+						<u-loadmore v-else :status="loadStatus" :loading-text="loadingText" :loadmore-text="loadmoreText" :nomore-text="nomoreText" />
 					</view>
 				</scroll-view>
 			</swiper-item>
@@ -154,7 +163,10 @@ export default {
 					name:'其它',
 					checked:false
 				}
-			]
+			],
+			loadingText: '努力加载中...', // 加载中提示文字
+			loadmoreText: '轻轻上拉加载更多...', // 加载前提示文字
+			nomoreText: '-- 没有更多了 --' ,// 没有更多数据提示文字
 		};
 	},
 	watch:{
@@ -162,7 +174,6 @@ export default {
 			handler(newVal,oldVal){
 				this.houseList=[]
 				this.pageNum=1
-				this.loadStatus='loadmore'
 				// #ifdef APP-PLUS
 				var webView = this.$mp.page.$getAppWebview();
 				// #endif
@@ -232,7 +243,7 @@ export default {
 		onRestore() {
 			this.triggered = false; // 需要重置
 		},
-		//滚动
+		// 触底滚动
 		scrolltolower(){
 			if(this.loadStatus=='loadmore'){
 				this.pageNum++
@@ -241,6 +252,12 @@ export default {
 				}else{
 					this.getCollect()
 				}
+			}else if (this.loadStatus == 'nomore'){
+				uni.showToast({
+					icon:'none',
+					title:"小主,别使劲,已经到底了"
+				})
+				uni.stopPullDownRefresh();
 			}
 		},
 		//下架  接口成功之后的刷新
@@ -260,12 +277,14 @@ export default {
 				if(res.status&&res.code==200){
 					this.houseList=[...this.houseList,...res.data]	
 					this.collectList=this.houseList
-					if(res.data&&res.data.length<10 && this.pageNum>1){
-						this.loadStatus='end'
+					if(res.data&&res.data.length<10 && this.pageNum>=1){
+						this.loadStatus='nomre'
 						uni.showToast({
-							icon: 'none',
-							title: '已加载完成'
-						});
+							icon:'none',
+							title:"小主,别使劲,已经到底了"
+						})
+					} else if (res.data && res.data.length==10){
+						this.loadStatus='loadmore'
 					}
 				}else{
 					uni.showToast({
@@ -305,17 +324,17 @@ export default {
 						this.houseList=[];
 					}
 					switch(type){
-              case 1 :
-                  this.auditList=this.houseList
-                  break;
-              case 2:
-                  this.publishedList=this.houseList
-                  break;
-              case 3:
-                  this.removeList=this.houseList
-                  break;
-          }
-					res.data.length<10?this.loadStatus='end':this.loadStatus='loadmore'
+					  case 1 :
+						  this.auditList=this.houseList
+						  break;
+					  case 2:
+						  this.publishedList=this.houseList
+						  break;
+					  case 3:
+						  this.removeList=this.houseList
+						  break;
+					}
+					 res.data.length<10?this.loadStatus='nomore':this.loadStatus='loadmore'
 					// 关闭管理操作
 					this.isUpdate=false
 					if(this.$refs.ListItem && this.$refs.ListItem.length>0){
@@ -339,15 +358,15 @@ export default {
 				})
 			}
 		},
-    // 展示下架dialog
+		// 展示下架dialog
 		changeRemoveShow(show,item){
 			this.removeShow = show
-      this.itemId = item.id
-		},
-		// 切换注销原因事件
-		radioGroupChange(e){
-			this.reason=e
-		},
+		  this.itemId = item.id
+			},
+			// 切换注销原因事件
+			radioGroupChange(e){
+				this.reason=e
+			},
 		// 确认下架
 		confirm(e) {
 			if(!this.reason) {
@@ -355,19 +374,19 @@ export default {
 				this.removeShow = true;
 				return
 			}
-      let data={
-        id:this.itemId,
-        status:3,
-        reason:this.reason
-      }
-      // 刷新页面
-      this.$H.post('/zf/v1/room/status',data,true).then(res=>{
-        if(res.status){
-          this.updateHouseList();
-          this.reportValue = ''
-          this.$u.toast('下架房源成功！')
-        }
-      })
+			let data={
+				id:this.itemId,
+				status:3,
+				reason:this.reason
+			}
+			// 刷新页面
+			this.$H.post('/zf/v1/room/status',data,true).then(res=>{
+				if(res.status){
+				  this.updateHouseList();
+				  this.reportValue = ''
+				  this.$u.toast('下架房源成功！')
+				}
+			})
 			this.removeShow = false;
 		}
 	}
