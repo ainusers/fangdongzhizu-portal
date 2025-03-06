@@ -48,11 +48,7 @@
 								<block v-for="(item, index) in regionLeftList" :key="index">
 									<view hover-class="none" form-type="submit"
 										:class="{region_left_active: regionLeftIndex == index}"
-										@click="regionLeftBtn(item, index)" class="region_list_item" v-if="index==0">
-										{{ item.text }}</view>
-									<view hover-class="none" form-type="submit"
-										:class="{region_left_active: regionLeftIndex == index}"
-										@click="regionLeftBtn(item, index)" class="region_list_item" v-if="index>0">
+										@click="regionLeftBtn(item, index)" class="region_list_item" >
 										{{ item.text }}</view>
 								</block>
 							</scroll-view>
@@ -157,13 +153,12 @@
 <script>
 	import {constant} from "@/utils/constant.js";
 	export default {
-		props: ["screenFormData", "from", "regionLeftList", "regionRightMap", "enterType", "roomPriceRange", "roomList","fixedContHeight"],
+		props: ["screenFormData", "from", "regionLeftList", "regionRightMap", "enterType", "roomPriceRange", "roomList","fixedContHeight","listTcShow"],
 		data() {
 			return {
 				areaName: '区域',
 				downIcon: 'http://43.143.148.105:9090/remote/fangdongzhizu/filter_btn_nomal.png',
 				topIcon: 'http://43.143.148.105:9090/remote/fangdongzhizu/down-active.png',
-				listTcShow: false, //筛选框显示状态
 				fixedTcTop: "80rpx", // 筛选条件距离顶部高度43px
 				currentClickType: '',
 				contHeight: "800rpx", // 筛选条件高度
@@ -222,6 +217,10 @@
 					this.listTcShow=true
 				}
 				this.currentClickType = str
+        // 首次点击区域加载数据
+				if(str == 'region' && this.regionRightMap['region'].length == 0 ){
+					this.regionLeftBtn('',0);
+				}
 			},
 			// 点击外部空白区域，弹窗关闭
 			screenClose() {
@@ -312,7 +311,15 @@
 			regionLeftBtn(item, index) {
 				this.regionLeftIndex = index
 				this.areaOrLineIndex = 0
-				this.$emit('regionLeftBtn', item, index)
+				this.areaName = '区域'
+				switch (index) {
+					case 0:
+						this.getArea()
+						break;
+					case 1:
+						this.getStation()
+						break;
+				}
 				setTimeout(() => {
 					if (this.regionLeftIndex == 1) {
 						this.$nextTick(() => {
@@ -323,6 +330,101 @@
 						this.stationData = []
 					}
 				}, 100)
+			},
+			// 获取该城市的所有区
+			getArea() {
+				let cityValue='';
+				cityValue = uni.getStorageSync('cityName')
+				let data = {
+					city: cityValue
+				}
+				try {
+				  let regionData ={};
+				  regionData= uni.getStorageSync('regionInfo');
+				  if (typeof regionData === 'object' && regionData !== null) {
+				    for (let key in regionData) {
+				      if (key == cityValue ) {
+						  this.regionRightMap['region'] = regionData[cityValue]
+						  this.regionRightMap['region'].unshift({
+						  	name: '不限',
+						  	id: 0
+						  });
+						  return;
+				      }
+				    }
+				  } 
+          this.$H.get('/zf/v1/const/area', data, true).then(res => {
+            if (res.status) {
+              this.regionRightMap['region'] = res.data;
+              let regionObject = {};
+              regionObject[cityValue] = res.data;
+              Object.assign(regionObject,regionData)
+                uni.setStorage({
+                  key: 'regionInfo',
+                  data: regionObject,
+                  success: function (res) {
+                    console.log('存储数据成功:', res);
+                  },
+                  fail: function (err) {
+                    console.error('存储数据失败:', err);
+                  }
+                });
+              this.regionRightMap['region'].unshift({
+                name: '不限',
+                id: 0
+              });
+            }
+          })
+				} catch (err) {
+				  console.error('Failed to get regionData from storage synchronously:', err);
+				}
+			},
+			// 获取该城市下的所有地铁
+			getStation() {
+				let cityValue = uni.getStorageSync('cityName');
+				let data = {
+					city: cityValue
+				}
+				try{
+					let stationData ={};
+					stationData = uni.getStorageSync('stationInfo');
+					if (typeof stationData === 'object' && stationData !== null) {
+					  for (let key in stationData) {
+					    if (key == cityValue ) {
+                this.regionRightMap['region'] = stationData[cityValue]
+                this.regionRightMap['region'].unshift({
+                name: '不限',
+                id: 0
+						  });
+						  return;
+					    }
+					  }
+					} 
+					this.$H.get('/zf/v1/const/station', data, true).then(res => {
+						if (res.status) {
+							this.regionRightMap['region'] = res.data;
+							let stationObject = {};
+							stationObject[cityValue] = res.data;
+							Object.assign(stationObject,stationData)
+							uni.setStorage({
+							  key: 'stationInfo',
+							  data: stationObject,
+							  success: function (res) {
+							    console.log('存储数据成功:', res);
+							  },
+							  fail: function (err) {
+							    console.error('存储数据失败:', err);
+							  }
+							});
+							this.regionRightMap['region'].unshift({
+								line: '不限',
+								station: []
+							})
+						}
+					})			
+				} catch (err) {
+				  console.error('Failed to get regionData from storage synchronously:', err);
+				}	
 			},
 			regionRightBtn(item, index, type) {
 				// type  1区域  2 地铁站
@@ -474,7 +576,8 @@
 					text: '',
 					val: ''
 				}
-			}
+			},
+			screenContBtn(){}
 		}
 	}
 </script>
