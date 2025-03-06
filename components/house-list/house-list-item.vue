@@ -119,6 +119,10 @@
     .er_house_tag_info{
 		overflow: hidden;
 		margin-bottom: 15upx;
+		overflow: hidden;  /* 隐藏超出容器的内容 */
+		white-space: nowrap;  /* 防止文本换行 */
+		text-overflow: ellipsis;  /* 当文本溢出时显示省略号 */
+		width: 400rpx;  /* 根据需要设置容器的宽度 */
     }
 	.er_house_tag_view{
 		flex-wrap: wrap;
@@ -217,7 +221,7 @@
 </style>
 <template>
 	<view class="er_house_main">
-		<view @click="homeDetail(item,index)"  class="er_house_item f_r_s">
+		<view @click="homeDetail(item,index)"  class="er_house_item">
 			<view class="er_house_item_con">
 				<view class="er_house_img_view">
 					<image mode="scaleToFill" class="er_house_img" :src="item.imgUrl.split(',')[0]" lazy-load></image>
@@ -241,13 +245,13 @@
 					</view>
 					
 					<!-- 地理位置：距离昌平线沙河地铁站1020米 -->
-					<view class="er_house_tag_info f_r_s">
+					<view class="er_house_tag_info">
 						<text> {{item.distanceSubway}}</text>
 					</view>
 						
 					<!-- 房屋价格，朝阳区，酒仙桥 -->
-					<view class="er_house_price_view f_r_s">
-						<view class="er_house_price main_color f_r_s">
+					<view class="er_house_price_view">
+						<view class="er_house_price main_color">
 							<text v-if="item.money" class="price">{{ item.money }}</text>
 							<text>元/月</text>
 						</view>
