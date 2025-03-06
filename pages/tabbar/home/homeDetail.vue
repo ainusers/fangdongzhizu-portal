@@ -1,3 +1,142 @@
+<template>
+    <view class="er_house_detail">
+		<!-- 详情页 - 轮播图 -->
+		<house-swiper :list="swiperList"></house-swiper>
+
+		<!-- 详情页 - 主板 -->
+		<view class="model">
+		    <block v-if="detailData != null">
+			 <view class="description">
+				<view class="position">
+					<view class="community">{{detailData.communityName}}</view>
+					<view class="value">{{detailData.layout}}</view>
+				</view>
+				<view class="money">
+					<view class="pay">
+						<view class="price"><view class="num">{{detailData.money}}</view>元</view>
+						<view class="way">({{detailData.payType}})</view>
+					</view>
+				</view>
+			 </view>
+			 <view class="detail">
+				<view class="info_con">
+					<view  class="value"> {{detailData.roomType}}</view>
+					<view  class="key">出租房间 </view>
+				</view>
+				<view class="info_con">
+					<view class="value">
+						{{detailData.size}}m²
+					</view>
+					<view class="key">
+						建筑面积
+					</view>
+				</view>
+				<view class="info_con">
+					<view  class="value">{{detailData.liveTime||'-'}}</view>
+					<view  class="key"> 入住时间</view>
+				</view>
+				<view class="info_con">
+					<view  class="value">{{detailData.floor}}</view>
+					<view  class="key">楼层</view>
+				</view>
+			 </view>
+			 <view class="icon_list">
+				 <view class="item">
+					 <!-- 有无电梯 -->
+					 {{detailData.hasElevator}}
+				 </view>
+				 <view class="item">
+				 	<!-- 集中供暖-->
+				 	{{detailData.heatType}}
+				 </view>
+				 <!-- 朝向 -->
+				 <view class="item">
+					 {{detailData.orientation}}
+				 </view>
+			 </view>
+		   </block>
+		</view>
+		<!-- 详情页 - 租赁信息 -->
+		<view class="model" v-if="zulinData.length > 0">
+		  <block>
+			 <view class="modelName">租赁信息</view>
+			 <zu-lin-xin-xi :list="zulinData"></zu-lin-xin-xi>
+		   </block>
+		</view>
+		<!-- 详情页 - 费用详情 -->
+		<view class="model">
+		  <block v-if="feiyongData.length > 0">
+			 <view class="modelName">费用详情</view>
+			 <fei-yong-xiang-qing :list="feiyongData"></fei-yong-xiang-qing>
+		   </block>
+		</view>
+		<!-- 详情页 - 地理位置 -->
+		<view class="model">
+		  <block v-if="diliData.length > 0">
+			 <view class="modelName">地理位置</view>
+			 <view class="map_con">
+				<view>{{detailData.distanceSubway}}</view>
+				<di-li-wei-zhi :list="diliData"  v-if="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi>
+			 </view>
+		   </block>
+		</view>
+		<!-- 详情页 - 配套设施 -->
+		<view class="model">
+		  <block v-if="sheshiData.length > 0">
+			 <view class="modelName">配套设施</view>
+			 <pei-tao-she-shi :list="sheshiData"></pei-tao-she-shi>
+		   </block>
+		</view>
+		<!-- //举报模态框 -->
+		<view>
+			<zhizuReport @cancelReport="cancelReport" @goReport="goReport" :typeStr="reportType" :userId="detailData.userId" :reportId="detailData.id" ref="reportS"/>
+		</view>
+		<!-- 详情页 - 立即沟通 -->
+		<view class="final">
+			<view class="left">
+				<view class="collect" @click="reportShowFn">
+					<u-icon name="bell" size="45"></u-icon>
+					<view class="target">举报</view>
+				</view>
+				<view class="report"  @click="report(2)">
+					<u-icon :name="startIcon" size="45" :color="iconColor"></u-icon>
+					<view class="target" >收藏</view>
+				</view>
+				<view class="report"  @click="showShares">
+					<u-icon name="zhuanfa" size="45"></u-icon>
+					<view class="target" >分享</view>
+				</view>
+			</view>
+			<view class="contact">
+				<u-button shape="square" @click="report(3)">立即沟通</u-button>
+			</view>
+		</view>
+
+		<!-- 分享操作 appShare('1','qq','')-->
+		<u-popup  v-model="showShare" mode="bottom" :mask="true" border-radius="15" @close="closeShare">
+			<view class="share-wrap">
+				<view class="row">
+					<view @click.stop="appShare('weixin','WXSceneSession','0')" class="share-item">
+						<uni-icons custom-prefix="iconfont" type="icon-weixinhaoyou"  size="40"></uni-icons>
+						<text>微信好友</text>
+					</view>
+					<view @click.stop="appShare('weixin','WXSceneFavorite','0')" class="share-item">
+						<uni-icons custom-prefix="iconfont" type="icon-wechatEnshrine" size="40"></uni-icons>
+						<text>微信收藏</text>
+					</view>
+					<view @click.stop="appShare('weixin','WXSceneTimeline','0')" class="share-item">
+						<uni-icons custom-prefix="iconfont" type="icon-shejiaotubiao-02" size="40"></uni-icons>
+						<text>朋友圈</text>
+					</view>
+					<view @click.stop="copyCurrentUrl" class="share-item">
+						<uni-icons custom-prefix="iconfont" type="icon-fuzhilianjie" size="40"></uni-icons>
+						<text>复制链接</text>
+					</view>
+				</view>
+			</view>
+		</u-popup>
+  </view>
+</template>
 <style scope lang="scss">
   page {
     background: #f7f7f7;
@@ -138,7 +277,7 @@
 		  align-items: center;
 	  }
 	  .contact{
-		  width: 50%;
+		  width: 40%;
 		  margin: 0px 8px 8px 0px;
 		  background: #5199ff;
 		  border-radius: 20upx;
@@ -162,118 +301,31 @@
 	.map_con{
 		padding: 20upx;
 	}
+	// 分享弹窗
+	.share-wrap {
+		margin: 0 auto;
+		padding: 30rpx 10rpx;
+		z-index: 999;
+		.row{
+			display: flex;
+			margin: 10rpx 0;
+		}
+		.share-item {
+			margin: 0 auto;
+			display: flex;
+			flex-direction: column;
+			image {
+				width: 100rpx;
+				height: 100rpx;
+			}
+			text {
+				font-size: 24rpx;
+				margin-top: 8rpx;
+			}
+		}
+	}
 </style>
-<template>
-    <view class="er_house_detail">
-		<!-- 详情页 - 轮播图 -->
-		<house-swiper :list="swiperList"></house-swiper>
-		
-		<!-- 详情页 - 主板 -->
-		<view class="model">
-		    <block v-if="detailData != null">
-			 <view class="description">
-				<view class="position">
-					<view class="community">{{detailData.communityName}}</view>
-					<view class="value">{{detailData.layout}}</view>
-				</view>
-				<view class="money">
-					<view class="pay">
-						<view class="price"><view class="num">{{detailData.money}}</view>元</view>
-						<view class="way">({{detailData.payType}})</view>
-					</view>
-				</view>
-			 </view>
-			 <view class="detail">
-				<view class="info_con">
-					<view  class="value"> {{detailData.roomType}}</view>
-					<view  class="key">出租房间 </view>
-				</view>
-				<view class="info_con">
-					<view class="value">
-						{{detailData.size}}m²
-					</view>
-					<view class="key">
-						建筑面积
-					</view>
-				</view>
-				<view class="info_con">
-					<view  class="value">{{detailData.liveTime||'-'}}</view>
-					<view  class="key"> 入住时间</view>
-				</view>
-				<view class="info_con">
-					<view  class="value">{{detailData.floor}}</view>
-					<view  class="key">楼层</view>
-				</view>
-			 </view>
-			 <view class="icon_list">
-				 <view class="item">
-					 <!-- 有无电梯 -->
-					 {{detailData.hasElevator}} 
-				 </view>
-				 <view class="item">
-				 	<!-- 集中供暖-->
-				 	{{detailData.heatType}} 
-				 </view>
-				 <!-- 朝向 -->
-				 <view class="item">
-					 {{detailData.orientation}}
-				 </view>
-			 </view>
-		   </block>
-		</view>
-		<!-- 详情页 - 租赁信息 -->
-		<view class="model" v-if="zulinData.length > 0">
-		  <block>
-			 <view class="modelName">租赁信息</view>
-			 <zu-lin-xin-xi :list="zulinData"></zu-lin-xin-xi>
-		   </block>
-		</view>
-		<!-- 详情页 - 费用详情 -->
-		<view class="model">
-		  <block v-if="feiyongData.length > 0">
-			 <view class="modelName">费用详情</view>
-			 <fei-yong-xiang-qing :list="feiyongData"></fei-yong-xiang-qing>
-		   </block>
-		</view>
-		<!-- 详情页 - 地理位置 -->
-		<view class="model">
-		  <block v-if="diliData.length > 0">
-			 <view class="modelName">地理位置</view>
-			 <view class="map_con">
-				<view>{{detailData.distanceSubway}}</view>
-				<di-li-wei-zhi :list="diliData"  v-if="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi>
-			 </view>
-		   </block>
-		</view>
-		<!-- 详情页 - 配套设施 -->
-		<view class="model">
-		  <block v-if="sheshiData.length > 0">
-			 <view class="modelName">配套设施</view>
-			 <pei-tao-she-shi :list="sheshiData"></pei-tao-she-shi>
-		   </block>
-		</view>
-		<!-- //举报模态框 -->
-		<view>
-			<zhizuReport @cancelReport="cancelReport" @goReport="goReport" :typeStr="reportType" :userId="detailData.userId" :reportId="detailData.id" ref="reportS"/>
-		</view>
-		<!-- 详情页 - 立即沟通 -->
-		<view class="final">
-			<view class="left">
-				<view class="collect" @click="reportShowFn">
-					<u-icon name="bell" size="50"></u-icon>
-					<view class="target">举报</view>
-				</view>
-				<view class="report"  @click="report(2)">
-					<u-icon :name="startIcon" size="50" :color="iconColor"></u-icon>
-					<view class="target" >收藏</view>
-				</view>
-			</view>
-			<view class="contact">
-				<u-button shape="square" @click="report(3)">立即沟通</u-button>
-			</view>
-		</view>
-    </view>
-</template>
+
 
 <script>
   import permision from "@/sdk/wa-permission/permission.js"
@@ -283,6 +335,7 @@
   import zuLinXinXi from "@/components/house-detail/house-zulin.vue";
   import diLiWeiZhi from "@/components/house-detail/house-dili.vue";
   import zhizuReport from '@/components/common/modal/report.vue';
+  import {getCurrentUrl,appShare} from '@/utils/utils.js';
 
   let that;
   export default {
@@ -376,8 +429,9 @@
 		tipcontent:'',
 		startIcon:'heart',
 		iconColor:'',
-		reportStatu:false
-		
+		reportStatu:false,
+		showShare:false, // 分享弹框展示标识
+		shareUrl:'' //分享的地址
       };
     },
 	methods:{
@@ -601,15 +655,15 @@
 			})
 		},
 		showSupport(){
-      let support=this.detailData.support
-      if(support){
-				support=support.split(',')
-				this.sheshiData.forEach(item=>{
-					if(support.indexOf(item.text) != -1){
-						item.isShow=true
-					}
-				})
-			}
+		  let support=this.detailData.support
+		  if(support){
+					support=support.split(',')
+					this.sheshiData.forEach(item=>{
+						if(support.indexOf(item.text) != -1){
+							item.isShow=true
+						}
+					})
+				}
 		},
 		goReport(){
 			this.isMap=true
@@ -619,6 +673,40 @@
 			this.isMap=true
 			this.reportStatu=false
 		},
+		// 展示分享弹框
+		showShares() {
+			this.showShare = true;
+			this.isMap = false;
+		},
+		// 关闭分享弹框
+		closeShare(){
+			this.showShare = false;
+			this.isMap = true;
+		},
+		// uni-share 微信分享
+		appShare(provider,scene,type) {
+			this.getCurrentUrl();
+			appShare(provider,scene,type,this.shareUrl,this.detailData.communityName+'-'+this.detailData.roomType,this.detailData.layout +'-'+ this.detailData.money+'-'+this.detailData.payType)
+			this.closeShare();
+		},
+		// 复制链接
+		copyCurrentUrl() {
+			this.getCurrentUrl();
+			uni.setClipboardData({
+			    data: this.shareUrl,
+			    success: function () {
+			        console.log('复制成功');
+			    },
+			    fail: function (err) {
+			        console.error('复制失败', err);
+			    }
+			});
+			this.closeShare();
+		},
+    // 获取当前页面地址
+		getCurrentUrl(){
+			this.shareUrl = getCurrentUrl();
+		}
 	}
 }
 </script>
