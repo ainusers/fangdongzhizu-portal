@@ -1,6 +1,7 @@
 import store from '@/store/index.js';
 import request from '@/utils/request.js'
 import checkUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update.js'
+import config from '@/utils/config.js';
 let updateOnly=false
 
 // 获取本地存储中的数据
@@ -316,9 +317,38 @@ const getCurrentUrl = function() {
 	}
 	url = url.substr(0, url.length - 1);
 	// http://ainusers.asia:31080/#/
-	url = "http://www.ainusers.asia:31080/#/"+url;
+	url = config.shareDomain+"/#/"+url;
 	// this.shareUrl = url.substring(0,url.indexOf('&'))	
 	return url.substring(0,url.indexOf('&'))
+}
+
+// APP 微信的好友、朋友圈及收藏的分享
+const appShare = function(provider,scene,type,shareUrl,title,summary){
+	if(provider=='weixin'){
+		uni.share({
+			provider: provider, //分享服务提供商（即weixin|qq|sinaweibo）
+			scene: scene, //场景，可取值参考下面说明。
+			type: type, //分享形式 0:图文  qq不支持0，支持1以后的
+			href: shareUrl, //跳转链接
+			title: title,//分享内容的标题
+			summary:  summary,  //分享内容的摘要
+			imageUrl: config.imageDomain+'/banner/logo-apple.png', // 为默认的应用icon,非客户发布的照片 imageUrl: this.swiperList[0].url, //图片地址
+			success: function(res) {
+				uni.showToast({
+					title: '分享成功',
+					icon: 'none',
+					duration: 2000
+				})
+			},
+			fail: function(err) {
+				uni.showToast({
+					title: '分享失败',
+					icon: 'none',
+					duration: 2000
+				})
+			}
+		});	
+	}
 }
 
 export {
@@ -338,5 +368,6 @@ export {
 	MycheckUpdate,
 	gotoAppSetting,
 	logout,
-	getCurrentUrl
+	getCurrentUrl,
+	appShare
 }
