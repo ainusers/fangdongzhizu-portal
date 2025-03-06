@@ -120,23 +120,8 @@
 			},
 			//点击右侧图片进入对应的动态
 			goComment(dynamicId,userId){
-				this.$H.get("/zf/v1/dynamic/detail?id="+dynamicId+"&userId="+userId, {}, true).then(res => {
-					if (200 == res.code && res.data.length>0) {
-						let detail = res.data;
-						detail.forEach(item=>{
-							item.image=item.imgurl.split(',')
-						})
-						if(detail){
-							uni.stopPullDownRefresh();
-							uni.navigateTo({
-								url: "/pages/tabbar/community/comment?data=" + JSON.stringify(detail[0])
-							})
-						}
-					}else {
-						uni.showToast({
-							title:"未知异常，请联系管理员"
-						})
-					}
+				uni.navigateTo({
+					url: "/pages/tabbar/community/comment?id=" + dynamicId+"&userId=" + userId
 				})
 			},
 			toUcenter(userId) {

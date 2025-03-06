@@ -118,25 +118,8 @@
 			},
 			// 点击右侧进入对应的动态
 			goComment(dynamicId,userId){
-				this.$H.get("/zf/v1/dynamic/detail?id="+dynamicId+"&userId="+userId, {}, true).then(res => {
-					if (200 == res.code) {
-						let detail = res.data;
-						detail.forEach(item=>{
-							item.image=item.imgurl.split(',');
-							// 设置动态操作默认值为false
-							this.$set(item,'isReport',false);
-						})
-						if(detail){
-							uni.stopPullDownRefresh();
-							uni.navigateTo({
-								url: "/pages/tabbar/community/comment?data=" + JSON.stringify(detail[0])
-							})
-						}else {
-							uni.showToast({
-								title:"未知异常，请联系管理员"
-							})
-						}
-					}
+				uni.navigateTo({
+					url: "/pages/tabbar/community/comment?id=" + dynamicId + "&userId=" + userId
 				})
 			},
 			// 跳转至点赞人的个人中心
