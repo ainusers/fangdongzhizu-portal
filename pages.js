@@ -122,7 +122,7 @@ module.exports=()=>({
 				"navigationBarTitleText" : "消息",
 				"navigationBarTextStyle": "white",
 				"navigationBarBackgroundColor": "#5199ff",
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
 			}
 		},

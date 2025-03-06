@@ -106,7 +106,7 @@
 			"navigationBarTitleText" : "消息",
 			"navigationBarTextStyle": "black",
 			"navigationBarBackgroundColor": "#5199ff",
-			"enablePullDownRefresh": true,
+			"enablePullDownRefresh": false,
 			"backgroundTextStyle":"light"
 		}
 	},
@@ -468,14 +468,10 @@
     	}
     },
     {
-    	"path" : "pages/tabbar/me/showavatar",
+    	"path" : "pages/auth/share",
     	"style" : 
     	{
-    		"navigationBarTitleText" : "头像",
-			"navigationBarTextStyle": "white",
-			"navigationBarBackgroundColor": "#5199ff",
-			"enablePullDownRefresh": false,
-			"backgroundTextStyle":"light"
+    		"navigationBarTitleText" : ""
     	}
     }
 ],
