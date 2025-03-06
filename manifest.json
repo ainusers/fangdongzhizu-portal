@@ -17,7 +17,8 @@
             "Maps" : {},
             "Camera" : {},
             "VideoPlayer" : {},
-            "Payment" : {}
+            "Payment" : {},
+            "Share" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -95,6 +96,12 @@
                     },
                     "weixin" : {
                         "__platform__" : [ "ios", "android" ],
+                        "appid" : "wx2c28b021e15abad4",
+                        "UniversalLinks" : "https://static-mp-e39ae62b-d074-4108-bd17-f92ad835a8da.next.bspapp.com/uni-universallinks/__UNI__190F3AB/"
+                    }
+                },
+                "share" : {
+                    "weixin" : {
                         "appid" : "wx2c28b021e15abad4",
                         "UniversalLinks" : "https://static-mp-e39ae62b-d074-4108-bd17-f92ad835a8da.next.bspapp.com/uni-universallinks/__UNI__190F3AB/"
                     }
