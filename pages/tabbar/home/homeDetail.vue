@@ -94,17 +94,17 @@
 		<!-- 详情页 - 立即沟通 -->
 		<view class="final">
 			<view class="left">
-				<view class="collect" @click="reportShowFn">
-					<u-icon name="bell" size="45"></u-icon>
-					<view class="target">举报</view>
+				<view class="report"  @click="showShares">
+					<u-icon name="zhuanfa" size="45"></u-icon>
+					<view class="target">分享</view>
 				</view>
 				<view class="report"  @click="report(2)">
 					<u-icon :name="startIcon" size="45" :color="iconColor"></u-icon>
-					<view class="target" >收藏</view>
+					<view class="target">收藏</view>
 				</view>
-				<view class="report"  @click="showShares">
-					<u-icon name="zhuanfa" size="45"></u-icon>
-					<view class="target" >分享</view>
+				<view class="collect" @click="reportShowFn">
+					<u-icon name="bell" size="45"></u-icon>
+					<view class="target">举报</view>
 				</view>
 			</view>
 			<view class="contact">
