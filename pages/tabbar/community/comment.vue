@@ -129,15 +129,18 @@
 <template>
 	<view>
 		<!-- 展示区 -->
-		<post-list :showRow="'-webkit-line-clamp: 10'"  :imageFlag="true" :list="tuwen_data" :loadStatus="load_status_tuwen" :isDetail="true" @changeStatus="changeStatus" @clickLike="clickLike" @commontInt="commontInt" @deletePostFn="deletePostFn"></post-list>
+		<post-list :showRow="'-webkit-line-clamp: 10'"  :list="tuwen_data"  
+		:isDetail="true"
+		:imageFlag="true"
+		@changeStatus="changeStatus" @clickLike="clickLike" @commontInt="commontInt" @deletePostFn="deletePostFn"></post-list>
 		
 		<!-- 评论区 -->
 		<view class="comment_main">
 			<block v-if="commentList.length > 0&&commentListShow" >
 				<view class="comment_con">
 					<view   class="comment" v-for="(res, index1) in commentList" :key="res.id">
-						<view class="left">
-							<u-avatar class="avatar" :src="res.avatar" level-bg-color="#8072f3"></u-avatar>
+						<view class="left"  @click.stop="toUcenter(res.comment_user_id)">
+							<u-avatar class="avatar" :src="res.avatar" mode="square"></u-avatar>
 						</view>
 						<view class="right">
 							<view @longpress="delComment(res, index1)">
@@ -157,7 +160,9 @@
 							<view class="reply-box">
 								<view v-if="res.AllReply">
 									<view class="item" @tap.stop="onReply(item, index,2,res)" v-for="(item, index) in res.replyList" :key="item.index">
-										<view class="left"><image :src="item.avatar" mode="aspectFill"></image></view>
+										<view class="left" @click.stop="toUcenter(item.comment_user_id)">
+											<u-avatar class="avatar" :src="item.avatar" mode="square"></u-avatar>
+										</view>
 										<view class="right" @longpress="delComment(item, index,index1)">
 											<view class="desc">
 												<view class="nickname">{{ item.nickname }}</view>
@@ -221,20 +226,23 @@ export default {
 			dyId:'',//动态id
 			parentId:'',//二级评论的父id
 			expand:0,//当前展开的第几层
-			locationCicy:''//IP归属的城市
+			locationCicy:'',//IP归属的城市
+			userId:''// 登录用户id
 		};
 	},
 	props:{
 		index: String
 	},
-	onLoad(options) {
-		if(options){
-			this.options=JSON.parse(options.data)
-			this.dyId=this.options.id
+	onLoad(datas) {
+		if(datas){
+			this.dyId=datas.id
+			if(this.$store.state.userInfo.id){
+				this.userId=this.$store.state.userInfo.id
+			}
+			this.getOneList()
+			this.getdyDetail()
+			this.lookCount(this.dyId)
 		}
-		this.getOneList()
-		this.getdyDetail()
-		this.lookCount(this.dyId)
 	},
 	onReachBottom(){
 		if(this.loadStatus=='loadmore'){
@@ -260,11 +268,19 @@ export default {
 		},
 		// 进入动态详情页
 		getdyDetail(){
-			this.load_status_tuwen='nomore'
-			if(this.options){
-				this.tuwen_data = [this.options]
-				uni.stopPullDownRefresh();
-			}
+			this.$H.get("/zf/v1/dynamic/detail?id="+this.dyId+"&userId="+this.userId, {}, true).then(res => {
+				if (200 == res.code) {
+					let detail = res.data;
+					detail.forEach(item=>{
+						item.image=item.imgurl.split(',')
+						this.$set(item,'isReport',false)
+					})
+					if(detail){
+						this.tuwen_data = detail
+						uni.stopPullDownRefresh();
+					}
+				}
+			})
 		},
 		// 跳转到全部回复
 		toAllReply(index,id) {
@@ -286,28 +302,15 @@ export default {
 			this.getTwoList(this.commentList[index].comment_user_id,index,id,this.commentList[index])
 		},
 		// 动态点赞
-		clickLike(id,index,ownerid){
+		clickLike(id,index){
 			let data={
 				userId:this.$store.state.userInfo.id,
-				id:id?id:0,
-				dynamicUserId:ownerid
+				id:id?id:0
 			}
 			this.$H.patch('/zf/v1/dynamic/like',data,true).then(res=>{
-				if(res.status && res.code==200){		
-					if(!this.tuwen_data[index].like){
-						 this.$set(this.tuwen_data[index],'like',0)
-					}
-					if(res.data[0].status){
-						this.$set(this.tuwen_data[index],'status',1)
-            this.tuwen_data[index].like+=1
-					}else{
-						this.$set(this.tuwen_data[index],'status',0)
-            if(this.tuwen_data[index].like>0){
-              this.tuwen_data[index].like-=1
-            }else{
-              this.tuwen_data[index].like=0
-            }
-					}
+				if(res.status && res.code==200){
+					res.data[0].status ? this.tuwen_data[index].like+=1 : this.tuwen_data[index].like-=1
+					res.data[0].status ? this.tuwen_data[index].status=1 : this.tuwen_data[index].status=0
 				}
 			})
 		},
@@ -344,7 +347,7 @@ export default {
 				comment_user_id:this.$store.state.userInfo.id,
 				commentUserId:this.$store.state.userInfo.id,//回复用户id，也就是用户本人
 				beCommentUserId:this.beCommentUserId,//被回复id也就别人id
-				dynamicId:this.$store.state.communityInfo.id,//动态id
+				dynamicId:this.dyId,//动态id
 				avatar:this.$store.state.userInfo.avatar,
 				nickname:this.$store.state.userInfo.nickname,
 				beCommentId:this.beCommentUserId?this.comment_id:0,
@@ -357,7 +360,7 @@ export default {
 				dynamicUserId: this.options.userid,
 				commentUserId:this.$store.state.userInfo.id,//回复用户id，也就是用户本人
 				beCommentUserId:this.beCommentUserId,//被回复id也就别人id
-				dynamicId:this.$store.state.communityInfo.id,//动态id
+				dynamicId:this.dyId,//动态id
 				beCommentId:this.beCommentUserId?this.comment_id:0,
 				parentId:this.parentId? this.parentId:0
 			}
@@ -433,30 +436,32 @@ export default {
 		},
 		//获取一级评论的
 		getOneList(){
-			let that=this
-			let data={
-				dynamicId:this.$store.state.communityInfo.id,
-				pageNum:this.pageNumOne,
-				pageSize:10,
-			}
-			this.$H.post('/zf/v1/comment/list',data,true).then(res=>{
-				if(res.status){
-					let commentList=res.data
-					if(commentList&&commentList.length<10){
-						this.loadStatus='state'
-					}
-					if(commentList){
-						commentList.forEach((item,index)=>{
-							this.$set(item,'replyList',[])
-							item.AllReply=false
-							item.commentText='展开查看更多'
-							that.commentList.push(item)
-							item.likeNum=0
-							that.getTwoList(item.comment_user_id,index,item.comment_id,item)
-						})
-					}
+			if(this.loadStatus=='loadmore'){
+				let that=this
+				let data={
+					dynamicId:this.dyId,
+					pageNum:this.pageNumOne,
+					pageSize:10,
 				}
-			})
+				this.$H.post('/zf/v1/comment/list',data,true).then(res=>{
+					if(res.status){
+						let commentList=res.data
+						if(commentList && commentList.length<10){
+							this.loadStatus='nomore'
+						}
+						if(commentList){
+							commentList.forEach((item,index)=>{
+								this.$set(item,'replyList',[])
+								item.AllReply=false
+								item.commentText='展开查看更多'
+								that.commentList.push(item)
+								item.likeNum=0
+								that.getTwoList(item.comment_user_id,index,item.comment_id,item)
+							})
+						}
+					}
+				})
+			}
 		},
 		getTwoList(beCommentUserId,index,id,item){
 			let that=this
@@ -481,9 +486,7 @@ export default {
 							if(item.create_time.length>10){
 								if (uni.getSystemInfoSync().platform == 'ios') {
 								    // 解决ios手机时间格式化NaN问题
-								    item.create_time = tranfTime(item.create_time).replace(/-/g, '/')
-								} else {
-									item.create_time=tranfTime(item.create_time)
+								    item.create_time = item.create_time.replace(/-/g, '/')
 								}
 							}
 						})
@@ -499,7 +502,7 @@ export default {
 			this.$H.patch('/zf/v1/dynamic/dynamics',data,true).then(res=>{
 			})
 		},
-		//动态详情浏览统计
+    // 动态详情浏览统计
 		lookCount(id){
 			let data={
 				id:id,
@@ -510,7 +513,7 @@ export default {
 			this.$H.patch('/zf/v1/dynamic/look',data,true).then(res=>{
 			})
 		},
-    // 获取IP属地
+		// 获取IP属地
 		getCity(location){
 			// 中国|0|北京|北京市|联通
 			// 将字符串按“|”分割成数组
@@ -523,6 +526,12 @@ export default {
 					return parts[2]
 				}
 			}
+		},
+		// 跳转至个人中心
+		toUcenter(userId) {
+			uni.navigateTo({
+				url: '/pages/tabbar/me/personal?userId=' + userId
+			})
 		}
 	}
 }

@@ -167,7 +167,7 @@
 			}else{
 				uni.showToast({
 					icon:'none',
-					title:"主人，别使劲了，已经到底了"
+					title:"小主,别使劲,已经到底了"
 				})
 			}
 		},
@@ -204,8 +204,6 @@
 			},
 			// 获取图文数据
 			getMomentPost() {
-				// 测试数据待修改
-				this.load_status_tuwen = 'loading';
 				let data={
 					"page":this.tuwen_default_page ,
 					"size": "10",
