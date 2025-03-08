@@ -480,6 +480,7 @@
         "backgroundColor": "#eee",
         "borderStyle": "#ffffff",
         "selectedColor": "#000000",
+		 "fontSize": "12px",
         "list": [
         {
             "pagePath": "pages/tabbar/home/home",

@@ -485,6 +485,7 @@ module.exports=()=>({
         "backgroundColor": "#fff",
         "borderStyle": "white",
         "selectedColor": "#000000",
+		"fontSize": "12px",
         "list": [
             {
                 "pagePath": "pages/tabbar/home/home",
