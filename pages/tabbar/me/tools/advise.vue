@@ -145,7 +145,7 @@
 					type: words.toString(),
 					content: htmlEncode(this.content),
 					contact: htmlEncode(this.contact),
-					images: images
+					images: images.join(',')
 				}
 				this.$H.post('/zf/v1/advise/advises',data,true).then(res=>{
 					if(res.status){
