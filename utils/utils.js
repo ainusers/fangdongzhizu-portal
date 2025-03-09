@@ -5,7 +5,7 @@ import config from '@/utils/config.js';
 let updateOnly=false
 
 // 获取本地存储中的数据
-const initKey = ['token', 'userInfo', 'communityInfo'] //防止刷新vuex丢失数据
+const initKey = ['token', 'userInfo'] //防止刷新vuex丢失数据
 const getStoreData = function(key) {
 	uni.getStorage({
 		key: key,
@@ -270,10 +270,6 @@ const logout = function() {
 	});
 	uni.removeStorage({
 		key: 'token',
-		success: function (res) {}
-	});
-	uni.removeStorage({
-		key: 'communityInfo',
 		success: function (res) {}
 	});
 	uni.removeStorage({

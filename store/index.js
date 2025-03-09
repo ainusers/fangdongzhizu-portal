@@ -6,7 +6,6 @@ const store = new Vuex.Store({
 	state: {
 		userInfo:'',
 		token:'',
-		communityInfo:{},
 		address:{},
 		ispublishSub:false, //是否点击到过开启定位服务界面
 		version:'1.0.12'
@@ -42,13 +41,6 @@ const store = new Vuex.Store({
 				down:0
 			};
 			uni.removeStorageSync("userInfo");
-		},
-		communityInfo(state,communityInfo){
-			state.communityInfo=communityInfo
-			uni.setStorage({
-				key:'communityInfo',
-				data:communityInfo
-			})
 		},
 		address(state,address){
 			state.address=address
