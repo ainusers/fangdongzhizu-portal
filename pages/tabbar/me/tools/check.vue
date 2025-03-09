@@ -20,10 +20,10 @@
 }
 .report_con{
 	width:100%;
-	padding: 15upx 60upx 0upx 80upx;
+	padding: 15rpx 0rpx 0upx 20rpx;
 	/deep/.u-radio{
 		width: 50%;
-		margin-bottom: 30upx;				
+		margin-bottom: 10upx;				
 	}
 };
 .hink{
@@ -77,7 +77,7 @@
 		</view>
 		
 		<!-- 下架 - 温馨提示 -->
-		<u-modal  v-model="removeShow"   title="请选择房源下架原因" confirm-text="确认下架" :show-cancel-button="true" cancel-text="再想想" @confirm="confirm">
+		<u-modal  v-model="removeShow"   title="请选择下架原因" confirm-text="确认下架" :show-cancel-button="true" cancel-text="再想想" @confirm="confirm">
 			<view class="report_con">
 				<u-radio-group v-model="reportValue" @change="radioGroupChange" width="50%">
 							<u-radio 
@@ -90,7 +90,7 @@
 				</u-radio-group>
 			</view>
 			<view class="hink">
-				注：非常感谢您一直以来对房东直租app的支持与关注，我们深知房源的数量和质量对于用户来说至关重要，因此我们一直在努力拓展房源和丰富功能，以满足更多用户的需求，我们真诚地希望您能够继续留在这里，一同见证app的成长与发展
+				注：恭喜您房源顺利出租！无论是否通过本平台促成，都衷心感谢您一直以来对房东直租APP的信任与支持。期待未来继续为您提供更加优质的房东直租服务。
 			</view>
 		</u-modal>
 		
@@ -140,23 +140,23 @@ export default {
 			reportValue:'',
 			reportList:[
 				{
-					name:'虚假房源',
+					name:'已出租(本平台)',
 					checked:false
 				},
 				{
-					name:'房源较少',
+					name:'已出租(中介)',
 					checked:false
 				},
 				{
-					name:'已租到房',
+					name:'产权纠纷',
 					checked:false
 				},
 				{
-					name:'用户体验',
+					name:'已出租(其他)',
 					checked:false
 				},
 				{
-					name:'信息安全',
+					name:'暂不出租',
 					checked:false
 				},
 				{
