@@ -336,15 +336,11 @@ export default {
 					}
 					// 当上传类型为视频时，解析images的格式为List<Map>(包含视频和首帧图片),当上传类型为图片时，解析images的格式为List<String>
 					if("video" == this.uploadType) {
-					  // 获取 [{firstImage: "http://43.143.148.105:9090/album/2025-02-16/13473015185/1739443647766.jpeg"}] 中的firstImage
-					  let video = images.map(item => {
-					    return item.video
-					  })
-					  let firstImage = images.map(item => {
-					    return item.firstImage
-					  })
-					  data.videoFirstImage = firstImage.toString()
-					  data.imgUrl = video.toString()
+            // [{"firstImage":"http://43.143.148.105:9090/album/2025-03-09/13473015185/DAYLIGHT_HAMBURG_AERIAL_00048_preview.jpeg"},{"video":"http://43.143.148.105:9090/album/2025-03-09/13473015185/DAYLIGHT_HAMBURG_AERIAL_00048_preview.mp4"}]
+            let video = images.find(url => url.video);
+            let firstImage = images.find(url => url.firstImage);
+					  data.videoFirstImage = firstImage.firstImage
+					  data.imgUrl = video.video
 					}
 					// 上传动态信息
 					this.$H.post('/zf/v1/dynamic/dynamics', data, true).then(res => {
