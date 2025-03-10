@@ -212,19 +212,19 @@
 		methods: {
 			screenBtn(str) {
 				if(this.currentClickType==str){
-					this.listTcShow=this.listTcShow?false:true
+					this.$emit('update:listTcShow', this.listTcShow?false:true);
 				}else{
-					this.listTcShow=true
+					this.$emit('update:listTcShow', true);
 				}
 				this.currentClickType = str
-        // 首次点击区域加载数据
+				// 首次点击区域加载数据
 				if(str == 'region' && this.regionRightMap['region'].length == 0 ){
 					this.regionLeftBtn('',0);
 				}
 			},
 			// 点击外部空白区域，弹窗关闭
 			screenClose() {
-				this.listTcShow = false;
+				this.$emit('update:listTcShow', false);
 				let screenFormData = this.screenFormData;
 				let enterType = this.enterType;
 				for (let key in (screenFormData[enterType] || {})) {
@@ -339,44 +339,44 @@
 					city: cityValue
 				}
 				try {
-				  let regionData ={};
-				  regionData= uni.getStorageSync('regionInfo');
-				  if (typeof regionData === 'object' && regionData !== null) {
-				    for (let key in regionData) {
-				      if (key == cityValue ) {
-						  this.regionRightMap['region'] = regionData[cityValue]
-						  this.regionRightMap['region'].unshift({
-						  	name: '不限',
-						  	id: 0
-						  });
-						  return;
-				      }
-				    }
-				  } 
-          this.$H.get('/zf/v1/const/area', data, true).then(res => {
-            if (res.status) {
-              this.regionRightMap['region'] = res.data;
-              let regionObject = {};
-              regionObject[cityValue] = res.data;
-              Object.assign(regionObject,regionData)
-                uni.setStorage({
-                  key: 'regionInfo',
-                  data: regionObject,
-                  success: function (res) {
-                    console.log('存储数据成功:', res);
-                  },
-                  fail: function (err) {
-                    console.error('存储数据失败:', err);
-                  }
-                });
-              this.regionRightMap['region'].unshift({
-                name: '不限',
-                id: 0
-              });
-            }
-          })
+					let regionData ={};
+					regionData= uni.getStorageSync('regionInfo');
+					if (typeof regionData === 'object' && regionData !== null) {
+					  for (let key in regionData) {
+					    if (key == cityValue ) {
+											  this.regionRightMap['region'] = regionData[cityValue]
+											  this.regionRightMap['region'].unshift({
+											  	name: '不限',
+											  	id: 0
+											  });
+											  return;
+					    }
+					  }
+					} 
+					this.$H.get('/zf/v1/const/area', data, true).then(res => {
+						if (res.status) {
+						    this.regionRightMap['region'] = res.data;
+						    let regionObject = {};
+						    regionObject[cityValue] = res.data;
+						    Object.assign(regionObject,regionData)
+						      uni.setStorage({
+						        key: 'regionInfo',
+						        data: regionObject,
+						        success: function (res) {
+						          console.log('存储数据成功:', res);
+						        },
+						        fail: function (err) {
+						          console.error('存储数据失败:', err);
+						        }
+						      });
+						    this.regionRightMap['region'].unshift({
+						      name: '不限',
+						      id: 0
+						    });
+						  }
+						})
 				} catch (err) {
-				  console.error('Failed to get regionData from storage synchronously:', err);
+				  console.error('save area Fail:', err);
 				}
 			},
 			// 获取该城市下的所有地铁
@@ -423,7 +423,7 @@
 						}
 					})			
 				} catch (err) {
-				  console.error('Failed to get regionData from storage synchronously:', err);
+				  console.error('Fail:', err);
 				}	
 			},
 			regionRightBtn(item, index, type) {
