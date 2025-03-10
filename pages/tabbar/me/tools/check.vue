@@ -8,10 +8,9 @@
 	height: calc(100vh - var(--status-bar-height));
 	/* #endif */
 	/* #ifdef H5 */
-	height: calc(100vh - 172rpx);
+	height: calc(100vh - 168rpx);
 	/* #endif */
 	background-color: #f7f7f7;
-	margin: 5rpx 0;
 }
 .operate {
 	 position: absolute;

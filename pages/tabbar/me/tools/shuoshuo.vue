@@ -8,14 +8,13 @@
 	height: calc(100vh - var(--status-bar-height));
 	/* #endif */
 	/* #ifdef H5 */
-	height: calc(100vh - 156rpx);
+	height: calc(100vh - 168rpx);
 	/* #endif */
 	background-color: #f7f7f7;
-	margin: 10rpx 0;
 }
 </style>
 <template>
-	<view>
+	<view >
 		<!-- 顶部区域 -->
 		<u-sticky bgColor="#fffff">
 			<u-tabs :list="tabList" :current="current" @change="tabChange" lineWidth="30" lineColor="#f56c6c"></u-tabs>

@@ -20,7 +20,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="loading">
+		<view>
 			<u-loadmore v-if="roomList.length>0"
 			        :status="status" 
 			        :loading-text="loadingText" 
