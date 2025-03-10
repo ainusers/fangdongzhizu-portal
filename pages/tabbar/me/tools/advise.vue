@@ -52,7 +52,7 @@
 		</view>
 		<view class="reward_text">
 			<view style="text-align: center;">
-				———— 温馨提示 ————
+				——— 温馨提示 ———
 			</view>
 			<view>
 				1、您的每一条建议，都是我们前进的动力
@@ -62,6 +62,9 @@
 			</view>
 			<view>
 				3、所有合理反馈都将纳入后续版本更新，敬请关注
+			</view>
+			<view>
+				4、我们会在合适的时机与您联系
 			</view>
 		</view>
 		
