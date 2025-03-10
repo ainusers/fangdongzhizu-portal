@@ -116,14 +116,14 @@
     <view class="cont_view">
         <view class="person_info_view">
             <!--头像-->
-            <view class="item f_r_b" @click="chooseAvatar">
+            <view class="item f_r_b" >
                 <view class="item_text">头像</view>
                 <view class="f_r_e img_view_info">
                     <view class="img_view">
-					<view class="userImage">
-					  <u-avatar class="avatar" :src="userInfo.avatar" level-bg-color="#8072f3" size="110" img-mode="scaleToFill"></u-avatar>
-					</view>
-						<u-icon class="arrow_right" name="arrow-right"></u-icon>
+						<view class="userImage" @click="previewAvatar(userInfo.avatar)">
+						  <u-avatar class="avatar" :src="userInfo.avatar" level-bg-color="#8072f3" size="110" img-mode="scaleToFill"></u-avatar>
+						</view>
+						<u-icon @click="chooseAvatar" class="arrow_right" name="arrow-right"></u-icon>
 					</view>
                 </view>
             </view>
@@ -373,8 +373,14 @@
 			},
 			// 退出登录
 			logout() {
-        logout()
-      }
+				logout()
+			},
+			// 头像预览
+			previewAvatar(imageUrl){
+				uni.previewImage({
+					urls:[imageUrl]
+				})
+			}
     }
   }
 </script>
