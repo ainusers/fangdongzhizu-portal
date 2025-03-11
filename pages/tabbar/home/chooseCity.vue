@@ -157,6 +157,12 @@ export default {
   onLoad() {
     this.resetAddress(false);
   },
+  onUnload() {
+    // 设置默认城市
+  	if(this.gpsCityName.cityName == '定位中...'){
+		 uni.$emit('chooseCity', this.hotCityList[0])
+	  }
+  },
   methods: {
     // 选择地区回调
     regionConfirm(e) {

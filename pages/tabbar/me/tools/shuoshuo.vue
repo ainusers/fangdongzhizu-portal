@@ -22,10 +22,11 @@
 		<!-- 内容区域 -->
 		<swiper class="scroll-view-height" @change="swipeIndex" :current="current" :duration="300">
 			<swiper-item v-for=" (item,index) in tabList" :key="index">
-				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
+				<scroll-view scroll-y="true" class="scroll-view-height list-content" 
 				:refresher-triggered="triggered"
 				:refresher-enabled="true"
 				:refresher-threshold="40"
+				@scrolltolower="scrolltolower"
 				@refresherrefresh="onPulling"
 				@refresherrestore="onRestore">
 					<view v-if="current == index">
