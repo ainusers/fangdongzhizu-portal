@@ -3,7 +3,7 @@
 		<view class="shadow_top" :style="{height: height + 'rpx'}"></view>
 		  <view class="card" @click="goto('/pages/tabbar/me/user')" >
 		    <view class="top">
-		      <view class="userImage">
+		      <view class="userImage" @click="previewAvatar(userInfo.avatar)">
 				<u-avatar class="avatar" :src="userInfo.avatar" level-bg-color="#8072f3" size="140" img-mode="scaleToFill"></u-avatar>
 			  </view>
 			  <image mode="aspectFit" src="http://43.143.148.105:9090/remote/fangdongzhizu/renzheng.png" class="renzheng_icon" v-if="userInfo.auth==1"></image>
@@ -35,6 +35,12 @@
 				if(!this.isShow)  return
 				uni.navigateTo({
 					url:url
+				})
+			},
+			// 头像预览
+			previewAvatar(imageUrl){
+				uni.previewImage({
+					urls:[imageUrl]
 				})
 			}
 		}
