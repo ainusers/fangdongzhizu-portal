@@ -73,8 +73,14 @@
     {
         "path": "pages/tabbar/community/community",
         "style": {
-            "transparentTitle":  "always",
-            "enablePullDownRefresh": true
+        	"transparentTitle":  "always",
+        	"navigationBarTitleText": "",
+        	"navigationBarTextStyle": "black",
+        	"navigationBarBackgroundColor": "#5199ff",
+        	"enablePullDownRefresh": false,
+        	"backgroundTextStyle":"light",
+        	"backgroundColor":"#fff",
+        	"onReachBottomDistance":200
         }
     },
     {

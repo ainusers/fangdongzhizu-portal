@@ -1,6 +1,10 @@
 <style lang="scss" scoped>
 	.cmtyLayout{
-		background: #f7f7f7
+		background: #f7f7f7;
+		height:100vh;
+	}
+	.pyquan{
+		height:calc(100vh - var(--status-bar-height) - 350rpx - 80rpx)
 	}
 	.empty{
 		height: calc(var(--status-bar-height));
@@ -85,7 +89,7 @@
 		<view class="empty"></view>
 		<!-- #endif -->
 		<!-- 轮播图 -->
-		<div style="padding: 0px 5px;background: #f7f7f7;">
+		<div style="background: #f7f7f7;">
 			<u-swiper :list="swiperList" radius="20rpx" height="350" mode="rect" @click="navigateToPage"></u-swiper>
 		</div>
 
@@ -105,8 +109,16 @@
 		</view>
 		
 		<!-- 朋友圈 -->
-		<post-list :showRow="'-webkit-line-clamp: 1'" :list="tuwen_data" :loadStatus="load_status_tuwen" 
-		:imageFlag="false" @changeStatus="changeStatus" @clickLike="clickLike"></post-list>
+		<scroll-view scroll-y="true" class="pyquan" 
+		:refresher-triggered="triggered"
+		:refresher-enabled="true"
+		:refresher-threshold="40"
+		@refresherrefresh="onPulling"
+		@scrolltolower="scrolltolower"
+		@refresherrestore="onRestore">
+			<post-list :showRow="'-webkit-line-clamp: 1'" :list="tuwen_data" :loadStatus="load_status_tuwen"
+			:imageFlag="false" @changeStatus="changeStatus" @clickLike="clickLike"></post-list>
+		</scroll-view>
 
 		<!-- 公告弹框 -->
 		<u-modal :async-close="true" v-model="show" title="公告"  confirm-text="知道了" @confirm="chgShow(show)">
@@ -130,7 +142,8 @@
 				cityName: '',
 				show: false,
 				noticeList:[{"title":"","content":''}],
-				curentIndex:0
+				curentIndex:0,
+				triggered:false
 			}
 		},
 		onLoad() {
@@ -150,27 +163,7 @@
 				this.getMomentPost();
 			}
 		},
-		// 下拉刷新
-		onPullDownRefresh() {
-			this.tuwen_default_page = 1;
-			this.getMomentPost();
-			uni.stopPullDownRefresh();
-		},
-		// 上拉加载
-		onReachBottom() {
-			if(this.load_status_tuwen!='nomore'){
-				this.tuwen_default_page++;
-				this.getMomentPost();
-				this.tuwen_data.forEach(item=>{
-					this.$set(item,'isReport',false)
-				})
-			}else{
-				uni.showToast({
-					icon:'none',
-					title:"小主,别使劲,已经到底了"
-				})
-			}
-		},
+		
 		methods: {
 			getBanner(){
 				this.$H.get('/zf/v1/const/banner',{},true).then(res=>{
@@ -212,6 +205,7 @@
 				}
 				this.$H.get('/zf/v1/dynamic/list',data,true).then(res=>{
 					if(res.status){
+						this.triggered=false
 						if(this.tuwen_default_page==1){
 							this.tuwen_data = res.data
 						}else{
@@ -264,6 +258,32 @@
 						this.noticeList = res.data[0];
 					}
 				})
+			},
+			// 下拉刷新
+			onPulling() {
+				if(!this.triggered){
+					this.triggered=true
+					this.tuwen_default_page = 1;
+					this.getMomentPost();
+				}
+			},
+			// 上拉加载
+			scrolltolower() {
+				if(this.load_status_tuwen!='nomore'){
+					this.tuwen_default_page++;
+					this.getMomentPost();
+					this.tuwen_data.forEach(item=>{
+						this.$set(item,'isReport',false)
+					})
+				}else{
+					uni.showToast({
+						icon:'none',
+						title:"小主,别使劲,已经到底了"
+					})
+				}
+			},
+			onRestore() {
+				this.triggered = false; // 需要重置
 			}
 		}
 	}
