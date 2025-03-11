@@ -502,16 +502,19 @@ export default {
 			this.$H.patch('/zf/v1/dynamic/dynamics',data,true).then(res=>{
 			})
 		},
-    // 动态详情浏览统计
+		// 动态详情浏览统计
 		lookCount(id){
-			let data={
-				id:id,
-				userId:this.$store.state.userInfo.id,
-				type:'plus',
-				dynamicUserId:this.options.userid
+      // 登录后才会触发浏览计数
+			if(this.$store.state.userInfo.id){
+				let data={
+					id:id,
+					userId:this.$store.state.userInfo.id,
+					type:'plus',
+					dynamicUserId:this.options.userid
+				}
+				this.$H.patch('/zf/v1/dynamic/look',data,true).then(res=>{
+				})
 			}
-			this.$H.patch('/zf/v1/dynamic/look',data,true).then(res=>{
-			})
 		},
 		// 获取IP属地
 		getCity(location){
