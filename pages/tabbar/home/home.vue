@@ -44,10 +44,6 @@
 	.u-tab-item .u-line-1 {
 		line-height: 0px !important;
 	}
-	.f_r_s {
-		display: flex;
-		flex-direction: row;
-	}
 	.home_nodata {
 		text-align: center;
 		color: #aaa;
@@ -55,11 +51,22 @@
 	}
 	.scroll-view-height {
 		/* 页面高度减去包含状态栏、标题、tab组件的高度 */
+		/* #ifdef APP */
 		height: calc(100vh - var(--status-bar-height) - 160rpx);
+		/* #endif */
+		/* #ifdef H5 */
+		height: calc(100vh - 160rpx);
+		/* #endif */
 		background-color: #f2f2f2;
 	}
 	.list-swiper {
+		/* 页面高度减去包含状态栏、标题、tab组件的高度 */
+		/* #ifdef APP */
 		height: calc(100vh - var(--status-bar-height) - 160rpx);
+		/* #endif */
+		/* #ifdef H5 */
+		height: calc(100vh - 160rpx);
+		/* #endif */
 		background: #f2f2f2;
 	}
 	uni-swiper-item {
@@ -92,18 +99,20 @@
 			<screenTab ref="screenTab" v-if="current == 0 || current == 1"
 				:screenFormData="screenFormData" :roomList="roomList" :from="from" :regionLeftList="regionLeftList"
 				:regionRightMap="regionRightMap" :enterType="enterType" :roomPriceRange="roomPriceRange"
-				:fixedContHeight="fixedContHeight" :key="updateSearch" @screenBtn="screenBtn"
-				@regionLeftBtn="regionLeftBtn" @regionRightBtn="regionRightBtn" @confirmBtn="confirmBtn"
+				:fixedContHeight="fixedContHeight" :key="updateSearch" 
+				:listTcShow.sync ="listTcShow"
+				@screenBtn="screenBtn"
+				@regionRightBtn="regionRightBtn" @confirmBtn="confirmBtn"
 				@roomConfirm="roomConfirm" @confirmPrice="confirmPrice">
 			</screenTab>
 		</u-sticky>
 		
 		<!-- 内容区域 -->
-		<swiper class="list-swiper" @change="swipeIndex" :current="current" :duration="300" ref="listSwiper">
+		<swiper class="list-swiper scroll-view-height" @change="swipeIndex" :current="current" :duration="300" ref="listSwiper">
 			<!-- 直租类型 -->
-			<swiper-item>
+			<swiper-item class="scroll-view-height">
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
-					:refresher-triggered="triggered" :refresher-enabled="true" :refresher-threshold="100"
+					:refresher-triggered="triggered" :refresher-enabled="true" :refresher-threshold="40"
 					@refresherrefresh="onRefresh" @refresherrestore="onRestore">
 					<view v-if="current === 0">
 						<view class="content" v-if="houseList.length>0">
@@ -117,16 +126,17 @@
 								<houseListItemSkeleton />
 							</block>
 						</view>
-						<view class="home_nodata" v-else-if="!showModel && houseList.length==0">
+						<view class="home_nodata" v-if="!showModel && houseList.length==0">
 							<u-empty text="暂无数据" mode="favor"></u-empty>
 						</view>
+						<u-loadmore v-else :status="loadStatus" :loading-text="loadingText" :loadmore-text="loadmoreText" :nomore-text="nomoreText" />
 					</view>
 				</scroll-view>
 			</swiper-item>
 			<!-- 二手房 -->
-			<swiper-item>
+			<swiper-item class="scroll-view-height">
 				<scroll-view scroll-y="true" class="scroll-view-height list-content" @scrolltolower="scrolltolower"
-					:refresher-triggered="triggered" :refresher-enabled="true" :refresher-threshold="100"
+					:refresher-triggered="triggered" :refresher-enabled="true" :refresher-threshold="40"
 					@refresherrefresh="onRefresh" @refresherrestore="onRestore">
 					<view v-if="current === 1">
 						<!-- 内容区域 -->
@@ -145,6 +155,7 @@
 						<view class="home_nodata" v-else-if="!showModel && houseList.length==0">
 							<u-empty text="暂无数据" mode="favor"></u-empty>
 						</view>
+						<u-loadmore v-else :status="loadStatus" :loading-text="loadingText" :loadmore-text="loadmoreText" :nomore-text="nomoreText" />
 					</view>
 				</scroll-view>
 			</swiper-item>
@@ -180,6 +191,7 @@
 				showNotice: false,	// 是否展示通知
 				noticeStr: '',	// 通知默认内容
 				triggered: false, //下拉刷新是否触发
+				isLoad: false,
 				houseJia: [1, 2, 3, 4, 5, 6, 7],
 				showModel: true,
 				updateSearch: 0,
@@ -246,7 +258,6 @@
 				publish_type: 1, //(1：转租，2：直租，3：换租)
 				currPage: 1,
 				size: 10,
-				isLoad: false,
 				fulling: false, //防止点击和滑动swiper同时执行，只执行一个就行
 				isScreen: true, //当前是否为筛选查询
 				subway: '', //地铁站
@@ -259,6 +270,11 @@
 				moreChooseStr: [], //更多选中的筛选
 				fixedContHeight: 0, //屏幕的高度
 				moreSubKey: ['room_type', 'has_elevator', 'heat_type', 'room_type'], //更多提交接口的key 与screen-tab组件中moreType顺序相同
+				loadStatus:'loadmore',
+				loadingText: '努力加载中...', // 加载中提示文字
+				loadmoreText: '轻轻上拉加载更多...', // 加载前提示文字
+				nomoreText: '-- 没有更多了 --' ,// 没有更多数据提示文字
+				listTcShow:false
 			};
 		},
 		props: {
@@ -281,8 +297,6 @@
 				//触发更新后
 				that.cityName = data.cityName;
 				uni.setStorageSync('cityName', data.cityName) // 保存城市
-				// 获取该城市的所有区
-				that.getArea()
 				// 查询房源列表
 				that.subleaseList = []
 				that.directList = []
@@ -308,8 +322,6 @@
 				that.cityName = '北京市'
 				uni.setStorageSync('cityName', this.cityName)
 			}
-			// 获取该城市的所有区
-			this.getArea()
 			// 查询房源列表
 			this.getHouseList()
 			// 通知公告
@@ -378,6 +390,10 @@
 			// 滚动到最底部时触发
 			scrolltolower() {
 				if (this.isLoad) {
+					uni.showToast({
+						icon: 'none',
+						title: '小主,别使劲,已经到底了'
+					});
 					return;
 				}
 				this.currPage++
@@ -414,7 +430,6 @@
 				this.$H.post('/zf/v1/room/list', data, true).then(res => {
 					this.showModel = false
 					this.triggered = false
-					uni.hideLoading()
 					if (res.status) {
 						this.fulling = false
 						that.houseList = that.houseList.concat(res.data)
@@ -425,6 +440,9 @@
 						}
 						if (res.data.length < 10) {
 							this.isLoad = true
+							this.loadStatus='nomore'
+						}else if (res.data.length == 10){
+							this.loadStatus='loadmore'
 						}
 					}
 				})
@@ -435,8 +453,11 @@
 					this.fulling = true
 					if (index == this.current) return
 					this.currPage = 1
-					this.current = index.detail.current
-					this.init()
+					this.current = index.detail.current;
+					if((this.subleaseList.length == 10 || this.directList.length == 10) && this.isLoad){
+						this.isLoad= false;
+					};
+					this.init(true)
 				}
 			},
 			// 切换选项卡
@@ -445,6 +466,9 @@
 					this.fulling = true
 					if (index == this.current) return
 					this.current = index;
+					if((this.subleaseList.length == 10 || this.directList.length == 10 ) && this.isLoad){
+						this.isLoad= false;
+					}
 					this.init()
 				}
 			},
@@ -472,10 +496,18 @@
 				} else {
 					this.fulling = false
 				}
-				this.$refs.screenTab.listTcShow = false
+				this.listTcShow = false;
 			},
 			// 选择城市
 			chooseCity() {
+				this.listTcShow = false;
+				this.$refs.screenTab.areaName = '区域';
+				this.$refs.screenTab.regionRightMap['region'] = '';
+				this.$refs.screenTab.screenFormData[this.enterType]['region'].show = false;
+				this.$refs.screenTab.stationIndex= -1;
+				this.$refs.screenTab.screenFormData.erHouse.region.show  = false;
+				this.$refs.screenTab.screenFormData.erHouse.region.text='区域'
+				this.regionRightBtn('')
 				uni.navigateTo({
 					url: "/pages/tabbar/home/chooseCity"
 				});
@@ -516,47 +548,6 @@
 			confirmBtn(arr) {
 				this.moreChooseStr = arr
 				this.init(true)
-			},
-			// 获取该城市的所有区
-			getArea() {
-				let data = {
-					city: this.cityName
-				}
-				this.$H.get('/zf/v1/const/area', data, true).then(res => {
-					if (res.status) {
-						that.regionRightMap['region'] = res.data
-						that.regionRightMap['region'].unshift({
-							name: '不限',
-							id: 0
-						})
-					}
-				})
-			},
-			//获取该城市下的所有地铁
-			getStation() {
-				let data = {
-					city: this.cityName
-				}
-				this.$H.get('/zf/v1/const/station', data, true).then(res => {
-					if (res.status) {
-						that.regionRightMap['region'] = res.data
-						that.regionRightMap['region'].unshift({
-							line: '不限',
-							station: []
-						})
-					}
-				})
-			},
-			// 判断获取区域还是地铁站
-			regionLeftBtn(item, index) {
-				switch (index) {
-					case 0:
-						this.getArea()
-						break;
-					case 1:
-						this.getStation()
-						break;
-				}
 			},
 			// 区域筛选
 			regionRightBtn(item) {
