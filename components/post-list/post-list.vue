@@ -14,7 +14,7 @@
 							<view style="display:flex;">
 								<text class="nickname" style="flex:1">{{ item.nickname?item.nickname.substring(0, 12):'' }}</text>
 								<view style="flex:1"></view>
-								<template style="flex:1">
+								<block style="flex:1">
 									<text style="font-size: 14px;color:#5199ff;padding-right: 20rpx;">{{ item.score }}</text>
 									<view>
 										<view style="font-size: 18px;" @click.stop.prevent="goReport(index,$event)"
@@ -25,7 +25,7 @@
 											</view>
 										</view>
 									</view>
-								</template>
+								</block>
 							</view>
 							<view>
 								<text class="time">{{tranfTime(item.createtime)}}</text>
@@ -72,8 +72,13 @@
 								</block>
 								<!--一个视频-->
 								<block v-if="item.filetype==='video'&&item.image&&item.image.length == 1">
-									<video :lazy-load="true" mode="aspectFill" class="img-style-1" 
-									:poster="item.videofirstimage" :controls="true" :src="item.image[0]" :data-src="item.image[0]"></video>
+									<view v-if="!isDetail">
+										<image :lazy-load="true" mode="aspectFill" class="img-style-1" :src="item.videofirstimage"></image>
+									</view>
+									<view v-else>
+										<video :lazy-load="true" mode="aspectFill" class="img-style-1"
+										:poster="item.videofirstimage" :controls="true" :src="item.image[0]" :data-src="item.image[0]"></video>
+									</view>
 								</block>
 							</block>
 						</view>
@@ -151,7 +156,7 @@
 						<text>微信收藏</text>
 					</view>
 					<view @click.stop="appShare('weixin','WXSceneTimeline','0')" class="share-item">
-						<uni-icons custom-prefix="iconfont" type="icon-shejiaotubiao-02" size="40"></uni-icons>
+						<uni-icons custom-prefix="iconfont" type="icon-pengyouquan" size="40"></uni-icons>
 						<text>朋友圈</text>
 					</view>
 					<view @click.stop="copyCurrentUrl" class="share-item">

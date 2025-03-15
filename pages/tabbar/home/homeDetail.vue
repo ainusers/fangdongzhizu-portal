@@ -125,7 +125,7 @@
 						<text>微信收藏</text>
 					</view>
 					<view @click.stop="appShare('weixin','WXSceneTimeline','0')" class="share-item">
-						<uni-icons custom-prefix="iconfont" type="icon-shejiaotubiao-02" size="40"></uni-icons>
+						<uni-icons custom-prefix="iconfont" type="icon-pengyouquan" size="40"></uni-icons>
 						<text>朋友圈</text>
 					</view>
 					<view @click.stop="copyCurrentUrl" class="share-item">
