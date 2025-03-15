@@ -192,9 +192,12 @@
 			</view>
 		</view>
 		<!-- 评论输入框 -->
-		<view class="comment-tool">
-			<textarea :placeholder="placeholder" :focus="focus" fixed="true" cursor-spacing="10"
-				v-model="content" auto-height="true" placeholder-class="txt-placeholder"></textarea>
+		<view class="comment-tool" :style="{ bottom: keyboardHeight + 'px' }">
+			<textarea fixed :placeholder="placeholder"   cursor-spacing="10"
+				:adjust-position="false"
+				auto-height="true"
+				v-model="content"
+				@keyboardheightchange="changeKeyboard"></textarea>
 			<u-button type="primary" @click="addComment" :disabled="isSubmitD">发布</u-button>
 		</view>
 	</view>
@@ -227,7 +230,8 @@ export default {
 			parentId:'',//二级评论的父id
 			expand:0,//当前展开的第几层
 			locationCicy:'',//IP归属的城市
-			userId:''// 登录用户id
+			userId:'',// 登录用户id
+			keyboardHeight:0 // 键盘高度
 		};
 	},
 	props:{
@@ -535,6 +539,10 @@ export default {
 			uni.navigateTo({
 				url: '/pages/tabbar/me/personal?userId=' + userId
 			})
+		},
+		// 获取键盘高度
+		changeKeyboard(event){
+			event.detail.height?this.keyboardHeight = event.detail.height:this.keyboardHeight=0;
 		}
 	}
 }
