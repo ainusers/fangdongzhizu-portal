@@ -355,7 +355,7 @@ export default {
 				avatar:this.$store.state.userInfo.avatar,
 				nickname:this.$store.state.userInfo.nickname,
 				beCommentId:this.beCommentUserId?this.comment_id:0,
-				create_time:'刚刚',
+				create_time:new Date(),
 				love:0,
 				parentId:this.parentId? this.parentId:0
 			}
@@ -430,6 +430,8 @@ export default {
 										return item.id != e.id 
 									})
 								}
+                // 获取动态详情 (刷新评论)
+								this.getdyDetail();
 							}
 						})
 					} else if (res.cancel) {
