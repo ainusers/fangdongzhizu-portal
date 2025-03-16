@@ -5,7 +5,7 @@
 .scroll-view-height {
 	/* 页面高度减去包含状态栏、标题、tab组件的高度 */
 	/* #ifdef APP */
-	height: calc(100vh - var(--status-bar-height));
+	height: calc(100vh - var(--status-bar-height) - 15rpx);
 	/* #endif */
 	/* #ifdef H5 */
 	height: calc(100vh - 168rpx);
