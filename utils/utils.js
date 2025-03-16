@@ -320,8 +320,8 @@ const getCurrentUrl = function() {
 		// 获取短链接
 		request.post('/zf/v1/short/url/generate',data,true).then(res=>{
 			if (res.status) {
-				// url = config.shareDomain+"/zf/v1/short/url/jump/"+res.data[0]
-				url = "localhost:31001/zf/v1/short/url/jump/"+res.data[0]
+				url = config.shareDomain+"/zf/v1/short/url/jump/"+res.data[0]
+				// url = "localhost:31001/zf/v1/short/url/jump/"+res.data[0]
 				resolve(url);
 			}
 		})
