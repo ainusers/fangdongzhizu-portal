@@ -299,23 +299,33 @@ const logout = function() {
 
 // 获取访问时的页面地址
 const getCurrentUrl = function() {
-	// http://localhost:8080/#/pages/tabbar/home/homeDetail?id=1889631499114082304&userId=1889321058324279296
-	let pages = getCurrentPages();
-	// 获取当前页面的路由地址和参数
-	let currentPage = pages[pages.length - 1];
-	let route = currentPage.route;
-	let options = currentPage.options;
-	// 组合成完整的访问地址
-	let url = route + '?';
-	
-	for (let key in options) {
-	    url += key + '=' + options[key] + '&';
-	}
-	url = url.substr(0, url.length - 1);
-	// http://ainusers.asia:31080/#/
-	url = config.shareDomain+"/#/"+url;
-	// this.shareUrl = url.substring(0,url.indexOf('&'))	
-	return url.substring(0,url.indexOf('&'))
+	return new Promise((resolve, reject) => {
+		// http://localhost:8080/#/pages/tabbar/home/homeDetail?id=1889631499114082304&userId=1889321058324279296
+		let pages = getCurrentPages();
+		// 获取当前页面的路由地址和参数
+		let currentPage = pages[pages.length - 1];
+		let route = currentPage.route;
+		let options = currentPage.options;
+		// 组合成完整的访问地址
+		let url = route + '?';
+		for (let key in options) {
+			url += key + '=' + options[key] + '&';
+		}
+		url = url.substr(0, url.length - 1);
+		// http://ainusers.asia:31080/#/
+		url = config.shareDomain+"/#/"+url;
+		let data={
+			"longUrl": url
+		}
+		// 获取短链接
+		request.post('/zf/v1/short/url/generate',data,true).then(res=>{
+			if (res.status) {
+				// url = config.shareDomain+"/zf/v1/short/url/jump/"+res.data[0]
+				url = "localhost:31001/zf/v1/short/url/jump/"+res.data[0]
+				resolve(url);
+			}
+		})
+	})
 }
 
 // APP 微信的好友、朋友圈及收藏的分享

@@ -684,28 +684,24 @@
 			this.isMap = true;
 		},
 		// uni-share 微信分享
-		appShare(provider,scene,type) {
-			this.getCurrentUrl();
+		async appShare(provider,scene,type) {
+			this.shareUrl= await getCurrentUrl();
 			appShare(provider,scene,type,this.shareUrl,this.detailData.communityName+'-'+this.detailData.roomType,this.detailData.layout +'-'+ this.detailData.money+'-'+this.detailData.payType)
 			this.closeShare();
 		},
 		// 复制链接
-		copyCurrentUrl() {
-			this.getCurrentUrl();
+		async copyCurrentUrl() {
+			this.shareUrl= await getCurrentUrl();
 			uni.setClipboardData({
-			    data: this.shareUrl,
-			    success: function () {
-			        console.log('复制成功');
-			    },
-			    fail: function (err) {
-			        console.error('复制失败', err);
-			    }
+				data: this.shareUrl,
+				success: function () {
+				  console.log('复制成功');
+				},
+				fail: function (err) {
+				  console.error('复制失败', err);
+				}
 			});
 			this.closeShare();
-		},
-    // 获取当前页面地址
-		getCurrentUrl(){
-			this.shareUrl = getCurrentUrl();
 		}
 	}
 }

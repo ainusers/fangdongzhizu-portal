@@ -341,15 +341,15 @@
 				this.showShare = false;
 			},
 			// uni-share分享
-			appShare(provider,scene,type) {
-				this.getCurrentUrl();
+			async appShare(provider,scene,type) {
+				this.shareUrl= await getCurrentUrl();
 				appShare(provider,scene,type,this.shareUrl,this.list[0].words,this.list[0].words);
 				this.forwardCount();
 				this.closeShare();
 			},
 			// 复制链接
-			copyCurrentUrl() {
-				this.getCurrentUrl();
+			async copyCurrentUrl() {
+				this.shareUrl= await getCurrentUrl();
 				uni.setClipboardData({
 				    data: this.shareUrl,
 				    success: function () {
@@ -361,10 +361,6 @@
 				});
 				this.forwardCount();
 				this.closeShare();
-			},
-			// 获取当前页面地址
-			getCurrentUrl(){
-				this.shareUrl = getCurrentUrl();
 			},
 			// 转发统计
 			forwardCount(){
