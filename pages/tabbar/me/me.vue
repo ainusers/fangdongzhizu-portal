@@ -154,7 +154,7 @@
 		      </view>
 		    </view>
 		  </view>
-		  <view class="card">
+		  <!-- <view class="card">
 		    <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/feel')">
 		      <view class="left flex-center">
 				    <u-icon name="file-text" color="#5199ff" size="50"></u-icon>
@@ -166,7 +166,7 @@
 		        <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
 		      </view>
 		    </view>
-		  </view>
+		  </view> -->
 	    <view class="card">
 	      <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/advise')">
 	        <view class="left flex-center">
