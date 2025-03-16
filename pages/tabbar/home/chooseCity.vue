@@ -152,6 +152,7 @@ export default {
         {cityName: "长沙市"},
         {cityName: "沈阳市"}
       ],
+	    chooseFlag:false
     };
   },
   onLoad() {
@@ -159,7 +160,7 @@ export default {
   },
   onUnload() {
     // 设置默认城市
-  	if(this.gpsCityName.cityName == '定位中...'){
+  	if(this.gpsCityName.cityName == '定位中...'  && !this.chooseFlag){
 		 uni.$emit('chooseCity', this.hotCityList[0])
 	  }
   },
@@ -301,6 +302,7 @@ export default {
 
     // 选择城市确定后操作
     chooseCity(item) {
+		  this.chooseFlag = true;
       uni.navigateBack({
         delta: 1,
         success() {
