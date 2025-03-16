@@ -601,7 +601,6 @@
 		transform: translateX(-50%);
 		left: 50%;
 	}
-
 	/* #endif */
 	.region_list_view {
 		height: 70%;
@@ -611,17 +610,17 @@
 	}
 
 	.region_scroll_left {
-		width: 300rpx;
+		width: 150rpx;
 		height: 100%;
 		background: #FFFFFF;
 		box-sizing: border-box;
 	}
 
 	.region_scroll_right {
-		width: 36%;
+		width: 40%;
 		height: 100%;
 		background: #F8F8F9;
-		padding-left: 30upx;
+		padding-left: 20upx;
 		box-sizing: border-box;
 	}
 
@@ -646,6 +645,9 @@
 		line-height: 100upx;
 		box-sizing: border-box;
 		font-size: 30upx;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 
 	.screen_fixed_list .region_left_active {
