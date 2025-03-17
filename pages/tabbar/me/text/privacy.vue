@@ -630,7 +630,7 @@
 			SDK用途：增强广告
 		</view>
 		<view>
-			获取的个人信息类型：设备品牌、设备型号、软件系统版本、存储信息、运营商信息、设备时区、设备语言、网络信息等基础信息，IMEIs、MEID、OAID、Androidld、IMSIs、ICCID，IP地址、MAC地址、GPS位置信息、基站信息、WIFI信息，应用安装列表，传感器信息、sim卡激活信息
+			获取的个人信息类型：设备品牌、设备型号、软件系统版本、存储信息、运营商信息、设备时区、设备语言、网络信息等基础信息，IMEIs、MEID、OAID、AndroidID、IMSIs、ICCID，IP地址、MAC地址、GPS位置信息、基站信息、WIFI信息，应用安装列表，传感器信息、sim卡激活信息
 		</view>
 		<view>
 			调用的设备权限：android.permission.ACCESS_NETWORK_STATE
@@ -639,6 +639,11 @@
 							android.permission.ACCESS_WIFI_STATE
 							android.permission.REQUEST_INSTALL_PACKAGES
 							android.permission.VIBRATE
+							android.permission.SET_WALLPAPER
+							android.permission.READ_EXTERNAL_STORAGE
+							android.permission.WRITE_EXTERNAL_STORAGE
+							android.permission.ACCESS_COARSE_LOCATION
+							android.permission.BLUETOOTH
 		</view>
 		<view>
 			信息用途：广告投放、广告归因、反作弊、安全
