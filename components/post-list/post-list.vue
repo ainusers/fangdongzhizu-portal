@@ -88,7 +88,7 @@
 						<!-- 分享 -->
 						<view class="p-item">
 							<view v-if="!isDetail" @click.stop="toDetail(item,index,'zhuanfa')">
-								<u-icon name="zhuanfa"></u-icon>
+								<u-icon name="zhuanfa" size="33"></u-icon>
 								<text class="count">{{ item.forward > 0 ? item.forward : '' }}</text>
 							</view>
 							<view v-else @click.stop="showShares">
@@ -99,13 +99,13 @@
 						<!-- 浏览 -->
 						<view class="p-item">
 							<view>
-								<u-icon name="eye" size="38"></u-icon>
+								<u-icon name="eye" size="40"></u-icon>
 								<text class="count">{{ item.look > 0 ? item.look : '' }}</text>
 							</view>
 						</view>
 						<!-- 评论 -->
 						<view class="p-item margin50">
-							<u-icon name="chat" size="38"></u-icon>
+							<u-icon name="chat" size="40"></u-icon>
 							<text class="count">{{ item.comment > 0 ? item.comment : '' }}</text>
 						</view>
 						<!-- 点赞和取消点赞 -->

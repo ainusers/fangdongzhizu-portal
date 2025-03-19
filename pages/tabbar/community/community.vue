@@ -42,7 +42,7 @@
 		height: 80rpx;
 		line-height: 72rpx;
 	    margin: 6rpx 10rpx 0rpx 10rpx;
-		border-radius: 20rpx;
+		border-radius: 10rpx;
 		border: #eee 2px solid; 
 		display: flex;
 		.left{
@@ -90,7 +90,7 @@
 		<!-- #endif -->
 		<!-- 轮播图 -->
 		<div style="background: #f7f7f7;">
-			<u-swiper :list="swiperList" radius="20rpx" height="350" mode="rect" @click="navigateToPage"></u-swiper>
+			<u-swiper :list="swiperList" radius="20rpx" height="250" mode="rect" @click="navigateToPage"></u-swiper>
 		</div>
 
 		<!-- 公告 -->
