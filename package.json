@@ -3,10 +3,10 @@
     "name": "房东直租",
     "description": "面对面交易，拒绝中间商",
     "keywords": [
-        "房东",
-        "直租",
-        "在线",
-        "聊天"
+        "房东直租",
+        "社区",
+        "租房",
+        "动态"
     ],
     "dependencies": {
         "uni-simple-router": "^1.5.5"
