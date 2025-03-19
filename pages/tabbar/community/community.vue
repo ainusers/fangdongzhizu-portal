@@ -4,7 +4,7 @@
 		height:100vh;
 	}
 	.pyquan{
-		height:calc(100vh - var(--status-bar-height) - 350rpx - 80rpx)
+		height:calc(100vh - var(--status-bar-height) - 330rpx)
 	}
 	.empty{
 		height: calc(var(--status-bar-height));
