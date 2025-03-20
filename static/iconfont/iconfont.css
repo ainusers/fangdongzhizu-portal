@@ -11,6 +11,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-zhaoxiangji:before {
+  content: "\e663";
+}
+
 .icon-weixinhaoyou:before {
   content: "\e613";
 }
