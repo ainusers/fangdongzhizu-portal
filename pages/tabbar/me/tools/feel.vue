@@ -29,7 +29,9 @@
 		                        </view>
 		                    </block>
 		                    <view class="uni-uploader__input-box" v-if="uploadType === 'image' ? imageList.length < 9 : imageList <= 1">
-		                        <view class="uni-uploader__input" @tap="chooseImage"></view>
+								<view class="choose-image" @tap="chooseImage">
+									<uni-icons custom-prefix="iconfont" type="icon-zhaoxiangji" size="30"></uni-icons>
+								</view>
 		                    </view>
 		                </view>
 		            </view>
@@ -277,20 +279,17 @@
 	}
 	.uni-uploader__input-box {
 	    position: relative;
-	    margin: 10upx;
-	    width: 208upx;
-	    height: 208upx;
-	    border: 1upx solid #D9D9D9;
-	}
-	.uni-uploader__input-box:before,
-	.uni-uploader__input-box:after {
-	    content: " ";
-	    position: absolute;
-	    top: 50%;
-	    left: 50%;
-	    -webkit-transform: translate(-50%, -50%);
-	    transform: translate(-50%, -50%);
-	    background-color: #D9D9D9;
+	    width: 160upx;
+	    height: 160upx;
+	    border-radius: 10px;
+	    border: 2upx solid #D9D9D9;
+		.choose-image{
+			top: 50%;
+			left: 50%;
+			position: absolute;
+			-webkit-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+		}
 	}
 	.uni-uploader__input-box:before {
 	    width: 4upx;
@@ -335,7 +334,7 @@
 	    height: 100px;
 	}
 	.cell-pd {
-	    padding: 12upx 30upx;
+    padding: 10upx 15upx;
 	}
 	.uni-list::before {
 	    height: 0;

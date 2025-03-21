@@ -98,46 +98,44 @@
 
 	.uni-uploader__input-box {
 		position: relative;
-		margin: 4px 31upx 4px 0;
-		width: 200upx;
-		height: 200upx;
+		margin: 4px;
+		width: 99px;
+		height: 99px;
 		border: 1px solid #D9D9D9;
-		margin-bottom: 20upx;
 	}
-
-	.uni-uploader__input-box:before,
-	.uni-uploader__input-box:after {
-		content: " ";
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		-webkit-transform: translate(-50%, -50%);
-		transform: translate(-50%, -50%);
-		background-color: #D9D9D9;
+	
+	.uni-uploader__input-box {
+		position: relative;
+		width: 160upx;
+		height: 160upx;
+		border-radius: 10px;
+		border: 2upx solid #D9D9D9;
+		.choose-image{
+			top: 50%;
+			left: 50%;
+			position: absolute;
+			-webkit-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+		}
 	}
-
+	
 	.uni-uploader__input-box:before {
 		width: 4upx;
 		height: 79upx;
 	}
-
+	
 	.uni-uploader__input-box:after {
 		width: 79upx;
 		height: 4upx;
 	}
-
+	
 	.uni-uploader__input-box:active {
 		border-color: #999999;
 	}
-
+	
 	.uni-uploader__input-box:active:before,
 	.uni-uploader__input-box:active:after {
 		background-color: #999999;
-	}
-
-	.uni-uploader-info {
-		position: relative;
-		right: 0
 	}
 
 	.uni-uploader__input {
@@ -148,6 +146,11 @@
 		width: 100%;
 		height: 100%;
 		opacity: 0;
+	}
+
+	.uni-uploader-info {
+		position: relative;
+		right: 0
 	}
 
 	.uni-uploader__file {
@@ -350,9 +353,10 @@
 								<view class="uni-uploader">
 									<view class="uni-uploader-body">
 										<view class="uni-uploader__files">
-											<view class="uni-uploader__input-box"
-												v-if="houseModel.naturalImageList.length < 9">
-												<view class="uni-uploader__input" @tap="chooseImage('natural')"></view>
+											<view class="uni-uploader__input-box" v-if="houseModel.naturalImageList.length < 9">
+												<view class="choose-image" @tap="chooseImage('natural')">
+													<uni-icons custom-prefix="iconfont" type="icon-zhaoxiangji" size="30"></uni-icons>
+												</view>
 											</view>
 											<block v-for="(image,index) in houseModel.naturalImageList" :key="index">
 												<view class="uni-uploader__file" style="position: relative;">
@@ -532,7 +536,9 @@
 										<view class="uni-uploader__files">
 											<view class="uni-uploader__input-box"
 												v-if="houseModel.houseImageList.length < 9">
-												<view class="uni-uploader__input" @tap="chooseImage('house')"></view>
+												<view class="choose-image" @tap="chooseImage('house')">
+													<uni-icons custom-prefix="iconfont" type="icon-zhaoxiangji" size="30"></uni-icons>
+												</view>
 											</view>
 											<block v-for="(image,index) in houseModel.houseImageList" :key="index">
 												<view class="uni-uploader__file" style="position: relative;">
