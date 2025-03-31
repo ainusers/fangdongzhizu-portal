@@ -411,7 +411,7 @@ export default {
         },
         // 查看放大图片
         previewImage: function (e) {
-            var current = e.target.dataset.src
+            const current = e.target.dataset.src
             uni.previewImage({
                 current: current,
                 urls: this.imageList
