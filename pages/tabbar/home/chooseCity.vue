@@ -167,15 +167,16 @@ export default {
   methods: {
     // 选择地区回调
     regionConfirm(e) {
-      let that = this;
+	  this.chooseFlag = true;
       let province = e.province.label
       let city = e.city.label
       let area = e.area.label
       this.position.city = city == '市辖区' ? province : city
+	  city = city == '市辖区' ? province : city
       uni.navigateBack({
         delta: 1,
         success() {
-          uni.$emit('chooseCity', {cityName: that.position.city})
+          uni.$emit('chooseCity', {cityName: city})
         }
       });
     },
@@ -272,6 +273,10 @@ export default {
         isHighAccuracy: true,
         geocode: true,
         success: function (res) {
+          if(!res.address.city) {
+            uni.showToast({title: '请打开手机GPS定位功能后点击重新定位', duration: 3000, icon: 'none'});
+            return
+          }
           that.gpsCityName.cityName = res.address.city
           //只有点击重新定位的时候出来
           if (status) {
@@ -302,13 +307,22 @@ export default {
 
     // 选择城市确定后操作
     chooseCity(item) {
-		  this.chooseFlag = true;
-      uni.navigateBack({
-        delta: 1,
-        success() {
-          uni.$emit('chooseCity', {cityName: item.cityName});
-        }
-      });
+		this.gpsCityName.cityName = item.cityName;
+		this.chooseFlag = true;
+		if(this.gpsCityName.cityName == '定位中...' ){
+		  	uni.showToast({
+		  	  title: "请开启GPS定位或手动选择城市",
+		  	  icon: 'none',
+		  	  duration: 2000
+		  	})
+			return;
+		}
+		uni.navigateBack({
+		  delta: 1,
+		  success() {
+		    uni.$emit('chooseCity', {cityName: item.cityName});
+		  }
+		});
     }
   }
 }
