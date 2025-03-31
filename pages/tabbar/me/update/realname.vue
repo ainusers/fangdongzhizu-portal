@@ -12,7 +12,11 @@
 										</view>
 									</block>
 									<view class="uni-uploader__input-box" v-if="!form.straightUrl[0]">
-										<view class="uni-uploader__input" @tap="chooseImage('straight')">请上传人像面</view>
+										<!-- 请上传人像面 -->
+										<view class="uni-uploader__input" @tap="chooseImage('straight')">
+											<!-- mode="aspectFill" -->
+											<image class="pictureClass" src="../../../../static/zm.png" ></image>
+										</view>
 									</view>
 								</view>
 							</view>
@@ -30,7 +34,10 @@
 										</view>
 									</block>
 									<view class="uni-uploader__input-box" v-if="!form.reverseUrl[0]">
-										<view class="uni-uploader__input" @tap="chooseImage('reverse')">请上传国徽面</view>
+										<!-- 请上传国徽面 -->
+										<view class="uni-uploader__input" @tap="chooseImage('reverse')">
+											<image class="pictureClass" src="../../../../static/fm.png" ></image>
+										</view>
 									</view>
 								</view>
 							</view>
@@ -191,32 +198,8 @@
 		width: 100%;
 		height: 350upx;
 		border: 2upx solid #D9D9D9;
+		border-radius: 20rpx;
 	}
-	// .uni-uploader__input-box:before,
-	// .uni-uploader__input-box:after {
-	// 	content: " ";
-	// 	position: absolute;
-	// 	top: 50%;
-	// 	left: 50%;
-	// 	-webkit-transform: translate(-50%, -50%);
-	// 	transform: translate(-50%, -50%);
-	// 	background-color: #D9D9D9;
-	// }
-	// .uni-uploader__input-box:before {
-	// 	width: 4upx;
-	// 	height: 79upx;
-	// }
-	// .uni-uploader__input-box:after {
-	// 	width: 79upx;
-	// 	height: 4upx;
-	// }
-	// .uni-uploader__input-box:active {
-	// 	border-color: #999999;
-	// }
-	// .uni-uploader__input-box:active:before,
-	// .uni-uploader__input-box:active:after {
-	// 	background-color: #999999;
-	// }
 	.uni-uploader__input {
 		position: absolute;
 		z-index: 1;
