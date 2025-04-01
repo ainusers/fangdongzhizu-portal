@@ -286,7 +286,7 @@
 		border-color: #7db5f0;
 		color: #5199ff;
 	}
-	/deep/.u-drawer-content{
+	::v-deep .u-drawer-content{
 		width:100% !important;
 		margin: 0 !important;
 		border-radius: 10px 10px 0 0 !important;

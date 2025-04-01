@@ -151,10 +151,10 @@
 	  border-radius: 15px;
 	  border-bottom: 10px solid #f2f2f2;
   }
-  /deep/.u-mode-center-box{
+  ::v-deep .u-mode-center-box{
 	  z-index: 9999 !important;
   }
-  /deep/.pei_tao_she_shi{
+  ::v-deep .pei_tao_she_shi{
 	  position: relative;
 	  z-index: 1 !important;
   }
@@ -264,7 +264,7 @@
 		  .target{
 			  color:#5199ff;
 		  }
-		  /deep/.uicon-heart{
+		  ::v-deep .uicon-heart{
 		  	color:#5199ff;
 		  }
 	  }

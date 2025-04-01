@@ -234,7 +234,7 @@
 		flex-wrap: wrap;
 		padding: 14px 10px 0px 10px;
 	}
-	/deep/.u-radio__label{
+	::v-deep .u-radio__label{
 		margin-bottom: 10upx;
 		font-size: 25upx;
 		color: #333;

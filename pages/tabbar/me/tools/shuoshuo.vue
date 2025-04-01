@@ -1,5 +1,5 @@
 <style scope lang="scss">
-/deep/.u-scroll-box{
+::v-deep .u-scroll-box{
 	display: flex;
 }
 .scroll-view-height {

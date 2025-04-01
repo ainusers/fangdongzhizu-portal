@@ -90,7 +90,7 @@
 				image {
 					display: initial;
 				}
-				/deep/.avatar{
+				::v-deep .avatar{
 					width: 105rpx;
 					height: 105rpx;
 				}
@@ -98,7 +98,7 @@
 	.report_con{
 		  width:100%;
 		  padding: 15upx 60upx 0upx 80upx;
-		  /deep/.u-radio{
+		  ::v-deep .u-radio{
 			  width: 50%;
 			  margin-bottom: 30upx;
 		  }

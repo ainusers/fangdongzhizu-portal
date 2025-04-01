@@ -26,12 +26,12 @@
 			width: 100%;
 			display: flex;
 			justify-content: center;
-			/deep/.u-scroll-box {
+			::v-deep .u-scroll-box {
 				background: #ffffff;
 			}
 		}
 	}
-	/deep/.screen_view {
+	::v-deep .screen_view {
 		background: #ffffff;
 	}
 	.city {

@@ -77,7 +77,7 @@
 		image {
 			display: initial;
 		}
-		/deep/.avatar{
+		::v-deep.avatar{
 			width: 75px;
 			height: 75px;
 		}
@@ -134,7 +134,7 @@
 		height: 40upx;
 		margin-left: -60upx;
 		}
-	/deep/.u-avatar__img{
+	::v-deep .u-avatar__img{
 		overflow: visible;
 	}
 </style>

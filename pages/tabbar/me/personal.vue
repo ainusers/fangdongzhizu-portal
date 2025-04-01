@@ -221,7 +221,7 @@
 						display: initial;
 					}
 
-					/deep/.avatar {
+					::v-deep .avatar {
 						width: 140rpx;
 						height: 140rpx;
 					}

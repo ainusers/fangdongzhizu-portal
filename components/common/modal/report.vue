@@ -123,7 +123,7 @@
 	.report_con{
 		  width:100%;
 		  padding: 35upx 60upx;
-		  /deep/.u-radio{
+		  ::v-deep .u-radio{
 			  width: 50%;
 			  margin-bottom: 30upx;
 		  }

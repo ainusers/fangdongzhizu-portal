@@ -76,7 +76,7 @@
 			}
 		}
 	}
-	/deep/.renzheng_icon{
+	::v-deep .renzheng_icon{
 		width:120upx;
 		height: 40upx;
 		bottom: 90rpx;

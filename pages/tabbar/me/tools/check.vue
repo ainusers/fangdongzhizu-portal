@@ -1,5 +1,5 @@
 <style scope lang="scss">
-/deep/.u-scroll-box{
+::v-deep .u-scroll-box{
 	display: flex;
 }
 .scroll-view-height {
@@ -20,7 +20,7 @@
 .report_con{
 	width:100%;
 	padding: 15rpx 0rpx 0upx 20rpx;
-	/deep/.u-radio{
+	::v-deep .u-radio{
 		width: 50%;
 		margin-bottom: 10upx;				
 	}

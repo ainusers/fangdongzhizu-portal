@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-	/deep/.u-checkbox__icon-wrap--disabled--checked {
+	::v-deep .u-checkbox__icon-wrap--disabled--checked {
 		background-color: #5199ff;
 		border-color: #5199ff;
 	}
@@ -9,7 +9,7 @@
 		display: inline;
 	}
 
-	/deep/.u-drawer-content {
+	::v-deep .u-drawer-content {
 		padding: 30upx;
 	}
 
@@ -305,7 +305,7 @@
 		}
 	}
 
-	/deep/.u-form-item--left__content--required {
+	::v-deep .u-form-item--left__content--required {
 		color: #fff;
 		padding: 5px 0;
 	}
