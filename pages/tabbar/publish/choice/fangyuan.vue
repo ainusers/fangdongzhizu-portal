@@ -1,7 +1,7 @@
 <style lang="scss" scoped>
 	::v-deep .u-checkbox__icon-wrap--disabled--checked {
-		background-color: #5199ff;
-		border-color: #5199ff;
+		background-color: #0076f6;
+		border-color: #0076f6;
 	}
 
 	.required {
@@ -65,7 +65,7 @@
 		color: #101d36;
 		padding-left: 26upx;
 		box-sizing: border-box;
-		border-left: 6rpx solid #5199ff;
+		border-left: 6rpx solid #0076f6;
 		margin: 10upx 0upx;
 	}
 
@@ -177,13 +177,13 @@
 
 		.feedback-next {
 			width: 50%;
-			color: #5199ff;
+			color: #0076f6;
 			border-radius: 15upx;
 		}
 
 		.feedback-pre {
 			width: 35%;
-			color: #5199ff;
+			color: #0076f6;
 			border-radius: 15upx;
 			&:after {
 				border: none
@@ -244,7 +244,7 @@
 	}
 
 	.more_item_active {
-		background: #5199ff;
+		background: #0076f6;
 		color: #fff;
 	}
 

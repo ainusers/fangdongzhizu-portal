@@ -200,9 +200,9 @@
 			width:126upx;
 			align-items: center;
 			padding: 0upx 30upx;
-			border:1px solid #5199ff;
+			border:1px solid #0076f6;
 			margin: 0upx -12upx 16upx 22upx;
-			color: #5199ff;
+			color: #0076f6;
 			border-radius: 6px;
 		}
 	}

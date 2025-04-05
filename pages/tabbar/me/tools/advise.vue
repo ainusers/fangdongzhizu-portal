@@ -50,7 +50,7 @@
 			<input name="contact" v-model="contact" class="concactContent" placeholder="请输入任一联系方式" placeholder-style="font-size:14px" bindinput="userNameInput" />
 		</view>
 		<view class="footer">
-			<button style="color: #5199ff;border-color: #5199ff;" @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 3000)">提交</button>
+			<button style="color: #0076f6;border-color: #0076f6;" @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 3000)">提交</button>
 		</view>
 		<view class="reward_text">
 			<view style="text-align: center;">

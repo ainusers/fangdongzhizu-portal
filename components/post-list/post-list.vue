@@ -15,7 +15,7 @@
 								<text class="nickname" style="flex:1">{{ item.nickname?item.nickname.substring(0, 12):'' }}</text>
 								<view style="flex:1"></view>
 								<block style="flex:1">
-									<text style="font-size: 14px;color:#5199ff;padding-right: 20rpx;">{{ item.score }}</text>
+									<text style="font-size: 14px;color:#0076f6;padding-right: 20rpx;">{{ item.score }}</text>
 									<view>
 										<view style="font-size: 18px;" @click.stop.prevent="goReport(index,$event)"
 											  v-if="item.userid==$store.state.userInfo.id">

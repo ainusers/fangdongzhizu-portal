@@ -8,7 +8,7 @@
 	}
 	.empty{
 		height: calc(var(--status-bar-height));
-		background-color: #5199ff;
+		background-color: #0076f6;
 	}
 	.community {
 		display: flex;
@@ -51,7 +51,7 @@
 			align-items: center;
 			padding-left: 10rpx;
 			.text{
-				color: #5199ff;
+				color: #0076f6;
 				font-weight: 600;
 				font-size: 28rpx;
 			}
@@ -62,7 +62,7 @@
 				height: 100%;
 				&-item{
 					.noticetittle{
-						color: #5199ff;
+						color: #0076f6;
 						width: 100%;
 						font-size: 28rpx;
 						overflow: hidden;
@@ -96,7 +96,7 @@
 		<!-- 公告 -->
 		<view class="notice">
 			<view class="left">
-				<uni-icons type="sound-filled" size="20" color="#5199ff"></uni-icons>
+				<uni-icons type="sound-filled" size="20" color="#0076f6"></uni-icons>
 				<text class="text">公告</text>
 			</view>
 			<view class="center">

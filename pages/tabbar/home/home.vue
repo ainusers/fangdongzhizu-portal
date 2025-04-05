@@ -12,7 +12,7 @@
 	}
 	.empty{
 		height: calc(var(--status-bar-height));
-		background-color: #5199ff;
+		background-color: #0076f6;
 	}
 	.home_top {
 		position: relative;

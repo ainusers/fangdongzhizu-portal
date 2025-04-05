@@ -164,7 +164,7 @@
 	 color:#101d36;
 	 padding-left: 13upx;
 	 box-sizing: border-box;
-	 border-left: 6rpx solid #5199ff;
+	 border-left: 6rpx solid #0076f6;
   }
   .near_map_item {
     height: 25upx;
@@ -262,10 +262,10 @@
 	  }
 	  .report_active,.collect_active{
 		  .target{
-			  color:#5199ff;
+			  color:#0076f6;
 		  }
 		  ::v-deep .uicon-heart{
-		  	color:#5199ff;
+		  	color:#0076f6;
 		  }
 	  }
 	  .collect{
@@ -279,7 +279,7 @@
 	  .contact{
 		  width: 40%;
 		  margin: 0px 8px 8px 0px;
-		  background: #5199ff;
+		  background: #0076f6;
 		  border-radius: 20upx;
 		  .u-btn--default{
 			  background: none;
@@ -293,6 +293,7 @@
 	  .target{
 		  font-size: 14px;
 		  margin-left: 5upx;
+		  margin-top: 8upx;
 	  }
   }
 	.pei_tao_she_shi{

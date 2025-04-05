@@ -181,7 +181,7 @@
 		position: relative;
 
 		.background {
-			background-color: #5199ff;
+			background-color: #0076f6;
 			border-bottom-left-radius: 22px;
 			border-bottom-right-radius: 22px;
 			position: absolute;

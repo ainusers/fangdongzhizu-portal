@@ -27,7 +27,7 @@
 				:loading-text="loadingText" 
 				:loadmore-text="loadmoreText" 
 				:nomore-text="nomoreText"
-				icon-color="#5199ff"
+				icon-color="#0076f6"
 				color="#999"
 			/>
 			<view v-else >

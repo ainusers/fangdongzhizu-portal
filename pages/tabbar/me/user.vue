@@ -204,7 +204,7 @@
         </view>
 		<!-- 退出登录 -->
 		<view class="logout" @click="logout()">
-			<button type="primary" plain="true" class="commit" style="border-color: #5199ff;color:#5199ff;">退出登录</button>
+			<button type="primary" plain="true" class="commit" style="border-color: #0076f6;color:#0076f6;">退出登录</button>
 		</view>
 		<!-- 注销用户 - 温馨提示 -->
 		<u-modal v-model="show" title="请选择注销用户原因" :content="content" confirm-text="确认注销" :show-cancel-button="true" cancel-text="再想想" @confirm="confirm">

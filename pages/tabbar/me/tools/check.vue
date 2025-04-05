@@ -72,7 +72,7 @@
 		
 		<!-- 编辑按钮 (当待审核、已发布、已下架时显示)-->
 		<view class="operate" @click="roomOperate()" v-if="(current==0 || current==1 || current==2) && houseList.length>0">
-			<uni-icons custom-prefix="iconfont" type="icon-bianji" color="#5199ff" size="30"></uni-icons>
+			<uni-icons custom-prefix="iconfont" type="icon-bianji" color="#0076f6" size="30"></uni-icons>
 		</view>
 		
 		<!-- 下架 - 温馨提示 -->

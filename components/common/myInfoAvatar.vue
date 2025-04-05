@@ -49,7 +49,7 @@
 
 <style lang="scss" scoped>
 	.shadow_top{
-		background-color: #5199ff;
+		background-color: #0076f6;
 		border-bottom-left-radius: 22px;
 		border-bottom-right-radius: 22px;
 		width: 100%;

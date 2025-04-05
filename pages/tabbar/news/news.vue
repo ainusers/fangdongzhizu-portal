@@ -3,7 +3,7 @@
 		<view class="title">
 			<view class="item zan" @click="goLike()">
 				<view class="top">
-					<uni-icons type="heart" size="35" color="#5199ff"></uni-icons>
+					<uni-icons type="heart" size="35" color="#0076f6"></uni-icons>
 					<view class="down">点赞</view>
 					<u-badge numberType="overflow" type="error" :overflow-count='99' :count="likeCnt"
 						:offset="[10,chgPosition(likeCnt,zany)]" absolute></u-badge>
@@ -12,7 +12,7 @@
 
 			<view class="item guanzhu" @click="goBookMark()">
 				<view class="top">
-					<uni-icons type="star" size="40" color="#5199ff"></uni-icons>
+					<uni-icons type="star" size="40" color="#0076f6"></uni-icons>
 					<u-badge numberType="overflow" type="error" :count="bookMarkCnt"
 						:offset="[10,chgPosition(bookMarkCnt,shoucangy)]" :overflow-count='99'></u-badge>
 				</view>
@@ -21,7 +21,7 @@
 
 			<view class="item pinglun" @click="goComment()">
 				<view class="top">
-					<uni-icons type="chat" size="40" color="#5199ff"></uni-icons>
+					<uni-icons type="chat" size="40" color="#0076f6"></uni-icons>
 					<u-badge numberType="overflow" type="error" :overflow-count='99' :count="commentCnt"
 						:offset="[0,chgPosition(commentCnt,pingluny)] " absolute></u-badge>
 				</view>
