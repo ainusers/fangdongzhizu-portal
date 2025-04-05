@@ -185,9 +185,6 @@
 				</view>
 			</block>
 			<view v-if="commentList.length < 1" >
-				<!-- 信息流广告 -->
-				<ad adpid="1804384865"></ad>
-				
 				<u-empty text="暂无评论" mode="message"></u-empty>
 			</view>
 		</view>
