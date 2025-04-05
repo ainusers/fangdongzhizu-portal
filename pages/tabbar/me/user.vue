@@ -21,7 +21,7 @@
         border-bottom: none;
     }
     .item{
-        height: 110upx;
+        height: 100upx;
         border-bottom: 1upx solid #ebebeb;
         box-sizing: border-box;
         justify-content: space-between;

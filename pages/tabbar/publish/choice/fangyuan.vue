@@ -15,7 +15,7 @@
 
 	//发布类型
 	.Hometype_con {
-		padding: 20upx 0upx;
+		padding: 10upx 0upx;
 		display: flex;
 		justify-content: space-between;
 		color: #333;
@@ -26,7 +26,7 @@
 			align-items: center;
 			justify-content: center;
 			width: 100%;
-			height: 135rpx;
+			height: 120rpx;
 			background: url('http://43.143.148.105:9090/remote/fangdongzhizu/default.png')no-repeat;
 			background-size: 100% 135rpx;
 			color: #333;
@@ -176,16 +176,15 @@
 		justify-content: space-around;
 
 		.feedback-next {
-			width: 30%;
-			background: #5199ff;
-			color: #fff;
-			border-radius: 50upx;
+			width: 50%;
+			color: #5199ff;
+			border-radius: 15upx;
 		}
 
 		.feedback-pre {
-			background: none;
+			width: 35%;
 			color: #5199ff;
-
+			border-radius: 15upx;
 			&:after {
 				border: none
 			}
@@ -226,7 +225,7 @@
 
 	.page {
 		width: 100%;
-		padding: 24rpx;
+		padding: 0px 20rpx 0px 20rpx;
 		overflow: hidden;
 		.main{
 			overflow-y: scroll;
@@ -624,10 +623,10 @@
 			</u-form>
 		</view>
 		<view class="footer">
-			<button type="default" class="feedback-pre" @click="preStep" v-if="stepNum>1||setpAll">上一步</button>
-			<button type="default" class="feedback-next" @click="nextStep" v-if="stepNum==1 || stepNum<3 ">下一步</button>
-			<button type="default" class="feedback-pre" @click="nextStep" v-if="stepNum==3&!setpAll">预览</button>
-			<button type="default" class="feedback-next" @click="publish" v-if="setpAll" @tap="$u.throttle(publish, 2000)">发布</button>
+			<button type="primary" class="feedback-pre" plain="true" @click="preStep" v-if="stepNum>1||setpAll">上一步</button>
+			<button type="primary" class="feedback-next" plain="true" @click="nextStep" v-if="stepNum==1 || stepNum<3 ">下一步</button>
+			<button type="primary" class="feedback-next" plain="true" @click="nextStep" v-if="stepNum==3&!setpAll">预览</button>
+			<button type="primary" class="feedback-next" plain="true" @click="publish" v-if="setpAll" @tap="$u.throttle(publish, 2000)">发布</button>
 		</view>
 		
 		<!-- 温馨提示 -->

@@ -18,7 +18,7 @@
 	.pei_title{
 		font-size: 24upx;
 		color: #999;
-		margin-bottom: 30upx;
+		margin-bottom: 20upx;
 	}
 	.pei_text{
 		font-size: 24upx;

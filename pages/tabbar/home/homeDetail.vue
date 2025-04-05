@@ -149,7 +149,7 @@
 	  background-color: #ffffff;
 	  padding: 10px;
 	  border-radius: 15px;
-	  border-bottom: 10px solid #f2f2f2;
+	  border-bottom: 5px solid #f2f2f2;
   }
   ::v-deep .u-mode-center-box{
 	  z-index: 9999 !important;
@@ -236,7 +236,7 @@
 		  .value{
 			  font-size: 30upx;
 			  color: #333;
-			  margin-bottom: 28upx;
+			  margin-bottom: 16upx;
 		  }
 		  .key{
 			  font-size: 24upx;
@@ -249,7 +249,7 @@
   			  display: inline-block;
   			  color: #333;
   			  background: #eee;
-  			  padding: 10upx 30upx;
+  			  padding: 10upx 20upx;
 			  margin-right: 20upx;
   		  }
   }

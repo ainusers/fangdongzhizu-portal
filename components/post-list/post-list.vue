@@ -464,10 +464,13 @@
 				font-weight: 600;
 				color: #616161;
 			}
+			.time{
+				font-size: 26rpx;
+			}
 			.city{
-					font-size: 24rpx;
-					font-weight: normal;
-					margin-left: 20rpx;
+				font-size: 26rpx;
+				font-weight: normal;
+				margin-left: 20rpx;
 			}
 			.official {
 				display: inline-block;
