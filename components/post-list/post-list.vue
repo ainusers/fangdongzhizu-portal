@@ -461,7 +461,6 @@
 			margin-top: -16rpx;
 			.nickname {
 				font-size: 32rpx;
-				font-weight: 600;
 				color: #616161;
 			}
 			.time{

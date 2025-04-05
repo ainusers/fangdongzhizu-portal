@@ -18,7 +18,8 @@
             "Camera" : {},
             "VideoPlayer" : {},
             "Payment" : {},
-            "Share" : {}
+            "Share" : {},
+            "Push" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -88,6 +89,11 @@
                     "baidu" : {
                         "appkey_ios" : "XUS7rr7tfF8FNcrNqroqkczFvpWtLpcY",
                         "appkey_android" : "XUS7rr7tfF8FNcrNqroqkczFvpWtLpcY"
+                    },
+                    "amap" : {
+                        "name" : "amaplJlu1QRp",
+                        "appkey_ios" : "c48afbdf469abda4ae4515e52d4e6ee4",
+                        "appkey_android" : "66f0509eb5911993954e19562352fa22"
                     }
                 },
                 "payment" : {
@@ -105,6 +111,9 @@
                         "appid" : "wx2c28b021e15abad4",
                         "UniversalLinks" : "https://static-mp-e39ae62b-d074-4108-bd17-f92ad835a8da.next.bspapp.com/uni-universallinks/__UNI__190F3AB/"
                     }
+                },
+                "push" : {
+                    "unipush" : {}
                 }
             },
             "splashscreen" : {
