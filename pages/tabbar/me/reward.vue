@@ -84,6 +84,9 @@
 		
 		<!-- 支付成功提示框 -->
 		<u-modal v-model="show" :content="content" title="温馨提示"></u-modal>
+		
+		<!-- 信息流广告 -->
+		<ad adpid="1804384865"></ad>
 	</view>
 </template>
 
