@@ -86,14 +86,10 @@
                     "sigmob" : {}
                 },
                 "maps" : {
-                    "baidu" : {
-                        "appkey_ios" : "XUS7rr7tfF8FNcrNqroqkczFvpWtLpcY",
-                        "appkey_android" : "XUS7rr7tfF8FNcrNqroqkczFvpWtLpcY"
-                    },
                     "amap" : {
                         "name" : "amaplJlu1QRp",
-                        "appkey_ios" : "c48afbdf469abda4ae4515e52d4e6ee4",
-                        "appkey_android" : "66f0509eb5911993954e19562352fa22"
+                        "appkey_ios" : "4ecb1814e7ff741884ca25e5a6f455ba",
+                        "appkey_android" : "4ecb1814e7ff741884ca25e5a6f455ba"
                     }
                 },
                 "payment" : {
