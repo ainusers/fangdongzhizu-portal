@@ -129,12 +129,33 @@ module.exports=()=>({
         {
             "path": "pages/tabbar/me/me",
             "style": {
+                "navigationBarTitleText": "我的",
 				"navigationBarTextStyle": "white",
 				"navigationBarBackgroundColor": "#0076f6",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
             }
         },
+		{
+		    "path": "pages/tabbar/me/list/list",
+		    "style": {
+				"navigationBarTitleText": "中介排行榜",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#0076f6",
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle":"light"
+		    }
+		},
+		{
+		    "path": "pages/tabbar/me/list/list-detail",
+		    "style": {
+				"navigationBarTitleText": "租房体验",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#0076f6",
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle":"light"
+		    }
+		},
         {
             "path": "pages/tabbar/me/tools/check",
             "style": {
@@ -317,9 +338,9 @@ module.exports=()=>({
             }
         },
         {
-            "path": "pages/tabbar/me/tools/feel",
+            "path": "pages/tabbar/me/list/feel",
             "style": {
-                "navigationBarTitleText": "租房心得",
+                "navigationBarTitleText": "反馈体验",
                 "navigationBarTextStyle": "white",
                 "navigationBarBackgroundColor": "#0076f6",
                 "enablePullDownRefresh": false,

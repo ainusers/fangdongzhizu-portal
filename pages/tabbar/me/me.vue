@@ -20,7 +20,7 @@
 	      height: 100rpx;
 	      .left {
 	        width: 15%;
-			padding-top: 15px;
+			padding-top: 10px;
 	        image {
 	          width: 40rpx;
 	          height: 40rpx;
