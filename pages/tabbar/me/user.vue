@@ -82,18 +82,18 @@
 	  background-color: white;
 	  position: relative;
 	  margin: 0 auto;
-	  width: 105rpx;
-	  height: 105rpx;
+	  width: 95rpx;
+	  height: 95rpx;
 	  overflow: hidden;
 	  border-radius: 50%;
 	  border: 1px solid #eee;
-				image {
-					display: initial;
-				}
-				::v-deep .avatar{
-					width: 105rpx;
-					height: 105rpx;
-				}
+		image {
+			display: initial;
+		}
+		::v-deep .avatar{
+			width: 95rpx;
+			height: 95rpx;
+		}
 	}
 	.report_con{
 		  width:100%;
@@ -121,7 +121,7 @@
                 <view class="f_r_e img_view_info">
                     <view class="img_view">
 						<view class="userImage" @click="previewAvatar(userInfo.avatar)">
-						  <u-avatar class="avatar" :src="userInfo.avatar" level-bg-color="#8072f3" size="110" img-mode="scaleToFill"></u-avatar>
+						  <u-avatar class="avatar" :src="userInfo.avatar" level-bg-color="#8072f3" size="95" img-mode="scaleToFill"></u-avatar>
 						</view>
 						<u-icon @click="chooseAvatar" class="arrow_right" name="arrow-right"></u-icon>
 					</view>
