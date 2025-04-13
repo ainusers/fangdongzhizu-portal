@@ -48,7 +48,7 @@
 		    <textarea style="font-size: 14px" placeholder="请描述房源优缺点，请不要上传需要出租的房源..." v-model="content" />
 		</view>
 		<view class="footer">
-			<button @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 3000)">提交</button>
+			<button @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 2000)">提交</button>
 		</view>
 		
 		<view class="reward_text">
