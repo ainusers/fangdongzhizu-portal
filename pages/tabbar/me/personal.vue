@@ -278,15 +278,6 @@
 		}
 	}
 
-	.renzheng_icon {
-		display: block;
-		width: 120upx;
-		height: 40upx;
-		position: relative;
-		bottom: 110rpx;
-		margin: 0 auto;
-	}
-
 	.home_nodata {
 		padding: 5px 0;
 		text-align: center;

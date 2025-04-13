@@ -45,12 +45,12 @@
 
 		<view class="bottom">
 			<view class="concact">
-				<text class="way">请留下您的联系方式 (微信/手机号)</text>
+				<text class="way">联系方式 (微信/手机号)</text>
 			</view>
 			<input name="contact" v-model="contact" class="concactContent" placeholder="请输入任一联系方式" placeholder-style="font-size:14px" bindinput="userNameInput" />
 		</view>
 		<view class="footer">
-			<button style="color: #0076f6;border-color: #0076f6;" @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 3000)">提交</button>
+			<button style="color: #0076f6;border-color: #0076f6;" @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 2000)">提交</button>
 		</view>
 		<view class="reward_text">
 			<view style="text-align: center;">

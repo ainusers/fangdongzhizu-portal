@@ -11,6 +11,38 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-xiaoxi:before {
+  content: "\e602";
+}
+
+.icon-xiajia-20250413:before {
+  content: "\e619";
+}
+
+.icon-nv:before {
+  content: "\e8b4";
+}
+
+.icon-nan:before {
+  content: "\e8b3";
+}
+
+.icon-shoucang-20250413:before {
+  content: "\e629";
+}
+
+.icon-weishiming:before {
+  content: "\e661";
+}
+
+.icon-yishiming:before {
+  content: "\e660";
+}
+
+.icon-dianzan-20250412:before {
+  content: "\e60a";
+}
+
 .icon-zhaoxiangji:before {
   content: "\e663";
 }

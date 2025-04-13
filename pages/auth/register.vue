@@ -56,7 +56,7 @@
       </view>
     </view>
     <view class="btns">
-      <view class="qbtn" @click="register" @tap="$u.throttle(register, 3000)">
+      <view class="qbtn" @click="register" @tap="$u.throttle(register, 2000)">
         <text class="btn-text-color fs30">立即注册</text>
       </view>
       <view class="blue_link" :class="{'animShake':isShow}" style="display: flex;flex-direction: inherit;">

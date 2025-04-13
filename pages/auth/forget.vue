@@ -55,7 +55,7 @@
       </view>
     </view>
     <view class="btns">
-      <view class="qbtn" @click="login" @tap="$u.throttle(login, 3000)">
+      <view class="qbtn" @click="login" @tap="$u.throttle(login, 2000)">
         <text class="btn-text-color fs30">确认</text>
       </view>
       <view class="flex ptb30 mlr20 aj-center">
