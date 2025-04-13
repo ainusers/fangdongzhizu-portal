@@ -1,28 +1,30 @@
 <template>
-	<view>
-		<view class="shadow_top" :style="{height: height + 'rpx'}"></view>
-		  <view class="card" @click="goto('/pages/tabbar/me/user')" >
-		    <view class="top">
-		      <view class="userImage" @click="previewAvatar(userInfo.avatar)">
-				<u-avatar class="avatar" :src="userInfo.avatar" level-bg-color="#8072f3" size="140" img-mode="scaleToFill"></u-avatar>
-			  </view>
-			  <image mode="aspectFit" src="http://43.143.148.105:9090/remote/fangdongzhizu/renzheng.png" class="renzheng_icon" v-if="userInfo.auth==1"></image>
-			  <image mode="aspectFit" src="http://43.143.148.105:9090/remote/fangdongzhizu/weirenzheng.png" class="renzheng_icon" v-else></image>
-		    </view>
-		    <view class="bottom">
-		      <view class="left">
-		        <view class="user-text">
-					<view class="userNickName">{{ userInfo.nickname }}
-						<image mode="aspectFit" src="http://43.143.148.105:9090/remote/fangdongzhizu/boy_icon.png" class="sex_con" v-if="userInfo.sex == 1"></image>
-						<image mode="aspectFit" src="http://43.143.148.105:9090/remote/fangdongzhizu/girl_icon.png" class="sex_con" v-else></image>
-					</view>
-						<view class="option" v-if="isShow">
-						<u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
-					</view>
-		        </view>
-		        <view class="user-phone">{{ userInfo.signature }}</view>
-		      </view>
-		    </view>
+	<view class="user-info" @click="goto('/pages/tabbar/me/user')">
+		<view class="left">
+			<view class="user-image" @click="previewAvatar(userInfo.avatar)">
+				<u-avatar :src="userInfo.avatar" size="115" mode="square"></u-avatar>
+			</view>
+		</view>
+		
+		<view class="middle">
+			<view class="user-nickname">{{ userInfo.nickname }}</view>
+			<view class="user-sign">{{ userInfo.signature }}</view>
+			<view class="user-icon">
+				<view class="user-realname">
+					<uni-icons v-if="userInfo.auth == 1" custom-prefix="iconfont" type="icon-yishiming" color="#0076f6" size="20"></uni-icons>
+					<uni-icons v-else custom-prefix="iconfont" type="icon-weishiming" color="#0076f6" size="20"></uni-icons>
+				</view>
+				<view class="user-sex">
+					<uni-icons v-if="userInfo.sex == 1" custom-prefix="iconfont" type="icon-nan" color="#0076f6" size="20"></uni-icons>
+					<uni-icons v-else custom-prefix="iconfont" type="icon-nv" color="#0076f6" size="20"></uni-icons>
+				</view>
+			</view>
+		</view>
+		
+		<view class="right">
+			<view class="option" v-if="isShow">
+				<u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
+			</view>
 		</view>
 	</view>
 </template>
@@ -48,93 +50,61 @@
 </script>
 
 <style lang="scss" scoped>
-	.shadow_top{
-		background-color: #0076f6;
-		border-bottom-left-radius: 22px;
-		border-bottom-right-radius: 22px;
-		width: 100%;
+	.user-info {
+		height: 200rpx;
+		display: flex;
+		background-color: #ffffff;
+		box-shadow: 0 0 15px 1px rgba(224, 224, 224, 0.5);
+		margin: 10px 10px 0 10px;
+		border-radius: 5px;
+		padding: 10px 0;
 	}
-  .card {
-	margin: 10px 10px 0 10px;
-	position: relative;
-	bottom: 188rpx;
-	height: 250rpx;
-	background-color: #ffffff;
-	border-radius: 5px;
-	.top {
-	  height: 30%;
-	  position: relative;
-	  margin-bottom: 25px;
-	  .userImage {
-		background-color: white;
-		position: relative;
-		bottom: 30px;
-		margin: 0 auto;
-		width: 75px;
-		height: 75px;
+	.left {
+		width: 25%;
+	}
+	.user-image {
+		padding: 0 20px 0 10px;
+	}
+	.middle {
+		width: 65%;
+		display: flex;
+		flex-direction: column;
+	}
+	.user-nickname {
+		text-align: left;
+		font-size: 36rpx;
+		font-weight: 600;
+		padding-bottom: 5px;
+	}
+	.user-sign {
+		font-size: 30rpx;
+		color: #626675;
+		text-align: left;
 		overflow: hidden;
-		border-radius: 50%;
-		image {
-			display: initial;
-		}
-		::v-deep.avatar{
-			width: 75px;
-			height: 75px;
-		}
-	  }
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		width: 222px;
 	}
-	.bottom .left {
-		width: 100%;
-		height: 100%;
-		position: relative;
-		.user-text {
-		  width: 100%;
-		  font-size: 30rpx;
-		  text-align: center;
-			  .sex_con{
-				  display: inline-block;
-				  width:50rpx;
-				  height:33rpx;
-				  padding-left:0;
-			  }
-			  .userNickName {
-				  display: inline-flex;
-				  align-items: center;
-			  }
-			  image {
-				  height: 30px;
-				  width: 30px;
-				  padding-left: 5px;
-				  line-height: 200%;
-			  }
-		}
-		.user-phone {
-		  width: 300px;
-		  margin: auto;
-		  padding-top: 5px;
-		  font-size: 28rpx;
-		  text-align: center;
-		}
-	  }
-	  .right {
-		width: 20%;
-		height: 50%;
-	  }
-  }
-	.icon {
-	  float: right;
-	  padding-right: 5px;
+	.user-icon {
+		display: flex;
+		flex-direction: row;
+		padding-top: 10rpx;
 	}
-
-	.renzheng_icon{
-		position: relative;
-		bottom:80rpx;
-		left:50%;
-		width:120upx;
-		height: 40upx;
-		margin-left: -60upx;
-		}
-	::v-deep .u-avatar__img{
-		overflow: visible;
+	.user-realname-icon {
+		height: 60rpx;
+		width: 120rpx;
+	}
+	.user-sex {
+		    padding: 0 6px;
+	}
+	.user-sex-icon {
+		height: 36rpx;
+		width: 60rpx;
+	}
+	.right {
+		width: 10%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>

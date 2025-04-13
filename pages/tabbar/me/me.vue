@@ -3,14 +3,12 @@
 	.content {
 		background-color: #f7f7f7;
 		text-align: center;
-		height: calc(100vh - var(--window-bottom) - var(--window-top));
 	}
 	.list-card {
 	  background-color: #ffffff;
 	  margin: 10px 10px 0 10px;
 	  border-radius: 5px;
 	  bottom: 180rpx;
-	  position: relative;
 	  box-shadow: 0 0 15px 1px rgba(224, 224, 224, 50%);
 	  .card {
 	    border-radius: 5px;
@@ -46,15 +44,14 @@
 	.item-bottom-solid {
 	  border-bottom: 1px solid #f2f2f2;
 	}
-	.func {
+	.function {
 		display: flex;
 		height: 260upx;
 		align-items: center;
 		bottom: 180rpx;
-		position: relative;
 		background-color: #ffffff;
 		flex-wrap: wrap;
-		margin: 5px 10px 0 10px;
+		margin: 10px 10px 0 10px;
 		border-radius: 5px;
 		box-shadow: 0 0 15px 1px rgba(224, 224, 224, 50%);
 		.option {
@@ -76,19 +73,13 @@
 			}
 		}
 	}
-	::v-deep .renzheng_icon{
-		width:120upx;
-		height: 40upx;
-		bottom: 90rpx;
-		display: block;
-	}
 </style>
 <template>
 	<!-- 个人信息区域 -->
 	<view class="content">
 	  <myInfoAvatar :userInfo="userInfo" :isShow="true" :height="230" />
 	  <!-- 功能区域 -->
-	  <view class="func">
+	  <view class="function">
 	      <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=0')">
 	      	<view class="icon">
 				<uni-icons custom-prefix="iconfont" type="icon-daishenhe" color="#0076f6" size="20"></uni-icons>
@@ -103,13 +94,13 @@
 	      </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=2')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-xiajia" color="#0076f6" size="25"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-xiajia-20250413" color="#0076f6" size="25"></uni-icons>
 		  	</view>
 		  	<view class="name">已下架</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=3')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-shoucang" color="#0076f6" size="26"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-shoucang-20250413" color="#0076f6" size="26"></uni-icons>
 		  	</view>
 		  	<view class="name">收藏记录</view>
 		  </view>
@@ -121,7 +112,7 @@
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=1')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-dianzan" color="#0076f6" size="23"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-dianzan-20250412" color="#0076f6" size="23"></uni-icons>
 		  	</view>
 		  	<view class="name">点赞</view>
 		  </view>
@@ -147,26 +138,26 @@
 				<uni-icons custom-prefix="iconfont" type="icon-dashang" color="#0076f6" size="25"></uni-icons>
 		      </view>
 		      <view class="center">
-		        <text>去打赏</text>
+		        <text>打赏作者</text>
 		      </view>
 		      <view class="right flex-center">
 		        <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
 		      </view>
 		    </view>
 		  </view>
-		  <!-- <view class="card">
-		    <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/feel')">
-		      <view class="left flex-center">
-				    <u-icon name="file-text" color="#0076f6" size="50"></u-icon>
-		      </view>
-		      <view class="center">
-		        <text>租房心得</text>
-		      </view>
-		      <view class="right flex-center">
-		        <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
-		      </view>
-		    </view>
-		  </view> -->
+      <view class="card">
+        <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/list/list')">
+          <view class="left flex-center">
+            <uni-icons custom-prefix="iconfont" type="icon-xiaoxi" color="#0076f6" size="24"></uni-icons>
+          </view>
+          <view class="center">
+            <text>中介排行榜</text>
+          </view>
+          <view class="right flex-center">
+            <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
+          </view>
+        </view>
+      </view>
 	    <view class="card">
 	      <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/advise')">
 	        <view class="left flex-center">
@@ -183,7 +174,7 @@
 	    <view class="card">
 	      <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/tools/about')">
 	        <view class="left flex-center">
-			  <u-icon name="info-circle" color="#5199ff" size="50"></u-icon>
+			  <u-icon name="info-circle" color="#5199ff" size="53"></u-icon>
 	        </view>
 	        <view class="center">
 	          <text>关于我们</text>
