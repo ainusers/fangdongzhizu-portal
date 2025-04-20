@@ -15,7 +15,7 @@
 		margin-bottom:10rpx;
 	}
 	.pei_text{
-		font-size: 24upx;
+		font-size: 25rpx;
 		color: #101D36;
 		line-height: 34upx;
 		margin-top: 10upx;
@@ -29,11 +29,11 @@
 		<block v-for="(item, index) in list" :key="index">
 			<view class="pei_item f_c_c" >
 				<view v-if='item.isShow'>
-					<uni-icons custom-prefix="iconfont" :type="item.icon" size="20"></uni-icons>
+					<uni-icons custom-prefix="iconfont" :type="item.icon" size="20" color="#000"></uni-icons>
 					<view class="pei_text" :class="{'icon_color':!item.isShow}">{{ item.text }}</view>
 				</view>
 				<view v-if='!item.isShow'>
-					<uni-icons custom-prefix="iconfont" :type="item.icon" size="20" color="#e6e6e6"></uni-icons>
+					<uni-icons custom-prefix="iconfont" :type="item.icon" size="20" color="#eee"></uni-icons>
 					<view class="pei_text" :class="{'icon_color':!item.isShow}">{{ item.text }}</view>
 				</view>
 			</view>

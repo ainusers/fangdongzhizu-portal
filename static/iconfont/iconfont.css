@@ -87,8 +87,16 @@
   content: "\e647";
 }
 
+.icon-diancilu-dark:before {
+  content: "\eb74";
+}
+
 .icon-bingxiang:before {
   content: "\e607";
+}
+
+.icon-bingxiang-dark:before {
+  content: "\eb75";
 }
 
 .icon-xiyiji:before {
@@ -121,6 +129,38 @@
 
 .icon-dianshi:before {
   content: "\e61e";
+}
+
+.icon-xiyiji-dark:before {
+  content: "\eb76";
+}
+
+.icon-weibolu-dark:before {
+  content: "\eb77";
+}
+
+.icon-reshuiqi-dark:before {
+  content: "\eb78";
+}
+
+.icon-wifi-dark:before {
+  content: "\eb79";
+}
+
+.icon-kongtiao-dark:before {
+  content: "\eb7a";
+}
+
+.icon-ranqi-dark:before {
+  content: "\eb7b";
+}
+
+.icon-nuanqi-dark:before {
+  content: "\eb7c";
+}
+
+.icon-dianshi-dark:before {
+  content: "\eb7d";
 }
 
 .icon-zhifubao:before {
