@@ -12,31 +12,43 @@
 			</view>
 			<view class="ranking-item" v-for="(item, index) in rankingList" :key="index">
 				<view v-if="index === 0">
-					<view class="top-item1" @click="toDetail(item.name)">
+					<view class="top-item1" @click="toDetail(item.code)">
 						<view class="rank top1">{{ index + 1 }}</view>
 						<text class="name">{{ item.name }}</text>
-						<text class="score">{{ item.score }}</text>
+						<text class="score">
+							<view>{{ item.score }}</view>
+							<view style="color: #252933;font-size: 12px;">风险指数</view>
+						</text>
 					</view>
 				</view>
 				<view v-else-if="index === 1">
-					<view class="top-item2" @click="toDetail(item.name)">
+					<view class="top-item2" @click="toDetail(item.code)">
 						<view class="rank top2">{{ index + 1 }}</view>
 						<text class="name">{{ item.name }}</text>
-						<text class="score">{{ item.score }}</text>
+						<text class="score">
+							<view>{{ item.score }}</view>
+							<view style="color: #252933;font-size: 12px;">风险指数</view>
+						</text>
 					</view>
 				</view>
 				<view v-else-if="index === 2">
-					<view class="top-item3" @click="toDetail(item.name)">
+					<view class="top-item3" @click="toDetail(item.code)">
 						<view class="rank top3">{{ index + 1 }}</view>
 						<text class="name">{{ item.name }}</text>
-						<text class="score">{{ item.score }}</text>
+						<text class="score">
+							<view>{{ item.score }}</view>
+							<view style="color: #252933;font-size: 12px;">风险指数</view>
+						</text>
 					</view>
 				</view>
 				<view v-else>
-					<view class="other-item" @click="toDetail(item.name)">
+					<view class="other-item" @click="toDetail(item.code)">
 						<view class="rank">{{ index + 1 }}</view>
 						<text class="name">{{ item.name }}</text>
-						<text class="score">{{ item.score }}</text>
+						<text class="score">
+							<view>{{ item.score }}</view>
+							<view style="color: #252933;font-size: 12px;">风险指数</view>
+						</text>
 					</view>
 				</view>
 			</view>
@@ -54,82 +66,41 @@
 	export default {
 		data() {
 			return {
-				rankingList: [{
-						name: '字节跳动',
-						score: '1k'
-					},
-					{
-						name: '腾讯',
-						score: '2k'
-					},
-					{
-						name: '京东',
-						score: '3k'
-					},
-					{
-						name: '小米',
-						score: '4k'
-					},
-					{
-						name: '腾讯',
-						score: '5k'
-					},
-					{
-						name: '京东',
-						score: '6k'
-					},
-					{
-						name: '小米',
-						score: '7k'
-					},
-					{
-						name: '腾讯',
-						score: '8k'
-					},
-					{
-						name: '京东',
-						score: '9k'
-					},
-					{
-						name: '小米',
-						score: '10k'
-					},
-					{
-						name: '腾讯',
-						score: '11k'
-					},
-					{
-						name: '京东',
-						score: '12k'
-					},
-					{
-						name: '小米',
-						score: '13k'
-					},
-					{
-						name: '蚂蚁集团',
-						score: '14k'
-					}
-				],
+				rankingList: [],
 				searchCompanyName: ''
 			};
+		},
+		onLoad() {
+			// 查询风险企业清单
+			this.companyList();
 		},
 		methods: {
 			// 查询指定名称的公司
 			search() {
-				console.log(this.searchCompanyName)
+				this.$H.get('/zf/v1/feel/name',{name: this.searchCompanyName},true).then(res=>{
+					if(res.status){
+						this.rankingList = res.data
+					}
+				})
 			},
 			// 跳转反馈详情页
-			toDetail(name) {
-				console.log(name)
+			toDetail(code) {
 				uni.navigateTo({
-					url: '/pages/tabbar/me/list/list-detail'
+					url: '/pages/tabbar/me/list/list-detail?code='+code
 				})
 			},
 			// 发布
 			publish(){
 				uni.navigateTo({
 					url: '/pages/tabbar/me/list/feel'
+				})
+			},
+			// 查询风险企业清单
+			companyList(){
+				this.$H.get('/zf/v1/feel/list',{},true).then(res=>{
+					if(res.status){
+						this.rankingList = res.data
+					}
 				})
 			}
 		}
@@ -245,7 +216,7 @@
 		}
 
 		.name {
-			font-size: 16px;
+			font-size: 14px;
 			flex: 1;
 			color: #252933;
 		}
@@ -255,6 +226,8 @@
 			color: #252933;
 			text-align: right;
 			padding-right: 8px;
+			display: flex;
+			flex-direction: column;
 		}
 	}
 	
