@@ -72,13 +72,11 @@
 		</view>
 		<!-- 详情页 - 地理位置 -->
 		<view class="model">
-		  <block v-if="diliData.length > 0">
-			 <view class="modelName">地理位置</view>
-			 <view class="map_con">
-				<view>{{detailData.distanceSubway}}</view>
-				<di-li-wei-zhi :list="diliData"  v-if="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi>
-			 </view>
-		   </block>
+			<view class="modelName">地理位置</view>
+			<view class="map_con">
+			<view>{{detailData.distanceSubway}}</view>
+				<di-li-wei-zhi v-if="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi>
+			</view>
 		</view>
 		<!-- 详情页 - 配套设施 -->
 		<view class="model">
@@ -415,7 +413,6 @@
 			{'title':'水电费','value':'-'},
 		],
 		zulinData: [],
-		diliData: [{}],
         housePhone: "", // 按月付的电话
         openHuabei: "",  // 是否开通花呗 0:未开通，1:已开通
         showBackIndex: false,
@@ -456,12 +453,13 @@
 			return	this.$H.get('/zf/v1/room/list/id',data,true).then(res=>{
 				this.detailData=res.data[0]
 				this.markers.push({
+					id: 0,
 					latitude: this.detailData.latitude,
-					longitude:this.detailData.longitude,
-					title:this.detailData.communityName,
+					longitude: this.detailData.longitude,
+					title: this.detailData.communityName,
 					iconPath: 'http://43.143.148.105:9090/remote/fangdongzhizu/address.png',
-					width:25,
-					height:25,
+					width: 80,
+					height: 80
 				})
 				if(this.detailData.like){
 					this.startIcon='heart-fill'
