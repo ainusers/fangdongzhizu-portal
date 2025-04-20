@@ -138,7 +138,7 @@
 				<uni-icons custom-prefix="iconfont" type="icon-dashang" color="#0076f6" size="25"></uni-icons>
 		      </view>
 		      <view class="center">
-		        <text>打赏作者</text>
+		        <text>去打赏</text>
 		      </view>
 		      <view class="right flex-center">
 		        <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
@@ -151,7 +151,7 @@
             <uni-icons custom-prefix="iconfont" type="icon-xiaoxi" color="#0076f6" size="24"></uni-icons>
           </view>
           <view class="center">
-            <text>中介排行榜</text>
+            <text>风险榜单</text>
           </view>
           <view class="right flex-center">
             <u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>

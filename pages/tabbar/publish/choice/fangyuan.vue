@@ -378,7 +378,7 @@
 					<!-- 房屋位置 -->
 					<view class="region_new_title">房间位置 <text class="tipTxt">(地址越详细定位越准确)</text></view>
 					<u-form-item :label-position="labelPosition" prop="region1" label-width="150" borderBottom required>
-						<u-input :border="border" type="select" v-model="houseModel.region1" placeholder="请选择所属区域"
+						<u-input :border="border" type="select" v-model="houseModel.region1" placeholder="选择所在城市"
 							@click="showPickerArea"></u-input>
 					</u-form-item>
 					<!-- 适用全国 -->
@@ -734,7 +734,7 @@
 
 					region1: [{
 						required: true,
-						message: '请选择所属区域',
+						message: '选择所在城市',
 						trigger: ['change', 'blur']
 					}],
 					communityName: {

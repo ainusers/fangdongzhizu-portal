@@ -95,7 +95,7 @@
 
         <view class='city_title'>手动选择城市：</view>
         <u-form-item label-position="left" prop="region" label-width="150" borderBottom>
-          <u-input :border="false" type="select" v-model="position.region" placeholder="请选择所属区域"
+          <u-input :border="false" type="select" v-model="position.region" placeholder="选择所在城市"
                    @click="pickerShow = true"></u-input>
         </u-form-item>
         <uPicker mode="region" v-model="pickerShow" @confirm="regionConfirm"></uPicker>

@@ -139,7 +139,7 @@ module.exports=()=>({
 		{
 		    "path": "pages/tabbar/me/list/list",
 		    "style": {
-				"navigationBarTitleText": "中介排行榜",
+				"navigationBarTitleText": "风险榜单",
 				"navigationBarTextStyle": "white",
 				"navigationBarBackgroundColor": "#0076f6",
 				"enablePullDownRefresh": false,
