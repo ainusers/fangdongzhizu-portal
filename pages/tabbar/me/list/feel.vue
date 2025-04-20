@@ -1,23 +1,32 @@
 <template  style="color: #fafafa;">
 	<form>
+		<!-- 企业名称 -->
+		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" style="padding: 6px 10px" label-position="left" label="企业名称 :" prop="companyName" ref="item">
+			<u-input :border="false" placeholder="风险企业名称" type="text" v-model="companyName" :disabled="false"></u-input>
+		</u-form-item>
+		<!-- 小区名称 -->
+		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="195" style="padding: 6px 10px" label-position="left" label="社会信用代码 :" prop="companyCode" ref="item">
+			<u-input :border="false" placeholder="例如: 91110108MA00FP4F5A" type="text" v-model="companyCode" :disabled="false" maxlength="18"></u-input>
+		</u-form-item>
 		<!-- 房源位置 -->
-		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" style="padding: 6px 15px" 
+		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" style="padding: 6px 10px" 
 			label-position="left" label="房源位置 :" prop="communityName" ref="item">
-			<u-input :border="false" type="select" v-model="region" label-position="left" placeholder="请选择所属区域" @click="showPickerArea"></u-input>
+			<u-input :border="false" type="select" v-model="region" label-position="left" placeholder="选择所在城市" @click="showPickerArea"></u-input>
 		</u-form-item>
 		<!-- 适用全国 -->
 		<uPicker mode="region" v-model="pickerShow" @confirm="regionConfirm"></uPicker>
 		<!-- 小区名称 -->
-		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" style="padding: 6px 15px" label-position="left" label="小区名称 :" prop="communityName" ref="item">
-			<u-input :border="false" placeholder="请输入小区名称" type="text" v-model="communityName" :disabled="false"></u-input>
+		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" style="padding: 6px 10px" label-position="left" label="小区名称 :" prop="communityName" ref="item">
+			<u-input :border="false" placeholder="小区名称" type="text" v-model="communityName" :disabled="false"></u-input>
 		</u-form-item>
 		<!-- 详细地址 -->
-		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" style="padding: 6px 15px" label-position="left" label="详细地址 :" prop="communityName" ref="item">
-			<u-input :border="false" placeholder="请输入详细地址 (具体到房间号)" type="text" v-model="roomName" :disabled="false"></u-input>
+		<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="150" style="padding: 6px 10px" label-position="left" label="详细地址 :" prop="communityName" ref="item">
+			<u-input :border="false" placeholder="详细地址 (具体到房间号)" type="text" v-model="roomName" :disabled="false"></u-input>
 		</u-form-item>
 		
 		<!-- 图片依据 -->
 		<view class="uni-list list-pd">
+			<view style="padding: 6px 10px">图片依据：</view>
 		    <view class="uni-list-cell cell-pd">
 		        <view class="uni-uploader">
 		            <view class="uni-uploader-body">
@@ -45,7 +54,7 @@
 		
 		<!-- 租房心得 -->
 		<view class="uni-textarea">
-		    <textarea style="font-size: 14px" placeholder="请描述房源优缺点，请不要上传需要出租的房源..." v-model="content" />
+		    <textarea style="font-size: 14px" placeholder="增加文字描述会更加有力量..." v-model="content" />
 		</view>
 		<view class="footer">
 			<button @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 2000)">提交</button>
@@ -56,16 +65,13 @@
 				———— 温馨提示 ————
 			</view>
 			<view>
-				1、记录租过或正在居住的房源信息，包括但不限于优缺点，为您和未来租客提供宝贵的参考
+				1、您的客观评价对他人来说有着极其重要的参考价值。可以帮助无数个为生活奔波的人避免不必要的"踩坑"
 			</view>
 			<view>
-				2、您的租房心得对他人来说有着极其重要的参考价值。从而避免不必要的"踩坑"
+				2、为了提高反馈质量，营造良好的反馈氛围，平台会增加人工审核机制
 			</view>
 			<view>
-				3、请您填写真实的租房心得，营造良好的反馈氛围，毕竟您可能也会参考他人的心得
-			</view>
-			<view>
-				4、后续会考虑增加房源体验搜索功能，搜索指定房源的租房心得，为您租房提供参考
+				3、目前支持反馈风险企业，暂时不支持风险房产经纪人
 			</view>
 		</view>
 	</form>
@@ -104,7 +110,9 @@
 				sizeType: ['压缩', '原图', '压缩或原图'],
 				countIndex: 8,
 				count: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-				uploadType: 'image'
+				uploadType: 'image',
+				companyName: '',
+				companyCode: ''
 			}
 		},
 		onLoad() {
@@ -181,6 +189,14 @@
 			},
 			// 用户反馈内容提交
 			async formSubmit(e) {
+				if(!this.companyName){
+					showToastTit('请填写企业名称')
+					return
+				}
+				if(!this.companyCode){
+					showToastTit('请填写社会信用代码')
+					return
+				}
 				if(!this.region){
 					showToastTit('请选择房源位置')
 					return
@@ -214,17 +230,19 @@
 					communityName: this.communityName,
 					roomName: this.roomName,
 					imageList: images.toString(),
-					content: this.content
+					content: this.content,
+					companyName: this.companyName,
+					companyCode: this.companyCode
 				}
 				this.$H.post('/zf/v1/feel/feels',data,true).then(res=>{
 					if(res.status){
-						showToastTit( '租房心得已成功提交')
+						showToastTit( '反馈体验已成功提交')
 						// 返回上一页
 						setTimeout(() => {
 							uni.navigateBack({
 								delta: 1
 							});
-						},2000)		
+						},2000)
 					}
 				})
 			},
@@ -373,7 +391,7 @@
 		width: 100%;
 		margin: 0 auto;
 		color: #AAAAAA;
-		padding: 0px 10px;
+		padding: 6px 10px;
 		view{
 			margin-bottom: 11rpx;
 			line-height: 150%;
