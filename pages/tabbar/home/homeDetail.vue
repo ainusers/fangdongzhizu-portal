@@ -222,6 +222,7 @@
 		  }
 	  }
 	  .way{
+        font-size: 12px;
 	  	  padding-left: 8px;
 	  }
   }
@@ -237,7 +238,7 @@
 			  margin-bottom: 16upx;
 		  }
 		  .key{
-			  font-size: 24upx;
+			  font-size: 25rpx;
 			  color:#999
 		  }
 	  } 

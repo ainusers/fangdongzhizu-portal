@@ -17,7 +17,7 @@
 	}
 	.pei_text{
 		width: 20%;
-		font-size: 24upx;
+		font-size: 25rpx;
 		color: #101D36;
 		line-height: 34upx;
 		text-align: center;

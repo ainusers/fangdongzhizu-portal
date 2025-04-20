@@ -16,12 +16,12 @@
 		margin: 0 auto;
 	}
 	.pei_title{
-		font-size: 24upx;
+		font-size: 25rpx;
 		color: #999;
 		margin-bottom: 20upx;
 	}
 	.pei_text{
-		font-size: 24upx;
+		font-size: 25rpx;
 		color: #101D36;
 		line-height: 34upx;
 		margin-top: 17upx;
