@@ -274,5 +274,6 @@
 	.home_nodata {
 		padding: 5px 0;
 		text-align: center;
+		background-color: #ffffff;
 	}
 </style>
