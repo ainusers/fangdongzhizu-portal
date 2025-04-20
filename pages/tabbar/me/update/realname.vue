@@ -15,7 +15,7 @@
 										<!-- 请上传人像面 -->
 										<view class="uni-uploader__input" @tap="chooseImage('straight')">
 											<!-- mode="aspectFill" -->
-											<image class="pictureClass" src="../../../../static/zm.png" ></image>
+											<image class="pictureClass" src="http://43.143.148.105:9090/remote/fangdongzhizu/zm.png" ></image>
 										</view>
 									</view>
 								</view>
@@ -36,7 +36,7 @@
 									<view class="uni-uploader__input-box" v-if="!form.reverseUrl[0]">
 										<!-- 请上传国徽面 -->
 										<view class="uni-uploader__input" @tap="chooseImage('reverse')">
-											<image class="pictureClass" src="../../../../static/fm.png" ></image>
+											<image class="pictureClass" src="http://43.143.148.105:9090/remote/fangdongzhizu/fm.png" ></image>
 										</view>
 									</view>
 								</view>
