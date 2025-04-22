@@ -354,7 +354,7 @@
 										<view class="uni-uploader__files">
 											<view class="uni-uploader__input-box" v-if="houseModel.naturalImageList.length < 9">
 												<view class="choose-image" @tap="chooseImage('natural')">
-													<uni-icons custom-prefix="iconfont" type="icon-zhaoxiangji" size="30"></uni-icons>
+													<uni-icons custom-prefix="iconfont" type="icon-zhaoxiangji" size="30" color="#D9D9D9"></uni-icons>
 												</view>
 											</view>
 											<block v-for="(image,index) in houseModel.naturalImageList" :key="index">
@@ -536,7 +536,7 @@
 											<view class="uni-uploader__input-box"
 												v-if="houseModel.houseImageList.length < 9">
 												<view class="choose-image" @tap="chooseImage('house')">
-													<uni-icons custom-prefix="iconfont" type="icon-zhaoxiangji" size="30"></uni-icons>
+													<uni-icons custom-prefix="iconfont" type="icon-zhaoxiangji" size="30" color="#D9D9D9"></uni-icons>
 												</view>
 											</view>
 											<block v-for="(image,index) in houseModel.houseImageList" :key="index">

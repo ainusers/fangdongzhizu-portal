@@ -30,7 +30,7 @@
 		                    </block>
 		                    <view class="uni-uploader__input-box" v-if="uploadType === 'image' ? imageList.length < 9 : imageList <= 1">
 								<view class="choose-image" @tap="chooseImage">
-									<uni-icons custom-prefix="iconfont" type="icon-zhaoxiangji" size="30"></uni-icons>
+									<uni-icons custom-prefix="iconfont" type="icon-zhaoxiangji" size="30" color="#D9D9D9"></uni-icons>
 								</view>
 		                    </view>
 		                </view>
