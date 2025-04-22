@@ -157,7 +157,7 @@
 	  z-index: 1 !important;
   }
   .modelName{
-	 font-size:28upx;
+	 font-size:30rpx;
 	 font-weight:600;
 	 color:#101d36;
 	 padding-left: 13upx;

@@ -15,13 +15,13 @@
 		margin-bottom:10rpx;
 	}
 	.pei_text{
-		font-size: 25rpx;
+		font-size: 26rpx;
 		color: #101D36;
 		line-height: 34upx;
 		margin-top: 10upx;
 	}
 	.icon_color{
-		color: #9e9fa3;
+		color: #d8d9de;
 	}
 </style>
 <template>
