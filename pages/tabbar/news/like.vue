@@ -51,9 +51,9 @@
 				isShow:false,
 				loadingFlag:false,
 				status: 'loadmore',
-        loadmoreText: '轻轻上拉加载更多...',
-        loadingText: '努力加载中...',
-        nomoreText: '没有更多了'
+				loadmoreText: '轻轻上拉加载更多...',
+				loadingText: '努力加载中...',
+				nomoreText: '没有更多了'
 			}
 		},
 		onShow() {
@@ -75,7 +75,7 @@
 		},
 		// 上拉加载
 		onReachBottom() {
-			if(!this.nodataFlag && !isShow){
+			if(!this.nodataFlag && !this.isShow){
 				this.listPage++;
 				this.getUnreadLikeList();
 			}else{
