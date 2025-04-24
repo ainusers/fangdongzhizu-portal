@@ -191,7 +191,7 @@
 	.pay_ative{
 		background: #e5f3fe !important;
 		border-color: #7db5f0;
-		color: #0076f6;
+		color: #1183fb;
 		border-radius: 20rpx;
 	}
 	.reward_info{
@@ -265,7 +265,7 @@
 		.custom-style{
 			width: 75%;
 			height: 80rpx;
-			background: #0076f6;
+			background: #1183fb;
 			border-radius: 20rpx;
 			margin-top: 30rpx;
 		}
@@ -284,7 +284,7 @@
 	.active_item{
 		background: #e5f3fe !important;
 		border-color: #7db5f0;
-		color: #0076f6;
+		color: #1183fb;
 	}
 	::v-deep .u-drawer-content{
 		width:100% !important;

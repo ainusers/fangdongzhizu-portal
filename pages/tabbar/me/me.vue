@@ -82,49 +82,49 @@
 	  <view class="function">
 	      <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=0')">
 	      	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-daishenhe" color="#0076f6" size="20"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-daishenhe" color="#1183fb" size="20"></uni-icons>
 	      	</view>
 	      	<view class="name">待审核</view>
 	      </view>
 	      <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=1')">
 	      	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-fabu" color="#0076f6" size="23"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-fabu" color="#1183fb" size="23"></uni-icons>
 	      	</view>
 	      	<view class="name">已发布</view>
 	      </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=2')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-xiajia-20250413" color="#0076f6" size="25"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-xiajia-20250413" color="#1183fb" size="25"></uni-icons>
 		  	</view>
 		  	<view class="name">已下架</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/check?index=3')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-shoucang-20250413" color="#0076f6" size="26"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-shoucang-20250413" color="#1183fb" size="26"></uni-icons>
 		  	</view>
 		  	<view class="name">收藏记录</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=0')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-dongtai" color="#0076f6" size="23"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-dongtai" color="#1183fb" size="23"></uni-icons>
 		  	</view>
 		  	<view class="name">动态</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=1')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-dianzan-20250412" color="#0076f6" size="23"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-dianzan-20250412" color="#1183fb" size="23"></uni-icons>
 		  	</view>
 		  	<view class="name">点赞</view>
 		  </view>
 		 <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=2')">
 		  	<view class="icon">
-          <u-icon class="icon" name="error-circle" color="#0076f6" size="55"></u-icon>
+          <u-icon class="icon" name="error-circle" color="#1183fb" size="55"></u-icon>
 		  	</view>
 		  	<view class="name">举报</view>
 		  </view>
 		  <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=3')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-liulan" color="#0076f6" size="25"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-liulan" color="#1183fb" size="25"></uni-icons>
 		  	</view>
 		  	<view class="name">浏览</view>
 		  </view>
@@ -135,7 +135,7 @@
 		  <view class="card">
 		    <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/reward')">
 		      <view class="left flex-center">
-				<uni-icons custom-prefix="iconfont" type="icon-dashang" color="#0076f6" size="25"></uni-icons>
+				<uni-icons custom-prefix="iconfont" type="icon-dashang" color="#1183fb" size="25"></uni-icons>
 		      </view>
 		      <view class="center">
 		        <text>去打赏</text>
@@ -148,7 +148,7 @@
       <view class="card">
         <view class="item item-bottom-solid" @click="goto('/pages/tabbar/me/list/list')">
           <view class="left flex-center">
-            <uni-icons custom-prefix="iconfont" type="icon-xiaoxi" color="#0076f6" size="24"></uni-icons>
+            <uni-icons custom-prefix="iconfont" type="icon-xiaoxi" color="#1183fb" size="24"></uni-icons>
           </view>
           <view class="center">
             <text>风险榜单</text>

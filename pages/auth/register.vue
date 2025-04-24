@@ -66,7 +66,7 @@
               v-model="checked"
               name="注册协议"
               shape="square"
-              active-color="#0076f6">
+              active-color="#1183fb">
           </u-checkbox>
         </u-checkbox-group>
         <view>我已阅读并同意</view>

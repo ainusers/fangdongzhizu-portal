@@ -218,7 +218,7 @@ textarea {
 				为了营造更加友好的社区环境，平台引入了评分机制。您的每条动态都会根据评分来决定排名，评分标准：动态内容是否包含位置、图片、面积、价格、联系方式，上传图片/视频数量和质量，近期活跃度等。让我们共同努力，提升社区内容质量
 			</view>
             <view class="footer">
-                <button style="color: #0076f6;border-color: #0076f6;" type="primary" class="feedback-submit" plain="true" @click="publish" @tap="$u.throttle(publish, 2000)">发布</button>
+                <button style="color: #1183fb;border-color: #1183fb;" type="primary" class="feedback-submit" plain="true" @click="publish" @tap="$u.throttle(publish, 2000)">发布</button>
             </view>
         </form>
     </view>

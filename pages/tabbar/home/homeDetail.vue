@@ -162,7 +162,7 @@
 	 color:#101d36;
 	 padding-left: 13upx;
 	 box-sizing: border-box;
-	 border-left: 6rpx solid #0076f6;
+	 border-left: 6rpx solid #1183fb;
   }
   .near_map_item {
     height: 25upx;
@@ -261,10 +261,10 @@
 	  }
 	  .report_active,.collect_active{
 		  .target{
-			  color:#0076f6;
+			  color:#1183fb;
 		  }
 		  ::v-deep .uicon-heart{
-		  	color:#0076f6;
+		  	color:#1183fb;
 		  }
 	  }
 	  .collect{
@@ -278,7 +278,7 @@
 	  .contact{
 		  width: 40%;
 		  margin: 0px 8px 8px 0px;
-		  background: #0076f6;
+		  background: #1183fb;
 		  border-radius: 20upx;
 		  .u-btn--default{
 			  background: none;

@@ -27,7 +27,7 @@
 		font-size: 14px;
 		letter-spacing: 3rpx;
 		line-height: 150%;
-		color: #0076f6;
+		color: #1183fb;
 		font-weight: bold;
 	}
 	.main_notice .con{
