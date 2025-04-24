@@ -15,8 +15,8 @@
 					<uni-icons v-else custom-prefix="iconfont" type="icon-weishiming" color="#0076f6" size="20"></uni-icons>
 				</view>
 				<view class="user-sex">
-					<uni-icons v-if="userInfo.sex == 1" custom-prefix="iconfont" type="icon-nan" color="#0076f6" size="20"></uni-icons>
-					<uni-icons v-else custom-prefix="iconfont" type="icon-nv" color="#0076f6" size="20"></uni-icons>
+          <u-icon v-if="userInfo.sex == 1" name="man" color="#0076f6" size="40"></u-icon>
+          <u-icon v-else name="woman" color="#fa3534" size="40"></u-icon>
 				</view>
 			</view>
 		</view>

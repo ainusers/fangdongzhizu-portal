@@ -20,7 +20,7 @@
 	      height: 100rpx;
 	      .left {
 	        width: 15%;
-			padding-top: 10px;
+			padding-top: 12px;
 	        image {
 	          width: 40rpx;
 	          height: 40rpx;
@@ -118,7 +118,7 @@
 		  </view>
 		 <view class="option" @click="goto('/pages/tabbar/me/tools/shuoshuo?id=2')">
 		  	<view class="icon">
-				<uni-icons custom-prefix="iconfont" type="icon-jubao" color="#0076f6" size="23"></uni-icons>
+          <u-icon class="icon" name="error-circle" color="#0076f6" size="55"></u-icon>
 		  	</view>
 		  	<view class="name">举报</view>
 		  </view>

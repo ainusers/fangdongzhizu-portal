@@ -87,7 +87,7 @@
 				<!-- 城市 -->
 				<view class="city" @click.stop="chooseCity">
 					<view>{{ cityName }}</view>
-					<uni-icons custom-prefix="iconfont" type="icon-xiangxia" color="#333" size="6" style="padding-left: 2px;"></uni-icons>
+          <u-icon name="arrow-down-fill" color="#333" size="20" style="padding-left: 2px;"></u-icon>
 				</view>
 				<!-- 选项卡（转租和直租） -->
 				<view class="type">
