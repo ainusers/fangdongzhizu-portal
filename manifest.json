@@ -69,16 +69,7 @@
             },
             /* ios打包配置 */
             "sdkConfigs" : {
-                "geolocation" : {
-                    "baidu" : {
-                        "__platform__" : [ "ios", "android" ],
-                        "appkey_ios" : "XUS7rr7tfF8FNcrNqroqkczFvpWtLpcY",
-                        "appkey_android" : "XUS7rr7tfF8FNcrNqroqkczFvpWtLpcY"
-                    },
-                    "system" : {
-                        "__platform__" : [ "ios", "android" ]
-                    }
-                },
+                "geolocation" : {},
                 "oauth" : {},
                 "ad" : {
                     "ks" : {},
