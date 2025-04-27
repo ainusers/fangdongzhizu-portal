@@ -33,7 +33,7 @@
 					<view class="pei_text" :class="{'icon_color':!item.isShow}">{{ item.text }}</view>
 				</view>
 				<view v-if='!item.isShow'>
-					<uni-icons custom-prefix="iconfont" :type="item.icon" size="20" color="#eee"></uni-icons>
+					<uni-icons custom-prefix="iconfont" :type="item.icon+'-dark'" size="20" color="#eee"></uni-icons>
 					<view class="pei_text" :class="{'icon_color':!item.isShow}">{{ item.text }}</view>
 				</view>
 			</view>

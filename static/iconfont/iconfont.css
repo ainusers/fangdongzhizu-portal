@@ -11,11 +11,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-diancilu-dark1:before {
+.icon-diancilu-dark:before {
   content: "\eb7f";
 }
 
-.icon-bingxiang-dark1:before {
+.icon-bingxiang-dark:before {
   content: "\eb7e";
 }
 
