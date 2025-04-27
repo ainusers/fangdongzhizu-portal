@@ -10,7 +10,7 @@ module.exports=()=>({
 				"transparentTitle":  "always",
 				"navigationBarTitleText": "",
 				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#0076f6",
+				"navigationBarBackgroundColor": "#1183fb",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light",
 				"backgroundColor":"#fff",
@@ -37,7 +37,7 @@ module.exports=()=>({
             "style": {
 				"navigationBarTitleText": "登录",
 				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#0076f6",
+				"navigationBarBackgroundColor": "#1183fb",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
             }
@@ -47,7 +47,7 @@ module.exports=()=>({
             "style": {
 				"navigationBarTitleText": "房屋详情页",
 				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#0076f6",
+				"navigationBarBackgroundColor": "#1183fb",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
             }
@@ -57,7 +57,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "选择城市",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -67,7 +67,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "忘记密码",
 				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#0076f6",
+				"navigationBarBackgroundColor": "#1183fb",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
             }
@@ -77,7 +77,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "注册",
 				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#0076f6",
+				"navigationBarBackgroundColor": "#1183fb",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
             }
@@ -88,7 +88,7 @@ module.exports=()=>({
 				"transparentTitle":  "always",
 				"navigationBarTitleText": "",
 				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#0076f6",
+				"navigationBarBackgroundColor": "#1183fb",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light",
 				"backgroundColor":"#fff",
@@ -101,7 +101,7 @@ module.exports=()=>({
                 "enablePullDownRefresh": false,
                 "navigationBarTitleText": "图文详情",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "backgroundTextStyle":"light"
             }
         },
@@ -110,7 +110,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "发布",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -121,7 +121,7 @@ module.exports=()=>({
 			{
 				"navigationBarTitleText" : "消息",
 				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#0076f6",
+				"navigationBarBackgroundColor": "#1183fb",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
 			}
@@ -131,7 +131,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "我的",
 				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#0076f6",
+				"navigationBarBackgroundColor": "#1183fb",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
             }
@@ -141,8 +141,8 @@ module.exports=()=>({
 		    "style": {
 				"navigationBarTitleText": "风险榜单",
 				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#0076f6",
-				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#1183fb",
+				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light"
 		    }
 		},
@@ -151,7 +151,7 @@ module.exports=()=>({
 		    "style": {
 				"navigationBarTitleText": "租房体验",
 				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#0076f6",
+				"navigationBarBackgroundColor": "#1183fb",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light"
 		    }
@@ -161,7 +161,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "房源信息",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "backgroundColor":"#ffffff"
@@ -172,7 +172,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "个人信息",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -182,7 +182,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "修改昵称",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "app-plus": {
@@ -207,7 +207,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "实名认证",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "app-plus": {
@@ -232,7 +232,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "设置性别",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "app-plus": {
@@ -257,7 +257,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "选择地区",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "app-plus": {
@@ -282,7 +282,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "修改密码",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "app-plus": {
@@ -307,7 +307,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "个性签名",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light",
                 "app-plus": {
@@ -332,7 +332,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "关于我们",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -342,7 +342,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "反馈体验",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -352,7 +352,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "反馈建议",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -362,7 +362,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "动态信息",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -372,7 +372,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "发布动态",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -382,7 +382,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "发布房源",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
                 "enablePullDownRefresh": false,
                 "backgroundTextStyle":"light"
             }
@@ -401,7 +401,7 @@ module.exports=()=>({
                 {
                     "navigationBarTitleText": "修改手机号",
                     "navigationBarTextStyle": "white",
-                    "navigationBarBackgroundColor": "#0076f6",
+                    "navigationBarBackgroundColor": "#1183fb",
                     "enablePullDownRefresh": false,
                     "backgroundTextStyle":"light",
                     "app-plus": {
@@ -426,7 +426,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "个人主页",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
             }
         },
         {
@@ -434,7 +434,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "注册协议",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
             }
         },
         {
@@ -442,7 +442,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "隐私协议",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
             }
         },
         {
@@ -450,7 +450,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "用户协议",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6",
+                "navigationBarBackgroundColor": "#1183fb",
             }
         },
         {
@@ -458,7 +458,7 @@ module.exports=()=>({
             "style": {
                 "navigationBarTitleText": "打赏页面",
                 "navigationBarTextStyle": "white",
-                "navigationBarBackgroundColor": "#0076f6"
+                "navigationBarBackgroundColor": "#1183fb"
             }
         },
 		{
@@ -473,7 +473,7 @@ module.exports=()=>({
 			{
 				"navigationBarTitleText" : "收到的点赞",
 				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#0076f6",
+				"navigationBarBackgroundColor": "#1183fb",
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light"
 			}
@@ -484,7 +484,7 @@ module.exports=()=>({
 			{
 				"navigationBarTitleText" : "收到的收藏",
 				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#0076f6",
+				"navigationBarBackgroundColor": "#1183fb",
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light"
 			}
@@ -495,7 +495,7 @@ module.exports=()=>({
 			{
 				"navigationBarTitleText" : "收到的评论",
 				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#0076f6",
+				"navigationBarBackgroundColor": "#1183fb",
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light"
 			}
