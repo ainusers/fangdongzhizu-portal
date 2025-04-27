@@ -95,7 +95,6 @@
 						</view>
 						<view>
 							{{version}}
-							<view class="icon"  v-if="isShow"></view>
 						</view>
 					</view>
 					<view class="item">
@@ -121,37 +120,19 @@
 	</view>
 </template>
 <script>
-	import {getLatest,MycheckUpdate} from '@/utils/utils.js'
-    export default {
-        data() {
-			return {
-				isShow:false
-			}
-		},
-		computed:{
+	export default {
+    computed:{
       // 适配微信小程序
-			version(){
-				return this.$store.state.version;
-			}
-		},
-        onLoad() {
-			getLatest().then(res=>{
-				if(res.version < this.$store.state.version){
-					this.isShow=true
-				}
-			})
-		},
-        methods: {
-			goto(uri){
+      version(){
+        return this.$store.state.version;
+      }
+    },
+		methods: {
+			goto(uri) {
 				uni.navigateTo({
 					url: uri
 				})
-			},
-			update(){
-				if(this.isShow){
-					MycheckUpdate(1)
-				}
 			}
 		}
-    }
+	}
 </script>
