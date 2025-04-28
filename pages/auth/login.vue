@@ -54,7 +54,7 @@
     </view>
 
     <view class="btns">
-      <button @click="login" class="qbtn" @tap="$u.throttle(login, 3000)">
+      <button @click="login" class="qbtn" @tap="$u.throttle(login, 2000)">
         <view class="btn-text-color fs30">登录</view>
       </button>
       <view class="blue_link" :class="{'animShake':isShow}" style="display: flex;flex-direction: inherit;">
@@ -63,7 +63,7 @@
               v-model="checked"
               name="隐私协议"
               shape="square"
-              active-color="#7dc3f2">
+              active-color="#1183fb">
           </u-checkbox>
         </u-checkbox-group>
         <view>我已阅读并同意</view>
