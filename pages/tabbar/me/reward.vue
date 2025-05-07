@@ -246,7 +246,6 @@
 		flex-wrap: wrap;
 		margin: 0 auto;
 		background: #ffffff;
-		margin-top: 30rpx;
 		padding: 30rpx 20rpx;
 		border-radius: 20rpx;
 		.item{

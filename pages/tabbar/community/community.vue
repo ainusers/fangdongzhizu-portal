@@ -90,7 +90,7 @@
 		<!-- #endif -->
 		<!-- 轮播图 -->
 		<div style="background: #f7f7f7;">
-			<u-swiper :list="swiperList" radius="20rpx" height="250" mode="rect" @click="navigateToPage"></u-swiper>
+			<u-swiper :list="swiperList" radius="20rpx" height="250" mode="rect" ></u-swiper>
 		</div>
 
 		<!-- 公告 -->
@@ -172,13 +172,6 @@
 					}
 				})
 			},
-			navigateToPage(index) {
-                if (index === 0) {
-                    uni.navigateTo({
-                        url: '/pages/tabbar/community/lifeServe/formaldehyde',
-                    })
-                }
-            },
 			changeStatus(index,status,isDelete){
 				this.tuwen_data.forEach(item=>{
 					item.isReport=false

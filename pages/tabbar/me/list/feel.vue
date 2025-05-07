@@ -57,7 +57,7 @@
 		    <textarea style="font-size: 14px" placeholder="增加文字描述会更加有力量..." v-model="content" />
 		</view>
 		<view class="footer">
-			<button @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 2000)">提交</button>
+			<button @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 2000)">请君上榜</button>
 		</view>
 		
 		<view class="reward_text">
@@ -225,6 +225,7 @@
 				    images = await attachUpload(this.imageList);
 				}
 				let data={
+					userId: this.$store.state.userInfo.id,
 					username: this.$store.state.userInfo.username,
 					region: this.region,
 					communityName: this.communityName,
