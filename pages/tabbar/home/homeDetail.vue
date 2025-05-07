@@ -233,12 +233,12 @@
 	  .info_con{
 		  text-align: center;
 		  .value{
-			  font-size: 30upx;
+			  font-size: 28rpx;
 			  color: #333;
 			  margin-bottom: 16upx;
 		  }
 		  .key{
-			  font-size: 25rpx;
+			  font-size: 28rpx;
 			  color:#999
 		  }
 	  } 

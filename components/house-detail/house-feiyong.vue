@@ -10,18 +10,13 @@
 		text-align: center;
 		margin-bottom: 45upx;
 	}
-	.pei_icon{
-		width: 40upx;
-		height: 40upx;
-		margin: 0 auto;
-	}
 	.pei_title{
-		font-size: 25rpx;
+		font-size: 28rpx;
 		color: #999;
 		margin-bottom: 10rpx;
 	}
 	.pei_text{
-		font-size: 25rpx;
+		font-size: 28rpx;
 		color: #101D36;
 		line-height: 34upx;
 		margin-top: 17upx;

@@ -462,12 +462,6 @@ module.exports=()=>({
             }
         },
 		{
-            "path": "pages/tabbar/community/lifeServe/formaldehyde",
-            "style": {
-                "enablePullDownRefresh": false
-            }
-        },
-		{
 			"path" : "pages/tabbar/news/like",
 			"style" : 
 			{

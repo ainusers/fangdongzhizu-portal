@@ -18,7 +18,7 @@
 								</block>
 							</div>
 							<div v-else>
-								<u-empty class="home_nodata" text="暂无数据" mode="favor"></u-empty>
+								<u-empty style="background-color: #f7f7f7;" class="home_nodata" text="暂无数据" mode="favor"></u-empty>
 							</div>
 						</view>
 					</view>
@@ -161,6 +161,7 @@
 <style lang="scss" scoped>
 	.personal_main {
 		background-color: #f7f7f7;
+		height:calc(100vh - var(--window-top) - 10px);
 	}
 	.personal_bottom {
 		width: 100%;
