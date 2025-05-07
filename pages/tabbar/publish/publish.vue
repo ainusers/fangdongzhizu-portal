@@ -175,12 +175,12 @@ export default {
 			width: 100%;
 			z-index: 3;
 			margin: 10upx;
-			color: $uni-color-subtitle;
+			color: #555555;
 			text-align: center;
 			font-size: $uni-font-size-base;
 			.box-image {
 				width: 100%;
-				height: $uni-img-size-lg;
+				height: 40px;
 			}
 		}
 	}
