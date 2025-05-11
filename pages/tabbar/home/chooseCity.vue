@@ -230,10 +230,14 @@ export default {
     // ios定位获取
     getIosLocation(status) {
       let that = this;
+      // 获取ios定位
+      if ("authorized" == uni.getAppAuthorizeSetting().locationAuthorized) {
+        uni.showToast({title: '请通过设置-隐私-定位服务，打开手机GPS定位功能', duration: 2000, icon: 'none'});
+        return;
+      }
       // ios平台使用wgs84坐标
       uni.getLocation({
         type: 'wgs84',
-        isHighAccuracy: true,
         geocode: true,
         success: function (res) {
           that.gpsCityName.cityName = res.address.city
@@ -245,21 +249,6 @@ export default {
               duration: 2000
             })
           }
-        },
-        fail: (e) => {
-          if ("authorized" == uni.getAppAuthorizeSetting().locationAuthorized) {
-            uni.showToast({title: '请通过设置-隐私-定位服务，打开手机GPS定位功能', duration: 2000, icon: 'none'});
-          } else {
-            uni.showModal({
-              title: '温馨提示',
-              content: '您还没有给APP地理位置权限，请在权限管理页面授权',
-              showCancel: false,
-              success: async (res) => {
-                // 跳转应用权限管理页面
-                gotoAppSetting();
-              }
-            })
-          }
         }
       });
     },
@@ -267,10 +256,33 @@ export default {
     // android定位获取
     getAndroidLocation(status) {
       let that = this;
+      // 获取android定位
+      if ("authorized" !== uni.getAppAuthorizeSetting().locationAuthorized) {
+        uni.showToast({title: '请打开手机GPS定位功能', duration: 2000, icon: 'none'});
+        return;
+      }
+      // 检查GPS是否开启
+      if(!that.checkAndroidGPS()){
+        uni.showModal({
+          title: '温馨提示',
+          content: '您尚未开启GPS定位功能，点击继续打开位置信息',
+          confirmText: '继续',
+          success: async (res) => {
+            if (res.confirm) {
+              const Intent = plus.android.importClass("android.content.Intent");
+              const Settings = plus.android.importClass("android.provider.Settings");
+              const intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+              const main = plus.android.runtimeMainActivity();
+              main.startActivity(intent);
+            } else {
+              return
+            }
+          }
+        });
+      }
       // android平台使用gcj02坐标
       uni.getLocation({
         type: 'gcj02',
-        isHighAccuracy: true,
         geocode: true,
         success: function (res) {
           if(!res.address.city) {
@@ -286,23 +298,20 @@ export default {
               duration: 2000
             })
           }
-        },
-        fail: (e) => {
-          if ("authorized" == uni.getAppAuthorizeSetting().locationAuthorized) {
-            uni.showToast({title: '请打开手机GPS定位功能', duration: 2000, icon: 'none'});
-          } else {
-            uni.showModal({
-              title: '温馨提示',
-              content: '您还没有给APP地理位置权限，请在权限管理页面授权',
-              showCancel: false,
-              success: async (res) => {
-                // 跳转应用权限管理页面
-                gotoAppSetting();
-              }
-            })
-          }
         }
       });
+    },
+
+    // 检查GPS是否开启
+    checkAndroidGPS() {
+      if (plus.os.name == 'Android') {
+        const context = plus.android.importClass("android.content.Context");
+        const LocationManager = plus.android.importClass('android.location.LocationManager');
+        const main = plus.android.runtimeMainActivity();
+        const mainLocationManager = main.getSystemService(context.LOCATION_SERVICE);
+        return mainLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+      }
+      return false;
     },
 
     // 选择城市确定后操作
