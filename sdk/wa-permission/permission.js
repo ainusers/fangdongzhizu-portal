@@ -207,7 +207,6 @@ function gotoAppPermissionSetting() {
 		var NSURL2 = plus.ios.import("NSURL");
 		var setting2 = NSURL2.URLWithString("app-settings:");
 		application2.openURL(setting2);
-
 		plus.ios.deleteObject(setting2);
 		plus.ios.deleteObject(NSURL2);
 		plus.ios.deleteObject(application2);

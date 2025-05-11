@@ -1,7 +1,7 @@
 <template>
 	<view class="user-info" @click="goto('/pages/tabbar/me/user')">
 		<view class="left">
-			<view class="user-image" @click="previewAvatar(userInfo.avatar)">
+			<view class="user-image" @click.stop="previewAvatar(userInfo.avatar)">
 				<u-avatar :src="userInfo.avatar" size="115" mode="square"></u-avatar>
 			</view>
 		</view>
