@@ -90,10 +90,9 @@
     }
     .er_house_des{
 		height: 30upx;
-        font-size:26upx;
         line-height: 30upx;
         color:#101d37;
-		font-size: 26upx;
+		font-size:30upx;
         text-align: left;
         max-width: 100%;
         text-overflow: ellipsis;
@@ -118,6 +117,7 @@
 	}
     .er_house_tag_info{
 		overflow: hidden;
+		font-size:30upx;
 		margin-bottom: 15upx;
 		overflow: hidden;  /* 隐藏超出容器的内容 */
 		white-space: nowrap;  /* 防止文本换行 */
@@ -182,7 +182,6 @@
     }
     .er_house_price{
         font-size:30upx;
-        margin-right: 20upx;
     }
 	.price {
 		font-weight:bold;
@@ -190,6 +189,11 @@
 	}
 	.place {
 		color: #A6A6A6;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		width: 80px;
+		text-align: right;
 	}
 	.detail_btn{
 		height:74upx;
