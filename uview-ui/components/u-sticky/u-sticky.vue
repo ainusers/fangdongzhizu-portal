@@ -8,7 +8,7 @@
 				position: fixed ? 'fixed' : 'static',
 				top: stickyTop + 'px',
 				left: left + 'px',
-				width: width == 'auto' ? 'auto' : width,
+				width: width == 'auto' ? 'auto' : width + 'px',
 				zIndex: uZIndex
 			}">
 				<slot></slot>
@@ -73,7 +73,7 @@
 				stickyTop: 0,
 				elClass: this.$u.guid(),
 				left: 0,
-				width: '100%',
+				width: 'auto',
 			};
 		},
 		watch: {
@@ -150,7 +150,7 @@
 
 <style scoped lang="scss">
 	@import "../../libs/css/style.components.scss";
-	
+
 	.u-sticky {
 		z-index: 9999999999;
 	}

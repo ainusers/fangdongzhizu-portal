@@ -79,7 +79,7 @@
 <template>
 	<view class="main">
 		<!-- 顶部区域 -->
-		<u-sticky offset-top="0" h5-nav-height="0">
+		<u-sticky offset-top="0" h5-nav-height="0" style="width: 100%">
 		    <!-- #ifdef APP-PLUS -->
 			<view class="empty"></view>
 		    <!-- #endif -->
