@@ -232,7 +232,7 @@ export default {
       let that = this;
       // 获取ios定位
       if ("authorized" == uni.getAppAuthorizeSetting().locationAuthorized) {
-        uni.showToast({title: '请通过设置-隐私-定位服务，打开手机GPS定位功能', duration: 2000, icon: 'none'});
+        uni.showToast({title: '请通过设置-隐私-定位服务，开启手机GPS定位功能', duration: 2000, icon: 'none'});
         return;
       }
       // ios平台使用wgs84坐标
@@ -258,7 +258,7 @@ export default {
       let that = this;
       // 获取android定位
       if ("authorized" !== uni.getAppAuthorizeSetting().locationAuthorized) {
-        uni.showToast({title: '请打开手机GPS定位功能', duration: 2000, icon: 'none'});
+        uni.showToast({title: '请开启手机GPS定位功能', duration: 2000, icon: 'none'});
         return;
       }
       // 检查GPS是否开启
@@ -286,7 +286,7 @@ export default {
         geocode: true,
         success: function (res) {
           if(!res.address.city) {
-            uni.showToast({title: '请打开手机GPS定位功能后点击重新定位', duration: 3000, icon: 'none'});
+            uni.showToast({title: '请开启手机GPS定位功能后点击重新定位', duration: 3000, icon: 'none'});
             return
           }
           that.gpsCityName.cityName = res.address.city
@@ -320,7 +320,7 @@ export default {
 		this.chooseFlag = true;
 		if(this.gpsCityName.cityName == '定位中...' ){
 		  	uni.showToast({
-		  	  title: "请开启GPS定位或手动选择城市",
+		  	  title: "请开启GPS点击重新定位或手动选择城市",
 		  	  icon: 'none',
 		  	  duration: 2000
 		  	})

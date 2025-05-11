@@ -2026,7 +2026,7 @@
 						},
 						fail: (e) => {
 							if("authorized" == uni.getAppAuthorizeSetting().locationAuthorized){
-								uni.showToast({ title: '请打开手机GPS定位功能', duration: 2000, icon: 'none' });
+								uni.showToast({ title: '请开启手机GPS定位功能', duration: 2000, icon: 'none' });
 							} else {
 								uni.showModal({
 									title: '温馨提示',
@@ -2056,7 +2056,7 @@
 						},
 						fail: (e) => {
 							if("authorized" == uni.getAppAuthorizeSetting().locationAuthorized){
-								uni.showToast({ title: '请通过设置-隐私-定位服务，打开手机GPS定位功能', duration: 2000, icon: 'none' });
+								uni.showToast({ title: '请通过设置-隐私-定位服务，开启手机GPS定位功能', duration: 2000, icon: 'none' });
 							} else {
 								uni.showModal({
 									title: '温馨提示',
