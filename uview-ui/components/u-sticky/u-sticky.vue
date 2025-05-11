@@ -8,7 +8,7 @@
 				position: fixed ? 'fixed' : 'static',
 				top: stickyTop + 'px',
 				left: left + 'px',
-				width: width == 'auto' ? 'auto' : width + 'px',
+				width: width == 'auto' ? 'auto' : width,
 				zIndex: uZIndex
 			}">
 				<slot></slot>
@@ -73,7 +73,7 @@
 				stickyTop: 0,
 				elClass: this.$u.guid(),
 				left: 0,
-				width: 'auto',
+				width: '100%',
 			};
 		},
 		watch: {
