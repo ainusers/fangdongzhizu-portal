@@ -58,6 +58,9 @@
 		},
 		onShow() {
 			this.userId=this.$store.state.userInfo.id;
+			this.listPage = 1;
+			this.LikeList =[];
+			this.nodataFlag= false;
 			this.getUnreadLikeList();
 		},
 		onUnload() {
@@ -103,6 +106,7 @@
 							this.nodataFlag = true;
 							this.loadingFlag = false;
 							this.status='nomore';
+							this.LikeList =[];
 						}else if(200 == res.code && res.data.length ==10){
 							this.LikeList = this.LikeList.concat(res.data);
 							this.loadingFlag = false;
@@ -121,12 +125,18 @@
 				uni.navigateTo({
 					url: "/pages/tabbar/community/comment?id=" + dynamicId + "&userId=" + userId
 				})
+				this.listPage = 1;
+				this.LikeList =[];
+				this.nodataFlag= false;
 			},
 			// 跳转至点赞人的个人中心
 			toUcenter(userId) {
 				uni.navigateTo({
 					url: '/pages/tabbar/me/personal?userId=' + userId
 				})
+				this.listPage = 1;
+				this.LikeList =[];
+				this.nodataFlag= false;
 			},
 			//未读消息数量
 			getUnreadLikeList(){
@@ -137,7 +147,6 @@
 					})
 					return;
 				}
-				
 				let data={
 					"userId": this.userId,
 					"page": this.listPage,
@@ -149,6 +158,8 @@
 					this.loadingFlag = true;
 					this.$H.get("/zf/v1/dynamic/statistics/unread", data, true).then(res => {
 						if (200 == res.code && res.data.length == 0) {
+							this.listPage = 1;
+							this.LikeList =[];
 							this.getAllLikeList();
 						}else if(200 == res.code && res.data.length ==10){
 							this.LikeList = this.LikeList.concat(res.data);
@@ -195,7 +206,7 @@
 				.second{
 					display: flex;
 					flex-direction: row;
-					font-size: 23rpx;
+					font-size: 26rpx;
 					.text{
 						padding: 5px 0px 0px 10px;
 						color: #999;

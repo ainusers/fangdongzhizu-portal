@@ -179,7 +179,7 @@
 				margin-bottom: 10rpx;
 				.second{
 					display: flex;
-					font-size: 23rpx;
+					font-size: 26rpx;
 					color: #999;
 					.text{
 						color: #999;

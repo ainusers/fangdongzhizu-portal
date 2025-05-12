@@ -117,9 +117,10 @@
 }
 .comment-tool textarea {
 	background-color: #f5f5f5;
-	padding: 20rpx;
+	padding: 25rpx 20rpx 20rpx 20rpx;
 	border-radius: 10rpx;
 	min-height: 40rpx;
+	font-size: 14px;
 }
 .comment-tool .u-btn {
 	margin-left: 10rpx;
@@ -190,7 +191,7 @@
 		</view>
 		<!-- 评论输入框 -->
 		<view class="comment-tool" :style="{ bottom: keyboardHeight + 'px' }">
-			<textarea fixed :placeholder="placeholder"   cursor-spacing="10"
+			<textarea fixed :placeholder="placeholder" cursor-spacing="10"
 				:adjust-position="false"
 				auto-height="true"
 				v-model="content"

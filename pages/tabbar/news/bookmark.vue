@@ -184,7 +184,7 @@
 				.second{
 					display: flex;
 					flex-direction: row;
-					font-size: 23rpx;
+					font-size: 26rpx;
 					.text{
 						padding: 5px 0px 0px 10px;
 						color: #999;
