@@ -153,7 +153,8 @@ module.exports=()=>({
 				"navigationBarTextStyle": "white",
 				"navigationBarBackgroundColor": "#1183fb",
 				"enablePullDownRefresh": false,
-				"backgroundTextStyle":"light"
+				"backgroundTextStyle":"light",
+				"onReachBottomDistance":0
 		    }
 		},
         {
