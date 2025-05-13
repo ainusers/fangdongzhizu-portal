@@ -33,7 +33,7 @@
 			<view class="price">
 				<view class="left">商品价格:</view>
 				<view class="second-right">¥100元</view>
-			</view> 
+			</view>
 		</view> -->
 		
 		<!-- 支付选项 -->
@@ -60,7 +60,7 @@
 		</view>
 		<view class="reward_text">
 			<view>
-				温馨提示:
+				<u-divider fontSize="29rpx;" half-width="300" bg-color="#f7f7f7">温馨提示</u-divider>
 			</view>
 			<view>
 				1、支付前请检查金额和支付方式是否正确
@@ -270,7 +270,7 @@
 		}
 	}
 	.reward_text{
-		font-size: 27rpx;
+		font-size: 29rpx;
 		width: 90%;
 		margin: 0 auto;
 		margin-top: 60rpx;

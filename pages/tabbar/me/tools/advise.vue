@@ -54,7 +54,7 @@
 		</view>
 		<view class="reward_text">
 			<view style="text-align: center;">
-				——— 温馨提示 ———
+				<u-divider fontSize="28rpx;" half-width="300">温馨提示</u-divider>
 			</view>
 			<view>
 				1、您的每一条建议，都是我们前进的动力

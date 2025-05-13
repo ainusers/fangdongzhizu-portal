@@ -1,31 +1,44 @@
 <template>
 	<view class="content">
-		<view class="container">
-			<view class="title">社区审核规则:</view>
-			<view class="title">1、发布动态：无需经过平台审核，私下联系需谨慎</view>
-			<view class="title">2、发布房源：需要经过平台审核<br/></view>
-			<view class="title-content">暂未审核：会在[待审核]中展示<br/></view>
-			<view class="title-content">审核不过：会在[待审核]中展示并附上审核意见<br/></view>
-			<view class="title-content">审核通过：会在[首页]中展示</view>
-		</view>
-		<view class="container">
-			<view class="title">发布房源规则:</view>
-			<view class="title">1、房源类型：<br/>租客选择[我要转租](默认)，房东选择[我是房东]</view>
-			<view class="title">2、资质上传：<br/>租客选择：租房合同或其他证明材料<br/>房东选择：清晰的房产证内容页或其他证明材料<br/></view>
-			<view class="title" style="color: #bd1212;">注意事项：如发现在资质中上传房源照片的，因平台无法核实您的身份和房源的真实性，一律审核不过</view>
-		</view>
-		<view class="tabbar-box-wrap">
-			<view class="tabbar-box">
-				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/tuwen','tuwen')">
-					<image class="box-image" src="http://43.143.148.105:9090/remote/fangdongzhizu/release.png" mode="aspectFit"></image>
-					<text class="explain">发布动态</text>
-				</view>
-				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar/publish/choice/fangyuan','fangyuan')">
-					<image class="box-image" src="http://43.143.148.105:9090/remote/fangdongzhizu/qa.png" mode="aspectFit"></image>
-					<text class="explain">发布房源</text>
+		<view class="container" @click="goToPage('/pages/tabbar/publish/choice/tuwen','tuwen')">
+			<view class="left">
+				<image class="tuwen-icon" src="http://43.143.148.105:9090/remote/fangdongzhizu/release.png" mode="aspectFit"></image>
+			</view>
+			<view class="middle">
+				<view class="title">发布动态</view>
+				<view class="rule">
+					<view class="title-content">无需经过平台审核，私下联系需谨慎</view>
+					<view class="title-content">发布后全国可见</view>
 				</view>
 			</view>
+			<view class="right">
+				<u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
+			</view>
 		</view>
+		<view class="container" @click="goToPage('/pages/tabbar/publish/choice/fangyuan','fangyuan')">
+			<view class="left">
+				<image class="tuwen-icon" src="http://43.143.148.105:9090/remote/fangdongzhizu/qa.png" mode="aspectFit"></image>
+			</view>
+			<view class="middle">
+				<view class="title">发布房源</view>
+				<view class="rule">
+					<view class="title-content">资质上传：<br/>租客：租房合同或其他证明材料<br/>房东：房产证内容页或其他证明材料<br/></view>
+				</view>
+			</view>
+			<view class="right">
+				<u-icon class="icon" name="arrow-right" color="#969799" size="28"></u-icon>
+			</view>
+		</view>
+		
+		<!-- 温馨提示 -->
+		<view class="advise">
+			<u-divider fontSize="29rpx;" half-width="300" bg-color="#f7f7f7">温馨提示</u-divider>
+			<view style="color: #9195a3;padding-top: 10rpx;">
+				如发现在资质中上传房源照片，因平台无法核实您的身份和房源的真实性，一律审核不过
+			</view>
+		</view>
+		
+		<!-- 实名认证校验 -->
 		<u-modal v-model="show" :content="content" :mask-close-able="true" title="温馨提示" @confirm="confirm" :show-cancel-button="true"></u-modal>
 	</view>
 </template>
@@ -95,94 +108,56 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content {
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	/* #ifdef H5 */
-	height: calc(100vh - var(--window-bottom) - var(--window-top));
-	/* #endif */
-	/* #ifndef H5 */
-	height: 100vh;
-	/* #endif */
-	transition: opacity 0.3s;
-	background: #999;
-	&.active {
-		opacity: 1;
-	}
-	.container {  
-	  padding: 5px;  
-	}  
-	.title {  
-	  font-size: 14px;  
-	  font-weight: bold;  
-	  margin-bottom: 3px;  
-	}
-	.title-content{ 
-		font-size: 14px;
-		font-weight: bold;  
-		margin-bottom: 3px;  
-		padding-left: 20px;
-	}
-	.rule {  
-	  font-size: 14px;
-	}
-}
-.tabbar-box-wrap {
-	position: absolute;
-	width: 100%;
-	padding: 26upx;
-	box-sizing: border-box;
-	bottom: 0;
-	left: 0;
-	.tabbar-box {
-		position: relative;
+	.content {
+		background-color: #f7f7f7;
+		height: 100vh;
 		display: flex;
-		width: 100%;
-		background: #fff;
-		border-radius: 20upx;
-		padding: 15upx 20upx;
-		box-sizing: border-box;
-		z-index: 2;
-		box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
-		&:after {
-			content: '';
-			position: absolute;
-			bottom: -16upx;
-			left: 0;
-			right: 0;
-			margin: auto;
-			width: 50upx;
-			height: 50upx;
-			transform: rotate(45deg);
-			background: #fff;
-			z-index: 1;
-			box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.1);
-			border-radius: 2px;
-		}
-		&:before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: #ffffff;
-			border-radius: 20upx;
-			z-index: 2;
-		}
-		.tabbar-box-item {
-			width: 100%;
-			z-index: 3;
-			margin: 10upx;
-			color: #555555;
-			text-align: center;
-			font-size: $uni-font-size-base;
-			.box-image {
-				width: 100%;
-				height: 40px;
-			}
-		}
+		flex-direction: column;
 	}
-}
+	.container {
+		height: 200rpx;
+		background-color: #ffffff;
+		margin: 15px 10px 5px 10px;
+		border-radius: 20rpx;
+		display: flex;
+		flex-direction: row;
+		box-shadow: 0 0 15px 1px rgba(224, 224, 224, 0.5);
+	}
+	.left{
+		width: 20%;
+	}
+	.middle{
+		width: 70%;
+		padding: 10px 0 5px 0;
+	}
+	.title {
+		font-size: 17px;
+		font-weight: 600;
+	}
+	.title-content {
+		font-size: 14px;
+		padding: 8rpx 0;
+	}
+	.rule {
+		color: #9195a3;
+	}
+	.right{
+		width: 10%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.tuwen-icon {
+		height: 100rpx;
+		width: 100rpx;
+		padding: 20rpx;
+	}
+	.advise {
+		width: 90%;
+		margin: 0 auto;
+		color: #9195a3;
+		padding: 20rpx;
+		font-size: 14px;
+		margin-top: 88%;
+	}
 </style>
