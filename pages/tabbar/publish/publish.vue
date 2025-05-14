@@ -33,7 +33,7 @@
 		<!-- 温馨提示 -->
 		<view class="advise">
 			<u-divider fontSize="29rpx;" half-width="300" bg-color="#f7f7f7">温馨提示</u-divider>
-			<view style="color: #9195a3;padding-top: 10rpx;">
+			<view style="color: #9195a3;padding: 10rpx;">
 				如发现在资质中上传房源照片，因平台无法核实您的身份和房源的真实性，一律审核不过
 			</view>
 		</view>
@@ -109,8 +109,8 @@ export default {
 
 <style lang="scss" scoped>
 	.content {
+    height: 100vh;
 		background-color: #f7f7f7;
-		height: 100vh;
 		display: flex;
 		flex-direction: column;
 	}
@@ -124,10 +124,10 @@ export default {
 		box-shadow: 0 0 15px 1px rgba(224, 224, 224, 0.5);
 	}
 	.left{
-		width: 20%;
+    flex: 1;
 	}
 	.middle{
-		width: 70%;
+    flex: 5;
 		padding: 10px 0 5px 0;
 	}
 	.title {
@@ -142,7 +142,7 @@ export default {
 		color: #9195a3;
 	}
 	.right{
-		width: 10%;
+    flex: 1;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -153,11 +153,11 @@ export default {
 		padding: 20rpx;
 	}
 	.advise {
-		width: 90%;
-		margin: 0 auto;
+    width: 100%;
 		color: #9195a3;
 		padding: 20rpx;
 		font-size: 14px;
-		margin-top: 88%;
+    position: absolute;
+    bottom: 20rpx;
 	}
 </style>

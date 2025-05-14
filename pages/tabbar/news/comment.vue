@@ -55,8 +55,11 @@
 				nomoreText: '没有更多了'
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.userid = this.$store.state.userInfo.id
+			this.listPage = 1;
+			this.commentList =[];
+			this.nodataFlag= false;
 			this.getUrdCommentList();
 		},
 		onUnload() {

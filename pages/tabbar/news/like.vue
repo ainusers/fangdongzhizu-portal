@@ -125,18 +125,12 @@
 				uni.navigateTo({
 					url: "/pages/tabbar/community/comment?id=" + dynamicId + "&userId=" + userId
 				})
-				this.listPage = 1;
-				this.LikeList =[];
-				this.nodataFlag= false;
 			},
 			// 跳转至点赞人的个人中心
 			toUcenter(userId) {
 				uni.navigateTo({
 					url: '/pages/tabbar/me/personal?userId=' + userId
 				})
-				this.listPage = 1;
-				this.LikeList =[];
-				this.nodataFlag= false;
 			},
 			//未读消息数量
 			getUnreadLikeList(){

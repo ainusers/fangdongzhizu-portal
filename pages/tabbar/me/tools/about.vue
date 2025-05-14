@@ -89,7 +89,7 @@
 		<view class="bottom">
 			<view class="text">
 				<view class="app_info">
-					<view class="item" @click="update">
+					<view class="item">
 						<view>
 							版本号
 						</view>

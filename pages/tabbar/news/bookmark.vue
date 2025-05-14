@@ -55,8 +55,11 @@
 				nomoreText: '没有更多了'
 			}
 		},
-		onLoad() {
-			this.userInfo = this.$store.state.userInfo
+		onShow() {
+			this.userInfo = this.$store.state.userInfo;
+			this.listPage = 1;
+			this.roomList =[];
+			this.nodataFlag= false;
 			this.getUrdBookmarkList();
 		},
 		onUnload() {
