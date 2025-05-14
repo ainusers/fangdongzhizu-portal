@@ -16,7 +16,7 @@
 	}
 	.home_top {
 		position: relative;
-		width: 100%;
+		width: 100vw;
 		display: flex;
 		justify-content: space-between;
 		padding: 0 30rpx;
@@ -75,17 +75,20 @@
 	.screen_fixed_list {
 		z-index: 100 !important;
 	}
+	.screen-tab{
+		width:100vw;
+	}
 </style>
 <template>
 	<view class="main">
 		<!-- 顶部区域 -->
-		<u-sticky offset-top="0" h5-nav-height="0" style="width: 100%">
-		    <!-- #ifdef APP-PLUS -->
+		<u-sticky offset-top="0" h5-nav-height="0">
+    <!-- #ifdef APP-PLUS -->
 			<view class="empty"></view>
 		    <!-- #endif -->
 			<view class="home_top">
 				<!-- 城市 -->
-				<view class="city" @click.stop="chooseCity">
+				<view class="city" @click="chooseCity">
 					<view>{{ cityName }}</view>
           <u-icon name="arrow-down-fill" color="#333" size="20" style="padding-left: 2px;"></u-icon>
 				</view>
@@ -96,11 +99,11 @@
 				</view>
 			</view>
 			<!-- 筛选项 -->
-			<screenTab ref="screenTab" v-if="current == 0 || current == 1"
+			<screenTab class="screen-tab" ref="screenTab" v-if="current == 0 || current == 1"
 				:screenFormData="screenFormData" :roomList="roomList" :from="from" :regionLeftList="regionLeftList"
 				:regionRightMap="regionRightMap" :enterType="enterType" :roomPriceRange="roomPriceRange"
 				:fixedContHeight="fixedContHeight" :key="updateSearch" 
-				:listTcShow.sync ="listTcShow"
+				:listTcShow.sync="listTcShow"
 				@screenBtn="screenBtn"
 				@regionRightBtn="regionRightBtn" @confirmBtn="confirmBtn"
 				@roomConfirm="roomConfirm" @confirmPrice="confirmPrice">
@@ -312,7 +315,6 @@
 			/*#ifdef APP-PLUS*/
 			plus.navigator.closeSplashscreen()
 			/*#endif*/
-			
 			that = this
 			// 从本地缓存中获取城市名称，如果没有则使用默认
 			let cityName = uni.getStorageSync('cityName');
@@ -357,10 +359,10 @@
 				if (!this.triggered) {
 					this.triggered = true
 					setTimeout(() => {
-						that.currPage = 1
+						this.currPage = 1
 						this.houseList = []
 						// 查询房源列表
-						this.getHouseList(1)
+						this.getHouseList()
 					}, 1000)
 				}
 			},
@@ -401,16 +403,16 @@
 				this.getHouseList()
 			},
 			// 查询房源列表
-			getHouseList(type) {
+			getHouseList() {
 				if (this.currPage == 1) {
 					this.showModel = true
 					this.isLoad = false
 				}
 				let data = {
-					publish_type: that.publish_type,
-					page: that.currPage,
-					size: that.size,
-					city: that.cityName,
+					publish_type: this.publish_type,
+					page: this.currPage,
+					size: this.size,
+					city: this.cityName,
 					status: 2
 				}
 				if (this.isScreen) {
@@ -432,17 +434,17 @@
 					this.triggered = false
 					if (res.status) {
 						this.fulling = false
-						that.houseList = that.houseList.concat(res.data)
+						this.houseList = this.houseList.concat(res.data)
 						if (this.publish_type == 1) {
-							that.subleaseList = that.houseList
+							this.subleaseList = this.houseList
 						} else if (this.publish_type == 2) {
-							that.directList = that.houseList
+							this.directList = this.houseList
 						}
 						if (res.data.length < 10) {
 							this.isLoad = true
-							this.loadStatus='nomore'
-						}else if (res.data.length == 10){
-							this.loadStatus='loadmore'
+							this.loadStatus = 'nomore'
+						} else if (res.data.length == 10) {
+							this.loadStatus = 'loadmore'
 						}
 					}
 				})
@@ -533,7 +535,7 @@
 				if (!item.id) {
 					screenFormData[enterType].price.text = "价格";
 					screenFormData[enterType].price.show = false
-					this.screenMoney=''
+					this.screenMoney = ''
 					this.init(true)
 					return
 				}
@@ -551,6 +553,8 @@
 			},
 			// 区域筛选
 			regionRightBtn(item) {
+				this.directList = []
+				this.subleaseList = []
 				if (item.name) {
 					this.screenArea = item.name
 					this.subway = ''
@@ -558,8 +562,6 @@
 					this.subway = item
 					this.screenArea = ''
 				}
-				this.directList = []
-				this.subleaseList = []
 				this.init(true)
 			},
 			// 户型的确认
