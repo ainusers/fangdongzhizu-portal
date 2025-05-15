@@ -70,20 +70,15 @@
         width: calc(100% - 180upx);
     }
     .er_house_title{
-		width:100%;
 		font-size:32upx;
 		font-weight:bold;
 		color:#101d36;
-		line-height:42upx;
-		margin-bottom:12upx;
-		overflow:hidden;
-		word-wrap:break-word;
-		word-break:break-all;
-		text-overflow:ellipsis;
-		display:-webkit-box;
-		-webkit-line-clamp:2;
-		-webkit-box-orient:vertical;
-		margin-top: -4upx;
+    overflow: hidden;  /* 隐藏超出容器的内容 */
+    white-space: nowrap;  /* 防止文本换行 */
+    text-overflow: ellipsis;  /* 当文本溢出时显示省略号 */
+    width: 400rpx;  /* 根据需要设置容器的宽度 */
+		line-height:32upx;
+		margin-bottom:18upx;
 		.item{
 			margin-right: 20rpx;
 		}
@@ -98,7 +93,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
-		margin-bottom: 15upx;
+		margin-bottom: 18upx;
     }
 	.er_house_des text{
 		color:#101d37;
@@ -118,7 +113,7 @@
     .er_house_tag_info{
 		overflow: hidden;
 		font-size:30upx;
-		margin-bottom: 15upx;
+		margin-bottom: 18upx;
 		overflow: hidden;  /* 隐藏超出容器的内容 */
 		white-space: nowrap;  /* 防止文本换行 */
 		text-overflow: ellipsis;  /* 当文本溢出时显示省略号 */

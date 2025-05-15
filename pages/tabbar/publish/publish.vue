@@ -127,7 +127,7 @@ export default {
     flex: 1;
 	}
 	.middle{
-    flex: 5;
+    flex: 8;
 		padding: 10px 0 5px 0;
 	}
 	.title {
