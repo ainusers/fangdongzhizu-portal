@@ -1,7 +1,7 @@
 <template>
 	<view class="main-style">
 		<block v-for="(item, index) in list" :key="index">
-			<view @click="toDetail(item,index,'')">
+			<view @click="noOperateFlag ? '':toDetail(item,index,'')">
 				<view class="post-item">
 					<!-- 用户数据 -->
 					<view class="post-item-top-user">
@@ -15,10 +15,10 @@
 								<text class="nickname" style="flex:1">{{ item.nickname?item.nickname.substring(0, 12):'' }}</text>
 								<view style="flex:1"></view>
 								<block style="flex:1">
-									<text style="font-size: 14px;color:#0076f6;padding-right: 20rpx;">{{ item.score }}</text>
+									<text style="font-size: 14px;color:#1183fb;padding-right: 20rpx;">{{ item.score }}</text>
 									<view>
 										<view style="font-size: 18px;" @click.stop.prevent="goReport(index,$event)"
-											  v-if="item.userid==$store.state.userInfo.id">
+											  v-if="item.userid==$store.state.userInfo.id && !noOperateFlag">
 											<u-icon name="more-dot-fill" color="rgb(203,203,203)"style="display: flex;right:50rpx;" ></u-icon>
 											<view class="reportText" v-if="item.isReport">
 												<view @click="deletePost(index,item.id)" class="item" >删除</view>
@@ -84,7 +84,7 @@
 						</view>
 					</view>
 					<!-- 列表操作（浏览，评论，点赞） -->
-					<view class="p-footer">
+					<view class="p-footer" v-if="!noOperateFlag">
 						<!-- 分享 -->
 						<view class="p-item">
 							<view v-if="!isDetail" @click.stop="toDetail(item,index,'zhuanfa')">
@@ -121,7 +121,7 @@
 					</view>
 					<!-- 温馨提示 -->
 					<view v-if="isDetail">
-						<view style="color:#AAAAAA; font-size: 14px;padding: 5px;">
+						<view style="color:#AAAAAA; font-size: 13px;padding: 5px;">
 							基于言论自由的考量，暂未对以上内容进行审核，无法确保内容的真实和准确性，对此不做任何保证与承诺，强烈建议交易前谨慎核实，确保个人财产和信息安全，如遇问题，请立即联系平台
 						</view>
 					</view>
@@ -136,7 +136,7 @@
 		</block>
 		<!-- 判断是否加载数据 -->
 		<view  v-if="!isDetail && list.length == 0">
-				<u-empty text="暂无数据" mode="favor"></u-empty>
+				<u-empty text="暂无数据" mode="favor" class="dynamic_nodata"></u-empty>
 		</view>
 		<u-loadmore  v-else-if="!isDetail && list.length>0" :status="loadStatus" :load-text="loadText" />
 		<!-- 举报模态框 -->
@@ -183,7 +183,8 @@
 			isDetail: Boolean,
 			isPersonal: Boolean,
 			showRow: String,
-			imageFlag: Boolean
+			imageFlag: Boolean,
+			noOperateFlag:Boolean
 		},
 		components: {
 			zhizuReport,
@@ -385,12 +386,17 @@
 	.main-style {
 		background: #f7f7f7
 	}
+	.dynamic_nodata {
+		padding: 5px 0;
+		text-align: center;
+		background-color: #f7f7f7;
+	}
 	.post-item {
 		background: #ffffff;
 		border: solid 1px #eee;
 		margin: 0px 5px 5px 5px;
 		border-radius: 10px;
-		padding: 5px 5px 0 5px;
+		padding: 5px 5px 5px 5px;
 		.post-content {
 			margin-top: 10rpx;
 			.videoclass{
