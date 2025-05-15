@@ -60,7 +60,7 @@
 		</view>
 		<view class="reward_text">
 			<view>
-				<u-divider fontSize="29rpx;" half-width="300" bg-color="#f7f7f7">温馨提示</u-divider>
+				<u-divider fontSize="28rpx;" half-width="300" bg-color="#f7f7f7">温馨提示</u-divider>
 			</view>
 			<view>
 				1、支付前请检查金额和支付方式是否正确
@@ -270,7 +270,7 @@
 		}
 	}
 	.reward_text{
-		font-size: 29rpx;
+		font-size: 28rpx;
 		width: 90%;
 		margin: 0 auto;
 		margin-top: 60rpx;
