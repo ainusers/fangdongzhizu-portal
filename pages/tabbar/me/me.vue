@@ -1,6 +1,7 @@
 <style lang="scss" scoped>
 	@import "@/static/iconfont/iconfont.css";
 	.content {
+		height: calc(100vh - var(--window-top) - var(--window-bottom) - 10px);
 		background-color: #f7f7f7;
 		text-align: center;
 	}
