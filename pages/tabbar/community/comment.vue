@@ -229,7 +229,8 @@ export default {
 			expand:0,//当前展开的第几层
 			locationCicy:'',//IP归属的城市
 			userId:'',// 登录用户id
-			keyboardHeight:0 // 键盘高度
+			keyboardHeight:0 ,// 键盘高度
+			dynamicUserId:''//动态用户id
 		};
 	},
 	props:{
@@ -279,6 +280,7 @@ export default {
 					})
 					if(detail){
 						this.tuwen_data = detail
+						this.dynamicUserId = this.tuwen_data[0].userid
 						uni.stopPullDownRefresh();
 					}
 				}
@@ -359,7 +361,7 @@ export default {
 			}
 			let data={
 				words:htmlEncode(this.content),
-				dynamicUserId: this.tuwen_data[0].userid,
+				dynamicUserId: this.dynamicUserId,
 				commentUserId:this.$store.state.userInfo.id,//回复用户id，也就是用户本人
 				beCommentUserId:this.beCommentUserId,//被回复id也就别人id
 				dynamicId:this.dyId,//动态id
@@ -514,7 +516,7 @@ export default {
 					id:id,
 					userId:this.$store.state.userInfo.id,
 					type:'plus',
-					dynamicUserId:this.tuwen_data[0].userid
+					dynamicUserId:this.dynamicUserId
 				}
 				this.$H.patch('/zf/v1/dynamic/look',data,true).then(res=>{
 				})
