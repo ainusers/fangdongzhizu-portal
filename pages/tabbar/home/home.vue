@@ -120,8 +120,8 @@
 					<view v-if="current === 0">
 						<view class="content" v-if="houseList.length>0">
 							<!-- 租房列表 -->
-							<block v-for="(item, index) in houseList" :key="index">
-								<house-list-item :item="item" :index="index"></house-list-item>
+							<block v-for="(item, index) in houseList" :key="index" >
+								<house-list-item :item="item" :index="index" :homeDetailFlag.sync="homeDetailFlag"></house-list-item>
 							</block>
 						</view>
 						<view v-if="showModel && houseList.length==0">
@@ -146,7 +146,7 @@
 						<view class="content" v-if="houseList.length>0">
 							<!-- 租房列表 -->
 							<block v-for="(item, index) in houseList" :key="index">
-								<house-list-item :item="item" :index="index"></house-list-item>
+								<house-list-item :item="item" :index="index" :homeDetailFlag.sync="homeDetailFlag"></house-list-item>
 							</block>
 						</view>
 						<!-- 骨架屏 -->
@@ -277,7 +277,8 @@
 				loadingText: '努力加载中...', // 加载中提示文字
 				loadmoreText: '轻轻上拉加载更多...', // 加载前提示文字
 				nomoreText: '-- 没有更多了 --' ,// 没有更多数据提示文字
-				listTcShow:false
+				listTcShow:false,
+				homeDetailFlag:false //访问房源详情标识
 			};
 		},
 		props: {
@@ -294,23 +295,6 @@
 				default: ""
 			}
 		},
-		mounted() {
-			that = this
-			uni.$on('chooseCity', function(data) {
-				//触发更新后
-				that.cityName = data.cityName;
-				uni.setStorageSync('cityName', data.cityName) // 保存城市
-				// 查询房源列表
-				that.subleaseList = []
-				that.directList = []
-				that.init(1)
-			})
-		},
-		//为了优化代码，可以加上移除事件，避免重复监听事件
-		onUnload() {
-			// 移除监听事件  
-			uni.$off('chooseCity');
-		},
 		onLoad() {
 			/*#ifdef APP-PLUS*/
 			plus.navigator.closeSplashscreen()
@@ -322,15 +306,15 @@
 				that.cityName = cityName;
 			} else {
 				that.cityName = '北京市'
-				uni.setStorageSync('cityName', this.cityName)
+				uni.setStorageSync('cityName', that.cityName)
 			}
 			// 查询房源列表
-			this.getHouseList()
+			that.getHouseList()
 			// 通知公告
-			this.getNotice()
+			that.getNotice()
 			// 检查更新
 			getLatest().then(res => {
-				if (res.version != this.$store.state.version) {
+				if (res.version != that.$store.state.version) {
 					MycheckUpdate()
 				}
 			})
@@ -343,6 +327,24 @@
 					that.savePhoneInfo(res.data)
 				}
 			})
+		},
+		onShow() {
+			if(this.homeDetailFlag){
+				this.homeDetailFlag= false;
+			}else{
+        // 从本地缓存中获取城市名称，如果没有则使用默认
+        let cityName = uni.getStorageSync('cityName');
+        if(cityName){
+          this.cityName = cityName;
+        } else {
+          this.cityName = '北京市'
+          uni.setStorageSync('cityName', this.cityName)
+        }
+        // 查询房源列表
+        this.getHouseList()
+        // 通知公告
+        this.getNotice()
+			}
 		},
 		methods: {
 			// 获取公告
@@ -404,6 +406,23 @@
 			},
 			// 查询房源列表
 			getHouseList() {
+				if(!this.homeDetailFlag){
+					this.currPage = 1;
+					this.listTcShow = false;
+					this.directList = []
+					this.subleaseList = []
+					this.subway = ''
+					this.screenArea = ''
+					this.houseList =[]
+					if(this.$refs.screenTab){
+						this.$refs.screenTab.areaName = '区域';
+						this.$refs.screenTab.regionRightMap['region'] = '';
+						this.$refs.screenTab.screenFormData[this.enterType]['region'].show = false;
+						this.$refs.screenTab.stationIndex= -1;
+						this.$refs.screenTab.screenFormData.erHouse.region.show  = false;
+						this.$refs.screenTab.screenFormData.erHouse.region.text='区域'
+					}
+				}
 				if (this.currPage == 1) {
 					this.showModel = true
 					this.isLoad = false
@@ -502,14 +521,7 @@
 			},
 			// 选择城市
 			chooseCity() {
-				this.listTcShow = false;
-				this.$refs.screenTab.areaName = '区域';
-				this.$refs.screenTab.regionRightMap['region'] = '';
-				this.$refs.screenTab.screenFormData[this.enterType]['region'].show = false;
-				this.$refs.screenTab.stationIndex= -1;
-				this.$refs.screenTab.screenFormData.erHouse.region.show  = false;
-				this.$refs.screenTab.screenFormData.erHouse.region.text='区域'
-				this.regionRightBtn('')
+				this.houseList=[];
 				uni.navigateTo({
 					url: "/pages/tabbar/home/chooseCity"
 				});

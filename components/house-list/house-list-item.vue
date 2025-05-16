@@ -283,7 +283,7 @@
 				isUpdate:false
 			}
 		},
-        props: ["item","index","current"],
+        props: ["item","index","current","homeDetailFlag"],
         methods: {
 			updateHouse(item){
 				let city=''
@@ -372,6 +372,7 @@
             this.$emit('updateRemoveShow', true, item)
           },
         	homeDetail(item,index) {
+				this.$emit('update:homeDetailFlag', true)
 				// 用户浏览统计
 				let data={
 					userId: this.$store.state.userInfo.id,

@@ -161,7 +161,7 @@ export default {
   onUnload() {
     // 设置默认城市
   	if(this.gpsCityName.cityName == '定位中...'  && !this.chooseFlag){
-		 uni.$emit('chooseCity', this.hotCityList[0])
+		 uni.setStorage('cityName', this.hotCityList[0]) // 保存城市
 	  }
   },
   methods: {
@@ -173,12 +173,13 @@ export default {
       let area = e.area.label
       this.position.city = city == '市辖区' ? province : city
 	  city = city == '市辖区' ? province : city
-      uni.navigateBack({
-        delta: 1,
-        success() {
-          uni.$emit('chooseCity', {cityName: city})
-        }
-      });
+	  uni.setStorage({
+		  key: 'cityName',
+		  data: city,
+		  success: function () {
+			uni.navigateBack({delta:1})
+		  }
+	  });
     },
 
     // 平台重新定位（判断平台ios还是android）
@@ -326,10 +327,11 @@ export default {
 		  	})
 			return;
 		}
-		uni.navigateBack({
-		  delta: 1,
-		  success() {
-		    uni.$emit('chooseCity', {cityName: item.cityName});
+		uni.setStorage({
+		  key: 'cityName',
+		  data: item.cityName,
+		  success: function () {
+			  uni.navigateBack({delta:1})
 		  }
 		});
     }
