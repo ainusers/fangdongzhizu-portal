@@ -359,7 +359,7 @@ export default {
 			}
 			let data={
 				words:htmlEncode(this.content),
-				dynamicUserId: this.options.userid,
+				dynamicUserId: this.tuwen_data[0].userid,
 				commentUserId:this.$store.state.userInfo.id,//回复用户id，也就是用户本人
 				beCommentUserId:this.beCommentUserId,//被回复id也就别人id
 				dynamicId:this.dyId,//动态id
@@ -514,7 +514,7 @@ export default {
 					id:id,
 					userId:this.$store.state.userInfo.id,
 					type:'plus',
-					dynamicUserId:this.options.userid
+					dynamicUserId:this.tuwen_data[0].userid
 				}
 				this.$H.patch('/zf/v1/dynamic/look',data,true).then(res=>{
 				})
