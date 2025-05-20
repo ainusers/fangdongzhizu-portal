@@ -121,7 +121,7 @@
 						<view class="content" v-if="houseList.length>0">
 							<!-- 租房列表 -->
 							<block v-for="(item, index) in houseList" :key="index" >
-								<house-list-item :item="item" :index="index" :homeDetailFlag.sync="homeDetailFlag"></house-list-item>
+								<house-list-item :item="item" :index="index" />
 							</block>
 						</view>
 						<view v-if="showModel && houseList.length==0">
@@ -146,7 +146,7 @@
 						<view class="content" v-if="houseList.length>0">
 							<!-- 租房列表 -->
 							<block v-for="(item, index) in houseList" :key="index">
-								<house-list-item :item="item" :index="index" :homeDetailFlag.sync="homeDetailFlag"></house-list-item>
+								<house-list-item :item="item" :index="index" />
 							</block>
 						</view>
 						<!-- 骨架屏 -->
@@ -278,7 +278,7 @@
 				loadmoreText: '轻轻上拉加载更多...', // 加载前提示文字
 				nomoreText: '-- 没有更多了 --' ,// 没有更多数据提示文字
 				listTcShow:false,
-				homeDetailFlag:false //访问房源详情标识
+				resetFlag:false //首页是否需要重置刷新
 			};
 		},
 		props: {
@@ -329,9 +329,8 @@
 			})
 		},
 		onShow() {
-			if(this.homeDetailFlag){
-				this.homeDetailFlag= false;
-			}else{
+      if(this.resetFlag){
+        this.resetFlag = false;
         // 从本地缓存中获取城市名称，如果没有则使用默认
         let cityName = uni.getStorageSync('cityName');
         if(cityName){
@@ -342,9 +341,7 @@
         }
         // 查询房源列表
         this.getHouseList()
-        // 通知公告
-        this.getNotice()
-			}
+      }
 		},
 		methods: {
 			// 获取公告
@@ -406,7 +403,7 @@
 			},
 			// 查询房源列表
 			getHouseList() {
-				if(!this.homeDetailFlag){
+				if(this.resetFlag){
 					this.currPage = 1;
 					this.listTcShow = false;
 					this.directList = []
@@ -525,6 +522,7 @@
 				uni.navigateTo({
 					url: "/pages/tabbar/home/chooseCity"
 				});
+				this.resetFlag = true;
 			},
 			// 选项卡点击 - 弹出div
 			screenBtn(type) {
