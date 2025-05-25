@@ -72,7 +72,9 @@
 		</view>
 		<!-- 详情页 - 地理位置 -->
 		<view class="model">
-			<view class="modelName">地理位置</view>
+			<view class="modelName">地理位置
+        <span style="font-size: 28rpx;color: #9195a3;margin-left: 5px">(仅供参考)</span>
+      </view>
 			<view class="map_con">
 			<view>{{detailData.distanceSubway}}</view>
 				<di-li-wei-zhi v-if="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi>
