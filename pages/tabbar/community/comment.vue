@@ -176,7 +176,7 @@
 										</view>
 									</view>
 								</view>
-								<view :class="[res.commentText?'all-reply':'']" @tap="toAllReply(index1,res.comment_id)" v-if="res.replyList&&res.replyList.length>0">
+								<view :class="[res.commentText?'all-reply':'']" @tap="toAllReply(index1,res.comment_id)" v-else-if="res.count>0">
 									 {{res.commentText}}
 									<u-icon class="more" name="arrow-right" :size="26" v-if="res.commentText"></u-icon>
 								</view>
@@ -212,7 +212,6 @@ export default {
 			placeholder: '文字是桥梁，连接心与心的距离...',
 			commlistOne:[],//一级评论
 			beCommentUserId:0,//被回复id，如果没有就默认0
-			AllReply:false,
 			commentListShow:true,
 			commentText:"展开查看更多",
 			commentList: [],
@@ -286,12 +285,11 @@ export default {
 				}
 			})
 		},
-		// 跳转到全部回复
+		// 跳转到全部回复（点击查看更多）
 		toAllReply(index,id) {
 			this.expand++
-			this.AllReply=true
 			this.commentList.forEach((item)=>{
-				item.AllReply=false
+				item.AllReply?'':item.AllReply=false
 				if(item.replyList&&item.replyList.length>0){
 					item.commentText='展开查看更多'
 				}
@@ -459,10 +457,10 @@ export default {
 							commentList.forEach((item,index)=>{
 								this.$set(item,'replyList',[])
 								item.AllReply=false
-								item.commentText='展开查看更多'
-								that.commentList.push(item)
-								item.likeNum=0
-								that.getTwoList(item.comment_user_id,index,item.comment_id,item)
+                if (item.count > 0) {
+                  item.commentText='展开查看更多'
+                }
+                that.commentList.push(item)
 							})
 						}
 					}
