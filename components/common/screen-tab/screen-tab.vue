@@ -268,8 +268,10 @@
 							success: (res) => {
 								this.priceItem=res.data
 								screenFormData.erHouse.price.show=true
-								 screenFormData.erHouse.price.text =this.priceItem.text	
-								 return
+								if(this.priceItem.text){
+									screenFormData.erHouse.price.text =this.priceItem.text	
+								}
+								return
 							}
 						})
 						if (screenFormData[enterType].price.text == '价格') {
@@ -567,6 +569,7 @@
 				})
 				this.$emit('confirmPrice', item)
 			},
+			// 价格重置
 			priceReset() {
 				let screenFormData = this.screenFormData
 				screenFormData[this.enterType].price.show = false
