@@ -629,7 +629,7 @@
 												// #endif
 												// 使用手机号联系房东
 												uni.makePhoneCall({
-													phoneNumber: that.detailData.username-that.detailData.username.substring(0,5)
+													phoneNumber: that.detailData.username-that.detailData.id.substring(0,5)
 												})
 											}
 										})
