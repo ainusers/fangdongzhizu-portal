@@ -1903,10 +1903,10 @@
 				}
 				let imagesNatureArr = ''
 				let imagesHouseArr = ''
-				// #ifdef APP-PLUS
 				var location = ''
 				let address = ''
-				let platform = 'android'
+				let platform = ''
+				// #ifdef APP-PLUS
 				if(this.$store.state.address&&this.$store.state.address.province){
 					address=this.$store.state.address
 				} else {
@@ -1998,7 +1998,7 @@
 				this.$H.post(url, params, true).then(res => {
 					uni.hideToast();
 					if (res.data && res.status) {
-            this.show = true;
+						this.show = true;
 						uni.removeStorage({
 							key: 'houseModel'
 						})

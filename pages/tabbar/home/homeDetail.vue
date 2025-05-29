@@ -628,8 +628,10 @@
 												})
 												// #endif
 												// 使用手机号联系房东
+												const id = that.detailData.id
+												const username = that.detailData.username
 												uni.makePhoneCall({
-													phoneNumber: that.detailData.username-that.detailData.id.substring(0,5)
+													phoneNumber: (username-id.substring(id.length-5,id.length)).toString()
 												})
 											}
 										})
