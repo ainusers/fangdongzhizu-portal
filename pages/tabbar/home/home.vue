@@ -731,12 +731,12 @@ export default {
               if (res.statusCode === 200) {
                   plus.runtime.install(res.tempFilePath, {}, () => {
                       uni.showToast({
-                          title: '安装成功',
+                          title: '下载成功',
                           icon: 'success'
                       });
                   }, (e) => {
                       uni.showToast({
-                          title: '安装失败',
+                          title: '下载失败',
                           icon: 'none'
                       });
                   });

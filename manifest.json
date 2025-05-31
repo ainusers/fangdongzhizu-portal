@@ -14,12 +14,10 @@
         /* 5+App特有相关 */
         "modules" : {
             "Geolocation" : {},
-            "Maps" : {},
             "Camera" : {},
             "VideoPlayer" : {},
             "Payment" : {},
-            "Share" : {},
-            "Push" : {}
+            "Share" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -70,7 +68,11 @@
             },
             /* ios打包配置 */
             "sdkConfigs" : {
-                "geolocation" : {},
+                "geolocation" : {
+                    "system" : {
+                        "__platform__" : [ "ios", "android" ]
+                    }
+                },
                 "oauth" : {},
                 "ad" : {
                     "ks" : {},
