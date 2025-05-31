@@ -283,10 +283,18 @@ export default {
       }
       // android平台使用gcj02坐标
       uni.getLocation({
-        type: 'gcj02',
+        type: 'wgs84',
         geocode: true,
         success: function (res) {
-          that.gpsCityName.cityName = res.address.city
+			let data = {
+			  latitude: res.latitude.toString(),
+			  longitude: res.longitude.toString(),
+			}
+			that.$H.get('/zf/v1/const/geo', data, true).then(res => {
+			  if (200 == res.code && res.data.length > 0) {
+				that.gpsCityName.cityName = res.data[0]
+			  }
+			})
           //只有点击重新定位的时候出来
           if (status) {
             uni.showToast({
