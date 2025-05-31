@@ -510,35 +510,7 @@
 		    SDK隐私政策链接/目的：https://ask.dcloud.net.cn/protocol.html
 		</div>
 		<div class="bold">
-		    2、高德开放平台
-		</div>
-		<div>
-		    SDK包名/网址：com.amap.api, com.loc, com.autonavi
-		</div>
-		<div>
-		    SDK用途：实现定位/展现地图
-		</div>
-		<div>
-		    获取的个人信息类型：存储的个人文件、位置信息、读取手机状态和身份、网络信息、传感器信息、Android ID
-		</div>
-		<div>
-		    调用的设备权限：android.permission.ACCESS_COARSE_LOCATION
-		                    android.permission.ACCESS_FINE_LOCATION
-		                    android.permission.ACCESS_NETWORK_STATE
-		                    android.permission.ACCESS_WIFI_STATE
-		                    android.permission.CHANGE_WIFI_STATE
-		                    android.permission.READ_PHONE_STATE
-		                    android.permission.WRITE_EXTERNAL_STORAGE
-		                    android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
-		</div>
-		<div>
-		    信息用途：定位用户地理位置提供房源/显示IP属地/计算小区和地铁站的距离
-		</div>
-		<div>
-		    SDK隐私政策链接/目的：https://lbs.amap.com/pages/privacy
-		</div>
-		<div class="bold">
-		    3、uni-AD
+		    2、uni-AD
 		</div>
 		<div>
 		    SDK包名/网址：uni-AD
@@ -561,7 +533,7 @@
 		    SDK隐私政策链接/目的：<a href="https://doc.dcloud.net.cn/markdown-share-docs/1d821cdd3cdf2681045ec4be94bc8404/" target="_blank">隐私协议</a>
 		</div>
 		<view class="bold">
-			4、优量汇
+			3、优量汇
 		</view>
 		<view>
 			SDK包名/网址：com.qq.e
@@ -590,7 +562,7 @@
 			SDK隐私政策链接/目的：<a href="https://e.qq.com/dev/help_detail.html?cid=2005&pid=5983" target="_blank">优量汇隐私协议</a>
 		</view>
 		<view class="bold">
-			5、快手广告联盟
+			4、快手广告联盟
 		</view>
 		<view>
 			SDK包名/网址：com.kwad.sdk
@@ -621,7 +593,7 @@
 			SDK隐私政策链接/目的：<a href="https://www.kuaishou.com/about/policy" target="_blank">快手内容联盟隐私协议</a>和<a href="https://u.kuaishou.com/home/detail/1220" target="_blank">SDK使用规范</a>
 		</view>
 		<view class="bold">
-			6、Sigmob
+			5、Sigmob
 		</view>
 		<view>
 			SDK包名/网址：com.sigmob.windad
@@ -648,7 +620,7 @@
 			SDK隐私政策链接/目的：<a href="https://doc.sigmob.com/Sigmob%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/%E9%9A%90%E7%A7%81%E6%9D%A1%E6%AC%BE/%E9%9A%90%E7%A7%81%E6%94%BF%E7%AD%96/" target="_blank">Sigmob隐私协议</a>
 		</view>
 		<view class="bold">
-			7、微信开放平台
+			6、微信开放平台
 		</view>
 		<view>
 			SDK包名/网址：com.tencent.mm
@@ -667,7 +639,7 @@
 			SDK隐私政策链接/目的：<a href="https://weixin.qq.com/cgi-bin/readtemplate?lang=zh_CN&amp;t=weixin_agreement&amp;s=privacy" target="_blank">微信隐私协议</a>
 		</view>
 		<view class="bold">
-			8、支付宝开放平台
+			7、支付宝开放平台
 		</view>
 		<view>
 			SDK包名/网址：com.alipay
