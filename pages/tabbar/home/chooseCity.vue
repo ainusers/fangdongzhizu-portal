@@ -259,7 +259,7 @@ export default {
       let that = this;
       // 获取android定位
       if ("authorized" !== uni.getAppAuthorizeSetting().locationAuthorized) {
-        uni.showToast({title: '请开启手机GPS定位功能', duration: 2000, icon: 'none'});
+        uni.showToast({title: '请开启GPS定位功能', duration: 2000, icon: 'none'});
         return;
       }
       // 检查GPS是否开启
@@ -286,10 +286,6 @@ export default {
         type: 'gcj02',
         geocode: true,
         success: function (res) {
-          if(!res.address.city) {
-            uni.showToast({title: '请开启手机GPS定位功能后点击重新定位', duration: 3000, icon: 'none'});
-            return
-          }
           that.gpsCityName.cityName = res.address.city
           //只有点击重新定位的时候出来
           if (status) {
