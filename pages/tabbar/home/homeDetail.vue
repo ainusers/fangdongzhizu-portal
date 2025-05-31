@@ -77,7 +77,7 @@
       </view>
 			<view class="map_con">
 			<view>{{detailData.distanceSubway}}</view>
-				<di-li-wei-zhi v-if="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi>
+				<!-- <di-li-wei-zhi v-if="isMap" :latitude="detailData.latitude" :longitude="detailData.longitude" :markers="markers"></di-li-wei-zhi> -->
 			</view>
 		</view>
 		<!-- 详情页 - 配套设施 -->
