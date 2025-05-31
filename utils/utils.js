@@ -224,6 +224,22 @@ const getLatest= function(){
 	})
 }
 
+// 版本号比较函数
+const compareVersions = function(current, latest) {  
+	let latestParts = latest.split('.').map(Number);
+	let currentParts = current.split('.').map(Number);
+	for (let i = 0; i < Math.max(currentParts.length, latestParts.length); i++) {
+		let currentPart = currentParts[i] || 0;
+		let latestPart = latestParts[i] || 0;
+		if (currentPart < latestPart) {
+			return -1;
+		} else if (currentPart > latestPart) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 // 用户自助更新APP
 const MycheckUpdate=function(type){
 	// type =1 从关于我们点击的更新
@@ -375,5 +391,6 @@ export {
 	gotoAppSetting,
 	logout,
 	getCurrentUrl,
-	appShare
+	appShare,
+	compareVersions
 }
