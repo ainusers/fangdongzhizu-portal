@@ -144,7 +144,7 @@
             }
         },
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
         },
         "splashscreen" : {
             "waiting" : false
@@ -178,10 +178,6 @@
                 "enable" : true
             }
         }
-    },
-    "uniStatistics" : {
-        "version" : "2",
-        "reportInterval" : "60"
     },
     "locale" : "auto",
     "_spaceID" : "mp-e39ae62b-d074-4108-bd17-f92ad835a8da"
