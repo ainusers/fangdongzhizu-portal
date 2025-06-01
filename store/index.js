@@ -8,7 +8,7 @@ const store = new Vuex.Store({
 		token:'',
 		address:{},
 		ispublishSub:false, //是否点击到过开启定位服务界面
-		version:'1.0.13'
+		version:'1.0.14'
 	},
 	mutations: {
 		userInfo(state,obj){
