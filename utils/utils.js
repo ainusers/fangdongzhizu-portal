@@ -1,8 +1,6 @@
 import store from '@/store/index.js';
 import request from '@/utils/request.js'
-import checkUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update.js'
 import config from '@/utils/config.js';
-let updateOnly=false
 
 // 获取本地存储中的数据
 const initKey = ['token', 'userInfo'] //防止刷新vuex丢失数据
@@ -240,15 +238,6 @@ const compareVersions = function(current, latest) {
 	return 0;
 }
 
-// 用户自助更新APP
-const MycheckUpdate=function(type){
-	// type =1 从关于我们点击的更新
-	if(!updateOnly || type==1){
-		updateOnly=true
-		checkUpdate()
-	}
-}
-
 // 跳转权限管理页面
 const gotoAppSetting = function() {
 	let isIOS = (uni.getSystemInfoSync().platform === 'ios');
@@ -387,7 +376,6 @@ export {
 	checkPush,
 	checkExist,
 	getLatest,
-	MycheckUpdate,
 	gotoAppSetting,
 	logout,
 	getCurrentUrl,
