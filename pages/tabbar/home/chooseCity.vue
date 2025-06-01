@@ -281,7 +281,7 @@ export default {
           }
         });
       }
-      // android平台使用gcj02坐标
+      // android平台使用wgs84坐标
       uni.getLocation({
         type: 'wgs84',
         geocode: true,
@@ -292,7 +292,7 @@ export default {
 			}
 			that.$H.get('/zf/v1/const/geo', data, true).then(res => {
 			  if (200 == res.code && res.data.length > 0) {
-				that.gpsCityName.cityName = res.data[0]
+				that.gpsCityName.cityName = res.data[0].city
 			  }
 			})
           //只有点击重新定位的时候出来

@@ -84,7 +84,6 @@
 				isShow: false,
 				listPage: 1,
 				pageSize: 15,
-				changeFlag:false,
 				ScrollFlag:false
 			};
 
@@ -119,21 +118,15 @@
 			}
 		},
 		methods: {
-			//监听输入框变化
-			handleInput(e){
-				this.changeFlag = true;
-			},
 			// 查询指定名称的公司
 			search() {
 				if(!this.ScrollFlag){
-					if (this.changeFlag ) {
-						this.listPage = 1
-						this.rankingList = []
-						this.status = 'loadmore'
-						this.nodataFlag = false
-						this.isShow = false
-						this.ScrollFlag = false
-					}
+					this.listPage = 1
+					this.rankingList = []
+					this.status = 'loadmore'
+					this.nodataFlag = false
+					this.isShow = false
+					this.ScrollFlag = false
 				}
 				let data = {
 					"page": this.listPage,

@@ -1932,14 +1932,12 @@
 						} else {
 						    // android手机定位服务（GPS）已授权
 							location = await this.getAndroidLocation();
-							address=location.address
-							this.$store.commit('address',location.address)
+							address=location.position.address
+							this.$store.commit('address',address)
 						}
 						platform = 'android'
 					}
 				}
-				let position = address.province + '-' + address.city + '-' + address.district + '-' +
-					address.street + '-' + address.streetNum + '-' + address.poiName + '-' + address.cityCode
 				// #endif
 				imagesNatureArr = this.houseModel.naturalImageList
 				imagesHouseArr = this.houseModel.houseImageList
@@ -1977,7 +1975,7 @@
 				// #ifdef APP-PLUS
 				params['longitude'] = location.longitude
 				params['latitude'] = location.latitude
-				params['position'] = location.position
+				params['position'] = address
 				// #endif
 				let roommate = []
 				this.houseModel.homeArr.forEach(item => {
@@ -2016,13 +2014,27 @@
 			// android定位获取
 			getAndroidLocation() {
 				return new Promise((resolve, reject) => {
-					// android平台使用gcj02坐标
+					// android平台使用wgs84坐标
 					uni.getLocation({
-						type: 'gcj02',
-						isHighAccuracy:true,
+						type: 'wgs84',
+						isHighAccuracy:false,
 						geocode: true,
 						success: function (res) {
-							resolve(res);
+							let data = {
+							  latitude: res.latitude.toString(),
+							  longitude: res.longitude.toString(),
+							}
+							that.$H.get('/zf/v1/const/geo', data, true).then(resdata => {
+							  if (200 == resdata.code && resdata.data.length > 0) {
+								let resultData = {
+									latitude: res.latitude.toString(),
+									longitude: res.longitude.toString(),
+									position:resdata.data[0]
+								}
+								resolve(resultData);
+							  }
+							})
+							
 						},
 						fail: (e) => {
 							if("authorized" == uni.getAppAuthorizeSetting().locationAuthorized){
@@ -2049,7 +2061,7 @@
 					// ios平台使用wgs84坐标
 					uni.getLocation({
 						type: 'wgs84',
-						isHighAccuracy:true,
+						isHighAccuracy:false,
 						geocode: true,
 						success: function (res) {
 							resolve(res);
