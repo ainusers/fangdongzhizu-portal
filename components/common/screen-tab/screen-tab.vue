@@ -250,24 +250,10 @@
 					}
 					if (key == 'price') {
 						uni.getStorage({
-							key:'priceArea',
-							success: (res) => {
-								let priceArea=res.data
-								this.minPriceVal=priceArea.minPriceVal
-								this.maxPriceVal=priceArea.maxPriceVal
-								screenFormData.erHouse.price.show=true
-								this.priceItem.id=''
-								this.priceItem.text=''
-								this.priceItem.val=''
-								screenFormData.erHouse.price.text =this.minPriceVal+'-'+this.maxPriceVal
-								return
-							}
-						})
-						uni.getStorage({
 							key:'price',
 							success: (res) => {
 								this.priceItem=res.data
-								screenFormData.erHouse.price.show=true
+								screenFormData[enterType][key].show = false;
 								if(this.priceItem.text){
 									screenFormData.erHouse.price.text =this.priceItem.text	
 								}
@@ -285,8 +271,10 @@
 							key:'roomItem',
 							success: (res) => {
 								this.roomItem=res.data
-								screenFormData[enterType][key].show = true;
-								screenFormData[this.enterType].room.text =this.roomItem.text
+								screenFormData[enterType][key].show = false;
+								if(this.roomItem.text  != '户型' && this.roomItem.text != '不限'){
+									screenFormData[this.enterType].room.text =this.roomItem.text
+								}
 								return
 							}
 						})
