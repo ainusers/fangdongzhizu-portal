@@ -704,10 +704,10 @@ export default {
             }
         } else {
             // 已是最新版本
-            uni.showToast({
-                title: '已是最新版本',
-                icon: 'none'
-            });
+            // uni.showToast({
+            //     title: '已是最新版本',
+            //     icon: 'none'
+            // });
         }
 	    }).catch((err) => {
 	        uni.showToast({
