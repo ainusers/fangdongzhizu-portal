@@ -1907,6 +1907,11 @@
 				let address = ''
 				let platform = ''
 				// #ifdef APP-PLUS
+				if (uni.getSystemInfoSync().platform == 'ios') {
+					platform = 'ios'
+				}else if(uni.getSystemInfoSync().platform == 'android'){
+					platform = 'android';
+				}
 				if(this.$store.state.address&&this.$store.state.address.province){
 					address=this.$store.state.address
 				} else {
@@ -1922,7 +1927,6 @@
 							address=location.address
 							this.$store.commit('address',location.address)
 						}
-						platform = 'ios'
 					} else {
 						// 先判断是否授权,再判断是否开启定位服务
 						let result = await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
@@ -1935,7 +1939,6 @@
 							address=location.position.address
 							this.$store.commit('address',address)
 						}
-						platform = 'android'
 					}
 				}
 				// #endif
