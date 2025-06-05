@@ -54,7 +54,7 @@
 		
 		<!-- 租房心得 -->
 		<view class="uni-textarea">
-		    <textarea style="font-size: 14px" placeholder="增加文字描述会更加有力量..." v-model="content" />
+		    <textarea style="font-size: 14px" placeholder="增加文字描述会更加有力量..." v-model="content" maxlength="500"/>
 		</view>
 		<view class="footer">
 			<button @click="formSubmit" class="commit" type="primary" plain="true" @tap="$u.throttle(formSubmit, 2000)">请君上榜</button>
@@ -268,7 +268,7 @@
 		padding: 10upx 15upx;
 	    margin: 10upx 15upx;
 	    line-height: 1.6;
-	    height: 100px;
+	    height: 200px;
 		border-top: 1px solid #f2f2f2;
 		border-bottom: 1px solid #f2f2f2;
 		border-radius: 20rpx;

@@ -91,7 +91,7 @@
 		@refresherrefresh="onPulling"
 		@scrolltolower="scrolllower"
 		@refresherrestore="onRestore">
-			<post-list :showRow="'-webkit-line-clamp: 1'" :list="tuwen_data" :loadStatus="load_status_tuwen"
+			<post-list :showRow="'-webkit-line-clamp: 20'" :list="tuwen_data" :loadStatus="load_status_tuwen"
 			:noOperateFlag="true"
 			:imageFlag="true" @changeStatus="changeStatus"></post-list>
 		</scroll-view>
