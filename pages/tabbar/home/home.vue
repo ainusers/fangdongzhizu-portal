@@ -81,45 +81,6 @@ uni-swiper-item {
 .screen-tab {
   width: 100vw;
 }
-.download-dialog {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-.dialog-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    text-align: center;
-}
-.dialog-title {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-.progress-bar {
-    height: 20px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    margin: 10px 0;
-    overflow: hidden;
-}
-.progress {
-    height: 100%;
-    background-color: #1183fb;
-    transition: width 0.3s;
-}
-.progress-text {
-    font-size: 16px;
-    margin-bottom: 10px;
-}
 </style>
 <template>
   <view class="main">
@@ -214,16 +175,6 @@ uni-swiper-item {
       <notice :content="noticeStr" />
     </u-popup>
 	
-	<!-- 下载进度条 -->
-	<view v-if="progressFlag" class="download-dialog">
-		<view class="dialog-content">
-        <text class="dialog-title">正在下载...</text>
-        <view class="progress-bar">
-            <view class="progress" :style="{ width: progress + '%' }"></view>
-        </view>
-        <text class="progress-text">{{ progress }}%</text>
-    </view>
-	</view>
 </view>
 </template>
 
@@ -234,7 +185,6 @@ import houseListItemSkeleton from '@/components/house-list/house-list-item-skele
 import screenTab from '@/components/common/screen-tab/screen-tab.vue'
 import notice from '@/components/common/noticeModel.vue'
 import {constant} from "@/utils/constant.js";
-import {getLatest,compareVersions} from '@/utils/utils.js';
 
 export default {
   components: {
@@ -370,8 +320,6 @@ export default {
     that.getHouseList()
     // 通知公告
     that.getNotice()
-    // 检查更新
-	  that.showUpdateDialog()
     // 保存登录人的设备
     uni.getStorage({
       key: 'phoneInfo',
@@ -659,111 +607,7 @@ export default {
       } else if (this.publish_type === 2) {
         this.directList = [];
       }
-    },
-	// 在需要检查更新的页面或组件中调用
-	showUpdateDialog() {
-		let currentVersion=''
-		// #ifdef APP-PLUS
-    plus.runtime.getProperty(plus.runtime.appid, (widgetInfo) => {
-      currentVersion = widgetInfo.version
-    });
-		// #endif
-		// #ifdef H5
-    currentVersion = uni.getStorageSync('phoneInfo').appVersion;
-		// #endif
-		getLatest().then((latestVersionInfo) => {
-        // 比较版本号
-        if (compareVersions(currentVersion.toString(), latestVersionInfo.version) < 0) {
-            // 需要更新
-            if (latestVersionInfo.type) {
-                // 强制更新
-                uni.showModal({
-                    title: '版本更新',
-                    content: '检测到新版本，请立即更新以继续使用。',
-                    showCancel: false,
-                    confirmText: '立即更新',
-                    success: (res) => {
-                        if (res.confirm) {
-                            this.handleUpdate(latestVersionInfo);
-                        }
-                    }
-                });
-            } else {
-                // 自主更新
-                uni.showModal({
-                    title: '版本更新',
-                    content: `检测到新版本 ${latestVersionInfo.version}，是否更新？`,
-                    confirmText: '立即更新',
-                    cancelText: '稍后再说',
-                    success: (res) => {
-                        if (res.confirm) {
-                            this.handleUpdate(latestVersionInfo);
-                        }
-                    }
-                });
-            }
-        } else {
-            // 已是最新版本
-            // uni.showToast({
-            //     title: '已是最新版本',
-            //     icon: 'none'
-            // });
-        }
-	    }).catch((err) => {
-	        uni.showToast({
-	            title: '检查更新失败',
-	            icon: 'none'
-	        });
-	    });
-	}, 
-	// 处理更新操作
-	handleUpdate(versionInfo) {
-		this.progress = 0;
-		this.progressFlag = true;
-    // #ifdef APP-PLUS
-		const systemInfo = uni.getSystemInfoSync();
-	    if(systemInfo.platform === 'android') {
-			  uni.hideTabBar();
-        // Android 下载并安装 APK
-        const uploadTask = uni.downloadFile({
-          url: versionInfo.url,
-          success: (res) => {
-              if (res.statusCode === 200) {
-                  plus.runtime.install(res.tempFilePath, {}, () => {
-                      uni.showToast({
-                          title: '下载成功',
-                          icon: 'success'
-                      });
-                  }, (e) => {
-                      uni.showToast({
-                          title: '下载失败',
-                          icon: 'none'
-                      });
-                  });
-              }
-          },
-          fail: (err) => {
-              uni.showToast({
-                  title: '下载失败',
-                  icon: 'none'
-              });
-          }
-      });
-			uploadTask.onProgressUpdate((res) => {
-				this.progress = res.progress
-				if (this.progress == 100){
-					uni.showToast({
-					    title: '下载完成',
-					    icon: 'success',
-						duration: 2000
-					});
-					uni.showTabBar();
-					this.progressFlag = false;
-				}	
-			});
     }
-    // #endif
-	  }
   }
 }
 </script>
